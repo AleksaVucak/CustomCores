@@ -1,0 +1,138 @@
+# CustomCore — Rubric Compliance Checklist
+
+**Document type:** Stage 0 planning (Commit 0.3)  
+**Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
+**Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
+**Last updated:** Stage 0 / Commit 0.3
+
+### Status legend
+
+| Status | Meaning |
+| ------ | ------- |
+| Planned | Location and evidence are decided; not built yet |
+| In progress | Partially implemented |
+| Complete | Evidence exists, was tested, and is ready for grading |
+| Blocked | Waiting on hosting, credentials, or an earlier stage |
+
+### Point total
+
+| Block | Points |
+| ----- | -----: |
+| Graded rubric rows (items 1–13 below) | **100** |
+| Supporting course criteria (tracked, not double-counted) | See Section B |
+
+---
+
+## Section A — Official 100-point grading scheme
+
+| # | Requirement | Pts | Planned evidence (page / file) | How it will be verified | Target stage | Status |
+| - | ----------- | --: | ------------------------------ | ----------------------- | ------------ | ------ |
+| 1 | Business case: at least one paragraph describing the catalogue/project (e.g. on About) | 2 | `about.php` (public paragraph); planning source `docs/business-case.md`; README summary | About page shows a clear business paragraph; matches CustomCore catalogue idea | 0.2 (docs), 3.2 (About) | Planned — docs ready; About page not built |
+| 2 | No fewer than 20 products; each product has at least 2 options | 4 | MySQL `products` + `product_options`; seeds `database/seed-products.sql`; UI `catalogue.php`, `product.php` | SQL count ≥ 20 active products; query confirms every product has ≥ 2 options; options visible on product pages | 2.2–2.3, 3.3–3.4 | Planned |
+| 3a | At least 3 different site-wide CSS templates (distinct look/layout) | 12 | `assets/themes/rgb-gaming.css`, `assets/themes/minimal-pro.css`, `assets/themes/cyber-grid.css` | Themes differ in colour, typography, nav, buttons, cards, spacing, borders, and layout treatment | 10.1–10.3 | Planned |
+| 3b | Ability to change the template dynamically | 4 | Admin `admin/themes.php`; MySQL `themes` / `site_settings`; theme loaded in shared header include | Admin selects theme → setting saved → public and admin pages load the chosen CSS | 2.6, 10.4–10.5 | Planned |
+| 4 | Dynamic HTML forms on at least two pages (e.g. quote/calculator style) | 8 | Primary: `builder.php` (live price + options); `checkout.php` (validated order form). Extra safety: `register.php`, `consultation.php`, `contact.php` | Forms submit to PHP; builder prices recalculate; checkout creates order records without real payment data | 5.x, 6.4–6.5, 4.1, 7.x | Planned |
+| 5 | PHP code and MySQL database well documented | 20 | PHP file/function comments; `database/schema.sql` comments; `docs/database-design.md` (+ ER diagram); install notes in `docs/installation-guide.md` | Another developer can understand schema relationships and major PHP modules from comments + docs | 2.8, 12.4, 14.6–14.7 | Planned |
+| 6 | All code properly commented (HTML, CSS, JS, and related sources) | 8 | Structured comments in HTML/PHP views, `assets/css/*`, `assets/js/*`, SQL seeds | Major sections documented; comments explain purpose, not obvious syntax | 14.6–14.7 | Planned |
+| 7 | Help wiki: at least 5 different pages; context-sensitive Help links from the site | 10 | Static Help: `help/index.html`, `help/accounts.html`, `help/catalogue.html`, `help/pc-builder.html`, `help/orders.html`, `help/support.html` (6 pages; 5 required + hub). Context links from profile, catalogue, builder, checkout, consultation pages | Each Help article opens as its own page; feature pages link to the matching article (not only one generic Help link) | 11.1–11.7 | Planned |
+| 9 | Site has a main menu that is responsive across screen sizes | 4 | `includes/navigation.php` + responsive rules in `assets/css/main.css` / themes; behaviour in `assets/js/main.js` | Desktop and mobile layouts usable; keyboard/touch menu works | 1.5, 1.7 | Planned |
+| 10a | About ~20 dynamic HTML/PHP pages | 4 | Target **≥ 35** functional `.php` pages (public, private, admin, API) — see `docs/sitemap.md` (Commit 0.4) | Count distinct purposeful dynamic pages; no empty placeholder pages | 1–9, 13 | Planned |
+| 10b | At least 1 external CSS file | 2 | `assets/css/main.css` (plus admin/print/theme CSS as extras) | View source shows external stylesheet link(s) | 1.5 | Planned |
+| 10c | At least 1 external JavaScript file | 2 | `assets/js/main.js` (plus builder/cart/validation/charts/map as extras) | View source shows external script link(s); no console errors on core pages | 1.6 | Planned |
+| 10d | At least 20 copyright-free images | 4 | `assets/images/` (≥ 20 files); credits in `docs/media-credits.md` | Images load; filenames meaningful; alt text present; licences documented | 8.1, 8.7 | Planned |
+| 10e | At least 3 video or audio files | 4 | `assets/media/` (≥ 3 items); Learning Centre `media.php` | All three play with browser controls; documented in credits | 8.2–8.3 | Planned |
+| 10f | Instructions so a non-programmer can update contents (products/images/video/audio) | 2 | `docs/content-update-guide.md`; referenced from Help / admin docs | Non-programmer can follow steps to change catalogue/media without editing core logic | 12.3 | Planned |
+| 11 | Website available online live (preferably `myweb.cs.uwindsor.ca`) | 2 | Production URL recorded in README; deployment docs in `docs/` | Homepage loads publicly without PHP fatals; core flows work on host | 16.x | Planned / Blocked until hosting |
+| 12 | Advanced appropriate CSS (fonts, menus, boxes/cards, transitions, layouts) | 4 | Base CSS + three themes demonstrating typography, nav, cards, transitions, grids, form states | Visual review on desktop and mobile across themes | 1.5, 10.x, 14.5 | Planned |
+| 13 | SEO-friendly meta: icon, title, description, keywords, etc. | 4 | Per-page metadata in layout/header; favicon; `sitemap.xml`; `robots.txt`; semantic HTML | Important public pages have unique title/description; private/admin URLs excluded from sitemap | 14.1–14.3 | Planned |
+
+**Section A subtotal: 100 points**
+
+Point check: 2+4+12+4+8+20+8+10+4+4+2+2+4+4+2+2+4+4 = **100**.
+
+---
+
+## Section B — Supporting course criteria (required by instructions; tracked for completeness)
+
+These appear in the project instructions and package requirements. They support a full mark but are not listed as separate additive points beyond the 100-point table.
+
+| ID | Criterion | Planned evidence | Target stage | Status |
+| -- | --------- | ---------------- | ------------ | ------ |
+| B1 | HTML5, CSS, JavaScript front end with full interactive functionality | Entire public/customer UI | 1–8 | Planned |
+| B2 | Multimedia: images, video/audio, interactive map, interactive menus, data visualization/graphs | `media.php`, `store-locations.php`, nav, Chart.js (or equivalent) on public + admin reports + builder chart | 8.x, 5.8, 9.9 | Planned |
+| B3 | Minimum 20 unique dynamic pages and minimum 5 static pages | Dynamic PHP set + static Help wiki (≥ 5) | Throughout; Help in 11.x | Planned |
+| B4 | Public and private areas (registration, authentication, user profile) | `register.php`, `login.php`, `profile.php`, `edit-profile.php`, auth includes | 4.x | Planned |
+| B5 | Front-end documentation | `docs/frontend-documentation.md` | 12.1 | Planned |
+| B6 | End-user documentation; interactive training or step-by-step guide | Help wiki + training walkthrough (Commit 11.8) | 11.x | Planned |
+| B7 | Admin: edit data records (products/services/options) | `admin/products.php`, `product-add.php`, `product-edit.php`, `product-options.php` | 9.2–9.3 | Planned |
+| B8 | Admin: user account administration (e.g. disable accounts) | `admin/users.php`, `admin/user-edit.php` | 9.6 | Planned |
+| B9 | Admin user documentation | `docs/administrator-guide.md` | 12.2 | Planned |
+| B10 | Backend monitoring page (online / warning / offline for site and feature services) | `admin/monitoring.php` + health checks | 13.x | Planned |
+| B11 | Database with at least 20 records | Seeded `products` (and related tables) | 2.x | Planned |
+| B12 | PHP functionality for dynamic pages | All catalogue/account/admin PHP | 3–9 | Planned |
+| B13 | Software repository (e.g. GitHub) with code history | GitHub remote on `main`; meaningful commits | 0.1 ongoing | In progress |
+| B14 | Installation documentation for another server | `docs/installation-guide.md`, deployment/troubleshooting docs | 12.4–12.5, 16.x | Planned |
+| B15 | Desktop and mobile responsiveness (at least one desktop and one mobile) | Responsive CSS; test checklists in Stage 15 | 1.5, 15.4–15.5 | Planned |
+
+---
+
+## Section C — Evidence index by artefact (quick lookup)
+
+| Artefact | Rubric rows it supports |
+| -------- | ----------------------- |
+| `about.php` + `docs/business-case.md` | #1 |
+| `database/schema.sql`, seeds, `product.php` | #2, #5, B11 |
+| `assets/themes/*.css` + `admin/themes.php` | #3a, #3b, #12 |
+| `builder.php`, `checkout.php` | #4 |
+| PHP/SQL comments + `docs/database-design.md` | #5, #6 |
+| `help/*.html` + context links | #7, B6 |
+| `includes/navigation.php` | #9, B2 (menus) |
+| ≥ 35 `.php` pages (planned sitemap) | #10a, B3 |
+| `assets/css/main.css` | #10b, #12 |
+| `assets/js/main.js` | #10c |
+| `assets/images/` + `docs/media-credits.md` | #10d, B2 |
+| `assets/media/` + `media.php` | #10e, B2 |
+| `docs/content-update-guide.md` | #10f |
+| Live URL in README | #11 |
+| Meta tags, favicon, `sitemap.xml`, `robots.txt` | #13 |
+| Auth + profile pages | B4 |
+| Admin product/user tools | B7, B8 |
+| `admin/monitoring.php` | B10 |
+| GitHub repository | B13 |
+| `docs/installation-guide.md` | B14 |
+
+---
+
+## Section D — Safety interpretations (explicit)
+
+| Topic | Decision for CustomCore |
+| ----- | ----------------------- |
+| Dynamic page count | Aim for **≥ 35** purposeful PHP pages (assignment says ~20; master plan prefers headroom) |
+| Static pages | At least **5** separate Help HTML pages (plus Help hub recommended) |
+| Forms | Builder + checkout are the two primary “dynamic form” evidences; additional forms strengthen the case |
+| Themes | Three **complete** templates that differ beyond colour alone; admin can switch sitewide |
+| Products | **20** configurable prebuilts, **≥ 2 options each** (target ≥ 4 option groups) |
+| Checkout | Simulated only — store payment-method label, never card numbers |
+| Hosting | Prefer `myweb.cs.uwindsor.ca`; any working public URL satisfies #11 if permitted |
+
+---
+
+## Section E — Update log
+
+| Commit / stage | Checklist change |
+| -------------- | ---------------- |
+| 0.2 | Business-case planning doc created (`docs/business-case.md`) — supports #1 planning evidence |
+| **0.3** | This checklist created; all Section A rows have evidence columns; statuses set to Planned except B13 in progress |
+| Later | After each completed stage, update **Status**, and fill any final page/file paths that changed |
+
+---
+
+## Section F — Next checklist actions
+
+1. Commit **0.4** — add `docs/sitemap.md` listing every planned dynamic and static page (feeds #10a / B3).  
+2. After Stage 2 — mark #2 / B11 **Complete** only when SQL verification queries pass.  
+3. After Stage 10 — mark #3a / #3b **Complete** after theme switch test.  
+4. After Stage 16 — mark #11 **Complete** with the live URL.  
+5. Stage 15.8 — final audit: every Section A row must be **Complete** with tested evidence.
+
+**Commit 0.3 acceptance:** Every rubric item in Section A has a points value, planned evidence column, verification method, target stage, and status. No graded row is left without an evidence plan.

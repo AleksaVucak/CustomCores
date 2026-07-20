@@ -24,10 +24,11 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 ## Documentation
 
 - [Business case and project objectives](docs/business-case.md)
+- [Rubric compliance checklist](docs/rubric-checklist.md)
 
 ## Current status
 
-**Stage 0 / Commit 0.2** — business case and project objectives documented.
+**Stage 0 / Commit 0.3** — 100-point rubric checklist documented with evidence plans.
 
 Application code, database schema, remaining planning docs, and deployment
 guides will be added in later roadmap commits. Do not expect a runnable site
