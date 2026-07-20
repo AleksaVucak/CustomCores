@@ -3,7 +3,8 @@
 **Document type:** Stage 0 planning (Commit 0.4)  
 **Purpose:** Plan every customer, administrator, API, and static Help page so the project exceeds the minimum page counts with purposeful routes only.  
 **URL style:** Ordinary `.php` / `.html` paths (no rewrite rules).  
-**Related:** SEO machine sitemap (`sitemap.xml`) is added in Stage 14 and must **exclude** private customer and administrator URLs.
+**Related:** SEO machine sitemap (`sitemap.xml`) is added in Stage 14 and must **exclude** private customer and administrator URLs.  
+**Layout:** Desktop/mobile wireframes for core screens are in `docs/wireframes.md` (Commit 0.5).
 
 ### Count targets
 

@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 0 / Commit 0.4
+**Last updated:** Stage 0 / Commit 0.5
 
 ### Status legend
 
@@ -35,7 +35,7 @@
 | 5 | PHP code and MySQL database well documented | 20 | PHP file/function comments; `database/schema.sql` comments; `docs/database-design.md` (+ ER diagram); install notes in `docs/installation-guide.md` | Another developer can understand schema relationships and major PHP modules from comments + docs | 2.8, 12.4, 14.6–14.7 | Planned |
 | 6 | All code properly commented (HTML, CSS, JS, and related sources) | 8 | Structured comments in HTML/PHP views, `assets/css/*`, `assets/js/*`, SQL seeds | Major sections documented; comments explain purpose, not obvious syntax | 14.6–14.7 | Planned |
 | 7 | Help wiki: at least 5 different pages; context-sensitive Help links from the site | 10 | Static Help: `help/index.html`, `help/accounts.html`, `help/catalogue.html`, `help/pc-builder.html`, `help/orders.html`, `help/support.html` (6 pages; 5 required + hub). Context links from profile, catalogue, builder, checkout, consultation pages | Each Help article opens as its own page; feature pages link to the matching article (not only one generic Help link) | 11.1–11.7 | Planned |
-| 9 | Site has a main menu that is responsive across screen sizes | 4 | `includes/navigation.php` + responsive rules in `assets/css/main.css` / themes; behaviour in `assets/js/main.js` | Desktop and mobile layouts usable; keyboard/touch menu works | 1.5, 1.7 | Planned |
+| 9 | Site has a main menu that is responsive across screen sizes | 4 | `includes/navigation.php` + responsive rules in `assets/css/main.css` / themes; behaviour in `assets/js/main.js`; layout contract in `docs/wireframes.md` | Desktop and mobile layouts usable; keyboard/touch menu works | 1.5, 1.7 | Planned — wireframes show nav on all six core screens (0.5) |
 | 10a | About ~20 dynamic HTML/PHP pages | 4 | Target **48** purposeful `.php` pages listed in `docs/sitemap.md` (17 public + 12 private + 15 admin + 4 API) | Count distinct purposeful dynamic pages; no empty placeholder pages | 1–9, 13 | Planned — sitemap documented (0.4); pages not built yet |
 | 10b | At least 1 external CSS file | 2 | `assets/css/main.css` (plus admin/print/theme CSS as extras) | View source shows external stylesheet link(s) | 1.5 | Planned |
 | 10c | At least 1 external JavaScript file | 2 | `assets/js/main.js` (plus builder/cart/validation/charts/map as extras) | View source shows external script link(s); no console errors on core pages | 1.6 | Planned |
@@ -124,16 +124,18 @@ These appear in the project instructions and package requirements. They support 
 | 0.2 | Business-case planning doc created (`docs/business-case.md`) — supports #1 planning evidence |
 | **0.3** | This checklist created; all Section A rows have evidence columns; statuses set to Planned except B13 in progress |
 | **0.4** | `docs/sitemap.md` added; #10a / B3 evidence updated to 48 dynamic + 7 static planned pages |
+| **0.5** | `docs/wireframes.md` added; #9 notes desktop/mobile nav visible on home, catalogue, builder, profile, cart, admin |
 
 ---
 
 ## Section F — Next checklist actions
 
-1. Commit **0.5** — add desktop and mobile wireframes for homepage, catalogue, builder, profile, cart, and admin.  
+1. Commit **0.6** — add database ER design and table plan.  
 2. After Stage 2 — mark #2 / B11 **Complete** only when SQL verification queries pass.  
 3. After Stage 10 — mark #3a / #3b **Complete** after theme switch test.  
 4. After Stage 16 — mark #11 **Complete** with the live URL.  
 5. Stage 15.8 — final audit: every Section A row must be **Complete** with tested evidence.
 
 **Commit 0.3 acceptance:** Every rubric item in Section A has a points value, planned evidence column, verification method, target stage, and status. No graded row is left without an evidence plan.  
-**Commit 0.4 acceptance:** Sitemap documents ≥ 20 dynamic and ≥ 5 static pages with purposeful routes (48 + 7 planned).
+**Commit 0.4 acceptance:** Sitemap documents ≥ 20 dynamic and ≥ 5 static pages with purposeful routes (48 + 7 planned).  
+**Commit 0.5 acceptance:** Wireframes for homepage, catalogue, builder, profile, cart, and admin show core navigation on desktop and mobile.

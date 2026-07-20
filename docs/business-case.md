@@ -107,6 +107,7 @@ Protected dashboard; product add/edit/disable, stock, price, and image managemen
 | About page (`about.php`) | Public paragraph(s) derived from Section 1 |
 | `docs/rubric-checklist.md` | Business-case row (#1) evidence points here and to About (checklist added in Commit 0.3) |
 | `docs/sitemap.md` | Pages listed in Section 6 (sitemap added in Commit 0.4) |
+| `docs/wireframes.md` | Layout/nav contract for core screens (added in Commit 0.5) |
 | `docs/sitemap.md` | Pages listed in Section 6 |
 | `docs/database-design.md` | Tables needed for catalogue, builder, accounts, and admin |
 | README | High-level project summary remains consistent with this document |

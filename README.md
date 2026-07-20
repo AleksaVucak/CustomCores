@@ -26,10 +26,11 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 - [Business case and project objectives](docs/business-case.md)
 - [Rubric compliance checklist](docs/rubric-checklist.md)
 - [Application sitemap](docs/sitemap.md)
+- [Desktop and mobile wireframes](docs/wireframes.md)
 
 ## Current status
 
-**Stage 0 / Commit 0.4** — application sitemap documented (48 dynamic + 7 static pages planned).
+**Stage 0 / Commit 0.5** — desktop and mobile wireframes documented for core screens.
 
 Application code, database schema, remaining planning docs, and deployment
 guides will be added in later roadmap commits. Do not expect a runnable site
