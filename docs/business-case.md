@@ -108,12 +108,11 @@ Protected dashboard; product add/edit/disable, stock, price, and image managemen
 | `docs/rubric-checklist.md` | Business-case row (#1) evidence points here and to About (checklist added in Commit 0.3) |
 | `docs/sitemap.md` | Pages listed in Section 6 (sitemap added in Commit 0.4) |
 | `docs/wireframes.md` | Layout/nav contract for core screens (added in Commit 0.5) |
-| `docs/sitemap.md` | Pages listed in Section 6 |
-| `docs/database-design.md` | Tables needed for catalogue, builder, accounts, and admin |
+| `docs/database-design.md` | Tables for catalogue, builder, accounts, and admin (ER design added in Commit 0.6) |
 | README | High-level project summary remains consistent with this document |
 
 ---
 
 ## 10. Status
 
-**Commit 0.2 complete.** Business idea, audience, problem, solution, feature scope, and objectives are finalized for Stage 0 planning. Application coding still waits until Stage 1 after the remaining Stage 0 planning commits (rubric checklist, sitemap, wireframes, and database ER design).
+**Stage 0 planning complete** through Commit 0.6. Business idea, rubric map, sitemap, wireframes, and database ER design are finalized. Application coding begins at Stage 1.

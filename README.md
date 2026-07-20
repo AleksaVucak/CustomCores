@@ -27,14 +27,15 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 - [Rubric compliance checklist](docs/rubric-checklist.md)
 - [Application sitemap](docs/sitemap.md)
 - [Desktop and mobile wireframes](docs/wireframes.md)
+- [Database entity-relationship design](docs/database-design.md)
 
 ## Current status
 
-**Stage 0 / Commit 0.5** — desktop and mobile wireframes documented for core screens.
+**Stage 0 / Commit 0.6 complete** — database ER design and table plan documented.
+Stage 0 planning is finished. Next is Stage 1 (shared application foundation).
 
-Application code, database schema, remaining planning docs, and deployment
-guides will be added in later roadmap commits. Do not expect a runnable site
-until the foundation and database stages are complete.
+Application code and executable SQL schema will be added in Stages 1–2.
+Do not expect a runnable site until the foundation and database stages are complete.
 
 ## Security notes
 
