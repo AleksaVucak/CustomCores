@@ -25,10 +25,11 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 - [Business case and project objectives](docs/business-case.md)
 - [Rubric compliance checklist](docs/rubric-checklist.md)
+- [Application sitemap](docs/sitemap.md)
 
 ## Current status
 
-**Stage 0 / Commit 0.3** — 100-point rubric checklist documented with evidence plans.
+**Stage 0 / Commit 0.4** — application sitemap documented (48 dynamic + 7 static pages planned).
 
 Application code, database schema, remaining planning docs, and deployment
 guides will be added in later roadmap commits. Do not expect a runnable site

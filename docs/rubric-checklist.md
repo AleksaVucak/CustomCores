@@ -1,9 +1,9 @@
 # CustomCore — Rubric Compliance Checklist
 
-**Document type:** Stage 0 planning (Commit 0.3)  
+**Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 0 / Commit 0.3
+**Last updated:** Stage 0 / Commit 0.4
 
 ### Status legend
 
@@ -36,7 +36,7 @@
 | 6 | All code properly commented (HTML, CSS, JS, and related sources) | 8 | Structured comments in HTML/PHP views, `assets/css/*`, `assets/js/*`, SQL seeds | Major sections documented; comments explain purpose, not obvious syntax | 14.6–14.7 | Planned |
 | 7 | Help wiki: at least 5 different pages; context-sensitive Help links from the site | 10 | Static Help: `help/index.html`, `help/accounts.html`, `help/catalogue.html`, `help/pc-builder.html`, `help/orders.html`, `help/support.html` (6 pages; 5 required + hub). Context links from profile, catalogue, builder, checkout, consultation pages | Each Help article opens as its own page; feature pages link to the matching article (not only one generic Help link) | 11.1–11.7 | Planned |
 | 9 | Site has a main menu that is responsive across screen sizes | 4 | `includes/navigation.php` + responsive rules in `assets/css/main.css` / themes; behaviour in `assets/js/main.js` | Desktop and mobile layouts usable; keyboard/touch menu works | 1.5, 1.7 | Planned |
-| 10a | About ~20 dynamic HTML/PHP pages | 4 | Target **≥ 35** functional `.php` pages (public, private, admin, API) — see `docs/sitemap.md` (Commit 0.4) | Count distinct purposeful dynamic pages; no empty placeholder pages | 1–9, 13 | Planned |
+| 10a | About ~20 dynamic HTML/PHP pages | 4 | Target **48** purposeful `.php` pages listed in `docs/sitemap.md` (17 public + 12 private + 15 admin + 4 API) | Count distinct purposeful dynamic pages; no empty placeholder pages | 1–9, 13 | Planned — sitemap documented (0.4); pages not built yet |
 | 10b | At least 1 external CSS file | 2 | `assets/css/main.css` (plus admin/print/theme CSS as extras) | View source shows external stylesheet link(s) | 1.5 | Planned |
 | 10c | At least 1 external JavaScript file | 2 | `assets/js/main.js` (plus builder/cart/validation/charts/map as extras) | View source shows external script link(s); no console errors on core pages | 1.6 | Planned |
 | 10d | At least 20 copyright-free images | 4 | `assets/images/` (≥ 20 files); credits in `docs/media-credits.md` | Images load; filenames meaningful; alt text present; licences documented | 8.1, 8.7 | Planned |
@@ -60,7 +60,7 @@ These appear in the project instructions and package requirements. They support 
 | -- | --------- | ---------------- | ------------ | ------ |
 | B1 | HTML5, CSS, JavaScript front end with full interactive functionality | Entire public/customer UI | 1–8 | Planned |
 | B2 | Multimedia: images, video/audio, interactive map, interactive menus, data visualization/graphs | `media.php`, `store-locations.php`, nav, Chart.js (or equivalent) on public + admin reports + builder chart | 8.x, 5.8, 9.9 | Planned |
-| B3 | Minimum 20 unique dynamic pages and minimum 5 static pages | Dynamic PHP set + static Help wiki (≥ 5) | Throughout; Help in 11.x | Planned |
+| B3 | Minimum 20 unique dynamic pages and minimum 5 static pages | Dynamic PHP set (48 planned) + static Help wiki (7 planned) — `docs/sitemap.md` | Throughout; Help in 11.x | Planned — counts documented in 0.4 |
 | B4 | Public and private areas (registration, authentication, user profile) | `register.php`, `login.php`, `profile.php`, `edit-profile.php`, auth includes | 4.x | Planned |
 | B5 | Front-end documentation | `docs/frontend-documentation.md` | 12.1 | Planned |
 | B6 | End-user documentation; interactive training or step-by-step guide | Help wiki + training walkthrough (Commit 11.8) | 11.x | Planned |
@@ -87,7 +87,7 @@ These appear in the project instructions and package requirements. They support 
 | PHP/SQL comments + `docs/database-design.md` | #5, #6 |
 | `help/*.html` + context links | #7, B6 |
 | `includes/navigation.php` | #9, B2 (menus) |
-| ≥ 35 `.php` pages (planned sitemap) | #10a, B3 |
+| ≥ 35 `.php` pages (planned sitemap) | #10a, B3 — see `docs/sitemap.md` (48 planned) |
 | `assets/css/main.css` | #10b, #12 |
 | `assets/js/main.js` | #10c |
 | `assets/images/` + `docs/media-credits.md` | #10d, B2 |
@@ -123,16 +123,17 @@ These appear in the project instructions and package requirements. They support 
 | -------------- | ---------------- |
 | 0.2 | Business-case planning doc created (`docs/business-case.md`) — supports #1 planning evidence |
 | **0.3** | This checklist created; all Section A rows have evidence columns; statuses set to Planned except B13 in progress |
-| Later | After each completed stage, update **Status**, and fill any final page/file paths that changed |
+| **0.4** | `docs/sitemap.md` added; #10a / B3 evidence updated to 48 dynamic + 7 static planned pages |
 
 ---
 
 ## Section F — Next checklist actions
 
-1. Commit **0.4** — add `docs/sitemap.md` listing every planned dynamic and static page (feeds #10a / B3).  
+1. Commit **0.5** — add desktop and mobile wireframes for homepage, catalogue, builder, profile, cart, and admin.  
 2. After Stage 2 — mark #2 / B11 **Complete** only when SQL verification queries pass.  
 3. After Stage 10 — mark #3a / #3b **Complete** after theme switch test.  
 4. After Stage 16 — mark #11 **Complete** with the live URL.  
 5. Stage 15.8 — final audit: every Section A row must be **Complete** with tested evidence.
 
-**Commit 0.3 acceptance:** Every rubric item in Section A has a points value, planned evidence column, verification method, target stage, and status. No graded row is left without an evidence plan.
+**Commit 0.3 acceptance:** Every rubric item in Section A has a points value, planned evidence column, verification method, target stage, and status. No graded row is left without an evidence plan.  
+**Commit 0.4 acceptance:** Sitemap documents ≥ 20 dynamic and ≥ 5 static pages with purposeful routes (48 + 7 planned).
