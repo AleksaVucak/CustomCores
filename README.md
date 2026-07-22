@@ -34,13 +34,13 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 3.5 complete** — product search added.
+**Commit 3.6 complete** — catalogue filters and sorting.
 
-`search.php` finds active products by name, category, brand, description, and
-key specs. Empty queries prompt for terms; empty result sets show a clear
-message. Catalogue includes a compact search form pointing here.
+`catalogue.php` now has a filter sidebar (category, brand, price range, in-stock)
+and sort controls (Featured, Price low/high, Name A/Z, Newest). All filters work
+individually and combined via PDO prepared statements.
 
-Next: **Commit 3.6** — catalogue filters and sorting.
+Next: **Commit 3.7** — product comparison.
 
 ## Security notes
 

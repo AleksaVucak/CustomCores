@@ -508,4 +508,4 @@ The Mermaid diagram and table plan in this document match the 21 tables created 
 
 ## 10. Status
 
-**Stage 2 complete (Commit 2.8).** Schema, catalogue seeds, builder seeds, compatibility rules, themes/settings, secure admin setup, and the import/backup guide (`docs/database-import.md`) are in place. Next: **Stage 3** — public catalogue pages driven by MySQL.
+**Stage 3 in progress (Commit 3.6).** Schema, catalogue seeds, builder seeds, compatibility rules, themes/settings, secure admin setup, and the import/backup guide (`docs/database-import.md`) are in place. Public catalogue pages are live — homepage, about, catalogue with filters/sort, product detail, search, all driven by MySQL.
