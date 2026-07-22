@@ -13,12 +13,15 @@
 !.env.example
 
 # -----------------------------------------------------------------------------
-# Uploaded user and admin content (directory placeholders use .gitkeep later)
+# Uploaded user and admin content (directory placeholders use .gitkeep)
+# Allow a small index.php guard in each upload folder; ignore real uploads.
 # -----------------------------------------------------------------------------
 /uploads/consultation/*
 !/uploads/consultation/.gitkeep
+!/uploads/consultation/index.php
 /uploads/products/*
 !/uploads/products/.gitkeep
+!/uploads/products/index.php
 
 # -----------------------------------------------------------------------------
 # PHP / Composer (Composer is not required; ignore if introduced locally)

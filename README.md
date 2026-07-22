@@ -28,14 +28,15 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 - [Application sitemap](docs/sitemap.md)
 - [Desktop and mobile wireframes](docs/wireframes.md)
 - [Database entity-relationship design](docs/database-design.md)
+- [Application directory structure](docs/directory-structure.md)
 
 ## Current status
 
-**Stage 0 / Commit 0.6 complete** — database ER design and table plan documented.
-Stage 0 planning is finished. Next is Stage 1 (shared application foundation).
+**Stage 1 / Commit 1.1** — application directory structure created.
 
-Application code and executable SQL schema will be added in Stages 1–2.
-Do not expect a runnable site until the foundation and database stages are complete.
+Shared configuration, PDO, layout includes, CSS, JavaScript, navigation, and
+flash messages follow in Commits 1.2–1.8. Catalogue and database seeds begin
+in Stage 2.
 
 ## Security notes
 
