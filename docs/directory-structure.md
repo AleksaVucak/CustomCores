@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 4.7 complete.**  
-Roles: `includes/admin-auth.php` (`customcore_require_admin()`) + protected `admin/index.php`; admin-only nav link.
+**Commit 4.8 complete.**  
+Session hardening in `includes/functions.php` (`customcore_session_harden()` / `customcore_session_expire()`): strict cookie flags, UA binding, idle + absolute timeouts, periodic ID rotation; timeouts in `config/app.php`.
 
-Next: **Commit 4.8** — strengthen session security.
+Stage 4 complete. Next: **Stage 5**.

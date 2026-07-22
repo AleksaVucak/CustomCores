@@ -61,9 +61,14 @@ function customcore_e($value): string
 /**
  * Start the PHP session once with the configured session name.
  *
- * Security notes:
+ * Security notes (Commit 4.8 hardening):
  *   - Uses a custom session name to reduce collisions on shared hosts.
- *   - Cookie flags favour HTTP-only cookies; Secure is enabled under HTTPS.
+ *   - Cookies are HTTP-only and SameSite=Lax; Secure is enabled under HTTPS.
+ *   - Strict mode rejects attacker-supplied (uninitialized) session IDs.
+ *   - Cookie-only transport disables session IDs in URLs (no trans_sid).
+ *   - Stronger, longer session IDs are requested where the SAPI allows it.
+ *   - After the session opens, customcore_session_harden() enforces idle and
+ *     absolute timeouts, user-agent binding, and periodic ID rotation.
  */
 function customcore_session_start(): void
 {
@@ -78,8 +83,28 @@ function customcore_session_start(): void
         session_name($sessionName);
     }
 
-    $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
-        || ((isset($_SERVER['SERVER_PORT']) && (int) $_SERVER['SERVER_PORT'] === 443));
+    $secure = customcore_request_is_https();
+
+    // Harden the session engine before the cookie is issued. These runtime
+    // ini settings are ignored gracefully if the session has already started
+    // or the host forbids overrides.
+    if (function_exists('ini_set')) {
+        @ini_set('session.use_strict_mode', '1');
+        @ini_set('session.use_only_cookies', '1');
+        @ini_set('session.use_trans_sid', '0');
+        @ini_set('session.cookie_httponly', '1');
+        @ini_set('session.cookie_samesite', 'Lax');
+        @ini_set('session.sid_length', '48');
+        @ini_set('session.sid_bits_per_character', '6');
+        if ($secure) {
+            @ini_set('session.cookie_secure', '1');
+        }
+
+        $absolute = (int) ($app['session_absolute_timeout'] ?? 0);
+        if ($absolute > 0) {
+            @ini_set('session.gc_maxlifetime', (string) $absolute);
+        }
+    }
 
     session_set_cookie_params([
         'lifetime' => 0,
@@ -90,6 +115,133 @@ function customcore_session_start(): void
     ]);
 
     session_start();
+
+    customcore_session_harden();
+}
+
+/**
+ * Whether the current request arrived over HTTPS.
+ */
+function customcore_request_is_https(): bool
+{
+    if (!empty($_SERVER['HTTPS']) && strtolower((string) $_SERVER['HTTPS']) !== 'off') {
+        return true;
+    }
+
+    if (isset($_SERVER['SERVER_PORT']) && (int) $_SERVER['SERVER_PORT'] === 443) {
+        return true;
+    }
+
+    // Honour a proxy/load-balancer that terminates TLS upstream.
+    if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])
+        && strtolower((string) $_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https') {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Enforce session-lifetime and integrity rules on authenticated sessions.
+ *
+ * Runs once per request, immediately after the session opens. Only sessions
+ * that carry a logged-in user are guarded so guest browsing stays lightweight.
+ *
+ * Checks, in order (any failure expires the session):
+ *   1. User-agent binding — a stolen cookie replayed from a different client
+ *      no longer matches the fingerprint captured at login.
+ *   2. Absolute lifetime — a session cannot outlive session_absolute_timeout,
+ *      regardless of activity.
+ *   3. Idle timeout — inactivity beyond session_idle_timeout ends the session.
+ *   4. Periodic ID rotation — the session ID is regenerated every
+ *      session_regenerate_interval seconds to shrink the fixation window.
+ */
+function customcore_session_harden(): void
+{
+    // Only guard authenticated sessions.
+    if (empty($_SESSION['user_id'])) {
+        return;
+    }
+
+    $app = customcore_app_config();
+    $now = time();
+
+    $idleTimeout = (int) ($app['session_idle_timeout'] ?? 1800);
+    $absoluteTimeout = (int) ($app['session_absolute_timeout'] ?? 43200);
+    $regenInterval = (int) ($app['session_regenerate_interval'] ?? 900);
+
+    // 1. User-agent binding.
+    $fingerprint = hash('sha256', (string) ($_SERVER['HTTP_USER_AGENT'] ?? ''));
+    if (!isset($_SESSION['_cc_fp'])) {
+        $_SESSION['_cc_fp'] = $fingerprint;
+    } elseif (!hash_equals((string) $_SESSION['_cc_fp'], $fingerprint)) {
+        customcore_session_expire('For your security, please log in again.');
+        return;
+    }
+
+    // 2. Absolute lifetime.
+    if (!isset($_SESSION['_cc_created'])) {
+        $_SESSION['_cc_created'] = $now;
+    } elseif ($absoluteTimeout > 0 && ($now - (int) $_SESSION['_cc_created']) > $absoluteTimeout) {
+        customcore_session_expire('Your session has expired. Please log in again.');
+        return;
+    }
+
+    // 3. Idle timeout.
+    if ($idleTimeout > 0
+        && isset($_SESSION['_cc_last_activity'])
+        && ($now - (int) $_SESSION['_cc_last_activity']) > $idleTimeout) {
+        customcore_session_expire('You were logged out after a period of inactivity.');
+        return;
+    }
+    $_SESSION['_cc_last_activity'] = $now;
+
+    // 4. Periodic session ID rotation.
+    if (!isset($_SESSION['_cc_last_regen'])) {
+        $_SESSION['_cc_last_regen'] = $now;
+    } elseif ($regenInterval > 0 && ($now - (int) $_SESSION['_cc_last_regen']) > $regenInterval) {
+        session_regenerate_id(true);
+        $_SESSION['_cc_last_regen'] = $now;
+    }
+}
+
+/**
+ * Immediately end the current session, then start a clean guest session so a
+ * warning flash can be shown on the next request.
+ *
+ * @param string $warning Optional message queued for the next page load.
+ */
+function customcore_session_expire(string $warning = ''): void
+{
+    $_SESSION = [];
+
+    if (session_status() === PHP_SESSION_ACTIVE) {
+        if (ini_get('session.use_cookies')) {
+            $name = session_name();
+            $params = session_get_cookie_params();
+            if (is_string($name) && $name !== '') {
+                setcookie($name, '', [
+                    'expires' => time() - 42000,
+                    'path' => $params['path'] ?? '/',
+                    'domain' => $params['domain'] ?? '',
+                    'secure' => !empty($params['secure']),
+                    'httponly' => !empty($params['httponly']),
+                    'samesite' => $params['samesite'] ?? 'Lax',
+                ]);
+            }
+        }
+
+        session_destroy();
+    }
+
+    // Fresh, empty session for the guest so flash/CSRF still work this request.
+    session_start();
+    session_regenerate_id(true);
+
+    if ($warning !== '') {
+        require_once __DIR__ . '/flash.php';
+        customcore_flash_warning($warning);
+    }
 }
 
 /**

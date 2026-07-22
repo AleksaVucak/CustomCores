@@ -34,14 +34,16 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 4.7 complete** — role-based permissions.
+**Commit 4.8 complete** — strengthened session security.
 
-`includes/admin-auth.php` adds `customcore_require_admin()`. `admin/index.php`
-is a protected admin landing: guests go to login, customers are redirected away
-with a permission error, and only admins get in. An Admin nav link shows for
-admins only.
+`customcore_session_start()` now sets strict, cookie-only, HTTP-only,
+SameSite=Lax sessions (Secure under HTTPS) and calls `customcore_session_harden()`
+on every request. Authenticated sessions get: user-agent binding, a 30-minute
+idle timeout, a 12-hour absolute lifetime, and automatic session-ID rotation
+every 15 minutes. Expired sessions are cleared and the user sees a warning.
+Timeouts are configurable in `config/app.php`.
 
-Next: **Commit 4.8** — strengthen session security.
+Stage 4 (registration, authentication, and profiles) is complete.
 
 ## Security notes
 

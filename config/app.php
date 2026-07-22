@@ -46,6 +46,17 @@ return [
     // Custom session cookie name (helps avoid collisions on shared hosts)
     'session_name' => 'CUSTOMCORESESSID',
 
+    /**
+     * Session security timeouts (Commit 4.8), in seconds. Set to 0 to disable.
+     *   session_idle_timeout       — log out after this long with no activity.
+     *   session_absolute_timeout   — hard cap on a single session's total life.
+     *   session_regenerate_interval — rotate the session ID this often to shrink
+     *                                 any fixation / stolen-cookie replay window.
+     */
+    'session_idle_timeout' => 1800,          // 30 minutes
+    'session_absolute_timeout' => 43200,     // 12 hours
+    'session_regenerate_interval' => 900,    // 15 minutes
+
     // Default theme slug used if the database setting is missing (Stage 10)
     'default_theme' => 'rgb-gaming',
 

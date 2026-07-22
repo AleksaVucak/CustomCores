@@ -264,6 +264,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $user !== null && $pageError === nu
 
                 // New credentials → new session ID.
                 session_regenerate_id(true);
+                $_SESSION['_cc_last_regen'] = time();
 
                 customcore_flash_success('Your password was changed.');
                 customcore_redirect('profile.php');

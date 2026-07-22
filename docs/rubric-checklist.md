@@ -157,6 +157,7 @@ These appear in the project instructions and package requirements. They support 
 | **4.5** | `profile.php` — private dashboard; own profile + activity counts/recent activity only; `includes/account-nav.php` |
 | **4.6** | `edit-profile.php` — name/email/phone/address + password change; CSRF; email-unique (self-excluded); rehash + session regen |
 | **4.7** | `includes/admin-auth.php` (`customcore_require_admin()`); protected `admin/index.php`; admins-only Admin nav link; customers redirected from admin URLs |
+| **4.8** | Session hardening — strict cookie flags (HttpOnly, SameSite=Lax, Secure/HTTPS), UA binding, idle (30m) + absolute (12h) timeouts, ID rotation (15m); `customcore_session_harden()` / `customcore_session_expire()`; timeouts in `config/app.php` |
 
 ---
 
@@ -183,7 +184,7 @@ These appear in the project instructions and package requirements. They support 
    - [x] 4.5 Customer profile dashboard  
    - [x] 4.6 Profile editing  
    - [x] 4.7 Role-based permissions  
-   - [ ] 4.8 Session hardening  
+   - [x] 4.8 Session hardening  
 7. After Stage 10 — mark #3a / #3b **Complete** after theme switch test.
 8. After Stage 16 — mark #11 **Complete** with the live URL.  
 9. Stage 15.8 — final audit: every Section A row must be **Complete** with tested evidence.

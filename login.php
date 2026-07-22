@@ -93,6 +93,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['user_name'] = (string) $user['first_name'];
                 $_SESSION['user_email'] = (string) $user['email'];
 
+                // Seed session-security markers (Commit 4.8) so the idle/absolute
+                // timeouts, user-agent binding, and ID rotation start from now.
+                $now = time();
+                $_SESSION['_cc_created'] = $now;
+                $_SESSION['_cc_last_activity'] = $now;
+                $_SESSION['_cc_last_regen'] = $now;
+                $_SESSION['_cc_fp'] = hash('sha256', (string) ($_SERVER['HTTP_USER_AGENT'] ?? ''));
+
                 customcore_flash_success('Welcome back, ' . (string) $user['first_name'] . '.');
 
                 // Return the user to the page they were sent here from, if any.
