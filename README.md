@@ -33,13 +33,13 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 2.5 complete** — simplified compatibility rules seeded.
+**Commit 2.6 complete** — themes and site settings seeded.
 
-`database/seed-compatibility.sql` adds the **7** builder compatibility rules
-(socket, RAM type, form factor, PSU wattage, GPU clearance, cooler fit,
-storage interface) with JSON config for the Stage 5 checker.
+`database/seed-themes.sql` adds the three switchable templates (RGB Gaming,
+Minimal Professional, Cyber Grid) plus `site_settings` with `active_theme_id`
+defaulting to RGB Gaming (matches `config/app.php`).
 
-Next: **Commit 2.6** — theme and site-settings seed data.
+Next: **Commit 2.7** — secure administrator setup process.
 
 ## Security notes
 

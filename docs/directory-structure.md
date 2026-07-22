@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 2.5 complete.**  
-Compatibility seed: `database/seed-compatibility.sql` — 7 active rules with JSON config.
+**Commit 2.6 complete.**  
+Theme seed: `database/seed-themes.sql` — 3 themes + `active_theme_id` setting.
 
-Next: **Commit 2.6** — theme and site-settings seed data.
+Next: **Commit 2.7** — secure administrator setup process.

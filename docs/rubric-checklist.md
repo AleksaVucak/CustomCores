@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 2 / Commit 2.5 (compatibility rules seed)
+**Last updated:** Stage 2 / Commit 2.6 (themes and site settings seed)
 
 ### Status legend
 
@@ -30,7 +30,7 @@
 | 1 | Business case: at least one paragraph describing the catalogue/project (e.g. on About) | 2 | `about.php` (public paragraph); planning source `docs/business-case.md`; README summary | About page shows a clear business paragraph; matches CustomCore catalogue idea | 0.2 (docs), 1.4/3.2 (About) | In progress — About page live with business paragraph; may be polished in Stage 3 |
 | 2 | No fewer than 20 products; each product has at least 2 options | 4 | MySQL `products` + `product_options`; seeds `database/seed-products.sql` + `database/seed-product-options.sql`; UI `catalogue.php`, `product.php` | SQL count ≥ 20 active products; query confirms every product has ≥ 2 options; options visible on product pages | 2.2–2.3, 3.3–3.4 | In progress — 20 products + options seeded (2.2–2.3); UI pages still Stage 3 |
 | 3a | At least 3 different site-wide CSS templates (distinct look/layout) | 12 | `assets/themes/rgb-gaming.css`, `assets/themes/minimal-pro.css`, `assets/themes/cyber-grid.css` | Themes differ in colour, typography, nav, buttons, cards, spacing, borders, and layout treatment | 10.1–10.3 | Planned |
-| 3b | Ability to change the template dynamically | 4 | Admin `admin/themes.php`; MySQL `themes` / `site_settings`; theme loaded in shared header include | Admin selects theme → setting saved → public and admin pages load the chosen CSS | 2.6, 10.4–10.5 | Planned |
+| 3b | Ability to change the template dynamically | 4 | Admin `admin/themes.php`; MySQL `themes` / `site_settings`; theme loaded in shared header include | Admin selects theme → setting saved → public and admin pages load the chosen CSS | 2.6, 10.4–10.5 | In progress — theme + settings rows seeded (2.6); CSS files and switcher in Stage 10 |
 | 4 | Dynamic HTML forms on at least two pages (e.g. quote/calculator style) | 8 | Primary: `builder.php` (live price + options); `checkout.php` (validated order form). Extra safety: `register.php`, `consultation.php`, `contact.php` | Forms submit to PHP; builder prices recalculate; checkout creates order records without real payment data | 5.x, 6.4–6.5, 4.1, 7.x | Planned |
 | 5 | PHP code and MySQL database well documented | 20 | PHP file/function comments; `database/schema.sql` comments; `docs/database-design.md` (+ ER diagram); install notes in `docs/installation-guide.md` | Another developer can understand schema relationships and major PHP modules from comments + docs | 2.8, 12.4, 14.6–14.7 | In progress — ER/table design documented (0.6); schema.sql created with full comments (2.1) |
 | 6 | All code properly commented (HTML, CSS, JS, and related sources) | 8 | Structured comments in HTML/PHP views, `assets/css/*`, `assets/js/*`, SQL seeds | Major sections documented; comments explain purpose, not obvious syntax | 14.6–14.7 | Planned |
@@ -68,7 +68,7 @@ These appear in the project instructions and package requirements. They support 
 | B8 | Admin: user account administration (e.g. disable accounts) | `admin/users.php`, `admin/user-edit.php` | 9.6 | Planned |
 | B9 | Admin user documentation | `docs/administrator-guide.md` | 12.2 | Planned |
 | B10 | Backend monitoring page (online / warning / offline for site and feature services) | `admin/monitoring.php` + health checks | 13.x | Planned |
-| B11 | Database with at least 20 records | Seeded `products` (and related tables) | 2.x | In progress — 20 products, 323 options, 60 builder components seeded; compatibility/themes still pending |
+| B11 | Database with at least 20 records | Seeded `products` (and related tables) | 2.x | In progress — products, options, components, rules, and themes seeded; admin setup + import docs still pending |
 | B12 | PHP functionality for dynamic pages | All catalogue/account/admin PHP | 3–9 | Planned |
 | B13 | Software repository (e.g. GitHub) with code history | GitHub remote on `main`; meaningful commits | 0.1 ongoing | In progress |
 | B14 | Installation documentation for another server | `docs/installation-guide.md`, deployment/troubleshooting docs | 12.4–12.5, 16.x | Planned |
@@ -139,6 +139,7 @@ These appear in the project instructions and package requirements. They support 
 | **2.3** | `database/seed-product-options.sql` — 323 options; every product has ≥ 2 (typically 14–19); verification query ready |
 | **2.4** | `database/seed-components.sql` — 10 builder categories + 60 parts with compatibility attributes |
 | **2.5** | `database/seed-compatibility.sql` — 7 active rules with JSON config; demo queries confirm compatible + incompatible cases |
+| **2.6** | `database/seed-themes.sql` — 3 themes + `active_theme_id` (default RGB Gaming); #3b now In progress |
 
 ---
 
@@ -202,7 +203,7 @@ These appear in the project instructions and package requirements. They support 
 - [x] 2.3 Product options for every PC (`database/seed-product-options.sql`)
 - [x] 2.4 Custom builder components (`database/seed-components.sql`)
 - [x] 2.5 Simplified compatibility rules (`database/seed-compatibility.sql`)
-- [ ] 2.6 Theme and settings seeds
+- [x] 2.6 Themes and site settings (`database/seed-themes.sql`)
 - [ ] 2.7 Secure admin creation script
 - [ ] 2.8 Import guide and documentation updates
 
