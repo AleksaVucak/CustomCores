@@ -34,13 +34,13 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 3.4 complete** — dynamic product detail pages.
+**Commit 3.5 complete** — product search added.
 
-`product.php?id=N` displays a single product's specs, option groups with price
-deltas, configured price, stock status, breadcrumb, and Help link. One reusable
-page serves all 20 products.
+`search.php` finds active products by name, category, brand, description, and
+key specs. Empty queries prompt for terms; empty result sets show a clear
+message. Catalogue includes a compact search form pointing here.
 
-Next: **Commit 3.5** — product search.
+Next: **Commit 3.6** — catalogue filters and sorting.
 
 ## Security notes
 

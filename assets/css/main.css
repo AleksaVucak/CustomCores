@@ -1112,6 +1112,62 @@ legend {
   border-top: 1px solid var(--cc-color-border);
 }
 
+/* ==========================================================================
+   10f. Catalogue search (Commit 3.5)
+   ========================================================================== */
+
+.search-page__header {
+  margin-bottom: var(--cc-space-4);
+}
+
+.search-page__intro {
+  margin: 0;
+  max-width: 40rem;
+  color: var(--cc-color-text-muted);
+}
+
+.search-form {
+  margin-bottom: var(--cc-space-5);
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: rgba(15, 122, 110, 0.04);
+}
+
+.search-form--compact {
+  margin-bottom: var(--cc-space-4);
+}
+
+.search-form__label {
+  display: block;
+  margin-bottom: var(--cc-space-2);
+  font-weight: 700;
+}
+
+.search-form__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cc-space-3);
+  align-items: stretch;
+}
+
+.search-form__input {
+  flex: 1 1 14rem;
+  min-height: 2.75rem;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-md);
+  background: var(--cc-color-bg-elevated);
+  color: var(--cc-color-text);
+  font: inherit;
+}
+
+.search-form__input:focus {
+  outline: 2px solid var(--cc-color-accent);
+  outline-offset: 2px;
+  border-color: var(--cc-color-accent);
+}
+
 .layout-split {
   display: grid;
   grid-template-columns: 1fr;

@@ -5,7 +5,8 @@
  * File responsibility:
  *   Displays all active prebuilt systems from MySQL in a responsive product grid.
  *   Optional ?category=slug limits results to one tier (used by homepage links).
- *   Full filter/sort controls arrive in Commit 3.6; search in 3.5; detail in 3.4.
+ *   Search lives on search.php (Commit 3.5). Full filter/sort controls arrive in
+ *   Commit 3.6; product detail is product.php (Commit 3.4).
  *
  * Authentication requirements:
  *   None (public).
@@ -107,6 +108,22 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </header>
 
+    <form class="search-form search-form--compact" method="get" action="<?php echo customcore_e(customcore_url('search.php')); ?>" role="search">
+        <label class="search-form__label" for="catalogue-search-q">Search the catalogue</label>
+        <div class="search-form__row">
+            <input
+                type="search"
+                id="catalogue-search-q"
+                name="q"
+                class="search-form__input"
+                placeholder="Search by name, brand, tier, or specs"
+                maxlength="100"
+                autocomplete="off"
+            >
+            <button type="submit" class="button">Search</button>
+        </div>
+    </form>
+
     <?php if ($catalogueError !== null) : ?>
         <div class="flash flash--warning" role="status">
             <?php echo customcore_e($catalogueError); ?>
@@ -145,7 +162,8 @@ require_once __DIR__ . '/includes/header.php';
             <?php endif; ?>
         </p>
         <p class="catalogue-toolbar__note">
-            Search arrives in the next catalogue step; full filters and sorting follow after that.
+            <a href="<?php echo customcore_e(customcore_url('search.php')); ?>">Open search page</a>
+            · Full filters and sorting arrive next
         </p>
     </div>
 
