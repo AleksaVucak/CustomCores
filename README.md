@@ -34,13 +34,13 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 4.5 complete** — customer profile dashboard.
+**Commit 4.6 complete** — profile editing.
 
-`profile.php` is a private account home protected by `customcore_require_login()`.
-It loads only the session user's own profile, activity counts, and recent
-activity. Shared account nav: `includes/account-nav.php`.
+`edit-profile.php` lets the logged-in user update their own name, email, phone,
+and address, and change their password (current-password check + rehash +
+session regeneration). Email uniqueness is enforced excluding self.
 
-Next: **Commit 4.6** — profile editing.
+Next: **Commit 4.7** — role-based permissions.
 
 ## Security notes
 

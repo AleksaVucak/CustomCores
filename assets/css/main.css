@@ -727,6 +727,22 @@ textarea[aria-invalid="true"]:focus-visible {
   margin-top: var(--cc-space-2);
 }
 
+.edit-section {
+  margin-bottom: var(--cc-space-5);
+  padding-bottom: var(--cc-space-5);
+  border-bottom: 1px solid var(--cc-color-border);
+}
+
+.edit-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.edit-section > h2 {
+  margin-top: 0;
+}
+
 /* ==========================================================================
    10. Cards & grids
    ========================================================================== */

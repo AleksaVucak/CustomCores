@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 4.5 complete.**  
-Profile: `profile.php` — own data only; activity counts; `includes/account-nav.php`.
+**Commit 4.6 complete.**  
+Edit profile: `edit-profile.php` — details + password change (current-password check, rehash, session regen).
 
-Next: **Commit 4.6** — profile editing.
+Next: **Commit 4.7** — role-based permissions.
