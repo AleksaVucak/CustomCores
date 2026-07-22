@@ -25,32 +25,7 @@
 
 declare(strict_types=1);
 
-/**
- * Load the non-secret application configuration array.
- *
- * @return array<string, mixed>
- */
-function customcore_app_config(): array
-{
-    static $app = null;
-
-    if ($app === null) {
-        $path = dirname(__DIR__) . '/config/app.php';
-        if (!is_readable($path)) {
-            throw new RuntimeException('Application configuration file is missing.');
-        }
-
-        /** @var array<string, mixed> $loaded */
-        $loaded = require $path;
-        $app = $loaded;
-
-        if (!empty($app['timezone']) && is_string($app['timezone'])) {
-            date_default_timezone_set($app['timezone']);
-        }
-    }
-
-    return $app;
-}
+require_once __DIR__ . '/functions.php';
 
 /**
  * Load the local database configuration array from config/database.php.
@@ -84,15 +59,6 @@ function customcore_db_config(): array
     }
 
     return $db;
-}
-
-/**
- * Whether the application is allowed to show developer-oriented error detail.
- */
-function customcore_is_debug(): bool
-{
-    $app = customcore_app_config();
-    return !empty($app['debug']);
 }
 
 /**

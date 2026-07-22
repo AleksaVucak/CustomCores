@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 1 / Commit 1.3
+**Last updated:** Stage 1 / Commit 1.4
 
 ### Status legend
 
@@ -27,7 +27,7 @@
 
 | # | Requirement | Pts | Planned evidence (page / file) | How it will be verified | Target stage | Status |
 | - | ----------- | --: | ------------------------------ | ----------------------- | ------------ | ------ |
-| 1 | Business case: at least one paragraph describing the catalogue/project (e.g. on About) | 2 | `about.php` (public paragraph); planning source `docs/business-case.md`; README summary | About page shows a clear business paragraph; matches CustomCore catalogue idea | 0.2 (docs), 3.2 (About) | Planned — docs ready; About page not built |
+| 1 | Business case: at least one paragraph describing the catalogue/project (e.g. on About) | 2 | `about.php` (public paragraph); planning source `docs/business-case.md`; README summary | About page shows a clear business paragraph; matches CustomCore catalogue idea | 0.2 (docs), 1.4/3.2 (About) | In progress — About page live with business paragraph; may be polished in Stage 3 |
 | 2 | No fewer than 20 products; each product has at least 2 options | 4 | MySQL `products` + `product_options`; seeds `database/seed-products.sql`; UI `catalogue.php`, `product.php` | SQL count ≥ 20 active products; query confirms every product has ≥ 2 options; options visible on product pages | 2.2–2.3, 3.3–3.4 | Planned |
 | 3a | At least 3 different site-wide CSS templates (distinct look/layout) | 12 | `assets/themes/rgb-gaming.css`, `assets/themes/minimal-pro.css`, `assets/themes/cyber-grid.css` | Themes differ in colour, typography, nav, buttons, cards, spacing, borders, and layout treatment | 10.1–10.3 | Planned |
 | 3b | Ability to change the template dynamically | 4 | Admin `admin/themes.php`; MySQL `themes` / `site_settings`; theme loaded in shared header include | Admin selects theme → setting saved → public and admin pages load the chosen CSS | 2.6, 10.4–10.5 | Planned |
@@ -129,12 +129,13 @@ These appear in the project instructions and package requirements. They support 
 | **1.1** | Application directories created; `docs/directory-structure.md` and root `index.php` added |
 | **1.2** | Secure config templates: `config/app.php`, `config/database.example.php`; `database.php` remains gitignored |
 | **1.3** | PDO helper `includes/database.php` + CLI `database/test-connection.php`; errors hide credentials when debug is off |
+| **1.4** | Shared `header.php`, `footer.php`, `navigation.php`, `functions.php`; `index.php` + `about.php` reuse layout |
 
 ---
 
 ## Section F — Next checklist actions
 
-1. Continue **Stage 1** — Commit **1.4** shared header, footer, and navigation includes.  
+1. Continue **Stage 1** — Commit **1.5** base responsive stylesheet.  
 2. After Stage 2 — mark #2 / B11 **Complete** only when SQL verification queries pass.  
 3. After Stage 10 — mark #3a / #3b **Complete** after theme switch test.  
 4. After Stage 16 — mark #11 **Complete** with the live URL.  
@@ -146,7 +147,8 @@ These appear in the project instructions and package requirements. They support 
 **Commit 0.6 acceptance:** ER diagram and table plan represent all major feature relationships (Stage 0 complete).  
 **Commit 1.1 acceptance:** Repository folder layout matches the documented architecture; upload/asset/config/includes locations exist without fake feature-page stubs.  
 **Commit 1.2 acceptance:** Example database config and app config exist; real `config/database.php` is gitignored and not present in the repository.  
-**Commit 1.3 acceptance:** Reusable PDO helper exists; connection failures do not expose passwords; CLI test script is not a public web probe.
+**Commit 1.3 acceptance:** Reusable PDO helper exists; connection failures do not expose passwords; CLI test script is not a public web probe.  
+**Commit 1.4 acceptance:** Multiple pages (`index.php`, `about.php`) reuse the same header, navigation, and footer includes.
 
 ### Stage 0 acceptance (all met in docs)
 
@@ -162,7 +164,7 @@ These appear in the project instructions and package requirements. They support 
 - [x] 1.1 Directory structure
 - [x] 1.2 Secure configuration templates
 - [x] 1.3 PDO database connection
-- [ ] 1.4 Shared header, footer, navigation includes
+- [x] 1.4 Shared header, footer, navigation includes
 - [ ] 1.5 Base responsive stylesheet
 - [ ] 1.6 Shared JavaScript utilities
 - [ ] 1.7 Responsive main navigation

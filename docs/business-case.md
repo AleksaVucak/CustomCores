@@ -115,4 +115,4 @@ Protected dashboard; product add/edit/disable, stock, price, and image managemen
 
 ## 10. Status
 
-**Stage 0 planning complete** through Commit 0.6. Business idea, rubric map, sitemap, wireframes, and database ER design are finalized. Application coding begins at Stage 1.
+**Stage 0 planning complete** through Commit 0.6. Business idea, rubric map, sitemap, wireframes, and database ER design are finalized. Application foundation is underway in Stage 1; the public About page now includes the business-case paragraph (`about.php`, Commit 1.4).

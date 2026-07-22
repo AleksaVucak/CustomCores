@@ -32,13 +32,11 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Stage 1 / Commit 1.3** — reusable PDO database connection helper added.
+**Stage 1 / Commit 1.4** — shared header, footer, and navigation includes added.
 
-1. Copy `config/database.example.php` to `config/database.php` and enter MySQL credentials.
-2. Test with `php database/test-connection.php` (CLI only; never prints the password).
-3. Application code should call `customcore_pdo()` from `includes/database.php`.
-
-Layout, CSS, JavaScript, navigation, and flash messages follow in Commits 1.4–1.8.
+`index.php` and `about.php` both reuse `includes/header.php`, `navigation.php`,
+and `footer.php`. Base CSS/JS files are linked now and filled in Commits 1.5–1.6;
+responsive menu behaviour is completed in Commit 1.7.
 
 ## Security notes
 

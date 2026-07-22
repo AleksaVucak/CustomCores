@@ -51,7 +51,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `database/` | Schema, seeds, create-admin script | 2.x |
 | `docs/` | Business case, rubric, sitemap, wireframes, ER design, guides | 0.x–12.x |
 | `help/` | Static Help + training HTML | 11.x |
-| `includes/` | Header, footer, nav, auth, CSRF, validation, flash | 1.4–1.8, 4.x, 14.x |
+| `includes/` | Header, footer, nav, helpers, auth, CSRF, validation, flash | 1.3–1.8, 4.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
 | `uploads/products/` | Product images uploaded by admin | 9.2 |
 
@@ -80,9 +80,8 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 1.3 complete (PDO helper).**  
-Tracked helpers: `includes/database.php`, `database/test-connection.php`.  
-Tracked config templates: `config/app.php`, `config/database.example.php`.  
-Not tracked: `config/database.php` (create locally from the example).  
+**Commit 1.4 complete (shared layout includes).**  
+Pages using the shared chrome: `index.php`, `about.php`.  
+Includes: `functions.php`, `header.php`, `navigation.php`, `footer.php` (plus existing `database.php`).  
 
-Next: Commit **1.4** — shared header, footer, and navigation includes.
+Next: Commit **1.5** — base responsive stylesheet (`assets/css/main.css`).

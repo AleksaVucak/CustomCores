@@ -1,50 +1,51 @@
 <?php
 /**
- * CustomCore — Application entry point (homepage).
+ * CustomCore — Homepage.
  *
  * File responsibility:
- *   Public homepage root. Expanded in Stage 3 with featured products from MySQL.
+ *   Public landing page. Featured products and richer hero content arrive in Stage 3.
  *
- * Stage 1.1 note:
- *   This file establishes the web root. Shared header/footer/navigation arrive
- *   in Commits 1.4–1.7; catalogue content arrives in Stage 3.
+ * Authentication requirements:
+ *   None (public).
  */
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/includes/functions.php';
+
 $pageTitle = 'CustomCore — Custom Gaming PC Store & Builder';
+$pageDescription = 'Browse configurable gaming PCs and build a compatible custom system with CustomCore.';
+$pageKeywords = 'CustomCore, gaming PC, custom PC builder, prebuilt gaming computer';
+$currentPage = 'home';
+
+require_once __DIR__ . '/includes/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="CustomCore is a custom gaming PC store and PC-building platform with configurable prebuilts and a guided builder.">
-    <title><?php echo htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8'); ?></title>
-</head>
-<body>
-    <a href="#main-content">Skip to content</a>
 
-    <header>
-        <p><strong>CustomCore</strong></p>
-        <!-- Shared navigation include arrives in Commit 1.4 / 1.7 -->
-    </header>
+<section class="hero">
+    <h1>CustomCore</h1>
+    <p class="hero__support">
+        Custom gaming PC store and guided PC builder — clear options, live pricing,
+        and compatibility feedback for students, gamers, and creators.
+    </p>
+    <p class="hero__actions">
+        <a class="button" href="<?php echo customcore_e(customcore_url('catalogue.php')); ?>">Shop prebuilts</a>
+        <a class="button button--secondary" href="<?php echo customcore_e(customcore_url('builder.php')); ?>">Start PC Builder</a>
+    </p>
+</section>
 
-    <main id="main-content">
-        <h1>CustomCore</h1>
-        <p>
-            Custom gaming PC store and guided PC builder. The shared site foundation
-            (layout, styles, scripts, and database connection) is being assembled in Stage 1.
-        </p>
-        <p>
-            Planning documentation lives in the <code>docs/</code> directory.
-            Catalogue, accounts, builder, and administrator features follow in later stages.
-        </p>
-    </main>
+<section class="content-section">
+    <h2>Foundation in progress</h2>
+    <p>
+        Shared layout, navigation, and configuration are active. Catalogue data,
+        accounts, checkout, and administrator tools are added in later stages.
+    </p>
+    <p>
+        Read the
+        <a href="<?php echo customcore_e(customcore_url('about.php')); ?>">About</a>
+        page for the full business case, or browse project planning docs in the repository
+        <code>docs/</code> folder.
+    </p>
+</section>
 
-    <footer>
-        <p>&copy; <?php echo date('Y'); ?> CustomCore</p>
-        <!-- Shared footer include arrives in Commit 1.4 -->
-    </footer>
-</body>
-</html>
+<?php
+require_once __DIR__ . '/includes/footer.php';
