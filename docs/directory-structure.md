@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 2.6 complete.**  
-Theme seed: `database/seed-themes.sql` — 3 themes + `active_theme_id` setting.
+**Commit 2.7 complete.**  
+Admin setup: `database/create-admin.php` — CLI-only, bcrypt hash, no plain-text passwords in Git.
 
-Next: **Commit 2.7** — secure administrator setup process.
+Next: **Commit 2.8** — database import guide and documentation updates.

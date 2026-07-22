@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 2 / Commit 2.6 (themes and site settings seed)
+**Last updated:** Stage 2 / Commit 2.7 (secure admin setup)
 
 ### Status legend
 
@@ -140,6 +140,7 @@ These appear in the project instructions and package requirements. They support 
 | **2.4** | `database/seed-components.sql` — 10 builder categories + 60 parts with compatibility attributes |
 | **2.5** | `database/seed-compatibility.sql` — 7 active rules with JSON config; demo queries confirm compatible + incompatible cases |
 | **2.6** | `database/seed-themes.sql` — 3 themes + `active_theme_id` (default RGB Gaming); #3b now In progress |
+| **2.7** | `database/create-admin.php` — CLI-only; bcrypt hash; validates email/password; handles duplicates |
 
 ---
 
@@ -204,6 +205,6 @@ These appear in the project instructions and package requirements. They support 
 - [x] 2.4 Custom builder components (`database/seed-components.sql`)
 - [x] 2.5 Simplified compatibility rules (`database/seed-compatibility.sql`)
 - [x] 2.6 Themes and site settings (`database/seed-themes.sql`)
-- [ ] 2.7 Secure admin creation script
+- [x] 2.7 Secure admin creation script (`database/create-admin.php`)
 - [ ] 2.8 Import guide and documentation updates
 

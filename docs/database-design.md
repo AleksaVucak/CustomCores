@@ -488,4 +488,4 @@ Results: **compatible** / **warning** / **incompatible**, with explanations. Ser
 
 ## 10. Status
 
-**Commit 2.6 complete.** Theme seed `database/seed-themes.sql` inserts 3 themes and default `site_settings` (`active_theme_id` → RGB Gaming). Next: **Commit 2.7** — secure administrator setup (hashed password, not plain text in Git).
+**Commit 2.7 complete.** Admin setup script `database/create-admin.php` creates admin users with bcrypt-hashed passwords via CLI prompts. No plain-text passwords in Git. Next: **Commit 2.8** — import guide and documentation updates.

@@ -43,3 +43,15 @@ php database/test-connection.php
 Expected success output includes `CustomCore database connection: OK` and does **not** print the password.
 
 The reusable helper used by the website is `includes/database.php` (`customcore_pdo()`).
+
+## Create an admin account (Commit 2.7)
+
+After the database schema and config are in place:
+
+```bash
+php database/create-admin.php
+```
+
+The script prompts interactively for email, name, and password. The password is
+hashed with `password_hash()` (bcrypt) and stored securely — no plain-text
+password appears in Git or in seed files. Run this once per environment.

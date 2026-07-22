@@ -33,13 +33,14 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 2.6 complete** — themes and site settings seeded.
+**Commit 2.7 complete** — secure admin creation script added.
 
-`database/seed-themes.sql` adds the three switchable templates (RGB Gaming,
-Minimal Professional, Cyber Grid) plus `site_settings` with `active_theme_id`
-defaulting to RGB Gaming (matches `config/app.php`).
+`database/create-admin.php` is a CLI-only interactive script that creates an
+admin user with a bcrypt-hashed password. No plain-text passwords are stored
+in Git. The script validates the email, enforces minimum password length,
+confirms the password, and handles duplicate accounts gracefully.
 
-Next: **Commit 2.7** — secure administrator setup process.
+Next: **Commit 2.8** — database import guide and documentation updates.
 
 ## Security notes
 
