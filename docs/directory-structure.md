@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 2.2 complete.**  
-Catalogue seed: `database/seed-products.sql` — 4 categories + 20 active products.
+**Commit 2.3 complete.**  
+Option seed: `database/seed-product-options.sql` — ≥ 2 options on every product (323 total).
 
-Next: **Commit 2.3** — product options for every PC.
+Next: **Commit 2.4** — custom builder component seed data.

@@ -33,13 +33,13 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 2.2 complete** — twenty configurable PC products seeded.
+**Commit 2.3 complete** — product options seeded for every catalogue PC.
 
-`database/seed-products.sql` adds four catalogue tiers (Budget, Esports,
-High-Performance, Creator) and **20** active prebuilt systems (5 per tier)
-with fixed IDs for later option seeds.
+`database/seed-product-options.sql` adds **323** active options across all 20
+products (14–19 each). Groups include RAM, Storage, Colour, Warranty, plus OS,
+Cooling, and GPU upgrades by tier. Every product has ≥ 2 options (rubric #2).
 
-Next: **Commit 2.3** — product options for every PC (≥ 2 options each).
+Next: **Commit 2.4** — custom builder component seed data.
 
 ## Security notes
 

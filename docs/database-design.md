@@ -488,4 +488,4 @@ Results: **compatible** / **warning** / **incompatible**, with explanations. Ser
 
 ## 10. Status
 
-**Commit 2.2 complete.** Catalogue seed `database/seed-products.sql` inserts 4 tiers and 20 active products (5 per tier, fixed IDs 1–20). Next: **Commit 2.3** — product options (≥ 2 active options per product).
+**Commit 2.3 complete.** Option seed `database/seed-product-options.sql` adds ≥ 2 active options for every product (323 rows; 4–7 option groups each). Next: **Commit 2.4** — custom builder component seeds.
