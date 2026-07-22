@@ -488,4 +488,4 @@ Results: **compatible** / **warning** / **incompatible**, with explanations. Ser
 
 ## 10. Status
 
-**Commit 0.6 complete (documentation).** Stage 0 planning is complete. Next: **Stage 1** shared foundation (directories, config templates, PDO, layout, CSS/JS, navigation, flash messages)—still no full schema SQL until Stage 2.
+**Commit 2.1 complete.** `database/schema.sql` implements all 21 tables defined above with primary keys, foreign keys, indexes, constraints, and comments. Next: **Commit 2.2–2.3** — product and option seed data.

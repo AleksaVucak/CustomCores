@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 1 / Commit 1.8 (Stage 1 complete)
+**Last updated:** Stage 2 / Commit 2.1 (MySQL schema)
 
 ### Status legend
 
@@ -32,7 +32,7 @@
 | 3a | At least 3 different site-wide CSS templates (distinct look/layout) | 12 | `assets/themes/rgb-gaming.css`, `assets/themes/minimal-pro.css`, `assets/themes/cyber-grid.css` | Themes differ in colour, typography, nav, buttons, cards, spacing, borders, and layout treatment | 10.1–10.3 | Planned |
 | 3b | Ability to change the template dynamically | 4 | Admin `admin/themes.php`; MySQL `themes` / `site_settings`; theme loaded in shared header include | Admin selects theme → setting saved → public and admin pages load the chosen CSS | 2.6, 10.4–10.5 | Planned |
 | 4 | Dynamic HTML forms on at least two pages (e.g. quote/calculator style) | 8 | Primary: `builder.php` (live price + options); `checkout.php` (validated order form). Extra safety: `register.php`, `consultation.php`, `contact.php` | Forms submit to PHP; builder prices recalculate; checkout creates order records without real payment data | 5.x, 6.4–6.5, 4.1, 7.x | Planned |
-| 5 | PHP code and MySQL database well documented | 20 | PHP file/function comments; `database/schema.sql` comments; `docs/database-design.md` (+ ER diagram); install notes in `docs/installation-guide.md` | Another developer can understand schema relationships and major PHP modules from comments + docs | 2.8, 12.4, 14.6–14.7 | Planned — ER/table design documented (0.6); schema.sql not built yet |
+| 5 | PHP code and MySQL database well documented | 20 | PHP file/function comments; `database/schema.sql` comments; `docs/database-design.md` (+ ER diagram); install notes in `docs/installation-guide.md` | Another developer can understand schema relationships and major PHP modules from comments + docs | 2.8, 12.4, 14.6–14.7 | In progress — ER/table design documented (0.6); schema.sql created with full comments (2.1) |
 | 6 | All code properly commented (HTML, CSS, JS, and related sources) | 8 | Structured comments in HTML/PHP views, `assets/css/*`, `assets/js/*`, SQL seeds | Major sections documented; comments explain purpose, not obvious syntax | 14.6–14.7 | Planned |
 | 7 | Help wiki: at least 5 different pages; context-sensitive Help links from the site | 10 | Static Help: `help/index.html`, `help/accounts.html`, `help/catalogue.html`, `help/pc-builder.html`, `help/orders.html`, `help/support.html` (6 pages; 5 required + hub). Context links from profile, catalogue, builder, checkout, consultation pages | Each Help article opens as its own page; feature pages link to the matching article (not only one generic Help link) | 11.1–11.7 | Planned |
 | 9 | Site has a main menu that is responsive across screen sizes | 4 | `includes/navigation.php` + responsive rules in `assets/css/main.css` / themes; behaviour in `assets/js/main.js`; layout contract in `docs/wireframes.md` | Desktop and mobile layouts usable; keyboard/touch menu works | 1.5, 1.7 | Complete — desktop horizontal nav; mobile toggle, Escape, focus trap |
@@ -134,12 +134,13 @@ These appear in the project instructions and package requirements. They support 
 | **1.6** | Shared `assets/js/main.js` utilities (`CustomCore` helpers); #10c complete |
 | **1.7** | Responsive nav toggle (open/close, Escape, focus trap, resize reset); #9 complete |
 | **1.8** | Flash system (`includes/flash.php`) with success/warning/error; one-redirect lifetime; Stage 1 complete |
+| **2.1** | `database/schema.sql` — all 21 InnoDB tables with PKs, FKs, indexes, constraints, and comments; #5 now In progress |
 
 ---
 
 ## Section F — Next checklist actions
 
-1. Begin **Stage 2** — Commit **2.1** MySQL database schema.  
+1. ~~Begin Stage 2 — Commit 2.1 MySQL database schema.~~ Done.  
 2. After Stage 2 — mark #2 / B11 **Complete** only when SQL verification queries pass.  
 3. After Stage 10 — mark #3a / #3b **Complete** after theme switch test.  
 4. After Stage 16 — mark #11 **Complete** with the live URL.  
@@ -187,4 +188,13 @@ These appear in the project instructions and package requirements. They support 
 - [x] 1.6 Shared JavaScript utilities
 - [x] 1.7 Responsive main navigation
 - [x] 1.8 Flash message system
+
+### Stage 2 progress
+
+- [x] 2.1 MySQL database schema (`database/schema.sql`)
+- [ ] 2.2–2.3 Product and option seed data
+- [ ] 2.4–2.5 Component and compatibility seed data
+- [ ] 2.6 Theme and settings seeds
+- [ ] 2.7 Secure admin creation script
+- [ ] 2.8 Import guide and documentation updates
 

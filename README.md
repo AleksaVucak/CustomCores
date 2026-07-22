@@ -33,12 +33,13 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Stage 1 complete (Commit 1.8)** — reusable flash message system added.
+**Commit 2.1 complete** — full MySQL database schema added.
 
-Shared foundation is ready: directories, secure config templates, PDO helper, layout
-includes, responsive CSS/JS navigation, and one-redirect flash messages.
+`database/schema.sql` defines all 21 InnoDB tables (utf8mb4) with primary keys,
+foreign keys, indexes, and constraints. Implements the design documented in
+`docs/database-design.md`.
 
-Next: **Stage 2** — MySQL schema and catalogue seed data.
+Next: **Commit 2.2–2.3** — catalogue product and option seed data.
 
 ## Security notes
 

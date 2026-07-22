@@ -80,8 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Stage 1 complete (Commit 1.8).**  
-Flash helpers: `includes/flash.php` (rendered from `includes/header.php`).  
-Usage notes: `docs/flash-messages.md`.  
+**Commit 2.1 complete.**  
+Database schema: `database/schema.sql` — 21 InnoDB tables with foreign keys, indexes, and constraints.
 
-Next: **Stage 2 / Commit 2.1** — MySQL database schema (`database/schema.sql`).
+Next: **Commit 2.2–2.3** — product and option seed data.
