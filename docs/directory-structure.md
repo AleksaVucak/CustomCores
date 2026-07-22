@@ -80,8 +80,8 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 1.7 complete (responsive navigation).**  
-Mobile: Menu/Close toggle, Escape to dismiss, focus trap while open.  
-Desktop: horizontal nav unchanged. Without JS, links stay visible (progressive enhancement).  
+**Stage 1 complete (Commit 1.8).**  
+Flash helpers: `includes/flash.php` (rendered from `includes/header.php`).  
+Usage notes: `docs/flash-messages.md`.  
 
-Next: Commit **1.8** — reusable flash message system.
+Next: **Stage 2 / Commit 2.1** — MySQL database schema (`database/schema.sql`).

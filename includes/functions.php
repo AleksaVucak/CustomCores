@@ -59,6 +59,57 @@ function customcore_e($value): string
 }
 
 /**
+ * Start the PHP session once with the configured session name.
+ *
+ * Security notes:
+ *   - Uses a custom session name to reduce collisions on shared hosts.
+ *   - Cookie flags favour HTTP-only cookies; Secure is enabled under HTTPS.
+ */
+function customcore_session_start(): void
+{
+    if (session_status() === PHP_SESSION_ACTIVE) {
+        return;
+    }
+
+    $app = customcore_app_config();
+    $sessionName = (string) ($app['session_name'] ?? 'CUSTOMCORESESSID');
+
+    if ($sessionName !== '') {
+        session_name($sessionName);
+    }
+
+    $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        || ((isset($_SERVER['SERVER_PORT']) && (int) $_SERVER['SERVER_PORT'] === 443));
+
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path' => '/',
+        'secure' => $secure,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+
+    session_start();
+}
+
+/**
+ * Redirect to a project-root path and stop script execution.
+ *
+ * @param string $path Path relative to the project root (e.g. "login.php").
+ * @param int $statusCode HTTP status code (303 recommended after POST).
+ */
+function customcore_redirect(string $path, int $statusCode = 303): void
+{
+    $target = customcore_url($path);
+
+    if (!headers_sent()) {
+        header('Location: ' . $target, true, $statusCode);
+    }
+
+    exit;
+}
+
+/**
  * How many directory levels below the project root the current script lives in.
  *
  * Examples: index.php => 0, admin/products.php => 1.

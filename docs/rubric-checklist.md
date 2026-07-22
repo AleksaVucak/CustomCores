@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 1 / Commit 1.7
+**Last updated:** Stage 1 / Commit 1.8 (Stage 1 complete)
 
 ### Status legend
 
@@ -133,12 +133,13 @@ These appear in the project instructions and package requirements. They support 
 | **1.5** | Base responsive `assets/css/main.css` (variables, nav, forms, cards, grids, breakpoints); #10b complete |
 | **1.6** | Shared `assets/js/main.js` utilities (`CustomCore` helpers); #10c complete |
 | **1.7** | Responsive nav toggle (open/close, Escape, focus trap, resize reset); #9 complete |
+| **1.8** | Flash system (`includes/flash.php`) with success/warning/error; one-redirect lifetime; Stage 1 complete |
 
 ---
 
 ## Section F — Next checklist actions
 
-1. Continue **Stage 1** — Commit **1.8** reusable flash message system.  
+1. Begin **Stage 2** — Commit **2.1** MySQL database schema.  
 2. After Stage 2 — mark #2 / B11 **Complete** only when SQL verification queries pass.  
 3. After Stage 10 — mark #3a / #3b **Complete** after theme switch test.  
 4. After Stage 16 — mark #11 **Complete** with the live URL.  
@@ -154,7 +155,18 @@ These appear in the project instructions and package requirements. They support 
 **Commit 1.4 acceptance:** Multiple pages (`index.php`, `about.php`) reuse the same header, navigation, and footer includes.  
 **Commit 1.5 acceptance:** External `main.css` provides variables, layout, nav, forms, cards, and desktop/mobile breakpoints.  
 **Commit 1.6 acceptance:** External `main.js` loads shared utilities without requiring page-specific DOM nodes.  
-**Commit 1.7 acceptance:** Mobile menu toggle is keyboard and touch usable; desktop layout remains a horizontal menu.
+**Commit 1.7 acceptance:** Mobile menu toggle is keyboard and touch usable; desktop layout remains a horizontal menu.  
+**Commit 1.8 acceptance:** Flash messages support success/warning/error, survive one redirect, then clear.
+
+### Stage 1 acceptance
+
+- [x] Shared header and footer load correctly
+- [x] Main menu works on desktop and mobile
+- [x] CSS and JavaScript are external
+- [x] Database connection helper exists (test with local `config/database.php`)
+- [x] Flash messages survive one redirect and clear
+- [x] No intentional PHP warnings in normal layout use
+
 
 ### Stage 0 acceptance (all met in docs)
 
@@ -174,5 +186,5 @@ These appear in the project instructions and package requirements. They support 
 - [x] 1.5 Base responsive stylesheet
 - [x] 1.6 Shared JavaScript utilities
 - [x] 1.7 Responsive main navigation
-- [ ] 1.8 Flash message system
+- [x] 1.8 Flash message system
 

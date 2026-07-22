@@ -610,6 +610,18 @@ table.data-table {
   background: var(--cc-color-bg-elevated);
 }
 
+.flash-stack {
+  display: grid;
+  gap: var(--cc-space-3);
+  width: min(100% - 2rem, var(--cc-width-max));
+  margin: var(--cc-space-4) auto 0;
+}
+
+.flash-stack .flash {
+  width: 100%;
+  margin: 0;
+}
+
 .flash--success {
   border-color: #8fcea6;
   background: #eaf7ef;

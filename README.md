@@ -29,12 +29,16 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 - [Desktop and mobile wireframes](docs/wireframes.md)
 - [Database entity-relationship design](docs/database-design.md)
 - [Application directory structure](docs/directory-structure.md)
+- [Flash message usage](docs/flash-messages.md)
 
 ## Current status
 
-**Stage 1 / Commit 1.7** — responsive main navigation toggle completed.
+**Stage 1 complete (Commit 1.8)** — reusable flash message system added.
 
-Flash message system follows in Commit 1.8 (final Stage 1 commit).
+Shared foundation is ready: directories, secure config templates, PDO helper, layout
+includes, responsive CSS/JS navigation, and one-redirect flash messages.
+
+Next: **Stage 2** — MySQL schema and catalogue seed data.
 
 ## Security notes
 

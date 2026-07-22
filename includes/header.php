@@ -23,6 +23,9 @@ if (!function_exists('customcore_e')) {
     require_once __DIR__ . '/functions.php';
 }
 
+require_once __DIR__ . '/flash.php';
+customcore_flash_bootstrap();
+
 $app = customcore_app_config();
 $siteName = (string) ($app['name'] ?? 'CustomCore');
 $defaultDescription = (string) ($app['tagline'] ?? 'Custom gaming PC store and guided PC builder');
@@ -68,6 +71,6 @@ if (!isset($currentPage) || !is_string($currentPage)) {
         </div>
     </header>
 
-    <!-- Flash messages are rendered here starting in Commit 1.8 -->
+    <?php customcore_flash_render(); ?>
 
     <main id="main-content" class="site-main" tabindex="-1">
