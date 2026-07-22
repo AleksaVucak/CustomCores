@@ -20,9 +20,11 @@ if (!function_exists('customcore_url')) {
 require_once __DIR__ . '/auth.php';
 
 $navLoggedIn = customcore_is_logged_in();
+$navIsAdmin = customcore_is_admin();
 $navUserName = customcore_current_user_name();
 $navHasProfile = is_file(dirname(__DIR__) . '/profile.php');
 $navHasLogout = is_file(dirname(__DIR__) . '/logout.php');
+$navHasAdmin = is_file(dirname(__DIR__) . '/admin/index.php');
 
 $navItems = [
     'home' => ['label' => 'Home', 'href' => 'index.php'],
@@ -63,6 +65,14 @@ $navItems = [
 
     <ul class="site-nav__account">
         <?php if ($navLoggedIn) : ?>
+            <?php if ($navIsAdmin && $navHasAdmin) : ?>
+                <li>
+                    <a
+                        class="site-nav__link site-nav__link--admin<?php echo customcore_e(customcore_nav_class('admin')); ?>"
+                        href="<?php echo customcore_e(customcore_url('admin/index.php')); ?>"
+                    >Admin</a>
+                </li>
+            <?php endif; ?>
             <li>
                 <?php if ($navHasProfile) : ?>
                     <a

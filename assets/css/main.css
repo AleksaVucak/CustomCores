@@ -296,6 +296,10 @@ code {
   color: var(--cc-color-text-muted);
 }
 
+.site-nav__link--admin {
+  color: var(--cc-color-accent);
+}
+
 /* ==========================================================================
    7. Typography & content
    ========================================================================== */
@@ -741,6 +745,30 @@ textarea[aria-invalid="true"]:focus-visible {
 
 .edit-section > h2 {
   margin-top: 0;
+}
+
+/* ---- Admin area (Commit 4.7 landing; expanded in Stage 9) ---------------- */
+
+.admin-page__header {
+  margin-bottom: var(--cc-space-4);
+}
+
+.admin-page__intro {
+  color: var(--cc-color-text-muted);
+}
+
+.admin-page__section {
+  margin: var(--cc-space-5) 0;
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+}
+
+.admin-page__note {
+  margin-bottom: 0;
+  color: var(--cc-color-text-muted);
+  font-size: 0.95rem;
 }
 
 /* ==========================================================================

@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 4.6 complete.**  
-Edit profile: `edit-profile.php` — details + password change (current-password check, rehash, session regen).
+**Commit 4.7 complete.**  
+Roles: `includes/admin-auth.php` (`customcore_require_admin()`) + protected `admin/index.php`; admin-only nav link.
 
-Next: **Commit 4.7** — role-based permissions.
+Next: **Commit 4.8** — strengthen session security.

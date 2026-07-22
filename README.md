@@ -34,13 +34,14 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 4.6 complete** — profile editing.
+**Commit 4.7 complete** — role-based permissions.
 
-`edit-profile.php` lets the logged-in user update their own name, email, phone,
-and address, and change their password (current-password check + rehash +
-session regeneration). Email uniqueness is enforced excluding self.
+`includes/admin-auth.php` adds `customcore_require_admin()`. `admin/index.php`
+is a protected admin landing: guests go to login, customers are redirected away
+with a permission error, and only admins get in. An Admin nav link shows for
+admins only.
 
-Next: **Commit 4.7** — role-based permissions.
+Next: **Commit 4.8** — strengthen session security.
 
 ## Security notes
 

@@ -156,6 +156,7 @@ These appear in the project instructions and package requirements. They support 
 | **4.4** | Auth middleware — `customcore_require_login()` (guest redirect + return-to), `customcore_require_guest()`, `customcore_is_safe_local_path()` |
 | **4.5** | `profile.php` — private dashboard; own profile + activity counts/recent activity only; `includes/account-nav.php` |
 | **4.6** | `edit-profile.php` — name/email/phone/address + password change; CSRF; email-unique (self-excluded); rehash + session regen |
+| **4.7** | `includes/admin-auth.php` (`customcore_require_admin()`); protected `admin/index.php`; admins-only Admin nav link; customers redirected from admin URLs |
 
 ---
 
@@ -181,7 +182,8 @@ These appear in the project instructions and package requirements. They support 
    - [x] 4.4 Protect private customer routes  
    - [x] 4.5 Customer profile dashboard  
    - [x] 4.6 Profile editing  
-   - [ ] 4.7–4.8 Roles, session hardening  
+   - [x] 4.7 Role-based permissions  
+   - [ ] 4.8 Session hardening  
 7. After Stage 10 — mark #3a / #3b **Complete** after theme switch test.
 8. After Stage 16 — mark #11 **Complete** with the live URL.  
 9. Stage 15.8 — final audit: every Section A row must be **Complete** with tested evidence.
@@ -268,6 +270,7 @@ These appear in the project instructions and package requirements. They support 
 - [x] 4.4 Protect private customer routes (`customcore_require_login()` / `require_guest()`)
 - [x] 4.5 Customer profile dashboard (`profile.php` + `includes/account-nav.php`)
 - [x] 4.6 Profile editing (`edit-profile.php` — details + password change)
+- [x] 4.7 Role-based permissions (`includes/admin-auth.php` + protected `admin/index.php`)
 - [ ] 4.3 Secure logout
 - [ ] 4.4 Protect private customer routes
 - [ ] 4.5 Customer profile dashboard
