@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 1.5 complete (base CSS).**  
-Stylesheet: `assets/css/main.css` (linked from `includes/header.php`).  
+**Commit 1.6 complete (shared JavaScript).**  
+Script: `assets/js/main.js` (linked from `includes/footer.php` with `defer`).  
 
-Next: Commit **1.6** — shared JavaScript utilities (`assets/js/main.js`).
+Next: Commit **1.7** — responsive main navigation (mobile toggle, keyboard support).

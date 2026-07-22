@@ -32,10 +32,9 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Stage 1 / Commit 1.5** — base responsive stylesheet added (`assets/css/main.css`).
+**Stage 1 / Commit 1.6** — shared JavaScript utilities added (`assets/js/main.js`).
 
-Shared JavaScript utilities follow in Commit 1.6; responsive menu toggle behaviour
-is completed in Commit 1.7; flash messages in Commit 1.8.
+Responsive menu toggle behaviour follows in Commit 1.7; flash messages in Commit 1.8.
 
 ## Security notes
 
