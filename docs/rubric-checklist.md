@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 2 / Commit 2.4 (builder components seed)
+**Last updated:** Stage 2 / Commit 2.5 (compatibility rules seed)
 
 ### Status legend
 
@@ -138,6 +138,7 @@ These appear in the project instructions and package requirements. They support 
 | **2.2** | `database/seed-products.sql` — 4 tiers + 20 active products (5 each); #2 / B11 now In progress |
 | **2.3** | `database/seed-product-options.sql` — 323 options; every product has ≥ 2 (typically 14–19); verification query ready |
 | **2.4** | `database/seed-components.sql` — 10 builder categories + 60 parts with compatibility attributes |
+| **2.5** | `database/seed-compatibility.sql` — 7 active rules with JSON config; demo queries confirm compatible + incompatible cases |
 
 ---
 
@@ -200,7 +201,7 @@ These appear in the project instructions and package requirements. They support 
 - [x] 2.2 Twenty configurable PC products (`database/seed-products.sql`)
 - [x] 2.3 Product options for every PC (`database/seed-product-options.sql`)
 - [x] 2.4 Custom builder components (`database/seed-components.sql`)
-- [ ] 2.5 Simplified compatibility seed data
+- [x] 2.5 Simplified compatibility rules (`database/seed-compatibility.sql`)
 - [ ] 2.6 Theme and settings seeds
 - [ ] 2.7 Secure admin creation script
 - [ ] 2.8 Import guide and documentation updates

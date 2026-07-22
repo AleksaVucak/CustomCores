@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 2.4 complete.**  
-Builder seed: `database/seed-components.sql` — 10 categories + 60 components.
+**Commit 2.5 complete.**  
+Compatibility seed: `database/seed-compatibility.sql` — 7 active rules with JSON config.
 
-Next: **Commit 2.5** — simplified compatibility rule seed data.
+Next: **Commit 2.6** — theme and site-settings seed data.

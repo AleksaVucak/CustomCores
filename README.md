@@ -33,13 +33,13 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 2.4 complete** — custom builder components seeded.
+**Commit 2.5 complete** — simplified compatibility rules seeded.
 
-`database/seed-components.sql` adds **10** builder categories (CPU through
-Service) and **60** parts with socket, RAM type, form factor, wattage, GPU/
-cooler clearance, and storage attributes ready for compatibility checks.
+`database/seed-compatibility.sql` adds the **7** builder compatibility rules
+(socket, RAM type, form factor, PSU wattage, GPU clearance, cooler fit,
+storage interface) with JSON config for the Stage 5 checker.
 
-Next: **Commit 2.5** — simplified compatibility rule seed data.
+Next: **Commit 2.6** — theme and site-settings seed data.
 
 ## Security notes
 

@@ -488,4 +488,4 @@ Results: **compatible** / **warning** / **incompatible**, with explanations. Ser
 
 ## 10. Status
 
-**Commit 2.4 complete.** Builder seed `database/seed-components.sql` inserts 10 categories and 60 components with consistent compatibility attributes. Next: **Commit 2.5** — simplified compatibility rule metadata.
+**Commit 2.5 complete.** Compatibility seed `database/seed-compatibility.sql` inserts 7 active rules matching the design contract (socket, RAM type, form factor, PSU wattage, GPU clearance, cooler fit, storage interface). Next: **Commit 2.6** — theme and site-settings seeds.
