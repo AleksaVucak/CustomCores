@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 2.1 complete.**  
-Database schema: `database/schema.sql` — 21 InnoDB tables with foreign keys, indexes, and constraints.
+**Commit 2.2 complete.**  
+Catalogue seed: `database/seed-products.sql` — 4 categories + 20 active products.
 
-Next: **Commit 2.2–2.3** — product and option seed data.
+Next: **Commit 2.3** — product options for every PC.

@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 2 / Commit 2.1 (MySQL schema)
+**Last updated:** Stage 2 / Commit 2.2 (product seed data)
 
 ### Status legend
 
@@ -28,7 +28,7 @@
 | # | Requirement | Pts | Planned evidence (page / file) | How it will be verified | Target stage | Status |
 | - | ----------- | --: | ------------------------------ | ----------------------- | ------------ | ------ |
 | 1 | Business case: at least one paragraph describing the catalogue/project (e.g. on About) | 2 | `about.php` (public paragraph); planning source `docs/business-case.md`; README summary | About page shows a clear business paragraph; matches CustomCore catalogue idea | 0.2 (docs), 1.4/3.2 (About) | In progress — About page live with business paragraph; may be polished in Stage 3 |
-| 2 | No fewer than 20 products; each product has at least 2 options | 4 | MySQL `products` + `product_options`; seeds `database/seed-products.sql`; UI `catalogue.php`, `product.php` | SQL count ≥ 20 active products; query confirms every product has ≥ 2 options; options visible on product pages | 2.2–2.3, 3.3–3.4 | Planned |
+| 2 | No fewer than 20 products; each product has at least 2 options | 4 | MySQL `products` + `product_options`; seeds `database/seed-products.sql`; UI `catalogue.php`, `product.php` | SQL count ≥ 20 active products; query confirms every product has ≥ 2 options; options visible on product pages | 2.2–2.3, 3.3–3.4 | In progress — 20 active products seeded (2.2); options arrive in 2.3 |
 | 3a | At least 3 different site-wide CSS templates (distinct look/layout) | 12 | `assets/themes/rgb-gaming.css`, `assets/themes/minimal-pro.css`, `assets/themes/cyber-grid.css` | Themes differ in colour, typography, nav, buttons, cards, spacing, borders, and layout treatment | 10.1–10.3 | Planned |
 | 3b | Ability to change the template dynamically | 4 | Admin `admin/themes.php`; MySQL `themes` / `site_settings`; theme loaded in shared header include | Admin selects theme → setting saved → public and admin pages load the chosen CSS | 2.6, 10.4–10.5 | Planned |
 | 4 | Dynamic HTML forms on at least two pages (e.g. quote/calculator style) | 8 | Primary: `builder.php` (live price + options); `checkout.php` (validated order form). Extra safety: `register.php`, `consultation.php`, `contact.php` | Forms submit to PHP; builder prices recalculate; checkout creates order records without real payment data | 5.x, 6.4–6.5, 4.1, 7.x | Planned |
@@ -68,7 +68,7 @@ These appear in the project instructions and package requirements. They support 
 | B8 | Admin: user account administration (e.g. disable accounts) | `admin/users.php`, `admin/user-edit.php` | 9.6 | Planned |
 | B9 | Admin user documentation | `docs/administrator-guide.md` | 12.2 | Planned |
 | B10 | Backend monitoring page (online / warning / offline for site and feature services) | `admin/monitoring.php` + health checks | 13.x | Planned |
-| B11 | Database with at least 20 records | Seeded `products` (and related tables) | 2.x | Planned |
+| B11 | Database with at least 20 records | Seeded `products` (and related tables) | 2.x | In progress — 20 products seeded (2.2); options/components still pending |
 | B12 | PHP functionality for dynamic pages | All catalogue/account/admin PHP | 3–9 | Planned |
 | B13 | Software repository (e.g. GitHub) with code history | GitHub remote on `main`; meaningful commits | 0.1 ongoing | In progress |
 | B14 | Installation documentation for another server | `docs/installation-guide.md`, deployment/troubleshooting docs | 12.4–12.5, 16.x | Planned |
@@ -135,16 +135,18 @@ These appear in the project instructions and package requirements. They support 
 | **1.7** | Responsive nav toggle (open/close, Escape, focus trap, resize reset); #9 complete |
 | **1.8** | Flash system (`includes/flash.php`) with success/warning/error; one-redirect lifetime; Stage 1 complete |
 | **2.1** | `database/schema.sql` — all 21 InnoDB tables with PKs, FKs, indexes, constraints, and comments; #5 now In progress |
+| **2.2** | `database/seed-products.sql` — 4 tiers + 20 active products (5 each); #2 / B11 now In progress |
 
 ---
 
 ## Section F — Next checklist actions
 
 1. ~~Begin Stage 2 — Commit 2.1 MySQL database schema.~~ Done.  
-2. After Stage 2 — mark #2 / B11 **Complete** only when SQL verification queries pass.  
-3. After Stage 10 — mark #3a / #3b **Complete** after theme switch test.  
-4. After Stage 16 — mark #11 **Complete** with the live URL.  
-5. Stage 15.8 — final audit: every Section A row must be **Complete** with tested evidence.
+2. ~~Commit 2.2 — seed twenty products.~~ Done (4 tiers × 5).  
+3. After Commit **2.3** — mark #2 / B11 **Complete** only when the “&lt; 2 options” verification query returns zero rows.  
+4. After Stage 10 — mark #3a / #3b **Complete** after theme switch test.  
+5. After Stage 16 — mark #11 **Complete** with the live URL.  
+6. Stage 15.8 — final audit: every Section A row must be **Complete** with tested evidence.
 
 **Commit 0.3 acceptance:** Every rubric item in Section A has a points value, planned evidence column, verification method, target stage, and status. No graded row is left without an evidence plan.  
 **Commit 0.4 acceptance:** Sitemap documents ≥ 20 dynamic and ≥ 5 static pages with purposeful routes (48 + 7 planned).  
@@ -192,7 +194,8 @@ These appear in the project instructions and package requirements. They support 
 ### Stage 2 progress
 
 - [x] 2.1 MySQL database schema (`database/schema.sql`)
-- [ ] 2.2–2.3 Product and option seed data
+- [x] 2.2 Twenty configurable PC products (`database/seed-products.sql`)
+- [ ] 2.3 Product options for every PC
 - [ ] 2.4–2.5 Component and compatibility seed data
 - [ ] 2.6 Theme and settings seeds
 - [ ] 2.7 Secure admin creation script

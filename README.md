@@ -33,13 +33,13 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 2.1 complete** — full MySQL database schema added.
+**Commit 2.2 complete** — twenty configurable PC products seeded.
 
-`database/schema.sql` defines all 21 InnoDB tables (utf8mb4) with primary keys,
-foreign keys, indexes, and constraints. Implements the design documented in
-`docs/database-design.md`.
+`database/seed-products.sql` adds four catalogue tiers (Budget, Esports,
+High-Performance, Creator) and **20** active prebuilt systems (5 per tier)
+with fixed IDs for later option seeds.
 
-Next: **Commit 2.2–2.3** — catalogue product and option seed data.
+Next: **Commit 2.3** — product options for every PC (≥ 2 options each).
 
 ## Security notes
 

@@ -488,4 +488,4 @@ Results: **compatible** / **warning** / **incompatible**, with explanations. Ser
 
 ## 10. Status
 
-**Commit 2.1 complete.** `database/schema.sql` implements all 21 tables defined above with primary keys, foreign keys, indexes, constraints, and comments. Next: **Commit 2.2–2.3** — product and option seed data.
+**Commit 2.2 complete.** Catalogue seed `database/seed-products.sql` inserts 4 tiers and 20 active products (5 per tier, fixed IDs 1–20). Next: **Commit 2.3** — product options (≥ 2 active options per product).
