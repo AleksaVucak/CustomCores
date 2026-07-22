@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 4.4 complete.**  
-Auth middleware: `customcore_require_login()` / `customcore_require_guest()` + safe post-login return.
+**Commit 4.5 complete.**  
+Profile: `profile.php` — own data only; activity counts; `includes/account-nav.php`.
 
-Next: **Commit 4.5** — customer profile dashboard.
+Next: **Commit 4.6** — profile editing.

@@ -34,15 +34,13 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 4.4 complete** — private route protection.
+**Commit 4.5 complete** — customer profile dashboard.
 
-`includes/auth.php` now provides `customcore_require_login()` (redirects guests
-to login and remembers the intended page) and `customcore_require_guest()`
-(keeps logged-in users off the login/register forms). Post-login return uses a
-validated same-origin path (`customcore_is_safe_local_path()`), so private
-pages from Commit 4.5 onward are one line to protect.
+`profile.php` is a private account home protected by `customcore_require_login()`.
+It loads only the session user's own profile, activity counts, and recent
+activity. Shared account nav: `includes/account-nav.php`.
 
-Next: **Commit 4.5** — customer profile dashboard.
+Next: **Commit 4.6** — profile editing.
 
 ## Security notes
 

@@ -68,6 +68,16 @@ function customcore_current_user_name(): string
 }
 
 /**
+ * The current user's email, or '' when not logged in.
+ */
+function customcore_current_user_email(): string
+{
+    customcore_session_start();
+
+    return isset($_SESSION['user_email']) ? (string) $_SESSION['user_email'] : '';
+}
+
+/**
  * Whether the current user holds the admin role.
  */
 function customcore_is_admin(): bool

@@ -569,6 +569,164 @@ textarea[aria-invalid="true"]:focus-visible {
   color: var(--cc-color-text-muted);
 }
 
+/* ---- Account / profile dashboard (Commit 4.5) --------------------------- */
+
+.layout-split--account {
+  gap: var(--cc-space-5);
+}
+
+.profile-page__header {
+  margin-bottom: var(--cc-space-4);
+}
+
+.account-nav {
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+}
+
+.account-nav__label {
+  margin: 0 0 var(--cc-space-3);
+  font-family: var(--cc-font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.account-nav__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--cc-space-1);
+}
+
+.account-nav__link {
+  display: block;
+  padding: 0.55rem 0.7rem;
+  border-radius: var(--cc-radius-md);
+  color: var(--cc-color-text);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.account-nav__link:hover,
+.account-nav__link:focus-visible {
+  background: var(--cc-color-accent-soft);
+  color: var(--cc-color-accent-hover);
+  text-decoration: none;
+}
+
+.account-nav__link.is-active,
+.account-nav__link[aria-current="page"] {
+  background: var(--cc-color-accent-soft);
+  color: var(--cc-color-accent);
+}
+
+.profile-welcome {
+  margin-bottom: var(--cc-space-5);
+}
+
+.profile-welcome__hello {
+  margin: 0 0 var(--cc-space-2);
+  font-family: var(--cc-font-display);
+  font-size: clamp(1.4rem, 2vw, 1.85rem);
+}
+
+.profile-welcome__meta {
+  margin: 0;
+  color: var(--cc-color-text-muted);
+}
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+  gap: var(--cc-space-3);
+  margin-bottom: var(--cc-space-5);
+}
+
+.profile-stat {
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+  text-align: center;
+}
+
+.profile-stat__value {
+  margin: 0;
+  font-family: var(--cc-font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--cc-color-accent);
+}
+
+.profile-stat__label {
+  margin: var(--cc-space-1) 0 0;
+  font-size: 0.9rem;
+  color: var(--cc-color-text-muted);
+}
+
+.profile-details,
+.profile-activity {
+  margin-bottom: var(--cc-space-5);
+}
+
+.profile-details__list {
+  display: grid;
+  gap: var(--cc-space-3);
+  margin: var(--cc-space-3) 0 0;
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+}
+
+.profile-details__list > div {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.profile-details__list dt {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--cc-color-text-muted);
+}
+
+.profile-details__list dd {
+  margin: 0;
+}
+
+.profile-activity__list {
+  list-style: none;
+  margin: var(--cc-space-3) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--cc-space-3);
+}
+
+.profile-activity__item {
+  padding: var(--cc-space-3) var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-md);
+  background: var(--cc-color-bg-elevated);
+}
+
+.profile-activity__label {
+  margin: 0 0 var(--cc-space-1);
+  font-weight: 600;
+}
+
+.profile-activity__detail {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--cc-color-text-muted);
+}
+
+.profile-page__actions {
+  margin-top: var(--cc-space-2);
+}
+
 /* ==========================================================================
    10. Cards & grids
    ========================================================================== */
@@ -1760,6 +1918,10 @@ table.data-table {
 
   .layout-split--catalogue {
     grid-template-columns: 16rem 1fr;
+  }
+
+  .layout-split--account {
+    grid-template-columns: 14rem 1fr;
   }
 
   .compare-picker__list {
