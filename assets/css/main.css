@@ -555,6 +555,184 @@ legend {
   font-size: 1.15rem;
 }
 
+/* ==========================================================================
+   10b. Homepage sections (Commit 3.1)
+   ========================================================================== */
+
+.hero--home {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 80% 60% at 100% 0%, rgba(15, 122, 110, 0.18), transparent 55%),
+    linear-gradient(135deg, rgba(15, 122, 110, 0.08), transparent 50%),
+    linear-gradient(180deg, #ffffff, #f0f5f7);
+}
+
+.hero__brand {
+  margin: 0 0 var(--cc-space-2);
+  font-family: var(--cc-font-display);
+  font-size: clamp(1.75rem, 4vw, 2.35rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--cc-color-accent);
+}
+
+.hero--home h1 {
+  max-width: 18ch;
+}
+
+.section-heading {
+  margin-bottom: var(--cc-space-4);
+}
+
+.section-heading h2 {
+  margin-bottom: var(--cc-space-2);
+}
+
+.section-heading p {
+  margin: 0;
+  color: var(--cc-color-text-muted);
+}
+
+.section-footer-link {
+  margin: var(--cc-space-4) 0 0;
+}
+
+.empty-state {
+  margin: 0;
+  padding: var(--cc-space-4);
+  border: 1px dashed var(--cc-color-border);
+  border-radius: var(--cc-radius-md);
+  color: var(--cc-color-text-muted);
+  background: rgba(15, 122, 110, 0.03);
+}
+
+.product-card__media {
+  display: grid;
+  place-items: center;
+  min-height: 7.5rem;
+  border-radius: var(--cc-radius-md);
+  background:
+    linear-gradient(145deg, #1a2b33 0%, #0f7a6e 55%, #163a44 100%);
+  color: #e8f7f4;
+}
+
+.product-card__media-label {
+  font-family: var(--cc-font-display);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.product-card__blurb {
+  margin: 0;
+  flex: 1;
+  font-size: 0.95rem;
+  color: var(--cc-color-text-muted);
+}
+
+.product-card__specs {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--cc-color-text-muted);
+  font-size: 0.9rem;
+}
+
+.product-card__actions {
+  margin: 0;
+  margin-top: auto;
+}
+
+.tier-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--cc-space-3);
+}
+
+.tier-card {
+  display: block;
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-md);
+  background: rgba(15, 122, 110, 0.04);
+  text-decoration: none;
+  color: inherit;
+  transition:
+    border-color var(--cc-transition),
+    background var(--cc-transition),
+    transform var(--cc-transition);
+}
+
+.tier-card:hover,
+.tier-card:focus-visible {
+  border-color: var(--cc-color-accent);
+  background: var(--cc-color-accent-soft);
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.tier-card__title {
+  margin: 0 0 var(--cc-space-2);
+  font-family: var(--cc-font-display);
+  font-size: 1.1rem;
+}
+
+.tier-card__text {
+  margin: 0 0 var(--cc-space-3);
+  font-size: 0.92rem;
+  color: var(--cc-color-text-muted);
+}
+
+.tier-card__cta {
+  font-weight: 700;
+  color: var(--cc-color-accent);
+  font-size: 0.95rem;
+}
+
+.media-teaser {
+  display: grid;
+  gap: var(--cc-space-4);
+}
+
+.media-teaser__placeholder {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: var(--cc-space-3);
+  min-height: 12rem;
+  padding: var(--cc-space-5);
+  border-radius: var(--cc-radius-lg);
+  border: 1px solid var(--cc-color-border);
+  background:
+    linear-gradient(160deg, #102027 0%, #1c3d47 40%, #0f7a6e 100%);
+  color: #e8f7f4;
+}
+
+.media-teaser__badge {
+  display: inline-block;
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--cc-radius-sm);
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.media-teaser__caption {
+  margin: 0;
+  max-width: 28rem;
+  color: rgba(232, 247, 244, 0.9);
+}
+
+.media-teaser__copy p:first-child {
+  margin-top: 0;
+}
+
 .layout-split {
   display: grid;
   grid-template-columns: 1fr;
@@ -684,6 +862,16 @@ table.data-table {
 
   .layout-split--builder {
     grid-template-columns: 1.3fr 0.9fr;
+  }
+
+  .layout-split--home {
+    grid-template-columns: 1.6fr 1fr;
+    align-items: start;
+  }
+
+  .media-teaser {
+    grid-template-columns: 1.2fr 1fr;
+    align-items: center;
   }
 }
 

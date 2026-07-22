@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 2 / Commit 2.8 (Stage 2 complete — import guide)
+**Last updated:** Stage 3 / Commit 3.1 (dynamic homepage)
 
 ### Status legend
 
@@ -142,6 +142,7 @@ These appear in the project instructions and package requirements. They support 
 | **2.6** | `database/seed-themes.sql` — 3 themes + `active_theme_id` (default RGB Gaming); #3b now In progress |
 | **2.7** | `database/create-admin.php` — CLI-only; bcrypt hash; validates email/password; handles duplicates |
 | **2.8** | `docs/database-import.md` — full import/verify/backup guide; ER design aligned; Stage 2 complete; B11 Complete; #5 updated |
+| **3.1** | Dynamic `index.php` — featured products + categories from MySQL; hero CTAs; media teaser placeholder |
 
 ---
 
@@ -152,6 +153,8 @@ These appear in the project instructions and package requirements. They support 
 3. ~~Commit 2.3 — product options.~~ Done (≥ 2 options per product; 323 total).  
 4. ~~Stage 2 complete~~ — import guide published (`docs/database-import.md`).  
 5. Begin **Stage 3** — public catalogue pages; mark #2 **Complete** when catalogue/product pages show options.  
+   - [x] 3.1 Dynamic homepage  
+   - [ ] 3.2–3.8 Catalogue, detail, search, filters, compare, reviews  
 6. After Stage 10 — mark #3a / #3b **Complete** after theme switch test.  
 7. After Stage 16 — mark #11 **Complete** with the live URL.  
 8. Stage 15.8 — final audit: every Section A row must be **Complete** with tested evidence.
@@ -218,4 +221,15 @@ These appear in the project instructions and package requirements. They support 
 - [x] Theme + site-setting records exist
 - [x] Secure admin setup (no plain-text password in Git)
 - [x] Import/backup guide and ER alignment documented
+
+### Stage 3 progress
+
+- [x] 3.1 Dynamic homepage (`index.php` — featured products from MySQL)
+- [ ] 3.2 Business case About page (expand)
+- [ ] 3.3 Database-driven catalogue
+- [ ] 3.4 Product detail pages
+- [ ] 3.5 Product search
+- [ ] 3.6 Catalogue filters and sorting
+- [ ] 3.7 Product comparison
+- [ ] 3.8 Approved product reviews
 

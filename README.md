@@ -34,13 +34,13 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Stage 2 complete (Commit 2.8)** — database import and design docs finished.
+**Commit 3.1 complete** — dynamic homepage with MySQL featured products.
 
-A new developer can import from scratch using [`docs/database-import.md`](docs/database-import.md):
-schema, catalogue seeds (20 products × options), builder components, compatibility
-rules, themes/settings, and secure admin creation. Stage 2 acceptance criteria are met.
+`index.php` loads featured products and category tiers from the database, with
+hero CTAs, a learning-centre media teaser placeholder, and graceful fallback
+when the database is unavailable.
 
-Next: **Stage 3** — public catalogue UI driven by MySQL.
+Next: **Commit 3.2** — expand the About / business case page.
 
 ## Security notes
 

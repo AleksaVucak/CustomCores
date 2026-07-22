@@ -80,8 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Stage 2 complete (Commit 2.8).**  
-Import guide: `docs/database-import.md`.  
-Database folder: schema + all seeds + `create-admin.php` + connection test.
+**Commit 3.1 complete.**  
+Homepage: `index.php` — hero, featured products (MySQL), category tiers, media teaser.
 
-Next: **Stage 3** — public catalogue pages.
+Next: **Commit 3.2** — expand About / business case page.
