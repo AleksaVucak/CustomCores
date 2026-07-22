@@ -488,4 +488,4 @@ Results: **compatible** / **warning** / **incompatible**, with explanations. Ser
 
 ## 10. Status
 
-**Commit 2.3 complete.** Option seed `database/seed-product-options.sql` adds ≥ 2 active options for every product (323 rows; 4–7 option groups each). Next: **Commit 2.4** — custom builder component seeds.
+**Commit 2.4 complete.** Builder seed `database/seed-components.sql` inserts 10 categories and 60 components with consistent compatibility attributes. Next: **Commit 2.5** — simplified compatibility rule metadata.

@@ -33,13 +33,13 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 2.3 complete** — product options seeded for every catalogue PC.
+**Commit 2.4 complete** — custom builder components seeded.
 
-`database/seed-product-options.sql` adds **323** active options across all 20
-products (14–19 each). Groups include RAM, Storage, Colour, Warranty, plus OS,
-Cooling, and GPU upgrades by tier. Every product has ≥ 2 options (rubric #2).
+`database/seed-components.sql` adds **10** builder categories (CPU through
+Service) and **60** parts with socket, RAM type, form factor, wattage, GPU/
+cooler clearance, and storage attributes ready for compatibility checks.
 
-Next: **Commit 2.4** — custom builder component seed data.
+Next: **Commit 2.5** — simplified compatibility rule seed data.
 
 ## Security notes
 

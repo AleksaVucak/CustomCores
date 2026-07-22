@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 2 / Commit 2.3 (product options seed)
+**Last updated:** Stage 2 / Commit 2.4 (builder components seed)
 
 ### Status legend
 
@@ -68,7 +68,7 @@ These appear in the project instructions and package requirements. They support 
 | B8 | Admin: user account administration (e.g. disable accounts) | `admin/users.php`, `admin/user-edit.php` | 9.6 | Planned |
 | B9 | Admin user documentation | `docs/administrator-guide.md` | 12.2 | Planned |
 | B10 | Backend monitoring page (online / warning / offline for site and feature services) | `admin/monitoring.php` + health checks | 13.x | Planned |
-| B11 | Database with at least 20 records | Seeded `products` (and related tables) | 2.x | In progress — 20 products + 323 options seeded (2.2–2.3); builder seeds still pending |
+| B11 | Database with at least 20 records | Seeded `products` (and related tables) | 2.x | In progress — 20 products, 323 options, 60 builder components seeded; compatibility/themes still pending |
 | B12 | PHP functionality for dynamic pages | All catalogue/account/admin PHP | 3–9 | Planned |
 | B13 | Software repository (e.g. GitHub) with code history | GitHub remote on `main`; meaningful commits | 0.1 ongoing | In progress |
 | B14 | Installation documentation for another server | `docs/installation-guide.md`, deployment/troubleshooting docs | 12.4–12.5, 16.x | Planned |
@@ -137,6 +137,7 @@ These appear in the project instructions and package requirements. They support 
 | **2.1** | `database/schema.sql` — all 21 InnoDB tables with PKs, FKs, indexes, constraints, and comments; #5 now In progress |
 | **2.2** | `database/seed-products.sql` — 4 tiers + 20 active products (5 each); #2 / B11 now In progress |
 | **2.3** | `database/seed-product-options.sql` — 323 options; every product has ≥ 2 (typically 14–19); verification query ready |
+| **2.4** | `database/seed-components.sql` — 10 builder categories + 60 parts with compatibility attributes |
 
 ---
 
@@ -198,7 +199,8 @@ These appear in the project instructions and package requirements. They support 
 - [x] 2.1 MySQL database schema (`database/schema.sql`)
 - [x] 2.2 Twenty configurable PC products (`database/seed-products.sql`)
 - [x] 2.3 Product options for every PC (`database/seed-product-options.sql`)
-- [ ] 2.4–2.5 Component and compatibility seed data
+- [x] 2.4 Custom builder components (`database/seed-components.sql`)
+- [ ] 2.5 Simplified compatibility seed data
 - [ ] 2.6 Theme and settings seeds
 - [ ] 2.7 Secure admin creation script
 - [ ] 2.8 Import guide and documentation updates
