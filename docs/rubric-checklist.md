@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 1 / Commit 1.1
+**Last updated:** Stage 1 / Commit 1.2
 
 ### Status legend
 
@@ -127,12 +127,13 @@ These appear in the project instructions and package requirements. They support 
 | **0.5** | `docs/wireframes.md` added; #9 notes desktop/mobile nav visible on home, catalogue, builder, profile, cart, admin |
 | **0.6** | `docs/database-design.md` added with ER diagram and 21-table plan; #5 planning evidence updated |
 | **1.1** | Application directories created; `docs/directory-structure.md` and root `index.php` added |
+| **1.2** | Secure config templates: `config/app.php`, `config/database.example.php`; `database.php` remains gitignored |
 
 ---
 
 ## Section F — Next checklist actions
 
-1. Continue **Stage 1** — Commit **1.2** secure configuration templates.  
+1. Continue **Stage 1** — Commit **1.3** PDO database connection helper.  
 2. After Stage 2 — mark #2 / B11 **Complete** only when SQL verification queries pass.  
 3. After Stage 10 — mark #3a / #3b **Complete** after theme switch test.  
 4. After Stage 16 — mark #11 **Complete** with the live URL.  
@@ -142,7 +143,8 @@ These appear in the project instructions and package requirements. They support 
 **Commit 0.4 acceptance:** Sitemap documents ≥ 20 dynamic and ≥ 5 static pages with purposeful routes (48 + 7 planned).  
 **Commit 0.5 acceptance:** Wireframes for homepage, catalogue, builder, profile, cart, and admin show core navigation on desktop and mobile.  
 **Commit 0.6 acceptance:** ER diagram and table plan represent all major feature relationships (Stage 0 complete).  
-**Commit 1.1 acceptance:** Repository folder layout matches the documented architecture; upload/asset/config/includes locations exist without fake feature-page stubs.
+**Commit 1.1 acceptance:** Repository folder layout matches the documented architecture; upload/asset/config/includes locations exist without fake feature-page stubs.  
+**Commit 1.2 acceptance:** Example database config and app config exist; real `config/database.php` is gitignored and not present in the repository.
 
 ### Stage 0 acceptance (all met in docs)
 
@@ -156,7 +158,7 @@ These appear in the project instructions and package requirements. They support 
 ### Stage 1 progress
 
 - [x] 1.1 Directory structure
-- [ ] 1.2 Secure configuration templates
+- [x] 1.2 Secure configuration templates
 - [ ] 1.3 PDO database connection
 - [ ] 1.4 Shared header, footer, navigation includes
 - [ ] 1.5 Base responsive stylesheet

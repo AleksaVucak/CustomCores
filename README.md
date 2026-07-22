@@ -32,17 +32,18 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Stage 1 / Commit 1.1** — application directory structure created.
+**Stage 1 / Commit 1.2** — secure configuration templates added.
 
-Shared configuration, PDO, layout includes, CSS, JavaScript, navigation, and
-flash messages follow in Commits 1.2–1.8. Catalogue and database seeds begin
-in Stage 2.
+Copy `config/database.example.php` to `config/database.php` and fill in your
+MySQL credentials locally. PDO connection helper follows in Commit 1.3; layout,
+CSS, JavaScript, navigation, and flash messages follow in 1.4–1.8.
 
 ## Security notes
 
 - Never commit real database credentials.
 - The live config file `config/database.php` is ignored by Git.
-- Use `config/database.example.php` (added in a later commit) as the template.
+- Use [`config/database.example.php`](config/database.example.php) as the template
+  (see [`config/README.md`](config/README.md)).
 - Never commit plain-text passwords or private customer data.
 
 ## Licence
