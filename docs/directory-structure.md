@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 3.2 complete.**  
-About page: `about.php` — full public business case (rubric #1).
+**Commit 3.3 complete.**  
+Catalogue: `catalogue.php` — all active products from MySQL; tier chips via `?category=`.
 
-Next: **Commit 3.3** — database-driven catalogue.
+Next: **Commit 3.4** — dynamic product detail pages.
