@@ -5,8 +5,8 @@
  * File responsibility:
  *   Displays a single product loaded from MySQL with specifications, configurable
  *   option groups (RAM, Storage, Colour, etc.), price with default-option total,
- *   stock status, a compare entry point (Commit 3.7), and a context-sensitive
- *   Help link. One reusable page serves every product ID.
+ *   stock status, approved reviews (Commit 3.8), a compare entry point (Commit 3.7),
+ *   and a context-sensitive Help link. One reusable page serves every product ID.
  *
  * URL format:
  *   product.php?id=1
@@ -17,6 +17,7 @@
  * Data sources:
  *   - products + categories (joined)
  *   - product_options (grouped by option_group, sorted)
+ *   - reviews (status = approved only) + users (first name)
  */
 
 declare(strict_types=1);
@@ -36,6 +37,9 @@ if (isset($_GET['id']) && is_string($_GET['id']) && ctype_digit($_GET['id'])) {
 $product = null;
 $options = [];
 $optionGroups = [];
+$approvedReviews = [];
+$reviewAverage = null;
+$reviewCount = 0;
 $detailError = null;
 
 if ($productId < 1) {
@@ -74,6 +78,32 @@ if ($productId < 1) {
             foreach ($options as $opt) {
                 $group = (string) $opt['option_group'];
                 $optionGroups[$group][] = $opt;
+            }
+
+            // Approved reviews only (Commit 3.8) — pending/hidden never appear.
+            $revStmt = $pdo->prepare(
+                'SELECT r.id, r.rating, r.title, r.body, r.created_at,
+                        u.first_name
+                 FROM reviews r
+                 INNER JOIN users u ON u.id = r.user_id
+                 WHERE r.product_id = :pid
+                   AND r.status = :status
+                 ORDER BY r.created_at DESC, r.id DESC
+                 LIMIT 20'
+            );
+            $revStmt->execute([
+                ':pid' => $productId,
+                ':status' => 'approved',
+            ]);
+            $approvedReviews = $revStmt->fetchAll();
+            $reviewCount = count($approvedReviews);
+
+            if ($reviewCount > 0) {
+                $sum = 0;
+                foreach ($approvedReviews as $row) {
+                    $sum += (int) ($row['rating'] ?? 0);
+                }
+                $reviewAverage = round($sum / $reviewCount, 1);
             }
         }
     } catch (Throwable $exception) {
@@ -286,6 +316,61 @@ require_once __DIR__ . '/includes/header.php';
                     </p>
                 </section>
             <?php endif; ?>
+
+            <section class="product-detail__reviews" aria-labelledby="reviews-heading">
+                <h2 id="reviews-heading">Customer reviews</h2>
+                <p class="product-detail__reviews-summary">
+                    <?php if ($reviewCount === 0) : ?>
+                        No approved reviews for this system yet.
+                    <?php else : ?>
+                        <span class="review-rating" aria-label="<?php echo customcore_e((string) $reviewAverage . ' out of 5 average'); ?>">
+                            <?php echo customcore_e(customcore_format_rating((int) round((float) $reviewAverage))); ?>
+                        </span>
+                        <strong><?php echo customcore_e((string) $reviewAverage); ?>/5</strong>
+                        from
+                        <strong><?php echo customcore_e((string) $reviewCount); ?></strong>
+                        <?php echo $reviewCount === 1 ? 'approved review' : 'approved reviews'; ?>
+                    <?php endif; ?>
+                    ·
+                    <a href="<?php echo customcore_e(customcore_url('reviews.php?product_id=' . $productId)); ?>">
+                        View all reviews for this product
+                    </a>
+                </p>
+
+                <?php if ($approvedReviews !== []) : ?>
+                    <ul class="review-list review-list--product">
+                        <?php foreach ($approvedReviews as $review) : ?>
+                            <?php
+                            $rating = (int) ($review['rating'] ?? 0);
+                            $title = (string) ($review['title'] ?? '');
+                            $body = (string) ($review['body'] ?? '');
+                            $first = (string) ($review['first_name'] ?? 'Customer');
+                            $created = customcore_format_date((string) ($review['created_at'] ?? ''));
+                            ?>
+                            <li class="review-card">
+                                <header class="review-card__header">
+                                    <p class="review-rating" aria-label="<?php echo customcore_e($rating . ' out of 5 stars'); ?>">
+                                        <?php echo customcore_e(customcore_format_rating($rating)); ?>
+                                    </p>
+                                    <h3 class="review-card__title">
+                                        <?php echo customcore_e($title !== '' ? $title : 'Customer review'); ?>
+                                    </h3>
+                                </header>
+                                <p class="review-card__meta">
+                                    By <?php echo customcore_e($first); ?>
+                                    · <?php echo customcore_e($created); ?>
+                                </p>
+                                <p class="review-card__body"><?php echo customcore_e($body); ?></p>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+
+                <p class="product-detail__reviews-note">
+                    Only reviews with status <code>approved</code> are shown.
+                    Submission and moderation arrive in later stages.
+                </p>
+            </section>
         </div>
 
         <footer class="product-detail__actions">

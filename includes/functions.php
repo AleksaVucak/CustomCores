@@ -167,3 +167,29 @@ function customcore_nav_class(string $pageKey): string
 {
     return customcore_is_current_page($pageKey) ? ' is-active' : '';
 }
+
+/**
+ * Format a 1–5 rating as accessible star text (★ / ☆).
+ *
+ * @param int $rating Rating value (clamped to 1–5).
+ */
+function customcore_format_rating(int $rating): string
+{
+    $rating = max(0, min(5, $rating));
+    return str_repeat('★', $rating) . str_repeat('☆', 5 - $rating);
+}
+
+/**
+ * Format a datetime string from MySQL for display (e.g. 22 Jul 2026).
+ *
+ * @param string $datetime MySQL DATETIME value.
+ */
+function customcore_format_date(string $datetime): string
+{
+    $timestamp = strtotime($datetime);
+    if ($timestamp === false) {
+        return $datetime;
+    }
+
+    return date('j M Y', $timestamp);
+}

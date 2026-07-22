@@ -34,13 +34,13 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 3.7 complete** — product comparison.
+**Stage 3 complete (Commit 3.8)** — approved product reviews.
 
-`compare.php` shows 2–4 selected systems side by side with consistent fields
-(price, stock, brand, category, CPU/GPU/RAM/storage). Catalogue cards and the
-product detail page both link into the comparer.
+`reviews.php` and the product detail page show only reviews with
+`status = approved`. Pending and hidden reviews never appear publicly.
+Demo seed: `database/seed-reviews.sql`.
 
-Next: **Commit 3.8** — approved product reviews.
+Next: **Stage 4** — registration, authentication, and profiles.
 
 ## Security notes
 

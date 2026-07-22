@@ -392,7 +392,8 @@ require_once __DIR__ . '/includes/header.php';
                 </p>
                 <p class="catalogue-toolbar__sort-label">
                     Sorted by: <strong><?php echo customcore_e($sortLabels[$sortKey]); ?></strong>
-                    · <a href="<?php echo customcore_e(customcore_url('compare.php')); ?>">Compare systems</a>
+                    · <a href="<?php echo customcore_e(customcore_url('compare.php')); ?>">Compare</a>
+                    · <a href="<?php echo customcore_e(customcore_url('reviews.php')); ?>">Reviews</a>
                 </p>
             </div>
 

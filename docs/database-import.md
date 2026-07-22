@@ -63,7 +63,10 @@ mysql -u your_username -p your_database_name < database/seed-compatibility.sql
 # 6. Themes + site settings
 mysql -u your_username -p your_database_name < database/seed-themes.sql
 
-# 7. Admin account (interactive; hashed password — not a SQL seed)
+# 7. Demo approved reviews (Commit 3.8 — optional but recommended for catalogue UI)
+mysql -u your_username -p your_database_name < database/seed-reviews.sql
+
+# 8. Admin account (interactive; hashed password — not a SQL seed)
 php database/create-admin.php
 ```
 
@@ -77,7 +80,8 @@ php database/create-admin.php
 | 4 | `database/seed-components.sql` | 10 builder categories + 60 components |
 | 5 | `database/seed-compatibility.sql` | 7 compatibility rules |
 | 6 | `database/seed-themes.sql` | 3 themes + site settings |
-| 7 | `database/create-admin.php` | One admin user (CLI prompts) |
+| 7 | `database/seed-reviews.sql` | Demo customers + approved/pending/hidden reviews (3.8) |
+| 8 | `database/create-admin.php` | One admin user (CLI prompts) |
 
 Seed files that clear and re-insert data (products, options, components, themes) are safe to re-run during development. Always run `schema.sql` first on a new database.
 
@@ -140,6 +144,23 @@ SELECT t.id, t.name, t.slug, t.css_file
 FROM site_settings s
 INNER JOIN themes t ON t.id = CAST(s.setting_value AS UNSIGNED)
 WHERE s.setting_key = 'active_theme_id';
+```
+
+### Reviews (Commit 3.8 — after seed-reviews.sql)
+
+```sql
+-- Expect ≥ 8 approved (public pages use this filter only)
+SELECT COUNT(*) AS approved_reviews
+FROM reviews
+WHERE status = 'approved';
+
+-- Expect pending + hidden rows to exist (proves moderation data is present)
+SELECT status, COUNT(*) AS cnt
+FROM reviews
+GROUP BY status;
+
+-- Public pages must never surface these:
+--   SELECT ... FROM reviews WHERE status = 'approved'
 ```
 
 ### Admin account

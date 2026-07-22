@@ -1461,6 +1461,113 @@ legend {
   border-bottom: none;
 }
 
+/* ==========================================================================
+   10i. Product reviews (Commit 3.8)
+   ========================================================================== */
+
+.reviews-page__header {
+  margin-bottom: var(--cc-space-4);
+}
+
+.reviews-page__intro {
+  max-width: 42rem;
+  color: var(--cc-color-text-muted);
+}
+
+.reviews-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--cc-space-3);
+  margin-bottom: var(--cc-space-4);
+}
+
+.reviews-toolbar__count,
+.reviews-toolbar__links {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.reviews-toolbar__links {
+  color: var(--cc-color-text-muted);
+}
+
+.reviews-page__note {
+  margin-top: var(--cc-space-5);
+  color: var(--cc-color-text-muted);
+  font-size: 0.92rem;
+}
+
+.review-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--cc-space-4);
+}
+
+.review-card {
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+}
+
+.review-card__header {
+  display: grid;
+  gap: var(--cc-space-2);
+  margin-bottom: var(--cc-space-2);
+}
+
+.review-card__title {
+  margin: 0;
+  font-family: var(--cc-font-display);
+  font-size: 1.1rem;
+}
+
+.review-card__meta {
+  margin: 0 0 var(--cc-space-3);
+  font-size: 0.9rem;
+  color: var(--cc-color-text-muted);
+}
+
+.review-card__body {
+  margin: 0;
+  max-width: 48rem;
+  line-height: 1.55;
+}
+
+.review-rating {
+  margin: 0;
+  letter-spacing: 0.08em;
+  color: var(--cc-color-accent);
+  font-size: 1.05rem;
+}
+
+.product-detail__reviews {
+  margin-top: var(--cc-space-2);
+}
+
+.product-detail__reviews-summary {
+  margin: 0 0 var(--cc-space-4);
+  color: var(--cc-color-text-muted);
+}
+
+.product-detail__reviews-summary .review-rating {
+  display: inline;
+  margin-right: 0.35rem;
+}
+
+.product-detail__reviews-note {
+  margin: var(--cc-space-4) 0 0;
+  font-size: 0.9rem;
+  color: var(--cc-color-text-muted);
+}
+
+.review-list--product {
+  margin-bottom: var(--cc-space-3);
+}
+
 .layout-split {
   display: grid;
   grid-template-columns: 1fr;

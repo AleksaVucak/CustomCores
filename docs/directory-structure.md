@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 3.7 complete.**  
-Comparison: `compare.php` — side-by-side specs for 2–4 selected products.
+**Stage 3 complete (Commit 3.8).**  
+Reviews: `reviews.php` + product detail section — approved only; `seed-reviews.sql` for demos.
 
-Next: **Commit 3.8** — approved product reviews.
+Next: **Stage 4** — registration, authentication, and profiles.
