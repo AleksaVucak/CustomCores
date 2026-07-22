@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 3.1 complete.**  
-Homepage: `index.php` — hero, featured products (MySQL), category tiers, media teaser.
+**Commit 3.2 complete.**  
+About page: `about.php` — full public business case (rubric #1).
 
-Next: **Commit 3.2** — expand About / business case page.
+Next: **Commit 3.3** — database-driven catalogue.

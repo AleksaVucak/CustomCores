@@ -34,13 +34,12 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 3.1 complete** — dynamic homepage with MySQL featured products.
+**Commit 3.2 complete** — full public business case on the About page.
 
-`index.php` loads featured products and category tiers from the database, with
-hero CTAs, a learning-centre media teaser placeholder, and graceful fallback
-when the database is unavailable.
+`about.php` now publishes the complete CustomCore business explanation (audience,
+problem, solution, catalogue strategy, and feature summary), satisfying rubric #1.
 
-Next: **Commit 3.2** — expand the About / business case page.
+Next: **Commit 3.3** — database-driven catalogue grid.
 
 ## Security notes
 

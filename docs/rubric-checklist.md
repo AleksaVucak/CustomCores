@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 3 / Commit 3.1 (dynamic homepage)
+**Last updated:** Stage 3 / Commit 3.2 (About business case page)
 
 ### Status legend
 
@@ -27,7 +27,7 @@
 
 | # | Requirement | Pts | Planned evidence (page / file) | How it will be verified | Target stage | Status |
 | - | ----------- | --: | ------------------------------ | ----------------------- | ------------ | ------ |
-| 1 | Business case: at least one paragraph describing the catalogue/project (e.g. on About) | 2 | `about.php` (public paragraph); planning source `docs/business-case.md`; README summary | About page shows a clear business paragraph; matches CustomCore catalogue idea | 0.2 (docs), 1.4/3.2 (About) | In progress — About page live with business paragraph; may be polished in Stage 3 |
+| 1 | Business case: at least one paragraph describing the catalogue/project (e.g. on About) | 2 | `about.php` (public paragraph); planning source `docs/business-case.md`; README summary | About page shows a clear business paragraph; matches CustomCore catalogue idea | 0.2 (docs), 1.4/3.2 (About) | Complete — full business case published on `about.php` (3.2) |
 | 2 | No fewer than 20 products; each product has at least 2 options | 4 | MySQL `products` + `product_options`; seeds `database/seed-products.sql` + `database/seed-product-options.sql`; UI `catalogue.php`, `product.php` | SQL count ≥ 20 active products; query confirms every product has ≥ 2 options; options visible on product pages | 2.2–2.3, 3.3–3.4 | In progress — 20 products + options seeded (2.2–2.3); UI pages still Stage 3 |
 | 3a | At least 3 different site-wide CSS templates (distinct look/layout) | 12 | `assets/themes/rgb-gaming.css`, `assets/themes/minimal-pro.css`, `assets/themes/cyber-grid.css` | Themes differ in colour, typography, nav, buttons, cards, spacing, borders, and layout treatment | 10.1–10.3 | Planned |
 | 3b | Ability to change the template dynamically | 4 | Admin `admin/themes.php`; MySQL `themes` / `site_settings`; theme loaded in shared header include | Admin selects theme → setting saved → public and admin pages load the chosen CSS | 2.6, 10.4–10.5 | In progress — theme + settings rows seeded (2.6); CSS files and switcher in Stage 10 |
@@ -143,6 +143,7 @@ These appear in the project instructions and package requirements. They support 
 | **2.7** | `database/create-admin.php` — CLI-only; bcrypt hash; validates email/password; handles duplicates |
 | **2.8** | `docs/database-import.md` — full import/verify/backup guide; ER design aligned; Stage 2 complete; B11 Complete; #5 updated |
 | **3.1** | Dynamic `index.php` — featured products + categories from MySQL; hero CTAs; media teaser placeholder |
+| **3.2** | Expanded `about.php` — full public business case; rubric #1 Complete |
 
 ---
 
@@ -154,7 +155,8 @@ These appear in the project instructions and package requirements. They support 
 4. ~~Stage 2 complete~~ — import guide published (`docs/database-import.md`).  
 5. Begin **Stage 3** — public catalogue pages; mark #2 **Complete** when catalogue/product pages show options.  
    - [x] 3.1 Dynamic homepage  
-   - [ ] 3.2–3.8 Catalogue, detail, search, filters, compare, reviews  
+   - [x] 3.2 Business case About page (#1 Complete)  
+   - [ ] 3.3–3.8 Catalogue, detail, search, filters, compare, reviews  
 6. After Stage 10 — mark #3a / #3b **Complete** after theme switch test.  
 7. After Stage 16 — mark #11 **Complete** with the live URL.  
 8. Stage 15.8 — final audit: every Section A row must be **Complete** with tested evidence.
@@ -225,7 +227,7 @@ These appear in the project instructions and package requirements. They support 
 ### Stage 3 progress
 
 - [x] 3.1 Dynamic homepage (`index.php` — featured products from MySQL)
-- [ ] 3.2 Business case About page (expand)
+- [x] 3.2 Business case About page (`about.php`)
 - [ ] 3.3 Database-driven catalogue
 - [ ] 3.4 Product detail pages
 - [ ] 3.5 Product search

@@ -104,7 +104,7 @@ Protected dashboard; product add/edit/disable, stock, price, and image managemen
 
 | Later document | How this business case feeds it |
 | -------------- | ------------------------------- |
-| About page (`about.php`) | Public paragraph(s) derived from Section 1 |
+| About page (`about.php`) | Full public business case derived from Sections 1–6 (Commit 3.2) |
 | `docs/rubric-checklist.md` | Business-case row (#1) evidence points here and to About (checklist added in Commit 0.3) |
 | `docs/sitemap.md` | Pages listed in Section 6 (sitemap added in Commit 0.4) |
 | `docs/wireframes.md` | Layout/nav contract for core screens (added in Commit 0.5) |
@@ -115,4 +115,4 @@ Protected dashboard; product add/edit/disable, stock, price, and image managemen
 
 ## 10. Status
 
-**Stage 0 planning complete** through Commit 0.6. Business idea, rubric map, sitemap, wireframes, and database ER design are finalized. Application foundation is underway in Stage 1; the public About page now includes the business-case paragraph (`about.php`, Commit 1.4).
+**Commit 3.2 complete.** The public About page (`about.php`) publishes the full business case for visitors and graders (rubric #1). Planning source of truth remains this document.

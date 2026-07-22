@@ -733,6 +733,75 @@ legend {
   margin-top: 0;
 }
 
+/* ==========================================================================
+   10c. About / business case page (Commit 3.2)
+   ========================================================================== */
+
+.about-page__header {
+  margin-bottom: var(--cc-space-5);
+}
+
+.about-page__lead {
+  margin: 0;
+  max-width: 42rem;
+  font-size: 1.15rem;
+  color: var(--cc-color-text-muted);
+}
+
+.about-block {
+  margin-bottom: var(--cc-space-5);
+  padding-bottom: var(--cc-space-5);
+  border-bottom: 1px solid var(--cc-color-border);
+}
+
+.about-block:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.about-audience {
+  display: grid;
+  gap: var(--cc-space-3);
+}
+
+.about-audience li {
+  padding: var(--cc-space-3) var(--cc-space-4);
+  border-left: 3px solid var(--cc-color-accent);
+  background: rgba(15, 122, 110, 0.04);
+  border-radius: 0 var(--cc-radius-md) var(--cc-radius-md) 0;
+}
+
+.about-callout {
+  margin: var(--cc-space-4) 0 0;
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-md);
+  background: var(--cc-color-accent-soft);
+}
+
+.about-solution-list {
+  display: grid;
+  gap: var(--cc-space-3);
+}
+
+.about-feature-grid {
+  display: grid;
+  gap: var(--cc-space-4);
+}
+
+.about-feature-grid h3 {
+  margin-top: 0;
+  margin-bottom: var(--cc-space-2);
+  font-family: var(--cc-font-display);
+  font-size: 1.1rem;
+}
+
+.about-feature-grid p {
+  margin: 0;
+  color: var(--cc-color-text-muted);
+}
+
 .layout-split {
   display: grid;
   grid-template-columns: 1fr;
@@ -872,6 +941,10 @@ table.data-table {
   .media-teaser {
     grid-template-columns: 1.2fr 1fr;
     align-items: center;
+  }
+
+  .about-feature-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
