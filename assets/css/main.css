@@ -286,6 +286,16 @@ code {
   border-left: 1px solid var(--cc-color-border);
 }
 
+.site-nav__greeting {
+  color: var(--cc-color-text-muted);
+  cursor: default;
+}
+
+.site-nav__greeting:hover,
+.site-nav__greeting:focus-visible {
+  color: var(--cc-color-text-muted);
+}
+
 /* ==========================================================================
    7. Typography & content
    ========================================================================== */

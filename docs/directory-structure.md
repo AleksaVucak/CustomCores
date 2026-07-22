@@ -80,8 +80,8 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 4.1 complete.**  
-Registration: `register.php` — server-side validation, hashed passwords, duplicate-email rejection.  
-Helpers: `includes/csrf.php`, `includes/auth.php`.
+**Commit 4.2 complete.**  
+Login: `login.php` — `password_verify()`, disabled-account block, session regeneration + creation.  
+Navigation reflects login state (greeting / Log out).
 
-Next: **Commit 4.2** — secure customer login.
+Next: **Commit 4.3** — secure logout.

@@ -33,7 +33,7 @@ customcore_session_start();
 
 // Already authenticated users have no reason to register again.
 if (customcore_is_logged_in()) {
-    customcore_redirect('profile.php');
+    customcore_redirect(is_file(__DIR__ . '/profile.php') ? 'profile.php' : 'index.php');
 }
 
 $pageTitle = 'Create account — CustomCore';

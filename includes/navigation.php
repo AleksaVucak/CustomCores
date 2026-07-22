@@ -17,6 +17,13 @@ if (!function_exists('customcore_url')) {
     require_once __DIR__ . '/functions.php';
 }
 
+require_once __DIR__ . '/auth.php';
+
+$navLoggedIn = customcore_is_logged_in();
+$navUserName = customcore_current_user_name();
+$navHasProfile = is_file(dirname(__DIR__) . '/profile.php');
+$navHasLogout = is_file(dirname(__DIR__) . '/logout.php');
+
 $navItems = [
     'home' => ['label' => 'Home', 'href' => 'index.php'],
     'about' => ['label' => 'About', 'href' => 'about.php'],
@@ -55,23 +62,50 @@ $navItems = [
     </ul>
 
     <ul class="site-nav__account">
-        <li>
-            <a
-                class="site-nav__link<?php echo customcore_e(customcore_nav_class('login')); ?>"
-                href="<?php echo customcore_e(customcore_url('login.php')); ?>"
-            >Log in</a>
-        </li>
-        <li>
-            <a
-                class="site-nav__link<?php echo customcore_e(customcore_nav_class('register')); ?>"
-                href="<?php echo customcore_e(customcore_url('register.php')); ?>"
-            >Register</a>
-        </li>
-        <li>
-            <a
-                class="site-nav__link<?php echo customcore_e(customcore_nav_class('cart')); ?>"
-                href="<?php echo customcore_e(customcore_url('cart.php')); ?>"
-            >Cart</a>
-        </li>
+        <?php if ($navLoggedIn) : ?>
+            <li>
+                <?php if ($navHasProfile) : ?>
+                    <a
+                        class="site-nav__link<?php echo customcore_e(customcore_nav_class('profile')); ?>"
+                        href="<?php echo customcore_e(customcore_url('profile.php')); ?>"
+                    >Hi, <?php echo customcore_e($navUserName !== '' ? $navUserName : 'Account'); ?></a>
+                <?php else : ?>
+                    <span class="site-nav__link site-nav__greeting">Hi, <?php echo customcore_e($navUserName !== '' ? $navUserName : 'Account'); ?></span>
+                <?php endif; ?>
+            </li>
+            <li>
+                <a
+                    class="site-nav__link<?php echo customcore_e(customcore_nav_class('cart')); ?>"
+                    href="<?php echo customcore_e(customcore_url('cart.php')); ?>"
+                >Cart</a>
+            </li>
+            <?php if ($navHasLogout) : ?>
+                <li>
+                    <a
+                        class="site-nav__link<?php echo customcore_e(customcore_nav_class('logout')); ?>"
+                        href="<?php echo customcore_e(customcore_url('logout.php')); ?>"
+                    >Log out</a>
+                </li>
+            <?php endif; ?>
+        <?php else : ?>
+            <li>
+                <a
+                    class="site-nav__link<?php echo customcore_e(customcore_nav_class('login')); ?>"
+                    href="<?php echo customcore_e(customcore_url('login.php')); ?>"
+                >Log in</a>
+            </li>
+            <li>
+                <a
+                    class="site-nav__link<?php echo customcore_e(customcore_nav_class('register')); ?>"
+                    href="<?php echo customcore_e(customcore_url('register.php')); ?>"
+                >Register</a>
+            </li>
+            <li>
+                <a
+                    class="site-nav__link<?php echo customcore_e(customcore_nav_class('cart')); ?>"
+                    href="<?php echo customcore_e(customcore_url('cart.php')); ?>"
+                >Cart</a>
+            </li>
+        <?php endif; ?>
     </ul>
 </nav>

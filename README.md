@@ -34,14 +34,14 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 4.1 complete** — customer registration.
+**Commit 4.2 complete** — secure customer login.
 
-`register.php` validates input server-side, hashes passwords with
-`password_hash()`, rejects duplicate emails, and creates active customer
-accounts. New helpers: `includes/csrf.php` (CSRF tokens) and
-`includes/auth.php` (session read helpers).
+`login.php` verifies the bcrypt hash with `password_verify()`, blocks disabled
+accounts, regenerates the session ID on success, and stores the authenticated
+identity in the session. The navigation now reflects login state (greeting +
+Cart, with Log out appearing once `logout.php` exists).
 
-Next: **Commit 4.2** — secure customer login.
+Next: **Commit 4.3** — secure logout.
 
 ## Security notes
 

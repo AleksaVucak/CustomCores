@@ -151,6 +151,7 @@ These appear in the project instructions and package requirements. They support 
 | **3.7** | `compare.php` — side-by-side comparison (2–4 products); catalogue checkboxes + product detail entry |
 | **3.8** | `reviews.php` + product reviews section — `status = approved` only; `seed-reviews.sql` demo data |
 | **4.1** | `register.php` — server-side validation, `password_hash()`, duplicate-email rejection, CSRF; `includes/csrf.php` + `includes/auth.php` |
+| **4.2** | `login.php` — `password_verify()`, disabled-account block, `session_regenerate_id()`, session creation; nav login state |
 
 ---
 
@@ -171,7 +172,8 @@ These appear in the project instructions and package requirements. They support 
    - [x] 3.8 Approved reviews — **Stage 3 complete**  
 6. Begin **Stage 4** — accounts and auth.  
    - [x] 4.1 Customer registration  
-   - [ ] 4.2–4.8 Login, logout, route protection, profile, roles, session hardening  
+   - [x] 4.2 Secure customer login  
+   - [ ] 4.3–4.8 Logout, route protection, profile, roles, session hardening  
 7. After Stage 10 — mark #3a / #3b **Complete** after theme switch test.
 8. After Stage 16 — mark #11 **Complete** with the live URL.  
 9. Stage 15.8 — final audit: every Section A row must be **Complete** with tested evidence.
@@ -253,7 +255,7 @@ These appear in the project instructions and package requirements. They support 
 ### Stage 4 progress
 
 - [x] 4.1 Customer registration (`register.php` + `includes/csrf.php`, `includes/auth.php`)
-- [ ] 4.2 Secure customer login
+- [x] 4.2 Secure customer login (`login.php` — session creation + regeneration)
 - [ ] 4.3 Secure logout
 - [ ] 4.4 Protect private customer routes
 - [ ] 4.5 Customer profile dashboard
