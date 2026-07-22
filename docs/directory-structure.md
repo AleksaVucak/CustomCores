@@ -80,8 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 4.2 complete.**  
-Login: `login.php` — `password_verify()`, disabled-account block, session regeneration + creation.  
-Navigation reflects login state (greeting / Log out).
+**Commit 4.3 complete.**  
+Logout: `logout.php` + `customcore_logout()` — full session wipe and cookie expiry.
 
-Next: **Commit 4.3** — secure logout.
+Next: **Commit 4.4** — protect private customer routes.

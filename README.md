@@ -34,14 +34,13 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 4.2 complete** — secure customer login.
+**Commit 4.3 complete** — secure logout.
 
-`login.php` verifies the bcrypt hash with `password_verify()`, blocks disabled
-accounts, regenerates the session ID on success, and stores the authenticated
-identity in the session. The navigation now reflects login state (greeting +
-Cart, with Log out appearing once `logout.php` exists).
+`logout.php` clears session data, destroys the server-side session, expires the
+session cookie, and redirects to login as a guest. The nav **Log out** link is
+now live. Helper: `customcore_logout()` in `includes/auth.php`.
 
-Next: **Commit 4.3** — secure logout.
+Next: **Commit 4.4** — protect private customer routes.
 
 ## Security notes
 
