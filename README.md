@@ -34,13 +34,13 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 3.3 complete** — database-driven catalogue grid.
+**Commit 3.4 complete** — dynamic product detail pages.
 
-`catalogue.php` lists all active products from MySQL in a responsive card grid,
-with optional tier browsing via `?category=slug` (homepage links work). Full
-filters/sort arrive in Commit 3.6.
+`product.php?id=N` displays a single product's specs, option groups with price
+deltas, configured price, stock status, breadcrumb, and Help link. One reusable
+page serves all 20 products.
 
-Next: **Commit 3.4** — dynamic product detail pages.
+Next: **Commit 3.5** — product search.
 
 ## Security notes
 
