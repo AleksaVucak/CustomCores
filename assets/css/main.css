@@ -1,0 +1,757 @@
+/*
+ * CustomCore — Base responsive stylesheet
+ * ----------------------------------------------------------------------------
+ * File responsibility:
+ *   Sitewide foundation styles for layout, navigation, forms, cards, and
+ *   desktop/mobile breakpoints. Theme files in assets/themes/ (Stage 10) will
+ *   override CSS custom properties for distinct visual systems.
+ *
+ * Sections:
+ *   1. Fonts
+ *   2. Variables
+ *   3. Base / reset
+ *   4. Skip link & focus
+ *   5. Layout shell
+ *   6. Header & navigation
+ *   7. Typography & content
+ *   8. Buttons
+ *   9. Forms
+ *   10. Cards & grids
+ *   11. Tables
+ *   12. Flash placeholders
+ *   13. Footer
+ *   14. Responsive rules
+ * ----------------------------------------------------------------------------
+ */
+
+/* ==========================================================================
+   1. Fonts
+   Distinctive pair (not Inter/Roboto/Arial). Falls back if the CDN is blocked.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Grotesk:wght@500;700&display=swap");
+
+/* ==========================================================================
+   2. Variables
+   Base “studio steel” foundation — themes swap these values later.
+   ========================================================================== */
+
+:root {
+  --cc-font-display: "Space Grotesk", "Trebuchet MS", sans-serif;
+  --cc-font-body: "DM Sans", "Gill Sans", "Trebuchet MS", sans-serif;
+  --cc-font-mono: "DM Sans", ui-monospace, monospace;
+
+  --cc-color-bg: #f3f5f7;
+  --cc-color-bg-elevated: #ffffff;
+  --cc-color-bg-muted: #e8eef2;
+  --cc-color-surface-dark: #15202b;
+  --cc-color-text: #18212b;
+  --cc-color-text-muted: #5b6b7a;
+  --cc-color-border: #c9d4de;
+  --cc-color-accent: #0f7a6e;
+  --cc-color-accent-hover: #0b5f56;
+  --cc-color-accent-soft: #d7f1ed;
+  --cc-color-danger: #a33b2d;
+  --cc-color-warning: #9a6b12;
+  --cc-color-success: #1f6b3a;
+  --cc-color-focus: #1d6fd0;
+
+  --cc-radius-sm: 0.25rem;
+  --cc-radius-md: 0.5rem;
+  --cc-radius-lg: 0.85rem;
+
+  --cc-shadow-sm: 0 1px 2px rgba(21, 32, 43, 0.08);
+  --cc-shadow-md: 0 10px 30px rgba(21, 32, 43, 0.08);
+
+  --cc-space-1: 0.25rem;
+  --cc-space-2: 0.5rem;
+  --cc-space-3: 0.75rem;
+  --cc-space-4: 1rem;
+  --cc-space-5: 1.5rem;
+  --cc-space-6: 2rem;
+  --cc-space-7: 3rem;
+
+  --cc-width-max: 70rem;
+  --cc-header-height: 4.25rem;
+  --cc-nav-breakpoint: 900px;
+
+  --cc-transition-fast: 150ms ease;
+  --cc-transition: 220ms ease;
+}
+
+/* ==========================================================================
+   3. Base / reset
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--cc-font-body);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--cc-color-text);
+  background:
+    linear-gradient(180deg, #eef3f6 0%, var(--cc-color-bg) 28%, #e7edf2 100%);
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--cc-color-accent);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.15em;
+  transition: color var(--cc-transition-fast);
+}
+
+a:hover,
+a:focus-visible {
+  color: var(--cc-color-accent-hover);
+}
+
+code {
+  font-family: var(--cc-font-mono);
+  font-size: 0.92em;
+  background: var(--cc-color-bg-muted);
+  padding: 0.1em 0.35em;
+  border-radius: var(--cc-radius-sm);
+}
+
+/* ==========================================================================
+   4. Skip link & focus
+   ========================================================================== */
+
+.skip-link {
+  position: absolute;
+  left: var(--cc-space-4);
+  top: -100px;
+  z-index: 1000;
+  padding: var(--cc-space-2) var(--cc-space-4);
+  background: var(--cc-color-surface-dark);
+  color: #fff;
+  border-radius: var(--cc-radius-sm);
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: var(--cc-space-4);
+}
+
+:focus-visible {
+  outline: 3px solid var(--cc-color-focus);
+  outline-offset: 2px;
+}
+
+.site-main:focus {
+  outline: none;
+}
+
+/* ==========================================================================
+   5. Layout shell
+   ========================================================================== */
+
+.site-header__inner,
+.site-main,
+.site-footer__inner {
+  width: min(100% - 2rem, var(--cc-width-max));
+  margin-inline: auto;
+}
+
+.site-main {
+  padding-block: var(--cc-space-6);
+  min-height: 55vh;
+}
+
+/* ==========================================================================
+   6. Header & navigation
+   ========================================================================== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom: 1px solid var(--cc-color-border);
+  backdrop-filter: blur(10px);
+}
+
+.site-header__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cc-space-4);
+  min-height: var(--cc-header-height);
+  padding-block: var(--cc-space-3);
+}
+
+.site-logo {
+  font-family: var(--cc-font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--cc-color-surface-dark);
+  text-decoration: none;
+}
+
+.site-logo:hover,
+.site-logo:focus-visible {
+  color: var(--cc-color-accent);
+}
+
+.nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5rem;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-sm);
+  background: var(--cc-color-bg-elevated);
+  color: var(--cc-color-text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background var(--cc-transition-fast),
+    border-color var(--cc-transition-fast),
+    transform var(--cc-transition-fast);
+}
+
+.nav-toggle:hover {
+  background: var(--cc-color-bg-muted);
+}
+
+.nav-toggle:active {
+  transform: translateY(1px);
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cc-space-4);
+}
+
+.site-nav__list,
+.site-nav__account,
+.site-footer__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cc-space-2) var(--cc-space-4);
+}
+
+.site-nav__link {
+  display: inline-block;
+  padding: 0.35rem 0.15rem;
+  color: var(--cc-color-text);
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 2px solid transparent;
+  transition:
+    color var(--cc-transition-fast),
+    border-color var(--cc-transition-fast);
+}
+
+.site-nav__link:hover,
+.site-nav__link:focus-visible {
+  color: var(--cc-color-accent);
+}
+
+.site-nav__link.is-active,
+.site-nav__link[aria-current="page"] {
+  color: var(--cc-color-accent);
+  border-bottom-color: var(--cc-color-accent);
+}
+
+.site-nav__account {
+  padding-left: var(--cc-space-3);
+  border-left: 1px solid var(--cc-color-border);
+}
+
+/* ==========================================================================
+   7. Typography & content
+   ========================================================================== */
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--cc-font-display);
+  line-height: 1.2;
+  color: var(--cc-color-surface-dark);
+  margin-top: 0;
+}
+
+h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: var(--cc-space-4);
+}
+
+h2 {
+  font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+  margin-bottom: var(--cc-space-3);
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+p,
+ul,
+ol {
+  margin-top: 0;
+  margin-bottom: var(--cc-space-4);
+}
+
+.content-section,
+.hero {
+  background: var(--cc-color-bg-elevated);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  box-shadow: var(--cc-shadow-sm);
+  padding: var(--cc-space-5);
+  margin-bottom: var(--cc-space-5);
+}
+
+.hero {
+  background:
+    linear-gradient(135deg, rgba(15, 122, 110, 0.1), transparent 45%),
+    linear-gradient(180deg, #ffffff, #f5f8fa);
+}
+
+.hero__support {
+  max-width: 40rem;
+  font-size: 1.125rem;
+  color: var(--cc-color-text-muted);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cc-space-3);
+  margin-bottom: 0;
+}
+
+.context-help {
+  margin-top: calc(var(--cc-space-4) * -0.5);
+  margin-bottom: var(--cc-space-5);
+  font-size: 0.95rem;
+}
+
+/* ==========================================================================
+   8. Buttons
+   ========================================================================== */
+
+.button,
+button.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--cc-space-2);
+  min-height: 2.75rem;
+  padding: 0.65rem 1.15rem;
+  border: 1px solid transparent;
+  border-radius: var(--cc-radius-md);
+  background: var(--cc-color-accent);
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background var(--cc-transition),
+    transform var(--cc-transition-fast),
+    box-shadow var(--cc-transition);
+  box-shadow: var(--cc-shadow-sm);
+}
+
+.button:hover,
+.button:focus-visible {
+  background: var(--cc-color-accent-hover);
+  color: #fff;
+  text-decoration: none;
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+.button--secondary {
+  background: transparent;
+  color: var(--cc-color-accent);
+  border-color: var(--cc-color-accent);
+  box-shadow: none;
+}
+
+.button--secondary:hover,
+.button--secondary:focus-visible {
+  background: var(--cc-color-accent-soft);
+  color: var(--cc-color-accent-hover);
+}
+
+.button--danger {
+  background: var(--cc-color-danger);
+}
+
+/* ==========================================================================
+   9. Forms
+   Ready for registration, checkout, builder, and contact pages.
+   ========================================================================== */
+
+.form-stack {
+  display: grid;
+  gap: var(--cc-space-4);
+}
+
+.form-row {
+  display: grid;
+  gap: var(--cc-space-2);
+}
+
+.form-row--inline {
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: var(--cc-space-4);
+}
+
+label,
+.form-label {
+  font-weight: 600;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="number"],
+input[type="search"],
+input[type="url"],
+select,
+textarea {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-md);
+  background: var(--cc-color-bg-elevated);
+  color: var(--cc-color-text);
+  font: inherit;
+  transition:
+    border-color var(--cc-transition-fast),
+    box-shadow var(--cc-transition-fast);
+}
+
+textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  border-color: var(--cc-color-focus);
+  box-shadow: 0 0 0 3px rgba(29, 111, 208, 0.2);
+  outline: none;
+}
+
+.form-help,
+.form-error {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.form-help {
+  color: var(--cc-color-text-muted);
+}
+
+.form-error {
+  color: var(--cc-color-danger);
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cc-space-3);
+}
+
+fieldset {
+  margin: 0;
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-md);
+  background: var(--cc-color-bg-elevated);
+}
+
+legend {
+  padding-inline: var(--cc-space-2);
+  font-family: var(--cc-font-display);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   10. Cards & grids
+   ========================================================================== */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: var(--cc-space-4);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cc-space-3);
+  padding: var(--cc-space-4);
+  background: var(--cc-color-bg-elevated);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  box-shadow: var(--cc-shadow-sm);
+  transition:
+    transform var(--cc-transition),
+    box-shadow var(--cc-transition),
+    border-color var(--cc-transition);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--cc-shadow-md);
+  border-color: #a9becb;
+}
+
+.card__title {
+  margin: 0;
+  font-family: var(--cc-font-display);
+  font-size: 1.15rem;
+}
+
+.card__meta,
+.card__price {
+  margin: 0;
+  color: var(--cc-color-text-muted);
+}
+
+.card__price {
+  color: var(--cc-color-surface-dark);
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.layout-split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--cc-space-5);
+}
+
+/* ==========================================================================
+   11. Tables
+   ========================================================================== */
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-md);
+  background: var(--cc-color-bg-elevated);
+}
+
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 36rem;
+}
+
+.data-table th,
+.data-table td {
+  padding: 0.85rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--cc-color-border);
+  vertical-align: top;
+}
+
+.data-table th {
+  background: var(--cc-color-bg-muted);
+  font-family: var(--cc-font-display);
+  font-weight: 700;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ==========================================================================
+   12. Flash placeholders (filled functionally in Commit 1.8)
+   ========================================================================== */
+
+.flash {
+  width: min(100% - 2rem, var(--cc-width-max));
+  margin: var(--cc-space-4) auto 0;
+  padding: var(--cc-space-3) var(--cc-space-4);
+  border-radius: var(--cc-radius-md);
+  border: 1px solid var(--cc-color-border);
+  background: var(--cc-color-bg-elevated);
+}
+
+.flash--success {
+  border-color: #8fcea6;
+  background: #eaf7ef;
+  color: var(--cc-color-success);
+}
+
+.flash--warning {
+  border-color: #e0c37a;
+  background: #fff7e6;
+  color: var(--cc-color-warning);
+}
+
+.flash--error {
+  border-color: #e0a399;
+  background: #fdece9;
+  color: var(--cc-color-danger);
+}
+
+/* ==========================================================================
+   13. Footer
+   ========================================================================== */
+
+.site-footer {
+  margin-top: auto;
+  border-top: 1px solid var(--cc-color-border);
+  background: var(--cc-color-surface-dark);
+  color: #d7dee5;
+}
+
+.site-footer a {
+  color: #d7f1ed;
+}
+
+.site-footer a:hover,
+.site-footer a:focus-visible {
+  color: #ffffff;
+}
+
+.site-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--cc-space-4);
+  padding-block: var(--cc-space-5);
+}
+
+.site-footer__brand {
+  margin: 0;
+}
+
+/* ==========================================================================
+   14. Responsive rules
+   Breakpoint matches docs/wireframes.md (~900px).
+   ========================================================================== */
+
+@media (min-width: 900px) {
+  .layout-split {
+    grid-template-columns: 17rem 1fr;
+  }
+
+  .layout-split--builder {
+    grid-template-columns: 1.3fr 0.9fr;
+  }
+}
+
+@media (max-width: 899px) {
+  .site-header__inner {
+    align-items: flex-start;
+  }
+
+  /* Toggle is wired in Commit 1.7; CSS shows it on small screens now. */
+  .nav-toggle {
+    display: inline-flex;
+  }
+
+  /*
+   * Progressive enhancement:
+   * Without JS, keep links visible in a stacked panel.
+   * When body.nav-enhanced is present (Commit 1.7), collapse until opened.
+   */
+  .site-nav {
+    flex-basis: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--cc-space-3);
+    padding-top: var(--cc-space-2);
+  }
+
+  body.nav-enhanced .site-nav {
+    display: none;
+  }
+
+  body.nav-enhanced .site-nav.is-open {
+    display: flex;
+  }
+
+  .site-nav__list,
+  .site-nav__account {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--cc-space-1);
+  }
+
+  .site-nav__account {
+    padding-left: 0;
+    border-left: none;
+    border-top: 1px solid var(--cc-color-border);
+    padding-top: var(--cc-space-3);
+  }
+
+  .site-nav__link {
+    padding: 0.65rem 0.25rem;
+  }
+
+  .hero__actions,
+  .form-actions,
+  .site-footer__inner,
+  .site-footer__links {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .button,
+  button.button {
+    width: 100%;
+  }
+
+  .content-section,
+  .hero {
+    padding: var(--cc-space-4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

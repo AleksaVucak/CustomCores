@@ -4,7 +4,8 @@
  *
  * File responsibility:
  *   Renders the main menu used across public and private customer pages.
- *   Desktop/mobile behaviour is enhanced in Commit 1.7 (toggle + JS).
+ *   Desktop layout is styled in Commit 1.5. Mobile toggle behaviour is
+ *   completed in Commit 1.7 (`assets/js/main.js` + `.is-open` / `nav-enhanced`).
  *
  * Included from:
  *   includes/header.php
@@ -33,7 +34,6 @@ $navItems = [
     id="nav-toggle"
     aria-controls="primary-navigation"
     aria-expanded="false"
-    hidden
 >
     Menu
 </button>

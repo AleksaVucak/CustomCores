@@ -80,8 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 1.4 complete (shared layout includes).**  
-Pages using the shared chrome: `index.php`, `about.php`.  
-Includes: `functions.php`, `header.php`, `navigation.php`, `footer.php` (plus existing `database.php`).  
+**Commit 1.5 complete (base CSS).**  
+Stylesheet: `assets/css/main.css` (linked from `includes/header.php`).  
 
-Next: Commit **1.5** — base responsive stylesheet (`assets/css/main.css`).
+Next: Commit **1.6** — shared JavaScript utilities (`assets/js/main.js`).

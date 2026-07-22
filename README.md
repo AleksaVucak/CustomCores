@@ -32,11 +32,10 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Stage 1 / Commit 1.4** — shared header, footer, and navigation includes added.
+**Stage 1 / Commit 1.5** — base responsive stylesheet added (`assets/css/main.css`).
 
-`index.php` and `about.php` both reuse `includes/header.php`, `navigation.php`,
-and `footer.php`. Base CSS/JS files are linked now and filled in Commits 1.5–1.6;
-responsive menu behaviour is completed in Commit 1.7.
+Shared JavaScript utilities follow in Commit 1.6; responsive menu toggle behaviour
+is completed in Commit 1.7; flash messages in Commit 1.8.
 
 ## Security notes
 
