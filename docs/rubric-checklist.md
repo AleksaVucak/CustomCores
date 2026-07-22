@@ -150,6 +150,7 @@ These appear in the project instructions and package requirements. They support 
 | **3.6** | `catalogue.php` rewritten with filter sidebar + 6 sort modes; all filters combinable via prepared statements |
 | **3.7** | `compare.php` — side-by-side comparison (2–4 products); catalogue checkboxes + product detail entry |
 | **3.8** | `reviews.php` + product reviews section — `status = approved` only; `seed-reviews.sql` demo data |
+| **4.1** | `register.php` — server-side validation, `password_hash()`, duplicate-email rejection, CSRF; `includes/csrf.php` + `includes/auth.php` |
 
 ---
 
@@ -168,9 +169,12 @@ These appear in the project instructions and package requirements. They support 
    - [x] 3.6 Filters and sorting  
    - [x] 3.7 Product comparison  
    - [x] 3.8 Approved reviews — **Stage 3 complete**  
-6. After Stage 10 — mark #3a / #3b **Complete** after theme switch test.
-7. After Stage 16 — mark #11 **Complete** with the live URL.  
-8. Stage 15.8 — final audit: every Section A row must be **Complete** with tested evidence.
+6. Begin **Stage 4** — accounts and auth.  
+   - [x] 4.1 Customer registration  
+   - [ ] 4.2–4.8 Login, logout, route protection, profile, roles, session hardening  
+7. After Stage 10 — mark #3a / #3b **Complete** after theme switch test.
+8. After Stage 16 — mark #11 **Complete** with the live URL.  
+9. Stage 15.8 — final audit: every Section A row must be **Complete** with tested evidence.
 
 **Commit 0.3 acceptance:** Every rubric item in Section A has a points value, planned evidence column, verification method, target stage, and status. No graded row is left without an evidence plan.  
 **Commit 0.4 acceptance:** Sitemap documents ≥ 20 dynamic and ≥ 5 static pages with purposeful routes (48 + 7 planned).  
@@ -245,4 +249,15 @@ These appear in the project instructions and package requirements. They support 
 - [x] 3.6 Catalogue filters and sorting (`catalogue.php`)
 - [x] 3.7 Product comparison (`compare.php`)
 - [x] 3.8 Approved product reviews (`reviews.php` + product section)
+
+### Stage 4 progress
+
+- [x] 4.1 Customer registration (`register.php` + `includes/csrf.php`, `includes/auth.php`)
+- [ ] 4.2 Secure customer login
+- [ ] 4.3 Secure logout
+- [ ] 4.4 Protect private customer routes
+- [ ] 4.5 Customer profile dashboard
+- [ ] 4.6 Profile editing
+- [ ] 4.7 Role-based permissions
+- [ ] 4.8 Strengthen session security
 

@@ -80,7 +80,8 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Stage 3 complete (Commit 3.8).**  
-Reviews: `reviews.php` + product detail section — approved only; `seed-reviews.sql` for demos.
+**Commit 4.1 complete.**  
+Registration: `register.php` — server-side validation, hashed passwords, duplicate-email rejection.  
+Helpers: `includes/csrf.php`, `includes/auth.php`.
 
-Next: **Stage 4** — registration, authentication, and profiles.
+Next: **Commit 4.2** — secure customer login.

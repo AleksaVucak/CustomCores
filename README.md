@@ -34,13 +34,14 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Stage 3 complete (Commit 3.8)** — approved product reviews.
+**Commit 4.1 complete** — customer registration.
 
-`reviews.php` and the product detail page show only reviews with
-`status = approved`. Pending and hidden reviews never appear publicly.
-Demo seed: `database/seed-reviews.sql`.
+`register.php` validates input server-side, hashes passwords with
+`password_hash()`, rejects duplicate emails, and creates active customer
+accounts. New helpers: `includes/csrf.php` (CSRF tokens) and
+`includes/auth.php` (session read helpers).
 
-Next: **Stage 4** — registration, authentication, and profiles.
+Next: **Commit 4.2** — secure customer login.
 
 ## Security notes
 

@@ -506,6 +506,59 @@ legend {
   font-weight: 700;
 }
 
+.form-optional {
+  font-weight: 400;
+  color: var(--cc-color-text-muted);
+}
+
+input[aria-invalid="true"],
+select[aria-invalid="true"],
+textarea[aria-invalid="true"] {
+  border-color: var(--cc-color-danger);
+}
+
+input[aria-invalid="true"]:focus-visible,
+select[aria-invalid="true"]:focus-visible,
+textarea[aria-invalid="true"]:focus-visible {
+  box-shadow: 0 0 0 3px rgba(163, 59, 45, 0.2);
+}
+
+/* ---- Auth pages (register / login) -------------------------------------- */
+
+.auth-page {
+  display: flex;
+  justify-content: center;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 40rem;
+  padding: var(--cc-space-5);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+  box-shadow: var(--cc-shadow-md);
+}
+
+.auth-card__header {
+  margin-bottom: var(--cc-space-4);
+}
+
+.auth-card__intro {
+  margin: var(--cc-space-2) 0 0;
+  color: var(--cc-color-text-muted);
+}
+
+.auth-form {
+  margin-top: var(--cc-space-4);
+}
+
+.auth-card__foot {
+  margin: var(--cc-space-4) 0 0;
+  font-size: 0.9rem;
+  color: var(--cc-color-text-muted);
+}
+
 /* ==========================================================================
    10. Cards & grids
    ========================================================================== */
