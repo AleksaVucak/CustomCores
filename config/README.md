@@ -44,6 +44,10 @@ Expected success output includes `CustomCore database connection: OK` and does *
 
 The reusable helper used by the website is `includes/database.php` (`customcore_pdo()`).
 
+## Full database import
+
+See [`docs/database-import.md`](../docs/database-import.md) for the complete schema → seeds → admin → verification → backup sequence.
+
 ## Create an admin account (Commit 2.7)
 
 After the database schema and config are in place:

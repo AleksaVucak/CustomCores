@@ -6,7 +6,7 @@
 **Engine (planned):** MySQL / InnoDB, `utf8mb4`  
 **Access layer:** PHP PDO with prepared statements only (`includes/database.php` → `customcore_pdo()`, Commit 1.3)
 
-This document is the design contract. Executable SQL, seeds, and import steps arrive in Stage 2 (`database/schema.sql`, seed files, and expanded docs).
+This document is the design contract. Executable SQL and seeds live in `database/`. Import, verification, and backup steps are documented in [`docs/database-import.md`](database-import.md) (Commit 2.8).
 
 ---
 
@@ -443,16 +443,36 @@ Results: **compatible** / **warning** / **incompatible**, with explanations. Ser
 
 ---
 
-## 8. Stage 2 deliverables (next coding stage for data)
+## 8. Stage 2 deliverables (implementation status)
 
-| Commit | Deliverable |
-| ------ | ----------- |
-| 2.1 | `database/schema.sql` implementing this plan |
-| 2.2–2.3 | Product + option seeds (≥ 20 × ≥ 2 options) |
-| 2.4–2.5 | Component + compatibility seeds |
-| 2.6 | Theme + settings seeds |
-| 2.7 | Secure admin creation script (hashed password, not plain text in Git) |
-| 2.8 | Import guide updates in this doc / installation docs |
+| Commit | Deliverable | Status |
+| ------ | ----------- | ------ |
+| 2.1 | `database/schema.sql` implementing this plan | Done |
+| 2.2–2.3 | Product + option seeds (≥ 20 × ≥ 2 options) | Done |
+| 2.4–2.5 | Component + compatibility seeds | Done |
+| 2.6 | Theme + settings seeds | Done |
+| 2.7 | Secure admin creation script (hashed password, not plain text in Git) | Done |
+| 2.8 | Import guide (`docs/database-import.md`) + this doc aligned to live schema | Done |
+
+---
+
+## 8a. Import, backup, and ER alignment (Commit 2.8)
+
+**Full step-by-step guide:** [`docs/database-import.md`](database-import.md)
+
+### Quick import sequence
+
+1. Create a utf8mb4 database and `config/database.php` (from the example).  
+2. Import `database/schema.sql`.  
+3. Import seeds in order: products → product-options → components → compatibility → themes.  
+4. Run `php database/create-admin.php` for a bcrypt-hashed admin.  
+5. Run the verification queries in the import guide (20 products; zero products with &lt; 2 options; builder categories populated; 7 rules; active theme readable).
+
+### ER alignment note
+
+The Mermaid diagram and table plan in this document match the 21 tables created by `database/schema.sql`. Seed files populate catalogue, builder, compatibility, and theme rows required by Stage 2 acceptance. Application features that use empty transactional tables (cart, orders, reviews, etc.) arrive in later stages; the relationships are already present in the schema.
+
+**Source of truth for executable SQL:** `database/schema.sql` and the `database/seed-*.sql` files. Keep this design document updated when those files change.
 
 ---
 
@@ -488,4 +508,4 @@ Results: **compatible** / **warning** / **incompatible**, with explanations. Ser
 
 ## 10. Status
 
-**Commit 2.7 complete.** Admin setup script `database/create-admin.php` creates admin users with bcrypt-hashed passwords via CLI prompts. No plain-text passwords in Git. Next: **Commit 2.8** — import guide and documentation updates.
+**Stage 2 complete (Commit 2.8).** Schema, catalogue seeds, builder seeds, compatibility rules, themes/settings, secure admin setup, and the import/backup guide (`docs/database-import.md`) are in place. Next: **Stage 3** — public catalogue pages driven by MySQL.

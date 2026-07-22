@@ -28,19 +28,19 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 - [Application sitemap](docs/sitemap.md)
 - [Desktop and mobile wireframes](docs/wireframes.md)
 - [Database entity-relationship design](docs/database-design.md)
+- [Database import, verification, and backup](docs/database-import.md)
 - [Application directory structure](docs/directory-structure.md)
 - [Flash message usage](docs/flash-messages.md)
 
 ## Current status
 
-**Commit 2.7 complete** — secure admin creation script added.
+**Stage 2 complete (Commit 2.8)** — database import and design docs finished.
 
-`database/create-admin.php` is a CLI-only interactive script that creates an
-admin user with a bcrypt-hashed password. No plain-text passwords are stored
-in Git. The script validates the email, enforces minimum password length,
-confirms the password, and handles duplicate accounts gracefully.
+A new developer can import from scratch using [`docs/database-import.md`](docs/database-import.md):
+schema, catalogue seeds (20 products × options), builder components, compatibility
+rules, themes/settings, and secure admin creation. Stage 2 acceptance criteria are met.
 
-Next: **Commit 2.8** — database import guide and documentation updates.
+Next: **Stage 3** — public catalogue UI driven by MySQL.
 
 ## Security notes
 

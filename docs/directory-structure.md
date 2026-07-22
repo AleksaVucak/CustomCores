@@ -80,7 +80,8 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 2.7 complete.**  
-Admin setup: `database/create-admin.php` — CLI-only, bcrypt hash, no plain-text passwords in Git.
+**Stage 2 complete (Commit 2.8).**  
+Import guide: `docs/database-import.md`.  
+Database folder: schema + all seeds + `create-admin.php` + connection test.
 
-Next: **Commit 2.8** — database import guide and documentation updates.
+Next: **Stage 3** — public catalogue pages.
