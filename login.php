@@ -35,9 +35,7 @@ require_once __DIR__ . '/includes/flash.php';
 customcore_session_start();
 
 // Already authenticated users skip the login form.
-if (customcore_is_logged_in()) {
-    customcore_redirect('profile.php');
-}
+customcore_require_guest();
 
 $pageTitle = 'Log in — CustomCore';
 $pageDescription = 'Log in to your CustomCore account to manage builds, orders, and your profile.';
@@ -97,7 +95,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 customcore_flash_success('Welcome back, ' . (string) $user['first_name'] . '.');
 
-                // Profile dashboard arrives in Commit 4.5; fall back until then.
+                // Return the user to the page they were sent here from, if any.
+                $returnTo = customcore_take_return_to();
+                if ($returnTo !== null) {
+                    customcore_redirect_local($returnTo);
+                }
+
+                // Otherwise the profile dashboard (Commit 4.5), or home until then.
                 $destination = is_file(__DIR__ . '/profile.php') ? 'profile.php' : 'index.php';
                 customcore_redirect($destination);
             }

@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 4.3 complete.**  
-Logout: `logout.php` + `customcore_logout()` — full session wipe and cookie expiry.
+**Commit 4.4 complete.**  
+Auth middleware: `customcore_require_login()` / `customcore_require_guest()` + safe post-login return.
 
-Next: **Commit 4.4** — protect private customer routes.
+Next: **Commit 4.5** — customer profile dashboard.

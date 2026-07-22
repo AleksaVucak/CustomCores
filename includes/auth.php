@@ -76,6 +76,75 @@ function customcore_is_admin(): bool
 }
 
 /**
+ * Guard: require an authenticated user, or redirect guests to login.
+ *
+ * Private customer pages call this at the very top, before any output:
+ *   require_once __DIR__ . '/includes/auth.php';
+ *   customcore_require_login();
+ *
+ * Behaviour:
+ *   - Logged-in users continue normally.
+ *   - Guests get a warning flash and are redirected to login.php. The page they
+ *     tried to reach (GET only) is stored so login can send them back (4.8
+ *     hardens this further; the stored path is already validated as local).
+ */
+function customcore_require_login(): void
+{
+    if (customcore_is_logged_in()) {
+        return;
+    }
+
+    require_once __DIR__ . '/flash.php';
+
+    $method = isset($_SERVER['REQUEST_METHOD']) ? (string) $_SERVER['REQUEST_METHOD'] : 'GET';
+    $uri = isset($_SERVER['REQUEST_URI']) && is_string($_SERVER['REQUEST_URI'])
+        ? $_SERVER['REQUEST_URI']
+        : '';
+
+    if ($method === 'GET' && customcore_is_safe_local_path($uri)) {
+        $_SESSION['_cc_return_to'] = $uri;
+    }
+
+    customcore_flash_warning('Please log in to continue.');
+    customcore_redirect('login.php');
+}
+
+/**
+ * Guard: require a guest, or redirect authenticated users away.
+ *
+ * Used by login.php and register.php so logged-in users skip those forms.
+ */
+function customcore_require_guest(): void
+{
+    if (!customcore_is_logged_in()) {
+        return;
+    }
+
+    $destination = is_file(dirname(__DIR__) . '/profile.php') ? 'profile.php' : 'index.php';
+    customcore_redirect($destination);
+}
+
+/**
+ * Consume the stored post-login return path, if any.
+ *
+ * Returns a validated same-origin path or null. The value is removed from the
+ * session so it is only used once.
+ */
+function customcore_take_return_to(): ?string
+{
+    customcore_session_start();
+
+    $target = $_SESSION['_cc_return_to'] ?? null;
+    unset($_SESSION['_cc_return_to']);
+
+    if (is_string($target) && customcore_is_safe_local_path($target)) {
+        return $target;
+    }
+
+    return null;
+}
+
+/**
  * End the current authenticated session completely.
  *
  * Clears all session data, destroys the session, and expires the session cookie

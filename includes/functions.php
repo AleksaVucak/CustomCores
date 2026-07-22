@@ -110,6 +110,57 @@ function customcore_redirect(string $path, int $statusCode = 303): void
 }
 
 /**
+ * Whether a string is a safe same-origin path for a Location redirect.
+ *
+ * Rejects absolute URLs, protocol-relative URLs (//host), backslashes, and
+ * control characters (header-injection / open-redirect protection). Accepts
+ * only paths that begin with a single "/", e.g. "/customcore/profile.php?x=1".
+ *
+ * @param string $path Candidate path (typically from $_SERVER['REQUEST_URI']).
+ */
+function customcore_is_safe_local_path(string $path): bool
+{
+    if ($path === '' || $path[0] !== '/') {
+        return false;
+    }
+
+    // Protocol-relative URL such as //evil.example.com
+    if (strncmp($path, '//', 2) === 0) {
+        return false;
+    }
+
+    // Control characters (CR/LF/TAB/NUL) or backslashes are never valid here.
+    if (strpbrk($path, "\r\n\t\0") !== false || strpos($path, '\\') !== false) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * Redirect to an already-validated same-origin absolute path and stop.
+ *
+ * The caller MUST pass a path that has been checked with
+ * customcore_is_safe_local_path(); unsafe values fall back to the project root.
+ *
+ * @param string $path Same-origin path beginning with "/".
+ * @param int $statusCode HTTP status code (303 recommended after POST).
+ */
+function customcore_redirect_local(string $path, int $statusCode = 303): void
+{
+    if (!customcore_is_safe_local_path($path)) {
+        customcore_redirect('index.php', $statusCode);
+        return;
+    }
+
+    if (!headers_sent()) {
+        header('Location: ' . $path, true, $statusCode);
+    }
+
+    exit;
+}
+
+/**
  * How many directory levels below the project root the current script lives in.
  *
  * Examples: index.php => 0, admin/products.php => 1.

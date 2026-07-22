@@ -32,9 +32,7 @@ require_once __DIR__ . '/includes/flash.php';
 customcore_session_start();
 
 // Already authenticated users have no reason to register again.
-if (customcore_is_logged_in()) {
-    customcore_redirect(is_file(__DIR__ . '/profile.php') ? 'profile.php' : 'index.php');
-}
+customcore_require_guest();
 
 $pageTitle = 'Create account — CustomCore';
 $pageDescription = 'Create a CustomCore account to save builds, track orders, and manage your profile.';

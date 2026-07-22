@@ -153,6 +153,7 @@ These appear in the project instructions and package requirements. They support 
 | **4.1** | `register.php` — server-side validation, `password_hash()`, duplicate-email rejection, CSRF; `includes/csrf.php` + `includes/auth.php` |
 | **4.2** | `login.php` — `password_verify()`, disabled-account block, `session_regenerate_id()`, session creation; nav login state |
 | **4.3** | `logout.php` — session wipe, cookie expiry, flash + redirect; `customcore_logout()` helper |
+| **4.4** | Auth middleware — `customcore_require_login()` (guest redirect + return-to), `customcore_require_guest()`, `customcore_is_safe_local_path()` |
 
 ---
 
@@ -175,7 +176,8 @@ These appear in the project instructions and package requirements. They support 
    - [x] 4.1 Customer registration  
    - [x] 4.2 Secure customer login  
    - [x] 4.3 Secure logout  
-   - [ ] 4.4–4.8 Route protection, profile, roles, session hardening  
+   - [x] 4.4 Protect private customer routes  
+   - [ ] 4.5–4.8 Profile, editing, roles, session hardening  
 7. After Stage 10 — mark #3a / #3b **Complete** after theme switch test.
 8. After Stage 16 — mark #11 **Complete** with the live URL.  
 9. Stage 15.8 — final audit: every Section A row must be **Complete** with tested evidence.
@@ -259,6 +261,7 @@ These appear in the project instructions and package requirements. They support 
 - [x] 4.1 Customer registration (`register.php` + `includes/csrf.php`, `includes/auth.php`)
 - [x] 4.2 Secure customer login (`login.php` — session creation + regeneration)
 - [x] 4.3 Secure logout (`logout.php` + `customcore_logout()`)
+- [x] 4.4 Protect private customer routes (`customcore_require_login()` / `require_guest()`)
 - [ ] 4.3 Secure logout
 - [ ] 4.4 Protect private customer routes
 - [ ] 4.5 Customer profile dashboard

@@ -34,13 +34,15 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 4.3 complete** — secure logout.
+**Commit 4.4 complete** — private route protection.
 
-`logout.php` clears session data, destroys the server-side session, expires the
-session cookie, and redirects to login as a guest. The nav **Log out** link is
-now live. Helper: `customcore_logout()` in `includes/auth.php`.
+`includes/auth.php` now provides `customcore_require_login()` (redirects guests
+to login and remembers the intended page) and `customcore_require_guest()`
+(keeps logged-in users off the login/register forms). Post-login return uses a
+validated same-origin path (`customcore_is_safe_local_path()`), so private
+pages from Commit 4.5 onward are one line to protect.
 
-Next: **Commit 4.4** — protect private customer routes.
+Next: **Commit 4.5** — customer profile dashboard.
 
 ## Security notes
 
