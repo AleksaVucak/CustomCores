@@ -1,11 +1,12 @@
 <?php
 /**
- * CustomCore — Catalogue with Filters & Sorting (Commit 3.6).
+ * CustomCore — Catalogue with Filters, Sorting & Compare entry (Commits 3.3–3.7).
  *
  * File responsibility:
  *   Displays active products with category, price range, brand, and in-stock
- *   filters plus sort controls. All filters work individually and combined.
- *   Uses PDO prepared statements throughout.
+ *   filters plus sort controls. Product cards include checkboxes that submit
+ *   selected IDs to compare.php (Commit 3.7). All filters work individually
+ *   and combined via PDO prepared statements.
  *
  * Filters (GET parameters):
  *   ?category=slug        — tier filter
@@ -391,6 +392,7 @@ require_once __DIR__ . '/includes/header.php';
                 </p>
                 <p class="catalogue-toolbar__sort-label">
                     Sorted by: <strong><?php echo customcore_e($sortLabels[$sortKey]); ?></strong>
+                    · <a href="<?php echo customcore_e(customcore_url('compare.php')); ?>">Compare systems</a>
                 </p>
             </div>
 
@@ -407,63 +409,95 @@ require_once __DIR__ . '/includes/header.php';
                     to see every product.
                 </p>
             <?php elseif ($products !== []) : ?>
-                <div class="card-grid catalogue-grid">
-                    <?php foreach ($products as $product) : ?>
-                        <?php
-                        $productId = (int) ($product['id'] ?? 0);
-                        $productName = (string) ($product['name'] ?? 'Product');
-                        $productUrl = customcore_url('product.php?id=' . $productId);
-                        $price = number_format((float) ($product['base_price'] ?? 0), 2);
-                        $categoryName = (string) ($product['category_name'] ?? '');
-                        $short = (string) ($product['short_description'] ?? '');
-                        $specCpu = (string) ($product['spec_cpu'] ?? '');
-                        $specGpu = (string) ($product['spec_gpu'] ?? '');
-                        $specRam = (string) ($product['spec_ram'] ?? '');
-                        $stock = (int) ($product['stock_quantity'] ?? 0);
-                        $isFeatured = !empty($product['is_featured']);
-                        $inStock = $stock > 0;
-                        ?>
-                        <article class="card product-card">
-                            <div class="product-card__media" aria-hidden="true">
-                                <span class="product-card__media-label">PC</span>
-                            </div>
-                            <?php if ($isFeatured) : ?>
-                                <p class="product-card__badge">Featured</p>
-                            <?php endif; ?>
-                            <h3 class="card__title">
-                                <a href="<?php echo customcore_e($productUrl); ?>">
-                                    <?php echo customcore_e($productName); ?>
-                                </a>
-                            </h3>
-                            <?php if ($categoryName !== '') : ?>
-                                <p class="card__meta"><?php echo customcore_e($categoryName); ?></p>
-                            <?php endif; ?>
-                            <?php if ($short !== '') : ?>
-                                <p class="product-card__blurb"><?php echo customcore_e($short); ?></p>
-                            <?php endif; ?>
-                            <ul class="product-card__specs">
-                                <?php if ($specCpu !== '') : ?>
-                                    <li><?php echo customcore_e($specCpu); ?></li>
+                <form
+                    class="catalogue-compare-form"
+                    method="get"
+                    action="<?php echo customcore_e(customcore_url('compare.php')); ?>"
+                >
+                    <div class="catalogue-compare-bar">
+                        <p class="catalogue-compare-bar__text">
+                            Tick 2–4 systems, then compare them side by side.
+                        </p>
+                        <button type="submit" class="button">Compare selected</button>
+                    </div>
+
+                    <div class="card-grid catalogue-grid">
+                        <?php foreach ($products as $product) : ?>
+                            <?php
+                            $productId = (int) ($product['id'] ?? 0);
+                            $productName = (string) ($product['name'] ?? 'Product');
+                            $productUrl = customcore_url('product.php?id=' . $productId);
+                            $price = number_format((float) ($product['base_price'] ?? 0), 2);
+                            $categoryName = (string) ($product['category_name'] ?? '');
+                            $short = (string) ($product['short_description'] ?? '');
+                            $specCpu = (string) ($product['spec_cpu'] ?? '');
+                            $specGpu = (string) ($product['spec_gpu'] ?? '');
+                            $specRam = (string) ($product['spec_ram'] ?? '');
+                            $stock = (int) ($product['stock_quantity'] ?? 0);
+                            $isFeatured = !empty($product['is_featured']);
+                            $inStock = $stock > 0;
+                            $compareInputId = 'compare-product-' . $productId;
+                            ?>
+                            <article class="card product-card">
+                                <div class="product-card__media" aria-hidden="true">
+                                    <span class="product-card__media-label">PC</span>
+                                </div>
+                                <?php if ($isFeatured) : ?>
+                                    <p class="product-card__badge">Featured</p>
                                 <?php endif; ?>
-                                <?php if ($specGpu !== '') : ?>
-                                    <li><?php echo customcore_e($specGpu); ?></li>
+                                <h3 class="card__title">
+                                    <a href="<?php echo customcore_e($productUrl); ?>">
+                                        <?php echo customcore_e($productName); ?>
+                                    </a>
+                                </h3>
+                                <?php if ($categoryName !== '') : ?>
+                                    <p class="card__meta"><?php echo customcore_e($categoryName); ?></p>
                                 <?php endif; ?>
-                                <?php if ($specRam !== '') : ?>
-                                    <li><?php echo customcore_e($specRam); ?></li>
+                                <?php if ($short !== '') : ?>
+                                    <p class="product-card__blurb"><?php echo customcore_e($short); ?></p>
                                 <?php endif; ?>
-                            </ul>
-                            <p class="card__price">From $<?php echo customcore_e($price); ?></p>
-                            <p class="product-card__stock<?php echo $inStock ? '' : ' is-out'; ?>">
-                                <?php echo $inStock
-                                    ? customcore_e('In stock (' . $stock . ')')
-                                    : 'Out of stock'; ?>
-                            </p>
-                            <p class="product-card__actions">
-                                <a class="button" href="<?php echo customcore_e($productUrl); ?>">View details</a>
-                            </p>
-                        </article>
-                    <?php endforeach; ?>
-                </div>
+                                <ul class="product-card__specs">
+                                    <?php if ($specCpu !== '') : ?>
+                                        <li><?php echo customcore_e($specCpu); ?></li>
+                                    <?php endif; ?>
+                                    <?php if ($specGpu !== '') : ?>
+                                        <li><?php echo customcore_e($specGpu); ?></li>
+                                    <?php endif; ?>
+                                    <?php if ($specRam !== '') : ?>
+                                        <li><?php echo customcore_e($specRam); ?></li>
+                                    <?php endif; ?>
+                                </ul>
+                                <p class="card__price">From $<?php echo customcore_e($price); ?></p>
+                                <p class="product-card__stock<?php echo $inStock ? '' : ' is-out'; ?>">
+                                    <?php echo $inStock
+                                        ? customcore_e('In stock (' . $stock . ')')
+                                        : 'Out of stock'; ?>
+                                </p>
+                                <p class="product-card__compare">
+                                    <label class="product-card__compare-label" for="<?php echo customcore_e($compareInputId); ?>">
+                                        <input
+                                            type="checkbox"
+                                            id="<?php echo customcore_e($compareInputId); ?>"
+                                            name="ids[]"
+                                            value="<?php echo customcore_e((string) $productId); ?>"
+                                        >
+                                        Add to compare
+                                    </label>
+                                </p>
+                                <p class="product-card__actions">
+                                    <a class="button" href="<?php echo customcore_e($productUrl); ?>">View details</a>
+                                </p>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <div class="catalogue-compare-bar catalogue-compare-bar--footer">
+                        <p class="catalogue-compare-bar__text">
+                            Ready to compare? Submit 2–4 selected systems.
+                        </p>
+                        <button type="submit" class="button">Compare selected</button>
+                    </div>
+                </form>
             <?php endif; ?>
         </div>
     </div>

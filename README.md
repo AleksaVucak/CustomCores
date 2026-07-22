@@ -34,13 +34,13 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 3.6 complete** — catalogue filters and sorting.
+**Commit 3.7 complete** — product comparison.
 
-`catalogue.php` now has a filter sidebar (category, brand, price range, in-stock)
-and sort controls (Featured, Price low/high, Name A/Z, Newest). All filters work
-individually and combined via PDO prepared statements.
+`compare.php` shows 2–4 selected systems side by side with consistent fields
+(price, stock, brand, category, CPU/GPU/RAM/storage). Catalogue cards and the
+product detail page both link into the comparer.
 
-Next: **Commit 3.7** — product comparison.
+Next: **Commit 3.8** — approved product reviews.
 
 ## Security notes
 

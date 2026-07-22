@@ -5,8 +5,8 @@
  * File responsibility:
  *   Displays a single product loaded from MySQL with specifications, configurable
  *   option groups (RAM, Storage, Colour, etc.), price with default-option total,
- *   stock status, and a context-sensitive Help link. One reusable page serves
- *   every product ID.
+ *   stock status, a compare entry point (Commit 3.7), and a context-sensitive
+ *   Help link. One reusable page serves every product ID.
  *
  * URL format:
  *   product.php?id=1
@@ -291,6 +291,9 @@ require_once __DIR__ . '/includes/header.php';
         <footer class="product-detail__actions">
             <a class="button" href="<?php echo customcore_e(customcore_url('catalogue.php?category=' . rawurlencode((string) $product['category_slug']))); ?>">
                 &larr; Back to <?php echo customcore_e($categoryName); ?>
+            </a>
+            <a class="button button--secondary" href="<?php echo customcore_e(customcore_url('compare.php?ids=' . $productId)); ?>">
+                Compare this system
             </a>
             <a class="button button--secondary" href="<?php echo customcore_e(customcore_url('catalogue.php')); ?>">
                 All systems

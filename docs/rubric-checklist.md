@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 3 / Commit 3.6 (catalogue filters and sorting)
+**Last updated:** Stage 3 / Commit 3.7 (product comparison)
 
 ### Status legend
 
@@ -148,6 +148,7 @@ These appear in the project instructions and package requirements. They support 
 | **3.4** | `product.php?id=N` — full detail page with option groups, price deltas, specs, stock; rubric #2 Complete |
 | **3.5** | `search.php` — search name/category/brand/description/specs; empty + no-results states; catalogue search form |
 | **3.6** | `catalogue.php` rewritten with filter sidebar + 6 sort modes; all filters combinable via prepared statements |
+| **3.7** | `compare.php` — side-by-side comparison (2–4 products); catalogue checkboxes + product detail entry |
 
 ---
 
@@ -164,7 +165,8 @@ These appear in the project instructions and package requirements. They support 
    - [x] 3.4 Product detail pages (#2 Complete)  
    - [x] 3.5 Product search  
    - [x] 3.6 Filters and sorting  
-   - [ ] 3.7–3.8 Compare, reviews  
+   - [x] 3.7 Product comparison  
+   - [ ] 3.8 Approved reviews  
 6. After Stage 10 — mark #3a / #3b **Complete** after theme switch test.  
 7. After Stage 16 — mark #11 **Complete** with the live URL.  
 8. Stage 15.8 — final audit: every Section A row must be **Complete** with tested evidence.
@@ -240,6 +242,6 @@ These appear in the project instructions and package requirements. They support 
 - [x] 3.4 Product detail pages (`product.php`)
 - [x] 3.5 Product search (`search.php`)
 - [x] 3.6 Catalogue filters and sorting (`catalogue.php`)
-- [ ] 3.7 Product comparison
+- [x] 3.7 Product comparison (`compare.php`)
 - [ ] 3.8 Approved product reviews
 

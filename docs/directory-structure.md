@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 3.6 complete.**  
-Catalogue: `catalogue.php` — filters (category, brand, price, stock) + 6 sort modes.
+**Commit 3.7 complete.**  
+Comparison: `compare.php` — side-by-side specs for 2–4 selected products.
 
-Next: **Commit 3.7** — product comparison.
+Next: **Commit 3.8** — approved product reviews.
