@@ -80,7 +80,8 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 1.6 complete (shared JavaScript).**  
-Script: `assets/js/main.js` (linked from `includes/footer.php` with `defer`).  
+**Commit 1.7 complete (responsive navigation).**  
+Mobile: Menu/Close toggle, Escape to dismiss, focus trap while open.  
+Desktop: horizontal nav unchanged. Without JS, links stay visible (progressive enhancement).  
 
-Next: Commit **1.7** — responsive main navigation (mobile toggle, keyboard support).
+Next: Commit **1.8** — reusable flash message system.

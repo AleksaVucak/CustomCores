@@ -1,22 +1,30 @@
 /**
- * CustomCore — Shared JavaScript utilities
+ * CustomCore — Shared JavaScript utilities and responsive navigation
  * ----------------------------------------------------------------------------
  * File responsibility:
- *   Provides common browser helpers used across public pages. Loaded deferred
- *   from includes/footer.php so it does not block first paint.
+ *   Provides common browser helpers and the mobile/desktop navigation toggle.
+ *   Loaded deferred from includes/footer.php so it does not block first paint.
  *
  * Inputs / outputs:
- *   Exposes window.CustomCore with utility functions. Does not throw when
- *   optional page elements are missing.
+ *   Exposes window.CustomCore with utility functions. Navigation enhancement
+ *   requires #nav-toggle and #primary-navigation; pages without them are safe.
  *
- * Later commits:
- *   1.7 — responsive navigation toggle (uses these helpers)
- *   Later stages — builder, cart, validation, charts, and map scripts
+ * Navigation behaviour (Commit 1.7):
+ *   - Adds body.nav-enhanced so CSS can collapse the menu under 900px
+ *   - Toggle opens/closes .site-nav.is-open
+ *   - Escape closes the menu and returns focus to the toggle
+ *   - Focus is kept within the header while the mobile menu is open
+ *   - Resizing to desktop width closes the mobile menu state
+ *
+ * Later stages:
+ *   builder, cart, validation, charts, and map scripts
  * ----------------------------------------------------------------------------
  */
 
 (function (window, document) {
   "use strict";
+
+  var NAV_DESKTOP_MIN = 900;
 
   /**
    * Run a callback when the DOM is ready.
@@ -179,16 +187,139 @@
   }
 
   /**
-   * Shared application bootstrap for Commit 1.6.
-   * Navigation toggle behaviour is added in Commit 1.7.
+   * Whether the viewport currently uses the desktop navigation layout.
+   *
+   * @returns {boolean}
+   */
+  function isDesktopNav() {
+    return window.matchMedia("(min-width: " + NAV_DESKTOP_MIN + "px)").matches;
+  }
+
+  /**
+   * Initialize the responsive primary navigation.
+   *
+   * @returns {void}
+   */
+  function initNavigation() {
+    var toggle = qs("#nav-toggle");
+    var nav = qs("#primary-navigation");
+    var headerInner = qs(".site-header__inner");
+
+    if (!toggle || !nav) {
+      return;
+    }
+
+    document.body.classList.add("nav-enhanced");
+
+    var isOpen = false;
+    var releaseTrap = function noop() {};
+
+    /**
+     * @param {boolean} open
+     * @param {{ restoreFocus?: boolean }} [options]
+     * @returns {void}
+     */
+    function setOpen(open, options) {
+      var settings = options || {};
+      var restoreFocus = settings.restoreFocus !== false;
+
+      isOpen = Boolean(open);
+      toggleClass(nav, "is-open", isOpen);
+      setAria(toggle, "aria-expanded", isOpen ? "true" : "false");
+      setAria(toggle, "aria-label", isOpen ? "Close menu" : "Open menu");
+      toggle.textContent = isOpen ? "Close" : "Menu";
+
+      releaseTrap();
+      releaseTrap = function noop() {};
+
+      if (isOpen) {
+        releaseTrap = createFocusTrap(headerInner || nav);
+        return;
+      }
+
+      if (restoreFocus && typeof toggle.focus === "function") {
+        toggle.focus();
+      }
+    }
+
+    function closeMenu(options) {
+      if (!isOpen) {
+        return;
+      }
+      setOpen(false, options);
+    }
+
+    function openMenu() {
+      if (isOpen || isDesktopNav()) {
+        return;
+      }
+      setOpen(true);
+    }
+
+    function toggleMenu() {
+      if (isDesktopNav()) {
+        closeMenu({ restoreFocus: false });
+        return;
+      }
+      if (isOpen) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    }
+
+    toggle.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      toggleMenu();
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" || event.key === "Esc") {
+        closeMenu();
+      }
+    });
+
+    document.addEventListener("click", function (event) {
+      if (!isOpen) {
+        return;
+      }
+
+      var target = event.target;
+      if (headerInner && target && headerInner.contains(target)) {
+        return;
+      }
+
+      closeMenu({ restoreFocus: false });
+    });
+
+    var mediaQuery = window.matchMedia("(min-width: " + NAV_DESKTOP_MIN + "px)");
+
+    function onViewportChange() {
+      if (mediaQuery.matches) {
+        closeMenu({ restoreFocus: false });
+      }
+    }
+
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", onViewportChange);
+    } else if (typeof mediaQuery.addListener === "function") {
+      mediaQuery.addListener(onViewportChange);
+    }
+
+    // Start closed on small screens once enhancement is active.
+    setOpen(false, { restoreFocus: false });
+  }
+
+  /**
+   * Shared application bootstrap.
    *
    * @returns {void}
    */
   function init() {
     document.documentElement.classList.add("js");
-
-    // Confirm script identity for debugging without noisy console output.
     document.body.setAttribute("data-cc-js", "ready");
+    initNavigation();
   }
 
   var CustomCore = window.CustomCore || {};
@@ -200,6 +331,7 @@
   CustomCore.toggleClass = toggleClass;
   CustomCore.setAria = setAria;
   CustomCore.createFocusTrap = createFocusTrap;
+  CustomCore.initNavigation = initNavigation;
   CustomCore.init = init;
 
   window.CustomCore = CustomCore;

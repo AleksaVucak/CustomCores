@@ -34,6 +34,7 @@ $navItems = [
     id="nav-toggle"
     aria-controls="primary-navigation"
     aria-expanded="false"
+    aria-label="Open menu"
 >
     Menu
 </button>

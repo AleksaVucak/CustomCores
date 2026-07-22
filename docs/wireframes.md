@@ -380,7 +380,8 @@ These are structural wireframes (not final visual design). Theme colours, fonts,
 2. Mobile toggle must be keyboard operable (Escape closes; focus returns to button) — Stage 1 / 14.  
 3. Homepage hero stays one composition (brand, one headline, one sentence, CTA group, dominant visual) — avoid packing stats/schedules into the first viewport.  
 4. Cart and builder summaries must remain readable without horizontal scrolling on small screens.  
-5. Convert these wireframes into CSS layout in Stage 1 (`main.css`) and refine per theme in Stage 10.
+5. Convert these wireframes into CSS layout in Stage 1 (`main.css`) and refine per theme in Stage 10.  
+6. Mobile navigation toggle is implemented in Commit 1.7 (`assets/js/main.js`).
 
 ---
 

@@ -688,7 +688,7 @@ table.data-table {
   /*
    * Progressive enhancement:
    * Without JS, keep links visible in a stacked panel.
-   * When body.nav-enhanced is present (Commit 1.7), collapse until opened.
+   * When body.nav-enhanced is present (main.js Commit 1.7), collapse until opened.
    */
   .site-nav {
     flex-basis: 100%;
@@ -704,6 +704,17 @@ table.data-table {
 
   body.nav-enhanced .site-nav.is-open {
     display: flex;
+    padding: var(--cc-space-3);
+    border: 1px solid var(--cc-color-border);
+    border-radius: var(--cc-radius-md);
+    background: var(--cc-color-bg-elevated);
+    box-shadow: var(--cc-shadow-sm);
+  }
+
+  body.nav-enhanced .nav-toggle[aria-expanded="true"] {
+    background: var(--cc-color-accent-soft);
+    border-color: var(--cc-color-accent);
+    color: var(--cc-color-accent-hover);
   }
 
   .site-nav__list,

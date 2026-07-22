@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 1 / Commit 1.6
+**Last updated:** Stage 1 / Commit 1.7
 
 ### Status legend
 
@@ -35,7 +35,7 @@
 | 5 | PHP code and MySQL database well documented | 20 | PHP file/function comments; `database/schema.sql` comments; `docs/database-design.md` (+ ER diagram); install notes in `docs/installation-guide.md` | Another developer can understand schema relationships and major PHP modules from comments + docs | 2.8, 12.4, 14.6–14.7 | Planned — ER/table design documented (0.6); schema.sql not built yet |
 | 6 | All code properly commented (HTML, CSS, JS, and related sources) | 8 | Structured comments in HTML/PHP views, `assets/css/*`, `assets/js/*`, SQL seeds | Major sections documented; comments explain purpose, not obvious syntax | 14.6–14.7 | Planned |
 | 7 | Help wiki: at least 5 different pages; context-sensitive Help links from the site | 10 | Static Help: `help/index.html`, `help/accounts.html`, `help/catalogue.html`, `help/pc-builder.html`, `help/orders.html`, `help/support.html` (6 pages; 5 required + hub). Context links from profile, catalogue, builder, checkout, consultation pages | Each Help article opens as its own page; feature pages link to the matching article (not only one generic Help link) | 11.1–11.7 | Planned |
-| 9 | Site has a main menu that is responsive across screen sizes | 4 | `includes/navigation.php` + responsive rules in `assets/css/main.css` / themes; behaviour in `assets/js/main.js`; layout contract in `docs/wireframes.md` | Desktop and mobile layouts usable; keyboard/touch menu works | 1.5, 1.7 | In progress — responsive CSS in 1.5; toggle JS in 1.7 |
+| 9 | Site has a main menu that is responsive across screen sizes | 4 | `includes/navigation.php` + responsive rules in `assets/css/main.css` / themes; behaviour in `assets/js/main.js`; layout contract in `docs/wireframes.md` | Desktop and mobile layouts usable; keyboard/touch menu works | 1.5, 1.7 | Complete — desktop horizontal nav; mobile toggle, Escape, focus trap |
 | 10a | About ~20 dynamic HTML/PHP pages | 4 | Target **48** purposeful `.php` pages listed in `docs/sitemap.md` (17 public + 12 private + 15 admin + 4 API) | Count distinct purposeful dynamic pages; no empty placeholder pages | 1–9, 13 | Planned — sitemap documented (0.4); pages not built yet |
 | 10b | At least 1 external CSS file | 2 | `assets/css/main.css` (plus admin/print/theme CSS as extras) | View source shows external stylesheet link(s) | 1.5 | Complete — `main.css` linked from shared header |
 | 10c | At least 1 external JavaScript file | 2 | `assets/js/main.js` (plus builder/cart/validation/charts/map as extras) | View source shows external script link(s); no console errors on core pages | 1.6 | Complete — `main.js` linked from shared footer |
@@ -132,12 +132,13 @@ These appear in the project instructions and package requirements. They support 
 | **1.4** | Shared `header.php`, `footer.php`, `navigation.php`, `functions.php`; `index.php` + `about.php` reuse layout |
 | **1.5** | Base responsive `assets/css/main.css` (variables, nav, forms, cards, grids, breakpoints); #10b complete |
 | **1.6** | Shared `assets/js/main.js` utilities (`CustomCore` helpers); #10c complete |
+| **1.7** | Responsive nav toggle (open/close, Escape, focus trap, resize reset); #9 complete |
 
 ---
 
 ## Section F — Next checklist actions
 
-1. Continue **Stage 1** — Commit **1.7** responsive main navigation toggle.  
+1. Continue **Stage 1** — Commit **1.8** reusable flash message system.  
 2. After Stage 2 — mark #2 / B11 **Complete** only when SQL verification queries pass.  
 3. After Stage 10 — mark #3a / #3b **Complete** after theme switch test.  
 4. After Stage 16 — mark #11 **Complete** with the live URL.  
@@ -152,7 +153,8 @@ These appear in the project instructions and package requirements. They support 
 **Commit 1.3 acceptance:** Reusable PDO helper exists; connection failures do not expose passwords; CLI test script is not a public web probe.  
 **Commit 1.4 acceptance:** Multiple pages (`index.php`, `about.php`) reuse the same header, navigation, and footer includes.  
 **Commit 1.5 acceptance:** External `main.css` provides variables, layout, nav, forms, cards, and desktop/mobile breakpoints.  
-**Commit 1.6 acceptance:** External `main.js` loads shared utilities without requiring page-specific DOM nodes.
+**Commit 1.6 acceptance:** External `main.js` loads shared utilities without requiring page-specific DOM nodes.  
+**Commit 1.7 acceptance:** Mobile menu toggle is keyboard and touch usable; desktop layout remains a horizontal menu.
 
 ### Stage 0 acceptance (all met in docs)
 
@@ -171,6 +173,6 @@ These appear in the project instructions and package requirements. They support 
 - [x] 1.4 Shared header, footer, navigation includes
 - [x] 1.5 Base responsive stylesheet
 - [x] 1.6 Shared JavaScript utilities
-- [ ] 1.7 Responsive main navigation
+- [x] 1.7 Responsive main navigation
 - [ ] 1.8 Flash message system
 

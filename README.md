@@ -32,9 +32,9 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Stage 1 / Commit 1.6** — shared JavaScript utilities added (`assets/js/main.js`).
+**Stage 1 / Commit 1.7** — responsive main navigation toggle completed.
 
-Responsive menu toggle behaviour follows in Commit 1.7; flash messages in Commit 1.8.
+Flash message system follows in Commit 1.8 (final Stage 1 commit).
 
 ## Security notes
 
