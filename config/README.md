@@ -32,4 +32,14 @@ Then edit `config/database.php` and replace:
 3. Keep `app.php` → `debug` set to `false` on the live server.
 4. Do not print database credentials in HTML error pages.
 
-The PDO connection helper that reads `database.php` is added in Commit 1.3.
+## Test the connection (Commit 1.3)
+
+After `config/database.php` exists and MySQL is available:
+
+```bash
+php database/test-connection.php
+```
+
+Expected success output includes `CustomCore database connection: OK` and does **not** print the password.
+
+The reusable helper used by the website is `includes/database.php` (`customcore_pdo()`).

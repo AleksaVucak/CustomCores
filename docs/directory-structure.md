@@ -80,8 +80,9 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 1.2 complete (configuration templates).**  
-Tracked: `config/app.php`, `config/database.example.php`, `config/README.md`.  
+**Commit 1.3 complete (PDO helper).**  
+Tracked helpers: `includes/database.php`, `database/test-connection.php`.  
+Tracked config templates: `config/app.php`, `config/database.example.php`.  
 Not tracked: `config/database.php` (create locally from the example).  
 
-Next: Commit **1.3** — reusable PDO database connection helper.
+Next: Commit **1.4** — shared header, footer, and navigation includes.

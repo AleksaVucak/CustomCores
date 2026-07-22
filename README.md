@@ -32,11 +32,13 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Stage 1 / Commit 1.2** — secure configuration templates added.
+**Stage 1 / Commit 1.3** — reusable PDO database connection helper added.
 
-Copy `config/database.example.php` to `config/database.php` and fill in your
-MySQL credentials locally. PDO connection helper follows in Commit 1.3; layout,
-CSS, JavaScript, navigation, and flash messages follow in 1.4–1.8.
+1. Copy `config/database.example.php` to `config/database.php` and enter MySQL credentials.
+2. Test with `php database/test-connection.php` (CLI only; never prints the password).
+3. Application code should call `customcore_pdo()` from `includes/database.php`.
+
+Layout, CSS, JavaScript, navigation, and flash messages follow in Commits 1.4–1.8.
 
 ## Security notes
 

@@ -4,7 +4,7 @@
 **Purpose:** Define normalized MySQL tables and relationships before writing `database/schema.sql` in Stage 2.  
 **Acceptance:** All major feature relationships are represented.  
 **Engine (planned):** MySQL / InnoDB, `utf8mb4`  
-**Access layer (planned):** PHP PDO with prepared statements only
+**Access layer:** PHP PDO with prepared statements only (`includes/database.php` → `customcore_pdo()`, Commit 1.3)
 
 This document is the design contract. Executable SQL, seeds, and import steps arrive in Stage 2 (`database/schema.sql`, seed files, and expanded docs).
 
