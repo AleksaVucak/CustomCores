@@ -31,6 +31,7 @@ require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/flash.php';
 require_once __DIR__ . '/includes/csrf.php';
 require_once __DIR__ . '/includes/compatibility.php';
+require_once __DIR__ . '/includes/performance.php';
 
 customcore_session_start();
 
@@ -265,13 +266,30 @@ try {
 $compatStatus = (string) $compatReport['status'];
 $compatResults = $compatReport['results'];
 
-$avgGaming = $gamingScores !== []
-    ? (int) round(array_sum($gamingScores) / count($gamingScores))
-    : 0;
-$avgProductivity = $productivityScores !== []
-    ? (int) round(array_sum($productivityScores) / count($productivityScores))
-    : 0;
 $recommendedPsu = $estimatedDraw > 0 ? (int) ceil($estimatedDraw * 1.2) : 0;
+
+// Weighted performance report (Commit 5.8) — replaces simple averages for the chart.
+$perfReport = [
+    'gaming' => 0,
+    'productivity' => 0,
+    'upgrade_gaming' => 0,
+    'upgrade_productivity' => 0,
+    'upgrade_headroom' => 0,
+    'by_category' => [],
+];
+try {
+    $perfRows = [];
+    foreach ($selectedByCategory as $part) {
+        $perfRows[] = $part;
+    }
+    $perfReport = customcore_performance_report($pdo, $perfRows);
+} catch (Throwable $exception) {
+    // Keep zeroed defaults; text UI still shows power estimates.
+}
+
+$avgGaming = (int) ($perfReport['gaming'] ?? 0);
+$avgProductivity = (int) ($perfReport['productivity'] ?? 0);
+$loadCharts = true;
 
 $isLoggedIn = customcore_is_logged_in();
 $isComplete = $missingRequired === [];
@@ -611,9 +629,30 @@ require_once __DIR__ . '/includes/header.php';
                             <?php endif; ?>
                         </dd>
                     </div>
+                    <div class="results-estimates__row">
+                        <dt>Upgrade headroom</dt>
+                        <dd>
+                            <?php
+                            $headroom = (int) ($perfReport['upgrade_headroom'] ?? 0);
+                            echo $avgGaming > 0 || $avgProductivity > 0
+                                ? customcore_e((string) $headroom) . ' pts'
+                                : '—';
+                            ?>
+                        </dd>
+                    </div>
                 </dl>
+
+                <?php
+                $perfChartApi = customcore_url('api/chart-data.php');
+                $perfChartIds = array_values($build);
+                $perfChartForm = '';
+                $perfChartTitle = 'Gaming, productivity & upgrade chart';
+                require __DIR__ . '/includes/perf-chart.php';
+                ?>
+
                 <p class="results-panel__hint">
-                    Performance figures are simple averages of scored parts. A full comparison chart arrives in a later builder update.
+                    Performance scores are weighted from CPU, GPU, RAM, and storage (server-side).
+                    The chart compares this build to the best active catalogue parts.
                 </p>
             </div>
 

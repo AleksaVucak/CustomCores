@@ -27,6 +27,7 @@ require_once __DIR__ . '/includes/database.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/csrf.php';
 require_once __DIR__ . '/includes/flash.php';
+require_once __DIR__ . '/includes/performance.php';
 
 customcore_require_login();
 
@@ -84,9 +85,11 @@ try {
         'SELECT sbi.id AS item_id, sbi.component_id, sbi.unit_price,
                 c.name AS component_name, c.brand, c.is_active,
                 c.component_category_id, cc.name AS category_name,
-                cc.sort_order, c.socket, c.ram_type, c.form_factor,
+                cc.slug AS category_slug, cc.sort_order,
+                c.socket, c.ram_type, c.form_factor,
                 c.psu_wattage, c.wattage_estimate, c.storage_interface,
-                c.cooler_type, c.gpu_length_mm
+                c.cooler_type, c.gpu_length_mm,
+                c.performance_gaming, c.performance_productivity
          FROM saved_build_items sbi
          JOIN components c ON c.id = sbi.component_id
          JOIN component_categories cc ON cc.id = c.component_category_id
@@ -233,6 +236,33 @@ $pageTitle = customcore_e($buildName) . ' — Saved build — CustomCore';
 $pageDescription = 'View and manage your saved build: ' . $buildName;
 $pageKeywords = 'CustomCore, saved build, manage, rename, delete';
 $currentPage = 'builder';
+$loadCharts = true;
+
+// Performance report for chart + text fallback.
+$perfReport = [
+    'gaming' => 0,
+    'productivity' => 0,
+    'upgrade_gaming' => 0,
+    'upgrade_productivity' => 0,
+    'upgrade_headroom' => 0,
+];
+$perfComponentIds = [];
+try {
+    $perfRows = [];
+    foreach ($items as $item) {
+        $perfComponentIds[] = (int) $item['component_id'];
+        $perfRows[] = [
+            'name' => (string) $item['component_name'],
+            'category_slug' => (string) ($item['category_slug'] ?? ''),
+            'category_name' => (string) $item['category_name'],
+            'performance_gaming' => $item['performance_gaming'],
+            'performance_productivity' => $item['performance_productivity'],
+        ];
+    }
+    $perfReport = customcore_performance_report($pdo, $perfRows);
+} catch (Throwable $exception) {
+    // Chart still loads via API if this fails.
+}
 
 require_once __DIR__ . '/includes/header.php';
 ?>
@@ -367,6 +397,18 @@ require_once __DIR__ . '/includes/header.php';
                             </tr>
                         </tfoot>
                     </table>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($perfComponentIds !== []): ?>
+                <div class="saved-build-perf">
+                    <?php
+                    $perfChartApi = customcore_url('api/chart-data.php');
+                    $perfChartIds = $perfComponentIds;
+                    $perfChartForm = '';
+                    $perfChartTitle = 'Performance visualization';
+                    require __DIR__ . '/includes/perf-chart.php';
+                    ?>
                 </div>
             <?php endif; ?>
 

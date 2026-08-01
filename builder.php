@@ -273,6 +273,7 @@ $pageTitle = "Step {$currentStep}: {$categoryName} — PC Builder — CustomCore
 $pageDescription = "Select a {$categoryName} for your custom PC build.";
 $pageKeywords = "CustomCore, PC builder, {$categoryName}, custom gaming PC";
 $currentPage = 'builder';
+$loadCharts = true;
 
 require_once __DIR__ . '/includes/header.php';
 ?>
@@ -343,6 +344,7 @@ require_once __DIR__ . '/includes/header.php';
                     data-category-id="<?php echo $categoryId; ?>"
                     data-price-api="<?php echo customcore_e(customcore_url('api/builder-price.php')); ?>"
                     data-compat-api="<?php echo customcore_e(customcore_url('api/compatibility-check.php')); ?>"
+                    data-chart-api="<?php echo customcore_e(customcore_url('api/chart-data.php')); ?>"
                     data-build-ids="<?php echo customcore_e(json_encode(
                         array_values(array_map('intval', array_filter($build, function ($id, $catKey) use ($categoryId) {
                             return (int) $catKey !== $categoryId;
@@ -514,6 +516,17 @@ require_once __DIR__ . '/includes/header.php';
 
             <div class="builder-compat" id="builder-compat-status" aria-live="polite">
                 <span class="compat-badge compat-badge--neutral">Select more components to check compatibility</span>
+            </div>
+
+            <div class="builder-perf-preview">
+                <?php
+                $perfChartApi = customcore_url('api/chart-data.php');
+                $perfChartIds = array_values(array_map('intval', $build));
+                $perfChartForm = '#builder-form';
+                $perfChartTitle = 'Live performance preview';
+                $perfReport = null;
+                require __DIR__ . '/includes/perf-chart.php';
+                ?>
             </div>
 
             <?php if (!empty($build)): ?>

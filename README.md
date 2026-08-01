@@ -34,14 +34,14 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 5.7 complete** — saved-build management.
+**Commit 5.8 complete** — build performance visualization.
 
-`saved-builds.php` lists all builds for the authenticated user (name, price,
-compatibility badge, component count, date). `saved-build.php` shows a single
-build with full component table, and supports rename, delete, and "edit in
-builder" (reloads into session). Ownership is enforced on every query.
+`api/chart-data.php` returns weighted gaming / productivity scores and catalogue
+upgrade ceilings from selected component IDs. `assets/js/charts.js` (Chart.js)
+renders a grouped bar chart with a permanent text fallback. The chart appears on
+the live builder, build summary, and saved-build detail pages.
 
-Next: **Commit 5.8** — build performance visualization.
+Next: **Commit 5.9** — context-sensitive builder Help.
 
 ## Security notes
 

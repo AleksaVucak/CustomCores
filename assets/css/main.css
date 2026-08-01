@@ -1634,6 +1634,87 @@ textarea[aria-invalid="true"]:focus-visible {
   color: var(--cc-color-accent-hover);
 }
 
+/* Performance chart (Commit 5.8) */
+
+.perf-chart {
+  margin-top: var(--cc-space-3);
+  padding-top: var(--cc-space-3);
+  border-top: 1px solid var(--cc-color-border);
+}
+
+.builder-perf-preview .perf-chart,
+.saved-build-perf .perf-chart,
+.results-panel .perf-chart {
+  border-top: none;
+  padding-top: 0;
+  margin-top: var(--cc-space-4);
+}
+
+.perf-chart__title {
+  margin: 0 0 var(--cc-space-2);
+  font-size: 1rem;
+}
+
+.perf-chart__status {
+  margin: 0 0 var(--cc-space-2);
+  font-size: 0.8rem;
+  color: var(--cc-color-text-muted);
+}
+
+.perf-chart__canvas-wrap {
+  position: relative;
+  width: 100%;
+  height: 14rem;
+  margin-bottom: var(--cc-space-3);
+  background: var(--cc-color-bg);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-md);
+  padding: var(--cc-space-2);
+}
+
+.perf-chart__fallback {
+  font-size: 0.85rem;
+}
+
+.perf-chart__fallback-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.perf-chart__fallback-list li {
+  padding: 0.25rem 0;
+  border-bottom: 1px solid var(--cc-color-border);
+}
+
+.perf-chart__fallback-list li:last-child {
+  border-bottom: none;
+}
+
+.perf-chart__note {
+  margin: var(--cc-space-2) 0 0;
+  font-size: 0.78rem;
+  color: var(--cc-color-text-muted);
+}
+
+.saved-build-perf {
+  margin: var(--cc-space-5) 0;
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-md);
+  background: var(--cc-color-bg-elevated);
+}
+
+.builder-perf-preview {
+  margin-top: var(--cc-space-3);
+  padding-top: var(--cc-space-3);
+  border-top: 1px solid var(--cc-color-border);
+}
+
+.builder-perf-preview .perf-chart__canvas-wrap {
+  height: 11rem;
+}
+
 /* ==========================================================================
    10. Cards & grids
    ========================================================================== */

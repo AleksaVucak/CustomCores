@@ -51,7 +51,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `database/` | Schema, seeds, create-admin script | 2.x |
 | `docs/` | Business case, rubric, sitemap, wireframes, ER design, guides | 0.x–12.x |
 | `help/` | Static Help + training HTML | 11.x |
-| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, compatibility | 1.3–1.8, 4.x, 5.x, 14.x |
+| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, compatibility, performance | 1.3–1.8, 4.x, 5.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
 | `uploads/products/` | Product images uploaded by admin | 9.2 |
 
@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 5.7 complete.**  
-Saved-build management: `saved-builds.php` (list, ownership-scoped) + `saved-build.php` (view, rename, delete, edit-in-builder). All queries enforce `user_id`.
+**Commit 5.8 complete.**  
+Performance chart: `api/chart-data.php` + `includes/performance.php` + `assets/js/charts.js` (Chart.js) with text fallback on builder, results, and saved-build pages.
 
-Next: **Commit 5.8** — build performance visualization.
+Next: **Commit 5.9** — context-sensitive builder Help.
