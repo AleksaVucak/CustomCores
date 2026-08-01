@@ -1,27 +1,26 @@
 <?php
 /**
- * CustomCore — PC Build Summary (Commit 5.5).
+ * CustomCore — PC Build Summary + Save (Commits 5.5 / 5.6).
  *
  * File responsibility:
- *   Renders the completed (or in-progress) build from the session: every
- *   selected component with trusted database prices, a server-side
- *   compatibility report, and power / performance estimates. Guests and
- *   logged-in customers can review the build; saving arrives in Commit 5.6.
- *
- * Flow:
- *   GET — load $_SESSION['_cc_build'], look up components, evaluate rules,
- *         display summary. Empty / incomplete builds redirect or warn.
+ *   GET  — Renders the completed (or in-progress) build from the session:
+ *          every selected component with trusted database prices, a server-side
+ *          compatibility report, and power / performance estimates.
+ *   POST — Saves the build to the database (saved_builds + saved_build_items).
+ *          Requires login, a complete build, and a valid CSRF token.
  *
  * Authentication requirements:
- *   None (public). Save CTA prompts login when the user is a guest.
+ *   GET is public. POST requires an authenticated customer.
  *
  * Database queries:
  *   - component_categories (ordered)
  *   - components (selected IDs, active only)
  *   - compatibility_rules (via includes/compatibility.php)
+ *   - saved_builds / saved_build_items (insert on POST)
  *
  * Session:
  *   $_SESSION['_cc_build'] — category ID → component ID (from builder.php).
+ *   Cleared on successful save.
  */
 
 declare(strict_types=1);
@@ -30,6 +29,7 @@ require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/database.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/flash.php';
+require_once __DIR__ . '/includes/csrf.php';
 require_once __DIR__ . '/includes/compatibility.php';
 
 customcore_session_start();
@@ -72,8 +72,64 @@ if (isset($_SESSION['_cc_build']) && is_array($_SESSION['_cc_build'])) {
 }
 
 if ($build === []) {
-    customcore_flash_warning('Your build is empty. Select components to see a summary.');
-    customcore_redirect('builder.php');
+    // After a successful save, the session build is cleared. If ?saved=X is
+    // present we load that saved build for display instead of redirecting.
+    if (
+        isset($_GET['saved'])
+        && is_string($_GET['saved'])
+        && ctype_digit($_GET['saved'])
+        && (int) $_GET['saved'] > 0
+        && customcore_is_logged_in()
+    ) {
+        $savedBuildId = (int) $_GET['saved'];
+
+        try {
+            $pdo = customcore_pdo();
+
+            // Verify ownership.
+            $ownerStmt = $pdo->prepare(
+                'SELECT id, name, total_price, compatibility_status, notes
+                 FROM saved_builds
+                 WHERE id = :id AND user_id = :uid
+                 LIMIT 1'
+            );
+            $ownerStmt->execute([':id' => $savedBuildId, ':uid' => customcore_current_user_id()]);
+            $savedRow = $ownerStmt->fetch();
+
+            if ($savedRow !== false) {
+                // Reconstruct build from saved_build_items.
+                $itemsStmt = $pdo->prepare(
+                    'SELECT sbi.component_id
+                     FROM saved_build_items sbi
+                     WHERE sbi.saved_build_id = :bid'
+                );
+                $itemsStmt->execute([':bid' => $savedBuildId]);
+                $savedItems = $itemsStmt->fetchAll();
+
+                // Determine category for each component.
+                $compIds = array_column($savedItems, 'component_id');
+                if ($compIds !== []) {
+                    $ph = implode(',', array_fill(0, count($compIds), '?'));
+                    $catMapStmt = $pdo->prepare(
+                        "SELECT id, component_category_id FROM components WHERE id IN ($ph)"
+                    );
+                    $catMapStmt->execute($compIds);
+                    $catMapRows = $catMapStmt->fetchAll();
+
+                    foreach ($catMapRows as $mapRow) {
+                        $build[(int) $mapRow['component_category_id']] = (int) $mapRow['id'];
+                    }
+                }
+            }
+        } catch (Throwable $exception) {
+            // Fall through to redirect below.
+        }
+    }
+
+    if ($build === []) {
+        customcore_flash_warning('Your build is empty. Select components to see a summary.');
+        customcore_redirect('builder.php');
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -228,6 +284,112 @@ if ($compatStatus === 'warning') {
 } elseif ($compatStatus === 'incompatible') {
     $compatLabel = 'Incompatible';
     $compatBadgeClass = 'compat-badge--incompatible';
+}
+
+// ---------------------------------------------------------------------------
+// Handle POST — save build to database (Commit 5.6)
+// ---------------------------------------------------------------------------
+
+$saveError = null;
+$justSaved = false;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $csrfOk = customcore_csrf_verify(
+        isset($_POST['_csrf']) && is_string($_POST['_csrf']) ? $_POST['_csrf'] : null
+    );
+
+    if (!$csrfOk) {
+        $saveError = 'Your session expired. Please try again.';
+    } elseif (!$isLoggedIn) {
+        $saveError = 'You must be logged in to save a build.';
+    } elseif (!$isComplete) {
+        $saveError = 'Cannot save an incomplete build. Please select all required components.';
+    } elseif ($compatStatus === 'incompatible') {
+        $saveError = 'Cannot save an incompatible build. Please resolve all compatibility errors first.';
+    } else {
+        $buildName = isset($_POST['build_name']) && is_string($_POST['build_name'])
+            ? trim($_POST['build_name'])
+            : '';
+
+        if ($buildName === '') {
+            $buildName = 'My Build';
+        }
+
+        if (mb_strlen($buildName) > 200) {
+            $buildName = mb_substr($buildName, 0, 200);
+        }
+
+        $notes = isset($_POST['build_notes']) && is_string($_POST['build_notes'])
+            ? trim($_POST['build_notes'])
+            : null;
+
+        if ($notes !== null && $notes === '') {
+            $notes = null;
+        }
+
+        try {
+            $pdo->beginTransaction();
+
+            $insertBuild = $pdo->prepare(
+                'INSERT INTO saved_builds (user_id, name, total_price, compatibility_status, notes)
+                 VALUES (:uid, :name, :total, :compat, :notes)'
+            );
+            $insertBuild->execute([
+                ':uid' => customcore_current_user_id(),
+                ':name' => $buildName,
+                ':total' => round($totalPrice, 2),
+                ':compat' => $compatStatus,
+                ':notes' => $notes,
+            ]);
+            $savedBuildId = (int) $pdo->lastInsertId();
+
+            $insertItem = $pdo->prepare(
+                'INSERT INTO saved_build_items (saved_build_id, component_id, unit_price)
+                 VALUES (:bid, :cid, :price)'
+            );
+
+            foreach ($selectedByCategory as $catId => $part) {
+                $insertItem->execute([
+                    ':bid' => $savedBuildId,
+                    ':cid' => (int) $part['id'],
+                    ':price' => round((float) $part['price'], 2),
+                ]);
+            }
+
+            $pdo->commit();
+
+            // Clear session build after successful save.
+            unset($_SESSION['_cc_build']);
+
+            customcore_flash_success(
+                'Build "' . htmlspecialchars($buildName, ENT_QUOTES, 'UTF-8')
+                . '" saved successfully!'
+            );
+            customcore_redirect('builder-results.php?saved=' . $savedBuildId);
+        } catch (Throwable $exception) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            $saveError = customcore_is_debug()
+                ? $exception->getMessage()
+                : 'We could not save your build right now. Please try again.';
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Determine if we are viewing a just-saved build
+// ---------------------------------------------------------------------------
+
+$viewingSavedBuild = false;
+
+if (
+    isset($_GET['saved'])
+    && is_string($_GET['saved'])
+    && ctype_digit($_GET['saved'])
+    && (int) $_GET['saved'] > 0
+) {
+    $viewingSavedBuild = true;
 }
 
 require_once __DIR__ . '/includes/header.php';
@@ -457,6 +619,13 @@ require_once __DIR__ . '/includes/header.php';
 
             <div class="results-panel results-panel--actions">
                 <h2 class="results-section-title">Next steps</h2>
+
+                <?php if ($saveError !== null): ?>
+                    <div class="flash flash--error" role="alert">
+                        <?php echo customcore_e($saveError); ?>
+                    </div>
+                <?php endif; ?>
+
                 <div class="results-actions">
                     <a class="button button--secondary" href="<?php echo customcore_e(customcore_url('builder.php')); ?>">
                         Edit build
@@ -464,13 +633,52 @@ require_once __DIR__ . '/includes/header.php';
 
                     <?php if ($isLoggedIn): ?>
                         <?php if ($isComplete && $compatStatus !== 'incompatible'): ?>
-                            <p class="results-panel__hint results-panel__hint--ready">
-                                You are signed in as <?php echo customcore_e(customcore_current_user_name()); ?>.
-                                Saving this build to your account is the next builder step — your selections stay in this session until then.
-                            </p>
+                            <?php if ($viewingSavedBuild): ?>
+                                <p class="results-panel__hint results-panel__hint--ready">
+                                    This build has been saved to your account.
+                                    <a href="<?php echo customcore_e(customcore_url('saved-builds.php')); ?>">View saved builds</a>
+                                </p>
+                            <?php else: ?>
+                                <form class="results-save-form" method="post" action="<?php echo customcore_e(customcore_url('builder-results.php')); ?>">
+                                    <?php echo customcore_csrf_field(); ?>
+                                    <div class="results-save-form__field">
+                                        <label for="build-name" class="results-save-form__label">Build name</label>
+                                        <input
+                                            type="text"
+                                            id="build-name"
+                                            name="build_name"
+                                            class="form-input"
+                                            maxlength="200"
+                                            placeholder="My Build"
+                                            value=""
+                                        >
+                                    </div>
+                                    <div class="results-save-form__field">
+                                        <label for="build-notes" class="results-save-form__label">Notes <span class="results-save-form__optional">(optional)</span></label>
+                                        <textarea
+                                            id="build-notes"
+                                            name="build_notes"
+                                            class="form-input form-textarea"
+                                            rows="2"
+                                            maxlength="2000"
+                                            placeholder="e.g. Budget gaming rig for 1080p"
+                                        ></textarea>
+                                    </div>
+                                    <button type="submit" class="button">
+                                        Save build to my account
+                                    </button>
+                                </form>
+                                <p class="results-panel__hint results-panel__hint--ready">
+                                    Signed in as <?php echo customcore_e(customcore_current_user_name()); ?>.
+                                </p>
+                            <?php endif; ?>
                         <?php else: ?>
                             <p class="results-panel__hint">
-                                Finish all required parts and resolve incompatible issues before you can save this build.
+                                <?php if (!$isComplete): ?>
+                                    Finish all required parts before saving.
+                                <?php else: ?>
+                                    Resolve compatibility errors before saving.
+                                <?php endif; ?>
                             </p>
                         <?php endif; ?>
                     <?php else: ?>
@@ -481,7 +689,7 @@ require_once __DIR__ . '/includes/header.php';
                             Log in to save
                         </a>
                         <p class="results-panel__hint">
-                            Guests can review builds freely. Create an account or log in to save this configuration later.
+                            Guests can review builds freely. Create an account or log in to save this configuration.
                         </p>
                     <?php endif; ?>
 

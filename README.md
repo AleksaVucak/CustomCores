@@ -34,15 +34,15 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 5.5 complete** — PC build summary page.
+**Commit 5.6 complete** — allow customers to save builds.
 
-`builder-results.php` shows every selected part with trusted database prices, a
-server-side compatibility report (same rules as the live checker), and power /
-performance estimates. Shared evaluation lives in `includes/compatibility.php`
-so the API and summary stay in sync. Guests can review freely; save-to-account
-arrives in Commit 5.6.
+`builder-results.php` now handles POST: validates CSRF, requires login, checks
+the build is complete and not incompatible, then inserts into `saved_builds` +
+`saved_build_items` with a server-calculated total and compatibility snapshot.
+The session build is cleared after a successful save. The summary page reloads
+from the database to confirm.
 
-Next: **Commit 5.6** — allow customers to save builds.
+Next: **Commit 5.7** — saved-build management.
 
 ## Security notes
 

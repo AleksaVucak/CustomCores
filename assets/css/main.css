@@ -1342,6 +1342,36 @@ textarea[aria-invalid="true"]:focus-visible {
   text-align: center;
 }
 
+/* Save build form (Commit 5.6) */
+
+.results-save-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cc-space-3);
+  margin-bottom: var(--cc-space-3);
+}
+
+.results-save-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.results-save-form__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.results-save-form__optional {
+  font-weight: 400;
+  color: var(--cc-color-text-muted);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 3rem;
+}
+
 @media (max-width: 52rem) {
   .results-layout {
     grid-template-columns: 1fr;

@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 5.5 complete.**  
-Build summary: `builder-results.php` — parts table with DB prices, shared compatibility report via `includes/compatibility.php`, power/performance estimates, edit/login CTAs.
+**Commit 5.6 complete.**  
+Save builds: `builder-results.php` POST handler inserts `saved_builds` + `saved_build_items` (CSRF, login, completeness, compat checks); clears session; reloads from DB.
 
-Next: **Commit 5.6** — allow customers to save builds.
+Next: **Commit 5.7** — saved-build management.
