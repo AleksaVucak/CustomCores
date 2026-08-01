@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 5.2 complete.**  
-Live client-side pricing: `assets/js/builder.js` + `data-price` / `data-other-total` on `builder.php`; this-step subtotal + running total update on radio change; script loaded from footer when `$currentPage === 'builder'`.
+**Commit 5.3 complete.**  
+Trusted server price API: `api/builder-price.php` — POST JSON component IDs, returns DB-verified prices + total; `builder.js` calls it after each change and shows "✓ Total verified by server".
 
-Next: **Commit 5.3** — server-side price recalculation.
+Next: **Commit 5.4** — component compatibility checking.

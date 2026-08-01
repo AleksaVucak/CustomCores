@@ -336,6 +336,12 @@ require_once __DIR__ . '/includes/header.php';
                     data-builder-live="1"
                     data-other-total="<?php echo customcore_e(number_format($otherTotal, 2, '.', '')); ?>"
                     data-category-id="<?php echo $categoryId; ?>"
+                    data-price-api="<?php echo customcore_e(customcore_url('api/builder-price.php')); ?>"
+                    data-build-ids="<?php echo customcore_e(json_encode(
+                        array_values(array_map('intval', array_filter($build, function ($id, $catKey) use ($categoryId) {
+                            return (int) $catKey !== $categoryId;
+                        }, ARRAY_FILTER_USE_BOTH)))
+                    )); ?>"
                 >
                     <?php echo customcore_csrf_field(); ?>
                     <input type="hidden" name="category_id" value="<?php echo $categoryId; ?>">

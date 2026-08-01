@@ -1,18 +1,22 @@
 /**
- * CustomCore — Live PC Builder price calculator (Commit 5.2)
+ * CustomCore — Live PC Builder price calculator (Commits 5.2 + 5.3)
  * ----------------------------------------------------------------------------
  * File responsibility:
- *   Updates the builder summary subtotal and running total immediately when
- *   the user changes a component radio selection. Uses prices from trusted
- *   server-rendered data-price attributes (Commit 5.3 will verify totals on
- *   the server). No network requests — pure client-side recalculation.
+ *   1. Updates the builder summary subtotal and running total immediately when
+ *      the user changes a component radio selection (Commit 5.2).
+ *   2. After each change, calls api/builder-price.php to verify the total from
+ *      the database — ensuring tampered data-price attributes cannot trick the
+ *      displayed total (Commit 5.3). The server response overwrites the client
+ *      total and shows a verification badge.
  *
  * Expected markup on builder.php:
  *   form#builder-form[data-builder-live][data-other-total][data-category-id]
+ *     [data-price-api][data-build-ids]
  *   input.builder-option__radio[data-price][data-name]
  *   #builder-live-subtotal, #builder-live-total
  *   [data-live-category-row] with [data-live-part], [data-live-price],
  *   optional [data-live-empty]
+ *   #builder-price-hint (server verification badge)
  *
  * Loaded deferred from includes/footer.php when $currentPage === 'builder'.
  * ----------------------------------------------------------------------------
@@ -168,6 +172,7 @@
         return;
       }
       recalculate(form);
+      verifyPriceServer(form);
     });
 
     // Also respond to clicks on already-checked radios (label re-clicks).
@@ -183,16 +188,15 @@
             ? target.closest('input[name="component_id"]')
             : null;
       if (!radio) {
-        // Clicking the label content still bubbles; find associated radio.
         var label = target.closest ? target.closest(".builder-option") : null;
         if (label) {
           radio = label.querySelector('input[name="component_id"]');
         }
       }
       if (radio && radio.checked) {
-        // Defer so the browser finishes toggling checked state first.
         window.setTimeout(function () {
           recalculate(form);
+          verifyPriceServer(form);
         }, 0);
       }
     });
@@ -201,6 +205,125 @@
     recalculate(form);
 
     document.body.setAttribute("data-cc-builder-live", "ready");
+  }
+
+  // ---------------------------------------------------------------------------
+  // Server-side price verification (Commit 5.3)
+  // ---------------------------------------------------------------------------
+
+  var verifyTimer = null;
+
+  /**
+   * Call api/builder-price.php to confirm the running total from the server.
+   * Uses a short debounce so rapid clicks do not flood the endpoint.
+   *
+   * @param {HTMLFormElement} form
+   * @returns {void}
+   */
+  function verifyPriceServer(form) {
+    if (verifyTimer) {
+      window.clearTimeout(verifyTimer);
+    }
+
+    verifyTimer = window.setTimeout(function () {
+      verifyTimer = null;
+      doVerify(form);
+    }, 350);
+  }
+
+  /**
+   * Actually perform the server verification request.
+   *
+   * @param {HTMLFormElement} form
+   * @returns {void}
+   */
+  function doVerify(form) {
+    var apiUrl = form.getAttribute("data-price-api");
+    if (!apiUrl) {
+      return;
+    }
+
+    // Build the full component ID list: other steps + current selection.
+    var otherIds = [];
+    try {
+      otherIds = JSON.parse(form.getAttribute("data-build-ids") || "[]");
+    } catch (e) {
+      otherIds = [];
+    }
+
+    var selected = form.querySelector('input[name="component_id"]:checked');
+    var allIds = otherIds.slice();
+    if (selected && parseInt(selected.value, 10) > 0) {
+      allIds.push(parseInt(selected.value, 10));
+    }
+
+    if (allIds.length === 0) {
+      return;
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", apiUrl, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState !== 4) {
+        return;
+      }
+
+      if (xhr.status !== 200) {
+        showServerBadge(false);
+        return;
+      }
+
+      var resp;
+      try {
+        resp = JSON.parse(xhr.responseText);
+      } catch (e) {
+        showServerBadge(false);
+        return;
+      }
+
+      if (!resp || !resp.success) {
+        showServerBadge(false);
+        return;
+      }
+
+      var totalEl = document.getElementById("builder-live-total");
+      if (totalEl) {
+        var serverTotal = Number(resp.total);
+        if (isFinite(serverTotal)) {
+          totalEl.textContent =
+            "$" +
+            serverTotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+      }
+
+      showServerBadge(true);
+    };
+
+    xhr.send(JSON.stringify({ components: allIds }));
+  }
+
+  /**
+   * Show/hide the server-verified indicator.
+   *
+   * @param {boolean} verified
+   * @returns {void}
+   */
+  function showServerBadge(verified) {
+    var hint = document.getElementById("builder-price-hint");
+    if (!hint) {
+      return;
+    }
+    if (verified) {
+      hint.textContent = "✓ Total verified by server.";
+      hint.classList.add("builder-summary__hint--ok");
+      hint.classList.remove("builder-summary__hint--err");
+    } else {
+      hint.textContent = "Server verification unavailable — total is estimated.";
+      hint.classList.add("builder-summary__hint--err");
+      hint.classList.remove("builder-summary__hint--ok");
+    }
   }
 
   function boot() {

@@ -160,6 +160,7 @@ These appear in the project instructions and package requirements. They support 
 | **4.8** | Session hardening — strict cookie flags (HttpOnly, SameSite=Lax, Secure/HTTPS), UA binding, idle (30m) + absolute (12h) timeouts, ID rotation (15m); `customcore_session_harden()` / `customcore_session_expire()`; timeouts in `config/app.php` |
 | **5.1** | `builder.php` — multi-step custom PC builder form; 10 categories from DB; session-stored selections; live summary sidebar; CSRF; optional skip; reset |
 | **5.2** | Live client price calc — `assets/js/builder.js`; `data-price` on radios; this-step subtotal + running total update immediately on selection change |
+| **5.3** | Trusted server-side price — `api/builder-price.php` (POST JSON → DB-verified total); `builder.js` calls it on change; client total overwritten by server response |
 
 ---
 
@@ -280,7 +281,7 @@ These appear in the project instructions and package requirements. They support 
 
 - [x] 5.1 Multi-step PC Builder form (`builder.php`)
 - [x] 5.2 Live client-side price calculation (`assets/js/builder.js`)
-- [ ] 5.3 Server-side price recalculation
+- [x] 5.3 Server-side price recalculation (`api/builder-price.php`)
 - [ ] 5.4 Component compatibility checking
 - [ ] 5.5 Build summary page
 - [ ] 5.6 Save builds

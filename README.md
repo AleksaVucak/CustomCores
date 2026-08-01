@@ -34,13 +34,14 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 5.2 complete** — live client-side PC price calculation.
+**Commit 5.3 complete** — trusted server-side price recalculation.
 
-`assets/js/builder.js` updates the builder “This step” subtotal and running total
-immediately when a component radio is selected. Prices come from server-rendered
-`data-price` attributes; the summary sidebar refreshes without a page reload.
+`api/builder-price.php` accepts a JSON array of component IDs via POST, looks up
+real prices from the database (ignoring any client-sent values), and returns the
+authoritative per-item and total cost. `builder.js` calls this endpoint after each
+selection change and overwrites the displayed total with the server-verified amount.
 
-Next: **Commit 5.3** — server-side price recalculation.
+Next: **Commit 5.4** — component compatibility checking.
 
 ## Security notes
 
