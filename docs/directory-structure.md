@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 6.4 complete — validated checkout form.**  
-`checkout.php` collects shipping address, phone, and payment method with server + client validation; `assets/js/checkout.js`; CSS layout with order summary sidebar; pre-filled from profile; data stored in session for order creation.
+**Commit 6.5 complete — place order (convert cart to order record).**  
+`order-confirmation.php` inserts into `orders` + `order_items` in a transaction (frozen prices, build snapshots); clears cart; displays confirmation with unique order number, shipping recap, and itemized receipt.
 
-Next: **Commit 6.5** — place order (convert cart to order record).
+Next: **Commit 6.6** — order history and order details pages.

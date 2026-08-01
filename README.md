@@ -34,15 +34,15 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 6.4 complete** — validated checkout form.
+**Commit 6.5 complete** — place order (convert cart to order record).
 
-The checkout page (`checkout.php`) collects shipping address, phone, and payment
-method via a validated form (server-side + `assets/js/checkout.js` client-side).
-The form pre-fills from the user's profile. An order summary sidebar shows cart
-items and subtotal. On valid submission, checkout data is stored in session for
-order creation (Commit 6.5). No real payment data is collected.
+When a validated checkout form is submitted, `order-confirmation.php` converts
+the cart into a permanent order: inserts into `orders` + `order_items` (with
+frozen prices, names, and build snapshots), clears the cart, refreshes the nav
+badge, and displays a confirmation page with a unique order number, shipping
+recap, and itemized receipt. Everything runs inside a database transaction.
 
-Next: **Commit 6.5** — place order (convert cart to order record).
+Next: **Commit 6.6** — order history and order details pages.
 
 ## Security notes
 

@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 6 / Commit 6.4 (validated checkout form)
+**Last updated:** Stage 6 / Commit 6.5 (place order — convert cart to order record)
 
 ### Status legend
 
@@ -171,6 +171,7 @@ These appear in the project instructions and package requirements. They support 
 | **6.2** | Cart quantity & removal controls — bulk Update cart, +/- steppers, stock clamps, remove + clear with confirm; `assets/js/cart.js` live line/subtotal preview; helpers `customcore_cart_update_*` / `remove` / `clear` |
 | **6.3** | Persist carts for accounts — DB-backed `carts`/`cart_items` survive logout/login; session-cached count (`customcore_cart_count_cached`); login pre-loads count; nav badge (`.site-nav__badge`); all mutations refresh cache |
 | **6.4** | Validated checkout form — `checkout.php` with server + client validation; shipping address, phone, payment method (simulated); pre-filled from profile; `assets/js/checkout.js` blur/submit validation; CSS order-summary sidebar; data stored in session for Commit 6.5; rubric #4 now In progress |
+| **6.5** | Place order — `order-confirmation.php`: transaction inserts `orders` + `order_items` (frozen prices, names, build snapshots via `customcore_snapshot_build`); unique order number (CC-YYYYMMDD-XXXXXX); clears cart + refreshes count; confirmation page with receipt; CSS styles for order confirmation |
 
 ---
 
@@ -305,4 +306,5 @@ These appear in the project instructions and package requirements. They support 
 - [x] 6.2 Cart quantity and removal controls (`update` / `update_all` / `remove` / `clear` + `assets/js/cart.js`)
 - [x] 6.3 Persist carts for customer accounts (DB-backed; session-cached nav badge count; login pre-load)
 - [x] 6.4 Validated checkout form (`checkout.php` + `assets/js/checkout.js`; server + client validation)
+- [x] 6.5 Place order (`order-confirmation.php` — transaction: `orders` + `order_items`; frozen snapshots; clear cart; confirmation page)
 
