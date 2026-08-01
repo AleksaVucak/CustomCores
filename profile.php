@@ -250,7 +250,13 @@ require_once __DIR__ . '/includes/header.php';
                     </article>
                     <article class="profile-stat">
                         <p class="profile-stat__value"><?php echo customcore_e((string) $counts['wishlist']); ?></p>
-                        <p class="profile-stat__label">Wishlist items</p>
+                        <p class="profile-stat__label">
+                            <?php if (is_file(__DIR__ . '/wishlist.php')): ?>
+                                <a href="<?php echo customcore_e(customcore_url('wishlist.php')); ?>">Wishlist items</a>
+                            <?php else: ?>
+                                Wishlist items
+                            <?php endif; ?>
+                        </p>
                     </article>
                     <article class="profile-stat">
                         <p class="profile-stat__value"><?php echo customcore_e((string) $counts['consultations']); ?></p>

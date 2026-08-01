@@ -25,6 +25,8 @@ declare(strict_types=1);
 require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/database.php';
 require_once __DIR__ . '/includes/csrf.php';
+require_once __DIR__ . '/includes/auth.php';
+require_once __DIR__ . '/includes/wishlist.php';
 
 // ---------------------------------------------------------------------------
 // Validate and fetch the product
@@ -111,6 +113,24 @@ if ($productId < 1) {
         $detailError = customcore_is_debug()
             ? $exception->getMessage()
             : 'Product data is temporarily unavailable.';
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Wishlist state (logged-in customers only)
+// ---------------------------------------------------------------------------
+
+$isLoggedIn = customcore_is_logged_in();
+$onWishlist = false;
+
+if ($isLoggedIn && $product !== null) {
+    try {
+        if (!isset($pdo)) {
+            $pdo = customcore_pdo();
+        }
+        $onWishlist = customcore_wishlist_contains($pdo, customcore_current_user_id(), $productId);
+    } catch (Throwable $e) {
+        $onWishlist = false;
     }
 }
 
@@ -364,6 +384,33 @@ require_once __DIR__ . '/includes/header.php';
                     <p class="product-detail__oos-notice">This product is currently out of stock.</p>
                 <?php endif; ?>
             <?php endif; ?>
+
+            <div class="product-detail__wishlist">
+                <?php if ($isLoggedIn) : ?>
+                    <?php if ($onWishlist) : ?>
+                        <form method="post" action="<?php echo customcore_e(customcore_url('wishlist.php')); ?>" class="product-detail__wishlist-form">
+                            <?php echo customcore_csrf_field(); ?>
+                            <input type="hidden" name="action" value="remove">
+                            <input type="hidden" name="product_id" value="<?php echo customcore_e((string) $productId); ?>">
+                            <span class="product-detail__wishlist-note">Saved to your wishlist.</span>
+                            <button type="submit" class="button button--ghost button--sm">Remove from wishlist</button>
+                        </form>
+                    <?php else : ?>
+                        <form method="post" action="<?php echo customcore_e(customcore_url('wishlist.php')); ?>" class="product-detail__wishlist-form">
+                            <?php echo customcore_csrf_field(); ?>
+                            <input type="hidden" name="action" value="add">
+                            <input type="hidden" name="product_id" value="<?php echo customcore_e((string) $productId); ?>">
+                            <input type="hidden" name="return_to" value="<?php echo customcore_e('product.php?id=' . $productId); ?>">
+                            <button type="submit" class="button button--secondary button--sm">♡ Save to wishlist</button>
+                        </form>
+                    <?php endif; ?>
+                <?php else : ?>
+                    <p class="product-detail__wishlist-note">
+                        <a href="<?php echo customcore_e(customcore_url('login.php')); ?>">Log in</a>
+                        to save this product to your wishlist.
+                    </p>
+                <?php endif; ?>
+            </div>
 
             <section class="product-detail__reviews" aria-labelledby="reviews-heading">
                 <h2 id="reviews-heading">Customer reviews</h2>

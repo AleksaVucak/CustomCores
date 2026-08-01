@@ -51,7 +51,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `database/` | Schema, seeds, create-admin script | 2.x |
 | `docs/` | Business case, rubric, sitemap, wireframes, ER design, guides | 0.x–12.x |
 | `help/` | Static Help + training HTML (`pc-builder.html` shipped in 5.9; full wiki in 11.x) | 5.9, 11.x |
-| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 14.x |
+| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
 | `uploads/products/` | Product images uploaded by admin | 9.2 |
 
@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 6.8 complete — customer order details.**  
-`order-details.php` itemized receipt with ownership-safe helpers (`customcore_order_fetch_owned` / `fetch_items`); foreign order IDs denied. **Stage 6 complete.**
+**Commit 7.1 complete — customer wishlists.**  
+`wishlist.php` lets logged-in customers save products (add from `product.php`), remove, clear, and move items to the cart with a server-recomputed price. Shared helpers in `includes/wishlist.php`; all queries scoped to `user_id`, CSRF-guarded.
 
-Next: **Stage 7** — wishlist, reviews, and consultations.
+Next: **Commit 7.2** — product reviews (submission and moderation).

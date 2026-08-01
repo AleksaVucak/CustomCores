@@ -34,17 +34,19 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 6.8 complete** — customer order details.
+**Commit 7.1 complete** — customer wishlists.
 
-`order-details.php` shows a full itemized receipt (shipping, payment label,
-frozen line items, options, and build snapshots). Ownership is enforced on
-both the order and its line items — a direct URL to another user's order ID
-is denied with no existence leak. Shared helpers:
-`customcore_order_fetch_owned()` / `customcore_order_fetch_items()`.
+Logged-in customers can save products to a private wishlist from the product
+page, then review them on `wishlist.php` where they can remove items, clear
+the list, or move an item to the cart (the price is recomputed server-side
+from the product's default configuration). All wishlist queries are scoped to
+the session `user_id`, and CSRF protection guards every action. Shared helpers
+live in `includes/wishlist.php`
+(`customcore_wishlist_add()` / `_remove()` / `_items()` / `_contains()`).
 
 **Stage 6 complete** — Catalogue → Cart → Checkout → Confirmation → History → Details.
 
-Next: **Stage 7** — wishlist, reviews, and consultations.
+Next: **Commit 7.2** — product reviews (submission and moderation).
 
 ## Security notes
 

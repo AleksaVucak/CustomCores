@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 6 / Commit 6.8 (customer order details — Stage 6 complete)
+**Last updated:** Stage 7 / Commit 7.1 (customer wishlist)
 
 ### Status legend
 
@@ -175,6 +175,7 @@ These appear in the project instructions and package requirements. They support 
 | **6.6** | Order confirmation page — `order-confirmation.php` places order then redirects to `?id=` and reloads confirmation from DB so the receipt matches the saved order |
 | **6.7** | Customer order history — `order-history.php` owner-scoped table (number, date, status, items, payment label, total); optional status filter; `includes/orders.php` shared helpers; users see only their orders |
 | **6.8** | Customer order details — `order-details.php` itemized receipt (shipping, payment label, frozen options/build snapshots); `customcore_order_fetch_owned` + `fetch_items` (JOIN ownership); foreign order IDs denied identically; Stage 6 complete |
+| **7.1** | Customer wishlist — `wishlist.php` (list, remove, clear, move-to-cart with server-recomputed default-config price); "Save to wishlist" on `product.php`; `includes/wishlist.php` helpers (`_add`/`_remove`/`_items`/`_contains`/`_count`); `INSERT IGNORE` dedupe + `UNIQUE(wishlist_id, product_id)`; all queries scoped to `user_id`; CSRF on every action |
 
 ---
 
@@ -324,4 +325,21 @@ These appear in the project instructions and package requirements. They support 
 - [x] Confirmation number matches the saved database order
 - [x] Order history lists only the current user's orders
 - [x] Order details deny access to another user's order ID
+
+## Stage 7 progress — wishlist, reviews, and consultations
+
+- [x] 7.1 Customer wishlist (`wishlist.php` + `includes/wishlist.php`; save from `product.php`; move-to-cart; owner-scoped; CSRF)
+- [ ] 7.2 Product reviews (submission + moderation)
+- [ ] 7.3 Review display and averages
+- [ ] 7.4 Consultation request form (with file uploads)
+- [ ] 7.5 Consultation history
+- [ ] 7.6 Contact messages
+
+### Stage 7.1 acceptance
+
+- [x] Logged-in customers can save a product to a private wishlist
+- [x] A product appears on a wishlist at most once (unique constraint + `INSERT IGNORE`)
+- [x] Items can be removed individually or cleared in bulk
+- [x] Move-to-cart adds the product (price recomputed server-side) and removes it from the wishlist
+- [x] Every wishlist query is scoped to the session `user_id`
 
