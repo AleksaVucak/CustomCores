@@ -6,6 +6,8 @@
  *   Closes the main content region and outputs footer links plus shared scripts.
  *   Loads assets/js/builder.js when $currentPage is "builder" (Commit 5.2).
  *   Loads assets/js/cart.js when $currentPage is "cart" (Commit 6.2).
+ *   Loads assets/js/checkout.js when $currentPage is "checkout" (Commit 6.4).
+ *   Loads assets/js/reviews.js when $loadReviewForm is truthy (Commit 7.2).
  *   Loads Chart.js CDN + assets/js/charts.js when $loadCharts is truthy (Commit 5.8).
  *
  * Included after page body content on each layout-using page.
@@ -49,6 +51,9 @@ $year = date('Y');
     <?php endif; ?>
     <?php if (isset($currentPage) && $currentPage === 'checkout') : ?>
         <script src="<?php echo customcore_e(customcore_url('assets/js/checkout.js')); ?>" defer></script>
+    <?php endif; ?>
+    <?php if (!empty($loadReviewForm)) : ?>
+        <script src="<?php echo customcore_e(customcore_url('assets/js/reviews.js')); ?>" defer></script>
     <?php endif; ?>
     <?php if (!empty($loadCharts)) : ?>
         <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>

@@ -5,7 +5,8 @@
  * File responsibility:
  *   Displays a single product loaded from MySQL with specifications, configurable
  *   option groups (RAM, Storage, Colour, etc.), price with default-option total,
- *   stock status, approved reviews (Commit 3.8), a compare entry point (Commit 3.7),
+ *   stock status, approved reviews (Commit 3.8), review submission as pending
+ *   (Commit 7.2), a compare entry point (Commit 3.7), wishlist save (Commit 7.1),
  *   and a context-sensitive Help link. One reusable page serves every product ID.
  *
  * URL format:
@@ -27,6 +28,7 @@ require_once __DIR__ . '/includes/database.php';
 require_once __DIR__ . '/includes/csrf.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/wishlist.php';
+require_once __DIR__ . '/includes/reviews.php';
 
 // ---------------------------------------------------------------------------
 // Validate and fetch the product
@@ -117,20 +119,27 @@ if ($productId < 1) {
 }
 
 // ---------------------------------------------------------------------------
-// Wishlist state (logged-in customers only)
+// Wishlist + review-submission state (logged-in customers only)
 // ---------------------------------------------------------------------------
 
 $isLoggedIn = customcore_is_logged_in();
 $onWishlist = false;
+$userExistingReview = null;
+$loadReviewForm = false;
 
 if ($isLoggedIn && $product !== null) {
     try {
         if (!isset($pdo)) {
             $pdo = customcore_pdo();
         }
-        $onWishlist = customcore_wishlist_contains($pdo, customcore_current_user_id(), $productId);
+        $uid = customcore_current_user_id();
+        $onWishlist = customcore_wishlist_contains($pdo, $uid, $productId);
+        $userExistingReview = customcore_review_user_existing($pdo, $uid, $productId);
+        $loadReviewForm = $userExistingReview === null;
     } catch (Throwable $e) {
         $onWishlist = false;
+        $userExistingReview = null;
+        $loadReviewForm = false;
     }
 }
 
@@ -461,10 +470,108 @@ require_once __DIR__ . '/includes/header.php';
                     </ul>
                 <?php endif; ?>
 
-                <p class="product-detail__reviews-note">
-                    Only reviews with status <code>approved</code> are shown.
-                    Submission and moderation arrive in later stages.
-                </p>
+                <div class="product-detail__write-review">
+                    <h3 class="product-detail__write-review-heading">Write a review</h3>
+
+                    <?php if (!$isLoggedIn) : ?>
+                        <p class="product-detail__reviews-note">
+                            <a href="<?php echo customcore_e(customcore_url('login.php')); ?>">Log in</a>
+                            to submit a review. New reviews are held as
+                            <strong>pending</strong> until an administrator approves them.
+                            ·
+                            <a href="<?php echo customcore_e(customcore_url('reviews.php?product_id=' . $productId)); ?>">
+                                Open the full reviews page
+                            </a>
+                        </p>
+                    <?php elseif ($userExistingReview !== null) : ?>
+                        <?php
+                        $existStatus = (string) ($userExistingReview['status'] ?? '');
+                        $existLabel = customcore_review_status_label($existStatus);
+                        ?>
+                        <div class="review-submit__existing" role="status">
+                            <p>
+                                You already submitted a review for this product
+                                (<span class="review-status review-status--<?php echo customcore_e($existStatus); ?>">
+                                    <?php echo customcore_e($existLabel); ?>
+                                </span>).
+                                <?php if ($existStatus === 'pending') : ?>
+                                    It will appear publicly once approved.
+                                <?php endif; ?>
+                            </p>
+                        </div>
+                    <?php else : ?>
+                        <p class="review-submit__note">
+                            Your review is saved as <strong>pending</strong> and stays private until approved.
+                        </p>
+                        <form
+                            id="review-form"
+                            class="review-form form-stack"
+                            method="post"
+                            action="<?php echo customcore_e(customcore_url('reviews.php?product_id=' . $productId)); ?>"
+                            novalidate
+                        >
+                            <?php echo customcore_csrf_field(); ?>
+                            <input type="hidden" name="action" value="submit_review">
+                            <input type="hidden" name="product_id" value="<?php echo customcore_e((string) $productId); ?>">
+                            <input type="hidden" name="return_to" value="<?php echo customcore_e('product.php?id=' . $productId); ?>">
+
+                            <fieldset class="review-form__rating">
+                                <legend class="form-label">
+                                    Rating <span class="form-required" aria-hidden="true">*</span>
+                                </legend>
+                                <div class="review-form__stars" role="radiogroup" aria-label="Star rating">
+                                    <?php for ($star = 5; $star >= 1; $star--) : ?>
+                                        <?php $starId = 'product-review-rating-' . $star; ?>
+                                        <input
+                                            type="radio"
+                                            id="<?php echo customcore_e($starId); ?>"
+                                            name="rating"
+                                            value="<?php echo customcore_e((string) $star); ?>"
+                                            required
+                                        >
+                                        <label for="<?php echo customcore_e($starId); ?>" title="<?php echo customcore_e($star . ' star' . ($star === 1 ? '' : 's')); ?>">
+                                            <span class="visually-hidden"><?php echo customcore_e((string) $star); ?> star<?php echo $star === 1 ? '' : 's'; ?></span>
+                                            <span aria-hidden="true">★</span>
+                                        </label>
+                                    <?php endfor; ?>
+                                </div>
+                            </fieldset>
+
+                            <div class="form-row">
+                                <label class="form-label" for="product-review-title">
+                                    Title <span class="form-required" aria-hidden="true">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="product-review-title"
+                                    name="title"
+                                    maxlength="200"
+                                    required
+                                >
+                            </div>
+
+                            <div class="form-row">
+                                <label class="form-label" for="product-review-body">
+                                    Your review <span class="form-required" aria-hidden="true">*</span>
+                                </label>
+                                <textarea
+                                    id="product-review-body"
+                                    name="body"
+                                    class="form-textarea"
+                                    rows="5"
+                                    maxlength="5000"
+                                    minlength="20"
+                                    required
+                                ></textarea>
+                                <p class="form-help">At least 20 characters.</p>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="button button--primary">Submit review</button>
+                            </div>
+                        </form>
+                    <?php endif; ?>
+                </div>
             </section>
         </div>
 

@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Where to return after add / move actions (safe local path only).
     $returnTo = 'wishlist.php';
     if (isset($_POST['return_to']) && is_string($_POST['return_to'])
-        && customcore_is_safe_local_path($_POST['return_to'])) {
+        && customcore_is_safe_return_target($_POST['return_to'])) {
         $returnTo = $_POST['return_to'];
     }
 

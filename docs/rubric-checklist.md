@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 7 / Commit 7.1 (customer wishlist)
+**Last updated:** Stage 7 / Commit 7.2 (product review submission)
 
 ### Status legend
 
@@ -176,6 +176,7 @@ These appear in the project instructions and package requirements. They support 
 | **6.7** | Customer order history — `order-history.php` owner-scoped table (number, date, status, items, payment label, total); optional status filter; `includes/orders.php` shared helpers; users see only their orders |
 | **6.8** | Customer order details — `order-details.php` itemized receipt (shipping, payment label, frozen options/build snapshots); `customcore_order_fetch_owned` + `fetch_items` (JOIN ownership); foreign order IDs denied identically; Stage 6 complete |
 | **7.1** | Customer wishlist — `wishlist.php` (list, remove, clear, move-to-cart with server-recomputed default-config price); "Save to wishlist" on `product.php`; `includes/wishlist.php` helpers (`_add`/`_remove`/`_items`/`_contains`/`_count`); `INSERT IGNORE` dedupe + `UNIQUE(wishlist_id, product_id)`; all queries scoped to `user_id`; CSRF on every action |
+| **7.2** | Product review submission — form on `product.php` + `reviews.php` (rating 1–5, title, body); CSRF; login required; insert with `status = pending`; `includes/reviews.php` helpers + `assets/js/reviews.js` client validation; one pending/approved review per user/product; public lists still show approved only |
 
 ---
 
@@ -329,11 +330,11 @@ These appear in the project instructions and package requirements. They support 
 ## Stage 7 progress — wishlist, reviews, and consultations
 
 - [x] 7.1 Customer wishlist (`wishlist.php` + `includes/wishlist.php`; save from `product.php`; move-to-cart; owner-scoped; CSRF)
-- [ ] 7.2 Product reviews (submission + moderation)
-- [ ] 7.3 Review display and averages
-- [ ] 7.4 Consultation request form (with file uploads)
-- [ ] 7.5 Consultation history
-- [ ] 7.6 Contact messages
+- [x] 7.2 Product review submission (`reviews.php` + `product.php` form; `status = pending`; `includes/reviews.php`; client validation)
+- [ ] 7.3 PC consultation request form
+- [ ] 7.4 Secure consultation attachments
+- [ ] 7.5 Customer contact form
+- [ ] 7.6 Consultation request history
 
 ### Stage 7.1 acceptance
 
@@ -342,4 +343,11 @@ These appear in the project instructions and package requirements. They support 
 - [x] Items can be removed individually or cleared in bulk
 - [x] Move-to-cart adds the product (price recomputed server-side) and removes it from the wishlist
 - [x] Every wishlist query is scoped to the session `user_id`
+
+### Stage 7.2 acceptance
+
+- [x] Logged-in customers can submit rating, title, and body
+- [x] New reviews are stored with `status = pending` (not shown publicly)
+- [x] CSRF and server-side validation reject incomplete/invalid submissions
+- [x] Guests are prompted to log in; duplicate pending/approved reviews are blocked
 

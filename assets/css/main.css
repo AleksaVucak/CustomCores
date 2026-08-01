@@ -4386,3 +4386,145 @@ a.cart-item__name:hover {
     width: 100%;
   }
 }
+
+/* ==========================================================================
+   Review submission (Commit 7.2)
+   Form on reviews.php and product.php; pending status badges.
+   ========================================================================== */
+
+.review-submit {
+  margin-top: var(--cc-space-7);
+  padding-top: var(--cc-space-6);
+  border-top: 1px solid var(--cc-color-border);
+}
+
+.review-submit h2,
+.product-detail__write-review-heading {
+  margin: 0 0 var(--cc-space-3);
+  font-size: 1.25rem;
+}
+
+.product-detail__write-review {
+  margin-top: var(--cc-space-5);
+  padding-top: var(--cc-space-5);
+  border-top: 1px solid var(--cc-color-border);
+}
+
+.review-submit__note,
+.review-submit__existing {
+  color: var(--cc-color-text-muted);
+  margin: 0 0 var(--cc-space-4);
+}
+
+.review-submit__existing {
+  background: var(--cc-color-bg-muted);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-md);
+  padding: var(--cc-space-4);
+}
+
+.review-submit__existing p {
+  margin: 0 0 var(--cc-space-2);
+}
+
+.review-submit__existing p:last-child {
+  margin-bottom: 0;
+}
+
+.review-form {
+  max-width: 36rem;
+}
+
+.review-form__product {
+  margin: 0 0 var(--cc-space-2);
+}
+
+.review-form__rating {
+  border: none;
+  padding: 0;
+  margin: 0;
+  min-inline-size: 0;
+}
+
+.review-form__rating > legend {
+  padding: 0;
+  margin-bottom: var(--cc-space-2);
+}
+
+.review-form__stars {
+  display: inline-flex;
+  flex-direction: row-reverse;
+  gap: 0.15rem;
+}
+
+.review-form__stars input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  pointer-events: none;
+}
+
+.review-form__stars label {
+  cursor: pointer;
+  font-size: 1.75rem;
+  line-height: 1;
+  color: var(--cc-color-border);
+  transition: color 0.15s ease;
+  font-weight: 400;
+}
+
+.review-form__stars label:hover,
+.review-form__stars label:hover ~ label,
+.review-form__stars input[type="radio"]:checked ~ label,
+.review-form__stars input[type="radio"]:checked ~ label ~ label,
+.review-form__stars input[type="radio"]:focus-visible + label {
+  color: var(--cc-color-warning);
+}
+
+.review-form__stars input[type="radio"]:focus-visible + label {
+  outline: 2px solid var(--cc-color-focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.review-form .has-error input,
+.review-form .has-error textarea,
+.review-form .has-error select {
+  border-color: var(--cc-color-danger);
+}
+
+.review-status {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--cc-radius-sm);
+  vertical-align: middle;
+}
+
+.review-status--pending {
+  background: #f5e8c8;
+  color: var(--cc-color-warning);
+}
+
+.review-status--approved {
+  background: #d8efdf;
+  color: var(--cc-color-success);
+}
+
+.review-status--hidden {
+  background: var(--cc-color-bg-muted);
+  color: var(--cc-color-text-muted);
+}
+
+.form-required {
+  color: var(--cc-color-danger);
+}
+
+@media (max-width: 600px) {
+  .review-form__stars label {
+    font-size: 1.5rem;
+  }
+}

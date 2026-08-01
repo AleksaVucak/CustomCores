@@ -44,14 +44,14 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `api/` | Builder price, compatibility, search, chart data | 5.x, 8.x, 9.x |
 | `assets/css/` | External CSS (`main.css`, later `admin.css`, `print.css`) | 1.5 |
 | `assets/themes/` | RGB Gaming, Minimal Professional, Cyber Grid | 10.x |
-| `assets/js/` | External JS (`main.js`, later builder/cart/checkout/validation/charts/map) | 1.6 |
+| `assets/js/` | External JS (`main.js`, later builder/cart/checkout/reviews/validation/charts/map) | 1.6 |
 | `assets/images/` | ≥ 20 documented images | 8.1 |
 | `assets/media/` | ≥ 3 video/audio items | 8.2 |
 | `config/` | `database.example.php`, `app.php`; real `database.php` gitignored | 1.2–1.3 |
 | `database/` | Schema, seeds, create-admin script | 2.x |
 | `docs/` | Business case, rubric, sitemap, wireframes, ER design, guides | 0.x–12.x |
 | `help/` | Static Help + training HTML (`pc-builder.html` shipped in 5.9; full wiki in 11.x) | 5.9, 11.x |
-| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 14.x |
+| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
 | `uploads/products/` | Product images uploaded by admin | 9.2 |
 
@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 7.1 complete — customer wishlists.**  
-`wishlist.php` lets logged-in customers save products (add from `product.php`), remove, clear, and move items to the cart with a server-recomputed price. Shared helpers in `includes/wishlist.php`; all queries scoped to `user_id`, CSRF-guarded.
+**Commit 7.2 complete — product review submission.**  
+Logged-in customers submit rating/title/body from `product.php` or `reviews.php`; rows insert as `status = pending` (public pages still show approved only). Helpers in `includes/reviews.php`; CSRF + server/client validation; one pending/approved review per user per product.
 
-Next: **Commit 7.2** — product reviews (submission and moderation).
+Next: **Commit 7.3** — PC consultation request form.

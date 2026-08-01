@@ -290,6 +290,36 @@ function customcore_is_safe_local_path(string $path): bool
 }
 
 /**
+ * Whether a string is a safe relative app path for customcore_redirect().
+ *
+ * Accepts project-root PHP scripts with an optional simple query string
+ * (e.g. "product.php?id=12"). Rejects absolute URLs, protocol-relative hosts,
+ * directory traversal, nested paths, and control characters.
+ *
+ * @param string $path Candidate relative path from a form return_to field.
+ */
+function customcore_is_safe_return_target(string $path): bool
+{
+    $path = trim($path);
+    if ($path === '') {
+        return false;
+    }
+
+    if (str_contains($path, '://') || str_starts_with($path, '//') || str_starts_with($path, '/')) {
+        return false;
+    }
+
+    if (str_contains($path, '..') || strpbrk($path, "\r\n\t\0\\") !== false) {
+        return false;
+    }
+
+    return (bool) preg_match(
+        '/^[A-Za-z0-9_-]+\.php(?:\?[A-Za-z0-9_.=&-]*)?$/',
+        $path
+    );
+}
+
+/**
  * Redirect to an already-validated same-origin absolute path and stop.
  *
  * The caller MUST pass a path that has been checked with

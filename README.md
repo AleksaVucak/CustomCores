@@ -34,19 +34,18 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 7.2 complete** — product review submission.
+
+Logged-in customers can submit a rating (1–5), title, and review body from
+`product.php` or `reviews.php`. Every new review is inserted with
+`status = pending` so it stays out of public listings until an administrator
+approves it (Stage 9). CSRF protection, server + client validation, and a
+one-review-per-product rule (pending/approved) are enforced. Shared helpers
+live in `includes/reviews.php`.
+
 **Commit 7.1 complete** — customer wishlists.
 
-Logged-in customers can save products to a private wishlist from the product
-page, then review them on `wishlist.php` where they can remove items, clear
-the list, or move an item to the cart (the price is recomputed server-side
-from the product's default configuration). All wishlist queries are scoped to
-the session `user_id`, and CSRF protection guards every action. Shared helpers
-live in `includes/wishlist.php`
-(`customcore_wishlist_add()` / `_remove()` / `_items()` / `_contains()`).
-
-**Stage 6 complete** — Catalogue → Cart → Checkout → Confirmation → History → Details.
-
-Next: **Commit 7.2** — product reviews (submission and moderation).
+Next: **Commit 7.3** — PC consultation request form.
 
 ## Security notes
 
