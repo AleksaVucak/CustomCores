@@ -51,7 +51,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `database/` | Schema, seeds, create-admin script | 2.x |
 | `docs/` | Business case, rubric, sitemap, wireframes, ER design, guides | 0.x–12.x |
 | `help/` | Static Help + training HTML (`pc-builder.html` shipped in 5.9; full wiki in 11.x) | 5.9, 11.x |
-| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 14.x |
+| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
 | `uploads/products/` | Product images uploaded by admin | 9.2 |
 
@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 6.6 complete — order history and order details pages.**  
-`order-history.php` lists owner-scoped orders; `order-details.php` shows itemized lines, options, and build snapshots with ownership enforcement; confirmation reloads from DB via `?id=`; account nav / profile wired. **Stage 6 complete.**
+**Commit 6.7 complete — customer order history.**  
+`order-history.php` owner-scoped order table with status filters; `includes/orders.php` shared labels/helpers. Users see only their own orders.
 
-Next: **Stage 7** — reviews, consultation requests, and customer support.
+Next: **Commit 6.8** — customer order details (itemized; block other users' IDs).

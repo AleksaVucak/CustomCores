@@ -28,6 +28,7 @@ require_once __DIR__ . '/includes/database.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/flash.php';
 require_once __DIR__ . '/includes/cart.php';
+require_once __DIR__ . '/includes/orders.php';
 
 customcore_require_login();
 
@@ -75,21 +76,6 @@ function customcore_snapshot_build(PDO $pdo, int $buildId): ?string
     }
 
     return json_encode($snapshot, JSON_UNESCAPED_UNICODE);
-}
-
-/**
- * Human-readable payment method label.
- */
-function customcore_confirm_payment_label(string $method): string
-{
-    $labels = [
-        'pay_on_pickup' => 'Pay on pickup',
-        'simulated_credit' => 'Credit card (simulated)',
-        'simulated_debit' => 'Debit card (simulated)',
-        'simulated_paypal' => 'PayPal (simulated)',
-    ];
-
-    return $labels[$method] ?? ucfirst(str_replace('_', ' ', $method));
 }
 
 $orderError = null;
@@ -318,7 +304,7 @@ require_once __DIR__ . '/includes/header.php';
                 </dd>
 
                 <dt>Payment method</dt>
-                <dd><?php echo customcore_e(customcore_confirm_payment_label((string) $order['payment_method'])); ?></dd>
+                <dd><?php echo customcore_e(customcore_order_payment_label((string) $order['payment_method'])); ?></dd>
             </dl>
         </div>
 
@@ -360,7 +346,7 @@ require_once __DIR__ . '/includes/header.php';
         <div class="order-confirm__section">
             <h2 class="order-confirm__section-title">Order status</h2>
             <p>
-                <span class="order-confirm__status"><?php echo customcore_e(ucfirst($status)); ?></span>
+                <span class="order-confirm__status"><?php echo customcore_e(customcore_order_status_label($status)); ?></span>
                 — we have received your order and will begin processing it shortly.
             </p>
         </div>

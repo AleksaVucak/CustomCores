@@ -34,17 +34,14 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 6.6 complete** — order history and order details pages.
+**Commit 6.7 complete** — customer order history.
 
-Customers can browse their own orders on `order-history.php` and open an
-itemized receipt on `order-details.php` (ownership enforced — another user's
-order ID is denied). Confirmation now redirects to `?id=` and reloads the
-saved order from the database so the receipt matches the DB record. Account
-nav, profile activity, and confirmation CTAs all link into the order pages.
+`order-history.php` lists only the logged-in user's orders (owner-scoped SQL).
+The table shows order number, date, status, item count, payment method label,
+and total, with optional status filters and links to itemized details. Shared
+helpers live in `includes/orders.php`.
 
-**Stage 6 complete** — cart → checkout → order → confirmation → history → details.
-
-Next: **Stage 7** — reviews, consultation requests, and customer support.
+Next: **Commit 6.8** — customer order details (ownership enforcement polish).
 
 ## Security notes
 

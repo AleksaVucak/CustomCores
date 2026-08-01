@@ -1,6 +1,6 @@
 <?php
 /**
- * CustomCore — Customer Order Details (Commit 6.6).
+ * CustomCore — Customer Order Details (Commit 6.8).
  *
  * File responsibility:
  *   Displays a single itemized order that belongs to the logged-in customer.
@@ -25,6 +25,7 @@ require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/database.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/flash.php';
+require_once __DIR__ . '/includes/orders.php';
 
 customcore_require_login();
 
@@ -95,120 +96,12 @@ if ($order === false || $order === null) {
     customcore_redirect('order-history.php');
 }
 
-/**
- * Human-readable status label.
- */
-function customcore_order_details_status_label(string $status): string
-{
-    $labels = [
-        'pending' => 'Pending',
-        'processing' => 'Processing',
-        'ready' => 'Ready for pickup',
-        'completed' => 'Completed',
-        'cancelled' => 'Cancelled',
-    ];
-
-    return $labels[$status] ?? ucfirst($status);
-}
-
-/**
- * Human-readable payment method label.
- */
-function customcore_order_payment_label(string $method): string
-{
-    $labels = [
-        'pay_on_pickup' => 'Pay on pickup',
-        'simulated_credit' => 'Credit card (simulated)',
-        'simulated_debit' => 'Debit card (simulated)',
-        'simulated_paypal' => 'PayPal (simulated)',
-    ];
-
-    return $labels[$method] ?? ucfirst(str_replace('_', ' ', $method));
-}
-
-/**
- * Decode frozen options JSON into a readable string.
- *
- * @return list<string>
- */
-function customcore_order_decode_options(?string $json): array
-{
-    if ($json === null || $json === '') {
-        return [];
-    }
-
-    $decoded = json_decode($json, true);
-    if (!is_array($decoded)) {
-        return [];
-    }
-
-    $lines = [];
-    foreach ($decoded as $key => $value) {
-        if (is_array($value)) {
-            // Prefer structured option rows: { group, label, delta }
-            if (isset($value['group'], $value['label'])) {
-                $line = (string) $value['group'] . ': ' . (string) $value['label'];
-                $delta = (float) ($value['delta'] ?? $value['price_delta'] ?? 0);
-                if ($delta != 0.0) {
-                    $line .= ' (' . ($delta > 0 ? '+' : '') . '$' . number_format($delta, 2) . ')';
-                }
-                $lines[] = $line;
-                continue;
-            }
-            $value = implode(', ', array_map('strval', $value));
-        }
-        if (is_string($key) && !is_numeric($key)) {
-            $lines[] = $key . ': ' . (string) $value;
-        } else {
-            $lines[] = (string) $value;
-        }
-    }
-
-    return $lines;
-}
-
-/**
- * Decode frozen build snapshot JSON.
- *
- * @return list<array{category:string,component:string,price:float}>
- */
-function customcore_order_decode_build_snapshot(?string $json): array
-{
-    if ($json === null || $json === '') {
-        return [];
-    }
-
-    $decoded = json_decode($json, true);
-    if (!is_array($decoded)) {
-        return [];
-    }
-
-    $parts = [];
-    foreach ($decoded as $row) {
-        if (!is_array($row)) {
-            continue;
-        }
-        $parts[] = [
-            'category' => (string) ($row['category'] ?? ''),
-            'component' => (string) ($row['component'] ?? ''),
-            'price' => (float) ($row['price'] ?? 0),
-        ];
-    }
-
-    return $parts;
-}
-
 $status = (string) $order['status'];
-$statusClass = 'order-status--' . preg_replace('/[^a-z]/', '', strtolower($status));
+$statusClass = customcore_order_status_class($status);
 $orderNumber = (string) $order['order_number'];
 $total = (float) $order['total'];
 $subtotal = (float) $order['subtotal'];
-$createdAt = (string) $order['created_at'];
-$dateDisplay = '';
-$ts = strtotime($createdAt);
-if ($ts !== false) {
-    $dateDisplay = date('F j, Y \a\t g:i A', $ts);
-}
+$dateDisplay = customcore_order_format_datetime((string) $order['created_at'], 'F j, Y \a\t g:i A');
 
 $pageTitle = 'Order ' . $orderNumber . ' — CustomCore';
 $pageDescription = 'Itemized details for order ' . $orderNumber . '.';
@@ -244,7 +137,7 @@ require_once __DIR__ . '/includes/header.php';
                 <div class="order-details__meta">
                     <p>
                         <span class="order-status <?php echo customcore_e($statusClass); ?>">
-                            <?php echo customcore_e(customcore_order_details_status_label($status)); ?>
+                            <?php echo customcore_e(customcore_order_status_label($status)); ?>
                         </span>
                         <?php if ($dateDisplay !== ''): ?>
                             <span class="order-details__date">Placed <?php echo customcore_e($dateDisplay); ?></span>
