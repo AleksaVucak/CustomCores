@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 4.8 complete.**  
-Session hardening in `includes/functions.php` (`customcore_session_harden()` / `customcore_session_expire()`): strict cookie flags, UA binding, idle + absolute timeouts, periodic ID rotation; timeouts in `config/app.php`.
+**Commit 5.1 complete.**  
+`builder.php` — multi-step custom PC builder form; 10 category steps from DB; session-stored selections; live summary sidebar; CSRF-protected POST; "Start over" reset; optional step skipping.
 
-Stage 4 complete. Next: **Stage 5**.
+Next: **Commit 5.2** — live client-side price calculation.

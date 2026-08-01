@@ -426,6 +426,11 @@ button.button {
   background: var(--cc-color-danger);
 }
 
+.button--sm {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
 /* ==========================================================================
    9. Forms
    Ready for registration, checkout, builder, and contact pages.
@@ -769,6 +774,266 @@ textarea[aria-invalid="true"]:focus-visible {
   margin-bottom: 0;
   color: var(--cc-color-text-muted);
   font-size: 0.95rem;
+}
+
+/* ---- PC Builder (Stage 5) ------------------------------------------------ */
+
+.builder-page__header {
+  margin-bottom: var(--cc-space-4);
+}
+
+.builder-steps {
+  margin-bottom: var(--cc-space-4);
+  overflow-x: auto;
+}
+
+.builder-steps__list {
+  display: flex;
+  gap: var(--cc-space-2);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  min-width: max-content;
+}
+
+.builder-steps__item {
+  flex: none;
+}
+
+.builder-steps__link {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--cc-radius-md);
+  background: var(--cc-color-bg);
+  border: 1px solid var(--cc-color-border);
+  color: var(--cc-color-text-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.builder-steps__link:hover {
+  background: var(--cc-color-bg-elevated);
+  border-color: var(--cc-color-primary);
+}
+
+.builder-steps__item--current .builder-steps__link {
+  background: var(--cc-color-primary);
+  color: #fff;
+  border-color: var(--cc-color-primary);
+  font-weight: 600;
+}
+
+.builder-steps__item--done .builder-steps__link {
+  background: var(--cc-color-success-bg, #d4edda);
+  border-color: var(--cc-color-success, #28a745);
+  color: var(--cc-color-success, #28a745);
+}
+
+.builder-steps__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.08);
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+.builder-steps__item--current .builder-steps__num {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.builder-steps__item--done .builder-steps__num {
+  background: var(--cc-color-success, #28a745);
+  color: #fff;
+}
+
+.builder-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--cc-space-4);
+}
+
+@media (min-width: 62rem) {
+  .builder-layout {
+    grid-template-columns: 1fr 20rem;
+  }
+}
+
+.builder-section-title {
+  font-size: 1.15rem;
+  margin-top: 0;
+  margin-bottom: var(--cc-space-3);
+}
+
+.builder-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cc-space-2);
+  margin-bottom: var(--cc-space-4);
+}
+
+.builder-option {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--cc-space-3);
+  padding: var(--cc-space-3);
+  border: 2px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-md);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.builder-option:hover {
+  border-color: var(--cc-color-primary);
+  background: rgba(15, 122, 110, 0.03);
+}
+
+.builder-option--selected {
+  border-color: var(--cc-color-primary);
+  background: rgba(15, 122, 110, 0.06);
+}
+
+.builder-option__radio {
+  margin-top: 0.25rem;
+  flex-shrink: 0;
+  accent-color: var(--cc-color-primary);
+}
+
+.builder-option__content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1rem;
+  flex: 1;
+}
+
+.builder-option__name {
+  font-weight: 600;
+  flex-basis: 100%;
+}
+
+.builder-option__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+  font-size: 0.85rem;
+  color: var(--cc-color-text-muted);
+}
+
+.builder-option__brand {
+  font-weight: 500;
+}
+
+.builder-option__attr {
+  background: var(--cc-color-bg);
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--cc-radius-sm);
+  border: 1px solid var(--cc-color-border);
+  font-size: 0.8rem;
+}
+
+.builder-option__price {
+  margin-left: auto;
+  font-weight: 700;
+  color: var(--cc-color-primary);
+  white-space: nowrap;
+}
+
+.builder-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cc-space-3);
+}
+
+/* Summary sidebar */
+
+.builder-layout__summary {
+  position: sticky;
+  top: var(--cc-space-4);
+  align-self: start;
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+}
+
+.builder-summary {
+  margin: 0;
+}
+
+.builder-summary__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--cc-space-2);
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--cc-color-border);
+}
+
+.builder-summary__row--active {
+  background: rgba(15, 122, 110, 0.04);
+  border-radius: var(--cc-radius-sm);
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+}
+
+.builder-summary__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.builder-summary__value {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.8rem;
+  text-align: right;
+  margin: 0;
+}
+
+.builder-summary__part {
+  max-width: 10rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.builder-summary__price {
+  font-weight: 600;
+  color: var(--cc-color-primary);
+}
+
+.builder-summary__empty {
+  color: var(--cc-color-text-muted);
+}
+
+.builder-summary__total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: var(--cc-space-3);
+  padding-top: var(--cc-space-3);
+  border-top: 2px solid var(--cc-color-primary);
+  font-size: 1.05rem;
+}
+
+.builder-summary__total-value {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--cc-color-primary);
+}
+
+.builder-summary__actions {
+  margin-top: var(--cc-space-3);
+  text-align: center;
 }
 
 /* ==========================================================================

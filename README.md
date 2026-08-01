@@ -34,16 +34,14 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 4.8 complete** — strengthened session security.
+**Commit 5.1 complete** — multi-step PC Builder form.
 
-`customcore_session_start()` now sets strict, cookie-only, HTTP-only,
-SameSite=Lax sessions (Secure under HTTPS) and calls `customcore_session_harden()`
-on every request. Authenticated sessions get: user-agent binding, a 30-minute
-idle timeout, a 12-hour absolute lifetime, and automatic session-ID rotation
-every 15 minutes. Expired sessions are cleared and the user sees a warning.
-Timeouts are configurable in `config/app.php`.
+`builder.php` presents a step-by-step component selection interface with all 10
+categories (CPU, Motherboard, GPU, RAM, Storage, PSU, Case, Cooling, OS,
+Service). Selections are stored in the session across steps; the live summary
+sidebar shows running totals. Optional categories (Service) can be skipped.
 
-Stage 4 (registration, authentication, and profiles) is complete.
+Next: **Commit 5.2** — live client-side price calculation.
 
 ## Security notes
 

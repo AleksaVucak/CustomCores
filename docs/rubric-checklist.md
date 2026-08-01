@@ -158,6 +158,7 @@ These appear in the project instructions and package requirements. They support 
 | **4.6** | `edit-profile.php` — name/email/phone/address + password change; CSRF; email-unique (self-excluded); rehash + session regen |
 | **4.7** | `includes/admin-auth.php` (`customcore_require_admin()`); protected `admin/index.php`; admins-only Admin nav link; customers redirected from admin URLs |
 | **4.8** | Session hardening — strict cookie flags (HttpOnly, SameSite=Lax, Secure/HTTPS), UA binding, idle (30m) + absolute (12h) timeouts, ID rotation (15m); `customcore_session_harden()` / `customcore_session_expire()`; timeouts in `config/app.php` |
+| **5.1** | `builder.php` — multi-step custom PC builder form; 10 categories from DB; session-stored selections; live summary sidebar; CSRF; optional skip; reset |
 
 ---
 
@@ -272,10 +273,17 @@ These appear in the project instructions and package requirements. They support 
 - [x] 4.5 Customer profile dashboard (`profile.php` + `includes/account-nav.php`)
 - [x] 4.6 Profile editing (`edit-profile.php` — details + password change)
 - [x] 4.7 Role-based permissions (`includes/admin-auth.php` + protected `admin/index.php`)
-- [ ] 4.3 Secure logout
-- [ ] 4.4 Protect private customer routes
-- [ ] 4.5 Customer profile dashboard
-- [ ] 4.6 Profile editing
-- [ ] 4.7 Role-based permissions
-- [ ] 4.8 Strengthen session security
+- [x] 4.8 Session hardening  
+
+### Stage 5 progress
+
+- [x] 5.1 Multi-step PC Builder form (`builder.php`)
+- [ ] 5.2 Live client-side price calculation
+- [ ] 5.3 Server-side price recalculation
+- [ ] 5.4 Component compatibility checking
+- [ ] 5.5 Build summary page
+- [ ] 5.6 Save builds
+- [ ] 5.7 Saved-build management
+- [ ] 5.8 Build performance visualization
+- [ ] 5.9 Context-sensitive builder Help
 
