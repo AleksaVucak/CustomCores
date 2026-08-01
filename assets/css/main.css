@@ -1392,6 +1392,248 @@ textarea[aria-invalid="true"]:focus-visible {
   justify-content: center;
 }
 
+/* Saved builds (Commit 5.7) */
+
+.saved-builds-empty {
+  text-align: center;
+  padding: var(--cc-space-6) var(--cc-space-4);
+  color: var(--cc-color-text-muted);
+}
+
+.saved-builds-empty p {
+  margin-bottom: var(--cc-space-4);
+  font-size: 1.1rem;
+}
+
+.saved-builds-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: var(--cc-space-4);
+}
+
+.saved-build-card {
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+  padding: var(--cc-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--cc-space-3);
+}
+
+.saved-build-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--cc-space-2);
+}
+
+.saved-build-card__name {
+  font-size: 1.05rem;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.saved-build-card__name a {
+  color: var(--cc-color-text);
+  text-decoration: none;
+}
+
+.saved-build-card__name a:hover,
+.saved-build-card__name a:focus-visible {
+  color: var(--cc-color-accent);
+  text-decoration: underline;
+}
+
+.saved-build-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cc-space-2) var(--cc-space-4);
+  font-size: 0.85rem;
+}
+
+.saved-build-card__meta-item {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.saved-build-card__meta-item dt {
+  color: var(--cc-color-text-muted);
+  font-weight: 400;
+}
+
+.saved-build-card__meta-item dt::after {
+  content: ":";
+}
+
+.saved-build-card__meta-item dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.saved-build-card__notes {
+  font-size: 0.85rem;
+  color: var(--cc-color-text-muted);
+  margin: 0;
+}
+
+.saved-build-card__footer {
+  margin-top: auto;
+  padding-top: var(--cc-space-2);
+}
+
+.saved-builds-actions {
+  margin-top: var(--cc-space-5);
+}
+
+/* Single saved build detail */
+
+.saved-build-detail {
+  margin-bottom: var(--cc-space-5);
+}
+
+.saved-build-detail__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cc-space-3);
+  margin-bottom: var(--cc-space-3);
+}
+
+.saved-build-detail__total {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--cc-color-accent-hover);
+}
+
+.saved-build-detail__date {
+  font-size: 0.85rem;
+  color: var(--cc-color-text-muted);
+}
+
+.saved-build-detail__notes {
+  margin: var(--cc-space-2) 0 0;
+  color: var(--cc-color-text-muted);
+  font-style: italic;
+}
+
+.saved-build-section-title {
+  font-size: 1.1rem;
+  margin: var(--cc-space-5) 0 var(--cc-space-3);
+}
+
+.saved-build-item--inactive th,
+.saved-build-item--inactive td {
+  opacity: 0.6;
+}
+
+.saved-build-item__name {
+  display: block;
+  font-weight: 600;
+}
+
+.saved-build-item__brand {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--cc-color-text-muted);
+}
+
+.saved-build-item__attrs {
+  font-size: 0.85rem;
+  color: var(--cc-color-text-muted);
+}
+
+.saved-build-item__badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.15rem 0.4rem;
+  border-radius: var(--cc-radius-sm);
+  margin-top: 0.2rem;
+}
+
+.saved-build-item__badge--warn {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.saved-build-actions {
+  margin-top: var(--cc-space-5);
+}
+
+.saved-build-action-panel {
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-md);
+  padding: var(--cc-space-3) var(--cc-space-4);
+  margin-bottom: var(--cc-space-3);
+  background: var(--cc-color-bg-elevated);
+}
+
+.saved-build-action-panel--danger {
+  border-color: #f5c6cb;
+}
+
+.saved-build-action-panel__title {
+  font-weight: 600;
+  cursor: pointer;
+  padding: var(--cc-space-2) 0;
+}
+
+.saved-build-action-panel__desc {
+  font-size: 0.9rem;
+  color: var(--cc-color-text-muted);
+  margin: var(--cc-space-2) 0;
+}
+
+.saved-build-rename-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cc-space-3);
+  margin-top: var(--cc-space-2);
+}
+
+.saved-build-rename-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.saved-build-rename-form__field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.saved-build-rename-form__optional {
+  font-weight: 400;
+  color: var(--cc-color-text-muted);
+}
+
+.button--danger {
+  background: var(--cc-color-danger);
+  color: #fff;
+}
+
+.button--danger:hover,
+.button--danger:focus-visible {
+  background: #7a2a1f;
+}
+
+.saved-build-nav {
+  margin-top: var(--cc-space-5);
+}
+
+.data-table__num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.data-table__total {
+  font-weight: 700;
+  color: var(--cc-color-accent-hover);
+}
+
 /* ==========================================================================
    10. Cards & grids
    ========================================================================== */

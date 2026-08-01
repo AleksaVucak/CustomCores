@@ -164,6 +164,7 @@ These appear in the project instructions and package requirements. They support 
 | **5.4** | Compatibility checking — `api/compatibility-check.php`; 7 rules (socket, RAM, form factor, PSU wattage, GPU clearance, cooler fit, storage); JS live badge + per-rule results |
 | **5.5** | Build summary — `builder-results.php` + `includes/compatibility.php`; parts, trusted prices, compatibility, power/performance estimates |
 | **5.6** | Save builds — `builder-results.php` POST: CSRF + login + completeness + compat guard → `saved_builds` + `saved_build_items` insert; session cleared |
+| **5.7** | Saved-build management — `saved-builds.php` (list) + `saved-build.php` (view/rename/delete/edit-in-builder); ownership enforced |
 
 ---
 
@@ -288,7 +289,7 @@ These appear in the project instructions and package requirements. They support 
 - [x] 5.4 Component compatibility checking (`api/compatibility-check.php`)
 - [x] 5.5 Build summary page (`builder-results.php`)
 - [x] 5.6 Save builds (`builder-results.php` POST → `saved_builds` + `saved_build_items`)
-- [ ] 5.7 Saved-build management
+- [x] 5.7 Saved-build management (`saved-builds.php` + `saved-build.php`)
 - [ ] 5.8 Build performance visualization
 - [ ] 5.9 Context-sensitive builder Help
 

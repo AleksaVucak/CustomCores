@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 5.6 complete.**  
-Save builds: `builder-results.php` POST handler inserts `saved_builds` + `saved_build_items` (CSRF, login, completeness, compat checks); clears session; reloads from DB.
+**Commit 5.7 complete.**  
+Saved-build management: `saved-builds.php` (list, ownership-scoped) + `saved-build.php` (view, rename, delete, edit-in-builder). All queries enforce `user_id`.
 
-Next: **Commit 5.7** — saved-build management.
+Next: **Commit 5.8** — build performance visualization.

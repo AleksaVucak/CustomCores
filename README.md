@@ -34,15 +34,14 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 5.6 complete** — allow customers to save builds.
+**Commit 5.7 complete** — saved-build management.
 
-`builder-results.php` now handles POST: validates CSRF, requires login, checks
-the build is complete and not incompatible, then inserts into `saved_builds` +
-`saved_build_items` with a server-calculated total and compatibility snapshot.
-The session build is cleared after a successful save. The summary page reloads
-from the database to confirm.
+`saved-builds.php` lists all builds for the authenticated user (name, price,
+compatibility badge, component count, date). `saved-build.php` shows a single
+build with full component table, and supports rename, delete, and "edit in
+builder" (reloads into session). Ownership is enforced on every query.
 
-Next: **Commit 5.7** — saved-build management.
+Next: **Commit 5.8** — build performance visualization.
 
 ## Security notes
 
