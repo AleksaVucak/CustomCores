@@ -4,6 +4,7 @@
  *
  * File responsibility:
  *   Closes the main content region and outputs footer links plus shared scripts.
+ *   Loads assets/js/builder.js when $currentPage is "builder" (Commit 5.2).
  *
  * Included after page body content on each layout-using page.
  */
@@ -38,5 +39,8 @@ $year = date('Y');
     </footer>
 
     <script src="<?php echo customcore_e(customcore_url('assets/js/main.js')); ?>" defer></script>
+    <?php if (isset($currentPage) && $currentPage === 'builder') : ?>
+        <script src="<?php echo customcore_e(customcore_url('assets/js/builder.js')); ?>" defer></script>
+    <?php endif; ?>
 </body>
 </html>

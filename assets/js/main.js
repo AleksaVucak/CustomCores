@@ -17,7 +17,8 @@
  *   - Resizing to desktop width closes the mobile menu state
  *
  * Later stages:
- *   builder, cart, validation, charts, and map scripts
+ *   cart, validation, charts, and map scripts.
+ *   Builder live pricing lives in assets/js/builder.js (Commit 5.2).
  * ----------------------------------------------------------------------------
  */
 

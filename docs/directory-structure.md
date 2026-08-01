@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 5.1 complete.**  
-`builder.php` — multi-step custom PC builder form; 10 category steps from DB; session-stored selections; live summary sidebar; CSRF-protected POST; "Start over" reset; optional step skipping.
+**Commit 5.2 complete.**  
+Live client-side pricing: `assets/js/builder.js` + `data-price` / `data-other-total` on `builder.php`; this-step subtotal + running total update on radio change; script loaded from footer when `$currentPage === 'builder'`.
 
-Next: **Commit 5.2** — live client-side price calculation.
+Next: **Commit 5.3** — server-side price recalculation.

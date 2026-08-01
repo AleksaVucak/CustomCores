@@ -159,6 +159,7 @@ These appear in the project instructions and package requirements. They support 
 | **4.7** | `includes/admin-auth.php` (`customcore_require_admin()`); protected `admin/index.php`; admins-only Admin nav link; customers redirected from admin URLs |
 | **4.8** | Session hardening — strict cookie flags (HttpOnly, SameSite=Lax, Secure/HTTPS), UA binding, idle (30m) + absolute (12h) timeouts, ID rotation (15m); `customcore_session_harden()` / `customcore_session_expire()`; timeouts in `config/app.php` |
 | **5.1** | `builder.php` — multi-step custom PC builder form; 10 categories from DB; session-stored selections; live summary sidebar; CSRF; optional skip; reset |
+| **5.2** | Live client price calc — `assets/js/builder.js`; `data-price` on radios; this-step subtotal + running total update immediately on selection change |
 
 ---
 
@@ -278,7 +279,7 @@ These appear in the project instructions and package requirements. They support 
 ### Stage 5 progress
 
 - [x] 5.1 Multi-step PC Builder form (`builder.php`)
-- [ ] 5.2 Live client-side price calculation
+- [x] 5.2 Live client-side price calculation (`assets/js/builder.js`)
 - [ ] 5.3 Server-side price recalculation
 - [ ] 5.4 Component compatibility checking
 - [ ] 5.5 Build summary page

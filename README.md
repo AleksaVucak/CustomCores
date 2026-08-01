@@ -34,14 +34,13 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 5.1 complete** — multi-step PC Builder form.
+**Commit 5.2 complete** — live client-side PC price calculation.
 
-`builder.php` presents a step-by-step component selection interface with all 10
-categories (CPU, Motherboard, GPU, RAM, Storage, PSU, Case, Cooling, OS,
-Service). Selections are stored in the session across steps; the live summary
-sidebar shows running totals. Optional categories (Service) can be skipped.
+`assets/js/builder.js` updates the builder “This step” subtotal and running total
+immediately when a component radio is selected. Prices come from server-rendered
+`data-price` attributes; the summary sidebar refreshes without a page reload.
 
-Next: **Commit 5.2** — live client-side price calculation.
+Next: **Commit 5.3** — server-side price recalculation.
 
 ## Security notes
 

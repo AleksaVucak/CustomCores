@@ -24,6 +24,11 @@
  *
  * Session:
  *   $_SESSION['_cc_build'] — array keyed by category ID → component ID.
+ *
+ * Live pricing (Commit 5.2):
+ *   Each radio carries data-price / data-name. assets/js/builder.js recalculates
+ *   the this-step subtotal and running total immediately on selection change.
+ *   Server-trusted totals arrive in Commit 5.3.
  */
 
 declare(strict_types=1);
@@ -208,22 +213,50 @@ try {
 $selectedId = isset($build[$categoryId]) ? (int) $build[$categoryId] : 0;
 
 // ---------------------------------------------------------------------------
-// Calculate running totals from earlier selections
+// Load selected component details once (summary + live-price baseline)
 // ---------------------------------------------------------------------------
 
-$runningTotal = '0.00';
+/** @var array<int, array{id:int,name:string,price:float,category_id:int}> $selectedDetails */
+$selectedDetails = [];
+$runningTotal = 0.0;
+$otherTotal = 0.0; // Sum of selections excluding the current step (for live JS)
+$currentStepPrice = 0.0;
+$currentStepName = '';
 
 if (!empty($build)) {
     try {
         $ids = array_values(array_map('intval', $build));
         $placeholders = implode(',', array_fill(0, count($ids), '?'));
-        $totalStmt = $pdo->prepare(
-            "SELECT COALESCE(SUM(price), 0) AS total FROM components WHERE id IN ($placeholders)"
+        $detailStmt = $pdo->prepare(
+            "SELECT id, name, price, component_category_id
+             FROM components
+             WHERE id IN ($placeholders)"
         );
-        $totalStmt->execute($ids);
-        $runningTotal = $totalStmt->fetchColumn();
+        $detailStmt->execute($ids);
+        $rows = $detailStmt->fetchAll();
+
+        foreach ($rows as $row) {
+            $rowCatId = (int) $row['component_category_id'];
+            $rowPrice = (float) $row['price'];
+            $selectedDetails[$rowCatId] = [
+                'id' => (int) $row['id'],
+                'name' => (string) $row['name'],
+                'price' => $rowPrice,
+                'category_id' => $rowCatId,
+            ];
+            $runningTotal += $rowPrice;
+
+            if ($rowCatId === $categoryId) {
+                $currentStepPrice = $rowPrice;
+                $currentStepName = (string) $row['name'];
+            } else {
+                $otherTotal += $rowPrice;
+            }
+        }
     } catch (Throwable $exception) {
-        $runningTotal = '0.00';
+        $selectedDetails = [];
+        $runningTotal = 0.0;
+        $otherTotal = 0.0;
     }
 }
 
@@ -297,8 +330,12 @@ require_once __DIR__ . '/includes/header.php';
             <?php else: ?>
                 <form
                     class="builder-form"
+                    id="builder-form"
                     method="post"
                     action="<?php echo customcore_e(customcore_url('builder.php?step=' . $currentStep)); ?>"
+                    data-builder-live="1"
+                    data-other-total="<?php echo customcore_e(number_format($otherTotal, 2, '.', '')); ?>"
+                    data-category-id="<?php echo $categoryId; ?>"
                 >
                     <?php echo customcore_csrf_field(); ?>
                     <input type="hidden" name="category_id" value="<?php echo $categoryId; ?>">
@@ -307,6 +344,8 @@ require_once __DIR__ . '/includes/header.php';
                         <?php foreach ($components as $comp): ?>
                             <?php
                             $compId = (int) $comp['id'];
+                            $compPrice = (float) $comp['price'];
+                            $compName = (string) $comp['name'];
                             $isSelected = $compId === $selectedId;
                             $cardClass = 'builder-option';
                             if ($isSelected) {
@@ -320,11 +359,13 @@ require_once __DIR__ . '/includes/header.php';
                                     id="comp-<?php echo $compId; ?>"
                                     name="component_id"
                                     value="<?php echo $compId; ?>"
+                                    data-price="<?php echo customcore_e(number_format($compPrice, 2, '.', '')); ?>"
+                                    data-name="<?php echo customcore_e($compName); ?>"
                                     <?php echo $isSelected ? 'checked' : ''; ?>
                                 >
                                 <span class="builder-option__content">
                                     <span class="builder-option__name">
-                                        <?php echo customcore_e($comp['name']); ?>
+                                        <?php echo customcore_e($compName); ?>
                                     </span>
                                     <span class="builder-option__meta">
                                         <?php if ($comp['brand'] !== ''): ?>
@@ -359,10 +400,7 @@ require_once __DIR__ . '/includes/header.php';
                                         <?php endif; ?>
                                     </span>
                                     <span class="builder-option__price">
-                                        <?php
-                                        $price = (float) $comp['price'];
-                                        echo $price > 0 ? '$' . customcore_e(number_format($price, 2)) : 'Included';
-                                        ?>
+                                        <?php echo $compPrice > 0 ? '$' . customcore_e(number_format($compPrice, 2)) : 'Included'; ?>
                                     </span>
                                 </span>
                             </label>
@@ -392,53 +430,74 @@ require_once __DIR__ . '/includes/header.php';
         </div>
 
         <!-- Right: Live summary panel -->
-        <aside class="builder-layout__summary" aria-label="Build summary">
+        <aside class="builder-layout__summary" aria-label="Build summary" id="builder-summary">
             <h2 class="builder-section-title">Build summary</h2>
 
             <dl class="builder-summary">
                 <?php foreach ($categories as $cat): ?>
                     <?php
                     $catIdLoop = (int) $cat['id'];
-                    $hasSelection = isset($build[$catIdLoop]);
+                    $isActiveRow = $catIdLoop === $categoryId;
+                    $detail = $selectedDetails[$catIdLoop] ?? null;
+                    $hasSelection = $detail !== null;
                     ?>
-                    <div class="builder-summary__row<?php echo $catIdLoop === $categoryId ? ' builder-summary__row--active' : ''; ?>">
+                    <div
+                        class="builder-summary__row<?php echo $isActiveRow ? ' builder-summary__row--active' : ''; ?>"
+                        <?php if ($isActiveRow): ?>
+                            data-live-category-row="1"
+                        <?php endif; ?>
+                    >
                         <dt class="builder-summary__label"><?php echo customcore_e($cat['name']); ?></dt>
                         <dd class="builder-summary__value">
                             <?php if ($hasSelection): ?>
-                                <?php
-                                // Fetch name and price for display
-                                try {
-                                    $sumStmt = $pdo->prepare(
-                                        'SELECT name, price FROM components WHERE id = :id LIMIT 1'
-                                    );
-                                    $sumStmt->execute([':id' => $build[$catIdLoop]]);
-                                    $sumComp = $sumStmt->fetch();
-                                    if ($sumComp) {
-                                        $displayPrice = (float) $sumComp['price'];
-                                        echo '<span class="builder-summary__part">' . customcore_e($sumComp['name']) . '</span>';
-                                        echo '<span class="builder-summary__price">';
-                                        echo $displayPrice > 0 ? '$' . customcore_e(number_format($displayPrice, 2)) : 'Included';
-                                        echo '</span>';
-                                    } else {
-                                        echo '<span class="builder-summary__empty">—</span>';
-                                    }
-                                } catch (Throwable $e) {
-                                    echo '<span class="builder-summary__empty">—</span>';
-                                }
-                                ?>
-                            <?php else: ?>
-                                <span class="builder-summary__empty">
-                                    <?php echo (int) $cat['is_required'] === 0 ? 'Skipped' : '—'; ?>
+                                <span class="builder-summary__part"<?php echo $isActiveRow ? ' data-live-part' : ''; ?>>
+                                    <?php echo customcore_e($detail['name']); ?>
                                 </span>
+                                <span class="builder-summary__price"<?php echo $isActiveRow ? ' data-live-price' : ''; ?>>
+                                    <?php echo $detail['price'] > 0 ? '$' . customcore_e(number_format($detail['price'], 2)) : 'Included'; ?>
+                                </span>
+                            <?php else: ?>
+                                <?php if ($isActiveRow): ?>
+                                    <span class="builder-summary__part" data-live-part hidden></span>
+                                    <span class="builder-summary__price" data-live-price hidden></span>
+                                    <span class="builder-summary__empty" data-live-empty>
+                                        <?php echo (int) $cat['is_required'] === 0 ? 'Skipped' : '—'; ?>
+                                    </span>
+                                <?php else: ?>
+                                    <span class="builder-summary__empty">
+                                        <?php echo (int) $cat['is_required'] === 0 ? 'Skipped' : '—'; ?>
+                                    </span>
+                                <?php endif; ?>
                             <?php endif; ?>
                         </dd>
                     </div>
                 <?php endforeach; ?>
             </dl>
 
+            <div class="builder-summary__subtotal" id="builder-live-subtotal-wrap">
+                <strong>This step:</strong>
+                <span
+                    class="builder-summary__subtotal-value"
+                    id="builder-live-subtotal"
+                    aria-live="polite"
+                ><?php
+                    if ($selectedId > 0) {
+                        echo $currentStepPrice > 0
+                            ? '$' . customcore_e(number_format($currentStepPrice, 2))
+                            : 'Included';
+                    } else {
+                        echo '—';
+                    }
+                ?></span>
+            </div>
+
             <div class="builder-summary__total">
                 <strong>Running total:</strong>
-                <span class="builder-summary__total-value">$<?php echo customcore_e(number_format((float) $runningTotal, 2)); ?></span>
+                <span
+                    class="builder-summary__total-value"
+                    id="builder-live-total"
+                    aria-live="polite"
+                >$<?php echo customcore_e(number_format($runningTotal, 2)); ?></span>
             </div>
 
             <?php if (!empty($build)): ?>
@@ -449,6 +508,10 @@ require_once __DIR__ . '/includes/header.php';
                     >Start over</a>
                 </div>
             <?php endif; ?>
+
+            <p class="builder-summary__hint" id="builder-price-hint">
+                Prices update instantly as you change selections.
+            </p>
         </aside>
     </div>
 </section>

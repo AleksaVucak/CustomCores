@@ -1025,10 +1025,47 @@ textarea[aria-invalid="true"]:focus-visible {
   font-size: 1.05rem;
 }
 
+.builder-summary__subtotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: var(--cc-space-3);
+  padding-top: var(--cc-space-2);
+  font-size: 0.95rem;
+  color: var(--cc-color-text-muted);
+}
+
+.builder-summary__subtotal-value {
+  font-weight: 600;
+  color: var(--cc-color-text);
+}
+
 .builder-summary__total-value {
   font-weight: 700;
   font-size: 1.2rem;
   color: var(--cc-color-primary);
+}
+
+.builder-summary__subtotal-value.is-updating,
+.builder-summary__total-value.is-updating {
+  animation: builder-price-pulse 0.35s ease;
+}
+
+@keyframes builder-price-pulse {
+  0% {
+    opacity: 0.45;
+    transform: translateY(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.builder-summary__hint {
+  margin: var(--cc-space-3) 0 0;
+  font-size: 0.8rem;
+  color: var(--cc-color-text-muted);
 }
 
 .builder-summary__actions {
