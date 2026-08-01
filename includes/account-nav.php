@@ -54,6 +54,11 @@ $accountNavItems = [
         'href' => 'order-history.php',
         'ready' => is_file(dirname(__DIR__) . '/order-history.php'),
     ],
+    'consultation' => [
+        'label' => 'Request consultation',
+        'href' => 'consultation.php',
+        'ready' => is_file(dirname(__DIR__) . '/consultation.php'),
+    ],
     'consultations' => [
         'label' => 'Consultations',
         'href' => 'consultation-history.php',

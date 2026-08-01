@@ -4528,3 +4528,46 @@ a.cart-item__name:hover {
     font-size: 1.5rem;
   }
 }
+
+/* ==========================================================================
+   Consultations (Commit 7.3)
+   Request form + status badges (badges reused by history/admin later).
+   ========================================================================== */
+
+.consultation-page__intro {
+  color: var(--cc-color-text-muted);
+  margin: 0 0 var(--cc-space-5);
+}
+
+.consultation-form {
+  max-width: 40rem;
+}
+
+.consult-status {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--cc-radius-sm);
+  vertical-align: middle;
+}
+
+.consult-status--open {
+  background: #dbe7f5;
+  color: #234e78;
+}
+
+.consult-status--in_progress {
+  background: #f5e8c8;
+  color: var(--cc-color-warning);
+}
+
+.consult-status--answered {
+  background: #d8efdf;
+  color: var(--cc-color-success);
+}
+
+.consult-status--closed {
+  background: var(--cc-color-bg-muted);
+  color: var(--cc-color-text-muted);
+}

@@ -34,18 +34,18 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 7.3 complete** — PC consultation request form.
+
+Logged-in customers can request a personalised consultation from
+`consultation.php` (budget, games, software, performance goals, optional notes).
+Each valid submission is stored in `consultation_requests` with `status = open`
+and tied to the session `user_id`. CSRF protection and server-side validation
+(whitelisted budget) guard the form. Shared helpers live in
+`includes/consultations.php`. Secure attachments arrive in Commit 7.4.
+
 **Commit 7.2 complete** — product review submission.
 
-Logged-in customers can submit a rating (1–5), title, and review body from
-`product.php` or `reviews.php`. Every new review is inserted with
-`status = pending` so it stays out of public listings until an administrator
-approves it (Stage 9). CSRF protection, server + client validation, and a
-one-review-per-product rule (pending/approved) are enforced. Shared helpers
-live in `includes/reviews.php`.
-
-**Commit 7.1 complete** — customer wishlists.
-
-Next: **Commit 7.3** — PC consultation request form.
+Next: **Commit 7.4** — secure consultation attachments.
 
 ## Security notes
 

@@ -51,7 +51,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `database/` | Schema, seeds, create-admin script | 2.x |
 | `docs/` | Business case, rubric, sitemap, wireframes, ER design, guides | 0.x–12.x |
 | `help/` | Static Help + training HTML (`pc-builder.html` shipped in 5.9; full wiki in 11.x) | 5.9, 11.x |
-| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 14.x |
+| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
 | `uploads/products/` | Product images uploaded by admin | 9.2 |
 
@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 7.2 complete — product review submission.**  
-Logged-in customers submit rating/title/body from `product.php` or `reviews.php`; rows insert as `status = pending` (public pages still show approved only). Helpers in `includes/reviews.php`; CSRF + server/client validation; one pending/approved review per user per product.
+**Commit 7.3 complete — PC consultation request form.**  
+`consultation.php` captures budget, games, software, performance goals, and optional notes; valid submits insert into `consultation_requests` with `status = open`, scoped to the session `user_id`. Helpers in `includes/consultations.php`; CSRF + server-side validation (whitelisted budget).
 
-Next: **Commit 7.3** — PC consultation request form.
+Next: **Commit 7.4** — secure consultation attachments.

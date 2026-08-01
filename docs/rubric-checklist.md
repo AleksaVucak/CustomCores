@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 7 / Commit 7.2 (product review submission)
+**Last updated:** Stage 7 / Commit 7.3 (PC consultation request form)
 
 ### Status legend
 
@@ -177,6 +177,7 @@ These appear in the project instructions and package requirements. They support 
 | **6.8** | Customer order details — `order-details.php` itemized receipt (shipping, payment label, frozen options/build snapshots); `customcore_order_fetch_owned` + `fetch_items` (JOIN ownership); foreign order IDs denied identically; Stage 6 complete |
 | **7.1** | Customer wishlist — `wishlist.php` (list, remove, clear, move-to-cart with server-recomputed default-config price); "Save to wishlist" on `product.php`; `includes/wishlist.php` helpers (`_add`/`_remove`/`_items`/`_contains`/`_count`); `INSERT IGNORE` dedupe + `UNIQUE(wishlist_id, product_id)`; all queries scoped to `user_id`; CSRF on every action |
 | **7.2** | Product review submission — form on `product.php` + `reviews.php` (rating 1–5, title, body); CSRF; login required; insert with `status = pending`; `includes/reviews.php` helpers + `assets/js/reviews.js` client validation; one pending/approved review per user/product; public lists still show approved only |
+| **7.3** | PC consultation request — `consultation.php` (budget, games, software, performance goals, optional notes); CSRF; login required; insert into `consultation_requests` with `status = open`; `includes/consultations.php` helpers (statuses/labels/classes, budget whitelist, validate, create); scoped to session `user_id`; account-nav entry |
 
 ---
 
@@ -331,7 +332,7 @@ These appear in the project instructions and package requirements. They support 
 
 - [x] 7.1 Customer wishlist (`wishlist.php` + `includes/wishlist.php`; save from `product.php`; move-to-cart; owner-scoped; CSRF)
 - [x] 7.2 Product review submission (`reviews.php` + `product.php` form; `status = pending`; `includes/reviews.php`; client validation)
-- [ ] 7.3 PC consultation request form
+- [x] 7.3 PC consultation request form (`consultation.php` + `includes/consultations.php`; `status = open`; owner-scoped; CSRF)
 - [ ] 7.4 Secure consultation attachments
 - [ ] 7.5 Customer contact form
 - [ ] 7.6 Consultation request history
@@ -350,4 +351,11 @@ These appear in the project instructions and package requirements. They support 
 - [x] New reviews are stored with `status = pending` (not shown publicly)
 - [x] CSRF and server-side validation reject incomplete/invalid submissions
 - [x] Guests are prompted to log in; duplicate pending/approved reviews are blocked
+
+### Stage 7.3 acceptance
+
+- [x] Logged-in customers can submit a consultation request
+- [x] Valid submissions create a `consultation_requests` row with `status = open`
+- [x] Budget is validated against a whitelist; required text fields enforced
+- [x] The request is tied to the session `user_id` (never a form-supplied id)
 
