@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 3 / Commit 3.8 (approved product reviews — Stage 3 complete)
+**Last updated:** Stage 6 / Commit 6.1 (shopping cart)
 
 ### Status legend
 
@@ -167,6 +167,7 @@ These appear in the project instructions and package requirements. They support 
 | **5.7** | Saved-build management — `saved-builds.php` (list) + `saved-build.php` (view/rename/delete/edit-in-builder); ownership enforced |
 | **5.8** | Performance visualization — `api/chart-data.php`, Chart.js bar chart (gaming / productivity / upgrade headroom) + text fallback |
 | **5.9** | Context-sensitive builder Help — `help/pc-builder.html` (every step) + anchored links from builder/results/saved pages |
+| **6.1** | Shopping cart — `cart.php` (session-stored DB cart); `includes/cart.php` helpers; "Add to cart" on product + saved-build pages; quantity update, remove, clear; server-side price verification; CSRF |
 
 ---
 
@@ -297,5 +298,5 @@ These appear in the project instructions and package requirements. They support 
 
 ### Stage 6 progress
 
-- [ ] 6.1 Shopping cart
+- [x] 6.1 Shopping cart (`cart.php` + `includes/cart.php`)
 

@@ -34,14 +34,14 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 5.9 complete** — context-sensitive builder Help.
+**Commit 6.1 complete** — shopping cart.
 
-`help/pc-builder.html` documents every builder step, pricing, compatibility,
-performance charts, and saved-build workflows. Builder, summary, and saved-build
-pages link to the matching section anchors. `help/index.html` provides a Help
-centre entry point. Stage 5 (Custom PC Builder) is complete.
+`cart.php` provides a fully functional database-backed shopping cart. Customers can
+add catalogue products (with configured options) from product pages, or add saved
+custom builds from the build management page. Cart supports quantity updates, item
+removal, and full clear. All prices are verified server-side. CSRF-protected.
 
-Next: **Stage 6** — Cart, checkout, and orders.
+Next: **Commit 6.2** — checkout page.
 
 ## Security notes
 

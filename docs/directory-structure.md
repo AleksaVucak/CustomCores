@@ -51,7 +51,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `database/` | Schema, seeds, create-admin script | 2.x |
 | `docs/` | Business case, rubric, sitemap, wireframes, ER design, guides | 0.x–12.x |
 | `help/` | Static Help + training HTML (`pc-builder.html` shipped in 5.9; full wiki in 11.x) | 5.9, 11.x |
-| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, compatibility, performance | 1.3–1.8, 4.x, 5.x, 14.x |
+| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
 | `uploads/products/` | Product images uploaded by admin | 9.2 |
 
@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 5.9 complete — Stage 5 finished.**  
-Builder Help: `help/pc-builder.html` (every step + pricing/compat/charts/save) with section anchors; context links from builder/results/saved pages; `help/index.html` hub.
+**Commit 6.1 complete — shopping cart.**  
+`cart.php` + `includes/cart.php`: database-backed cart supporting catalogue products and saved builds; add, update qty, remove, clear; server-side price verification; CSRF; account-nav integration.
 
-Next: **Stage 6** — Cart, checkout, and orders.
+Next: **Commit 6.2** — checkout page.

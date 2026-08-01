@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/database.php';
+require_once __DIR__ . '/includes/csrf.php';
 
 // ---------------------------------------------------------------------------
 // Validate and fetch the product
@@ -256,65 +257,112 @@ require_once __DIR__ . '/includes/header.php';
             </section>
 
             <?php if ($optionGroups !== []) : ?>
-                <section class="product-detail__options" aria-labelledby="options-heading">
-                    <h2 id="options-heading">Configuration options</h2>
-                    <p class="product-detail__options-note">
-                        Prices shown as +/− from the base price of
-                        $<?php echo customcore_e(number_format($basePrice, 2)); ?>.
-                        The default selection for each group is pre-selected.
-                    </p>
+                <form class="product-detail__cart-form" method="post" action="<?php echo customcore_e(customcore_url('cart.php')); ?>">
+                    <?php echo customcore_csrf_field(); ?>
+                    <input type="hidden" name="action" value="add_product">
+                    <input type="hidden" name="product_id" value="<?php echo customcore_e((string) $productId); ?>">
 
-                    <?php foreach ($optionGroups as $groupName => $groupOptions) : ?>
-                        <fieldset class="option-group">
-                            <legend class="option-group__legend">
-                                <?php echo customcore_e($groupName); ?>
-                            </legend>
-                            <div class="option-group__choices">
-                                <?php foreach ($groupOptions as $opt) : ?>
-                                    <?php
-                                    $optId = (int) $opt['id'];
-                                    $label = (string) $opt['option_label'];
-                                    $delta = (float) $opt['price_delta'];
-                                    $isDefault = !empty($opt['is_default']);
-                                    $deltaLabel = '';
-                                    if ($delta > 0.00) {
-                                        $deltaLabel = '+$' . number_format($delta, 2);
-                                    } elseif ($delta < 0.00) {
-                                        $deltaLabel = '-$' . number_format(abs($delta), 2);
-                                    }
-                                    $inputName = 'option_' . customcore_e($groupName);
-                                    ?>
-                                    <label class="option-choice<?php echo $isDefault ? ' is-default' : ''; ?>">
-                                        <input
-                                            type="radio"
-                                            name="<?php echo $inputName; ?>"
-                                            value="<?php echo customcore_e((string) $optId); ?>"
-                                            <?php echo $isDefault ? ' checked' : ''; ?>
-                                        >
-                                        <span class="option-choice__label">
-                                            <?php echo customcore_e($label); ?>
-                                        </span>
-                                        <?php if ($deltaLabel !== '') : ?>
-                                            <span class="option-choice__delta">
-                                                <?php echo customcore_e($deltaLabel); ?>
-                                            </span>
-                                        <?php else : ?>
-                                            <span class="option-choice__delta option-choice__delta--included">
-                                                Included
-                                            </span>
-                                        <?php endif; ?>
-                                    </label>
-                                <?php endforeach; ?>
-                            </div>
-                        </fieldset>
-                    <?php endforeach; ?>
+                    <section class="product-detail__options" aria-labelledby="options-heading">
+                        <h2 id="options-heading">Configuration options</h2>
+                        <p class="product-detail__options-note">
+                            Prices shown as +/− from the base price of
+                            $<?php echo customcore_e(number_format($basePrice, 2)); ?>.
+                            The default selection for each group is pre-selected.
+                        </p>
 
-                    <p class="product-detail__options-count">
-                        <?php echo customcore_e((string) count($options)); ?> options across
-                        <?php echo customcore_e((string) count($optionGroups)); ?> groups.
-                        Add to cart with your choices once the checkout is active.
-                    </p>
-                </section>
+                        <?php foreach ($optionGroups as $groupName => $groupOptions) : ?>
+                            <fieldset class="option-group">
+                                <legend class="option-group__legend">
+                                    <?php echo customcore_e($groupName); ?>
+                                </legend>
+                                <div class="option-group__choices">
+                                    <?php foreach ($groupOptions as $opt) : ?>
+                                        <?php
+                                        $optId = (int) $opt['id'];
+                                        $label = (string) $opt['option_label'];
+                                        $delta = (float) $opt['price_delta'];
+                                        $isDefault = !empty($opt['is_default']);
+                                        $deltaLabel = '';
+                                        if ($delta > 0.00) {
+                                            $deltaLabel = '+$' . number_format($delta, 2);
+                                        } elseif ($delta < 0.00) {
+                                            $deltaLabel = '-$' . number_format(abs($delta), 2);
+                                        }
+                                        $inputName = 'option_' . customcore_e($groupName);
+                                        ?>
+                                        <label class="option-choice<?php echo $isDefault ? ' is-default' : ''; ?>">
+                                            <input
+                                                type="radio"
+                                                name="<?php echo $inputName; ?>"
+                                                value="<?php echo customcore_e((string) $optId); ?>"
+                                                <?php echo $isDefault ? ' checked' : ''; ?>
+                                            >
+                                            <span class="option-choice__label">
+                                                <?php echo customcore_e($label); ?>
+                                            </span>
+                                            <?php if ($deltaLabel !== '') : ?>
+                                                <span class="option-choice__delta">
+                                                    <?php echo customcore_e($deltaLabel); ?>
+                                                </span>
+                                            <?php else : ?>
+                                                <span class="option-choice__delta option-choice__delta--included">
+                                                    Included
+                                                </span>
+                                            <?php endif; ?>
+                                        </label>
+                                    <?php endforeach; ?>
+                                </div>
+                            </fieldset>
+                        <?php endforeach; ?>
+
+                        <p class="product-detail__options-count">
+                            <?php echo customcore_e((string) count($options)); ?> options across
+                            <?php echo customcore_e((string) count($optionGroups)); ?> groups.
+                        </p>
+                    </section>
+
+                    <?php if ($inStock) : ?>
+                        <div class="product-detail__add-to-cart">
+                            <label for="product-qty" class="product-detail__qty-label">Quantity</label>
+                            <input
+                                type="number"
+                                id="product-qty"
+                                name="quantity"
+                                value="1"
+                                min="1"
+                                max="<?php echo customcore_e((string) min(99, $stock)); ?>"
+                                class="product-detail__qty-input"
+                            >
+                            <button type="submit" class="button button--primary">Add to cart</button>
+                        </div>
+                    <?php else : ?>
+                        <p class="product-detail__oos-notice">This product is currently out of stock.</p>
+                    <?php endif; ?>
+                </form>
+            <?php else : ?>
+                <!-- No options — simple add to cart form -->
+                <?php if ($inStock) : ?>
+                    <form class="product-detail__cart-form product-detail__cart-form--simple" method="post" action="<?php echo customcore_e(customcore_url('cart.php')); ?>">
+                        <?php echo customcore_csrf_field(); ?>
+                        <input type="hidden" name="action" value="add_product">
+                        <input type="hidden" name="product_id" value="<?php echo customcore_e((string) $productId); ?>">
+                        <div class="product-detail__add-to-cart">
+                            <label for="product-qty" class="product-detail__qty-label">Quantity</label>
+                            <input
+                                type="number"
+                                id="product-qty"
+                                name="quantity"
+                                value="1"
+                                min="1"
+                                max="<?php echo customcore_e((string) min(99, $stock)); ?>"
+                                class="product-detail__qty-input"
+                            >
+                            <button type="submit" class="button button--primary">Add to cart</button>
+                        </div>
+                    </form>
+                <?php else : ?>
+                    <p class="product-detail__oos-notice">This product is currently out of stock.</p>
+                <?php endif; ?>
             <?php endif; ?>
 
             <section class="product-detail__reviews" aria-labelledby="reviews-heading">

@@ -420,6 +420,18 @@ require_once __DIR__ . '/includes/header.php';
             <div class="saved-build-actions">
                 <h2 class="saved-build-section-title">Manage this build</h2>
 
+                <!-- Add to cart -->
+                <div class="saved-build-action-panel saved-build-action-panel--highlight">
+                    <form method="post" action="<?php echo customcore_e(customcore_url('cart.php')); ?>">
+                        <?php echo customcore_csrf_field(); ?>
+                        <input type="hidden" name="action" value="add_build">
+                        <input type="hidden" name="saved_build_id" value="<?php echo customcore_e((string) $buildId); ?>">
+                        <button type="submit" class="button button--primary">
+                            Add this build to cart — $<?php echo customcore_e(number_format($totalPrice, 2)); ?>
+                        </button>
+                    </form>
+                </div>
+
                 <!-- Rename form -->
                 <details class="saved-build-action-panel" open>
                     <summary class="saved-build-action-panel__title">Rename / update notes</summary>

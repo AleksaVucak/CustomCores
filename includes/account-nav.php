@@ -39,6 +39,11 @@ $accountNavItems = [
         'href' => 'saved-builds.php',
         'ready' => is_file(dirname(__DIR__) . '/saved-builds.php'),
     ],
+    'cart' => [
+        'label' => 'Cart',
+        'href' => 'cart.php',
+        'ready' => is_file(dirname(__DIR__) . '/cart.php'),
+    ],
     'wishlist' => [
         'label' => 'Wishlist',
         'href' => 'wishlist.php',
