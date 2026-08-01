@@ -169,6 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $optionsJson = $selectedOptions !== [] ? json_encode($selectedOptions) : null;
 
                 customcore_cart_add_product($pdo, $cartId, $productId, $unitPrice, $quantity, $optionsJson);
+                customcore_cart_refresh_count($pdo, $userId);
                 customcore_flash_success((string) $prodRow['name'] . ' added to your cart.');
                 customcore_redirect('cart.php');
                 break;
@@ -214,6 +215,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 customcore_cart_add_build($pdo, $cartId, $savedBuildId, $buildPrice);
+                customcore_cart_refresh_count($pdo, $userId);
                 customcore_flash_success((string) $buildRow['name'] . ' added to your cart.');
                 customcore_redirect('cart.php');
                 break;
@@ -246,6 +248,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     customcore_flash_success('Cart updated.');
                 }
 
+                customcore_cart_refresh_count($pdo, $userId);
                 customcore_redirect('cart.php');
                 break;
 
@@ -287,6 +290,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     customcore_flash_success('Cart updated.');
                 }
 
+                customcore_cart_refresh_count($pdo, $userId);
                 customcore_redirect('cart.php');
                 break;
 
@@ -309,6 +313,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     customcore_flash_error('Cart item not found.');
                 }
 
+                customcore_cart_refresh_count($pdo, $userId);
                 customcore_redirect('cart.php');
                 break;
 
@@ -324,6 +329,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     customcore_flash_warning('Your cart was already empty.');
                 }
 
+                customcore_cart_refresh_count($pdo, $userId);
                 customcore_redirect('cart.php');
                 break;
 

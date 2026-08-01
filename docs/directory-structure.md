@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 6.2 complete — cart quantity and removal controls.**  
-`cart.php` + `includes/cart.php` helpers + `assets/js/cart.js`: stock-aware qty steppers, bulk update, remove, clear; live total preview; ownership-scoped mutations.
+**Commit 6.3 complete — persist carts for customer accounts.**  
+DB-backed carts survive logout/login; session-cached count for nav badge; login pre-loads count; mutations refresh cache; CSS badge on Cart link.
 
-Next: **Commit 6.3** — persist carts for customer accounts.
+Next: **Commit 6.4** — validated checkout form.

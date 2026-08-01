@@ -34,13 +34,14 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 6.2 complete** — cart quantity and removal controls.
+**Commit 6.3 complete** — persist carts for customer accounts.
 
-Cart lines support stock-aware quantity steppers, bulk **Update cart**, per-line
-**Remove**, and **Clear cart**. Server clamps keep line totals and the subtotal
-accurate; `assets/js/cart.js` previews totals live before submit.
+The cart is fully database-backed (`carts` + `cart_items` tables) so it survives
+logout and login. On login, the cart count is pre-loaded into the session. The nav
+shows a live badge with the item count. Every cart mutation refreshes the cached
+count so the badge stays accurate across all pages.
 
-Next: **Commit 6.3** — persist carts for customer accounts.
+Next: **Commit 6.4** — validated checkout form.
 
 ## Security notes
 

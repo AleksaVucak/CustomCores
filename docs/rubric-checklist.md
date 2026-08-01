@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 6 / Commit 6.2 (cart quantity and removal controls)
+**Last updated:** Stage 6 / Commit 6.3 (persist carts for customer accounts)
 
 ### Status legend
 
@@ -169,6 +169,7 @@ These appear in the project instructions and package requirements. They support 
 | **5.9** | Context-sensitive builder Help — `help/pc-builder.html` (every step) + anchored links from builder/results/saved pages |
 | **6.1** | Shopping cart — `cart.php` (session-stored DB cart); `includes/cart.php` helpers; "Add to cart" on product + saved-build pages; quantity update, remove, clear; server-side price verification; CSRF |
 | **6.2** | Cart quantity & removal controls — bulk Update cart, +/- steppers, stock clamps, remove + clear with confirm; `assets/js/cart.js` live line/subtotal preview; helpers `customcore_cart_update_*` / `remove` / `clear` |
+| **6.3** | Persist carts for accounts — DB-backed `carts`/`cart_items` survive logout/login; session-cached count (`customcore_cart_count_cached`); login pre-loads count; nav badge (`.site-nav__badge`); all mutations refresh cache |
 
 ---
 
@@ -301,4 +302,5 @@ These appear in the project instructions and package requirements. They support 
 
 - [x] 6.1 Shopping cart (`cart.php` + `includes/cart.php`)
 - [x] 6.2 Cart quantity and removal controls (`update` / `update_all` / `remove` / `clear` + `assets/js/cart.js`)
+- [x] 6.3 Persist carts for customer accounts (DB-backed; session-cached nav badge count; login pre-load)
 

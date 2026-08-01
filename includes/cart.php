@@ -1,11 +1,12 @@
 <?php
 /**
- * CustomCore — Cart helper functions (Commits 6.1–6.2).
+ * CustomCore — Cart helper functions (Commits 6.1–6.3).
  *
  * File responsibility:
  *   Shared cart operations: get or create the user's DB cart, add items,
  *   update/remove/clear lines (Commit 6.2), list items with product/build
- *   details, and count items for the nav badge.
+ *   details, count items for the nav badge, and manage a session-cached
+ *   count for lightweight badge display without per-page DB queries (6.3).
  *   All mutations are scoped to the current user_id (ownership enforced).
  *
  * Authentication requirements:
@@ -458,3 +459,80 @@ function customcore_cart_clear(PDO $pdo, int $userId): int
 
     return $stmt->rowCount();
 }
+
+// =============================================================================
+// Session-cached cart count (Commit 6.3)
+// =============================================================================
+
+/**
+ * Refresh the session-cached cart item count from the database.
+ *
+ * Call this after any cart mutation (add, update, remove, clear) so the nav
+ * badge stays accurate without re-querying on every page load.
+ */
+function customcore_cart_refresh_count(PDO $pdo, int $userId): int
+{
+    if ($userId < 1) {
+        return 0;
+    }
+
+    $count = customcore_cart_count($pdo, $userId);
+
+    if (session_status() === PHP_SESSION_ACTIVE) {
+        $_SESSION['_cc_cart_count'] = $count;
+    }
+
+    return $count;
+}
+
+/**
+ * Get the cart item count — session-cached for cheap nav badge display.
+ *
+ * If the cache is stale or missing, this queries the DB and re-caches.
+ * Navigation calls this; cart mutations call customcore_cart_refresh_count().
+ */
+function customcore_cart_count_cached(?PDO $pdo = null, ?int $userId = null): int
+{
+    if (session_status() !== PHP_SESSION_ACTIVE) {
+        if (function_exists('customcore_session_start')) {
+            customcore_session_start();
+        }
+    }
+
+    if (isset($_SESSION['_cc_cart_count']) && is_numeric($_SESSION['_cc_cart_count'])) {
+        return (int) $_SESSION['_cc_cart_count'];
+    }
+
+    // No cached value — query DB if we have the info.
+    if ($userId === null) {
+        $userId = isset($_SESSION['user_id']) ? (int) $_SESSION['user_id'] : 0;
+    }
+
+    if ($userId < 1) {
+        return 0;
+    }
+
+    if ($pdo === null) {
+        if (!function_exists('customcore_pdo')) {
+            return 0;
+        }
+        try {
+            $pdo = customcore_pdo();
+        } catch (Throwable $e) {
+            return 0;
+        }
+    }
+
+    return customcore_cart_refresh_count($pdo, $userId);
+}
+
+/**
+ * Clear the session-cached cart count (e.g. on logout or session wipe).
+ */
+function customcore_cart_clear_cache(): void
+{
+    if (session_status() === PHP_SESSION_ACTIVE) {
+        unset($_SESSION['_cc_cart_count']);
+    }
+}
+

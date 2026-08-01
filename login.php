@@ -101,6 +101,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['_cc_last_regen'] = $now;
                 $_SESSION['_cc_fp'] = hash('sha256', (string) ($_SERVER['HTTP_USER_AGENT'] ?? ''));
 
+                // Pre-load cart count into session for the nav badge (Commit 6.3).
+                require_once __DIR__ . '/includes/cart.php';
+                customcore_cart_refresh_count($pdo, (int) $user['id']);
+
                 customcore_flash_success('Welcome back, ' . (string) $user['first_name'] . '.');
 
                 // Return the user to the page they were sent here from, if any.
