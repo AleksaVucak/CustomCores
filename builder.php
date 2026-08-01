@@ -519,6 +519,10 @@ require_once __DIR__ . '/includes/header.php';
             <?php if (!empty($build)): ?>
                 <div class="builder-summary__actions">
                     <a
+                        class="button button--sm"
+                        href="<?php echo customcore_e(customcore_url('builder-results.php')); ?>"
+                    >Review build</a>
+                    <a
                         class="button button--secondary button--sm"
                         href="<?php echo customcore_e(customcore_url('builder.php?reset=1')); ?>"
                     >Start over</a>

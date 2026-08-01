@@ -51,7 +51,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `database/` | Schema, seeds, create-admin script | 2.x |
 | `docs/` | Business case, rubric, sitemap, wireframes, ER design, guides | 0.x–12.x |
 | `help/` | Static Help + training HTML | 11.x |
-| `includes/` | Header, footer, nav, helpers, auth, CSRF, validation, flash | 1.3–1.8, 4.x, 14.x |
+| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, compatibility | 1.3–1.8, 4.x, 5.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
 | `uploads/products/` | Product images uploaded by admin | 9.2 |
 
@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 5.4 complete.**  
-Compatibility checking: `api/compatibility-check.php` — 7 rules (socket, RAM, form factor, PSU, GPU, cooler, storage); `builder.js` calls on each change; displays compatible/warning/incompatible badge + per-rule messages.
+**Commit 5.5 complete.**  
+Build summary: `builder-results.php` — parts table with DB prices, shared compatibility report via `includes/compatibility.php`, power/performance estimates, edit/login CTAs.
 
-Next: **Commit 5.5** — PC build summary page.
+Next: **Commit 5.6** — allow customers to save builds.

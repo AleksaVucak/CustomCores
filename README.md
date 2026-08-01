@@ -34,15 +34,15 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 5.4 complete** — component compatibility checking.
+**Commit 5.5 complete** — PC build summary page.
 
-`api/compatibility-check.php` evaluates all 7 seeded rules (socket, RAM type,
-form factor, PSU wattage, GPU clearance, cooler fit, storage interface) against
-the selected components and returns compatible / warning / incompatible results.
-`builder.js` calls this endpoint after each selection and displays a live status
-badge and per-rule detail in the summary sidebar.
+`builder-results.php` shows every selected part with trusted database prices, a
+server-side compatibility report (same rules as the live checker), and power /
+performance estimates. Shared evaluation lives in `includes/compatibility.php`
+so the API and summary stay in sync. Guests can review freely; save-to-account
+arrives in Commit 5.6.
 
-Next: **Commit 5.5** — PC build summary page.
+Next: **Commit 5.6** — allow customers to save builds.
 
 ## Security notes
 
