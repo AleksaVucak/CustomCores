@@ -34,18 +34,17 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 7.5 complete** — customer contact form.
+
+Guests and logged-in customers can send a support message from `contact.php`
+(name, email, subject, message). Valid messages are stored in `contact_messages`
+with `is_read = 0`. Logged-in visitors get name/email pre-filled and an optional
+`user_id` link from the session. Success uses PRG with a flash confirmation.
+Shared helpers live in `includes/contact.php`.
+
 **Commit 7.4 complete** — secure consultation attachments.
 
-The consultation form now accepts optional file attachments (PDF, TXT, PNG,
-JPG, WEBP). Each file is validated by its **real MIME type** (via `finfo`),
-size, and count; the on-disk name is randomly generated (never derived from
-user input); files are written to a directory guarded against direct browsing.
-The request and its attachments are stored atomically — if anything fails, the
-transaction rolls back and any moved files are removed.
-
-**Commit 7.3 complete** — PC consultation request form.
-
-Next: **Commit 7.5** — customer contact form.
+Next: **Commit 7.6** — consultation request history.
 
 ## Security notes
 

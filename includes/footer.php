@@ -8,6 +8,7 @@
  *   Loads assets/js/cart.js when $currentPage is "cart" (Commit 6.2).
  *   Loads assets/js/checkout.js when $currentPage is "checkout" (Commit 6.4).
  *   Loads assets/js/reviews.js when $loadReviewForm is truthy (Commit 7.2).
+ *   Loads assets/js/contact.js when $currentPage is "contact" (Commit 7.5).
  *   Loads Chart.js CDN + assets/js/charts.js when $loadCharts is truthy (Commit 5.8).
  *
  * Included after page body content on each layout-using page.
@@ -54,6 +55,9 @@ $year = date('Y');
     <?php endif; ?>
     <?php if (!empty($loadReviewForm)) : ?>
         <script src="<?php echo customcore_e(customcore_url('assets/js/reviews.js')); ?>" defer></script>
+    <?php endif; ?>
+    <?php if (isset($currentPage) && $currentPage === 'contact') : ?>
+        <script src="<?php echo customcore_e(customcore_url('assets/js/contact.js')); ?>" defer></script>
     <?php endif; ?>
     <?php if (!empty($loadCharts)) : ?>
         <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>

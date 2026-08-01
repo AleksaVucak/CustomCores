@@ -44,14 +44,14 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `api/` | Builder price, compatibility, search, chart data | 5.x, 8.x, 9.x |
 | `assets/css/` | External CSS (`main.css`, later `admin.css`, `print.css`) | 1.5 |
 | `assets/themes/` | RGB Gaming, Minimal Professional, Cyber Grid | 10.x |
-| `assets/js/` | External JS (`main.js`, later builder/cart/checkout/reviews/validation/charts/map) | 1.6 |
+| `assets/js/` | External JS (`main.js`, later builder/cart/checkout/reviews/contact/validation/charts/map) | 1.6 |
 | `assets/images/` | ≥ 20 documented images | 8.1 |
 | `assets/media/` | ≥ 3 video/audio items | 8.2 |
 | `config/` | `database.example.php`, `app.php`; real `database.php` gitignored | 1.2–1.3 |
 | `database/` | Schema, seeds, create-admin script | 2.x |
 | `docs/` | Business case, rubric, sitemap, wireframes, ER design, guides | 0.x–12.x |
 | `help/` | Static Help + training HTML (`pc-builder.html` shipped in 5.9; full wiki in 11.x) | 5.9, 11.x |
-| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 14.x |
+| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
 | `uploads/products/` | Product images uploaded by admin | 9.2 |
 
@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 7.4 complete — secure consultation attachments.**  
-`consultation.php` accepts optional PDF/TXT/PNG/JPG/WEBP uploads validated by real MIME type (`finfo`), size, and count; stored under `uploads/consultation/` with generated names and recorded in `consultation_attachments`. Request + attachments are written in one transaction with file cleanup on failure. Helpers in `includes/consultations.php`.
+**Commit 7.5 complete — customer contact form.**  
+`contact.php` stores general support messages in `contact_messages` (guests OK; optional session `user_id`). CSRF + server validation; subject select with “Other”; flash confirmation via PRG. Helpers in `includes/contact.php`; `assets/js/contact.js` toggles the custom subject field.
 
-Next: **Commit 7.5** — customer contact form.
+Next: **Commit 7.6** — consultation request history.

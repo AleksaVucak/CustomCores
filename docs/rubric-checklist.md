@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 7 / Commit 7.4 (secure consultation attachments)
+**Last updated:** Stage 7 / Commit 7.5 (customer contact form)
 
 ### Status legend
 
@@ -179,6 +179,7 @@ These appear in the project instructions and package requirements. They support 
 | **7.2** | Product review submission — form on `product.php` + `reviews.php` (rating 1–5, title, body); CSRF; login required; insert with `status = pending`; `includes/reviews.php` helpers + `assets/js/reviews.js` client validation; one pending/approved review per user/product; public lists still show approved only |
 | **7.3** | PC consultation request — `consultation.php` (budget, games, software, performance goals, optional notes); CSRF; login required; insert into `consultation_requests` with `status = open`; `includes/consultations.php` helpers (statuses/labels/classes, budget whitelist, validate, create); scoped to session `user_id`; account-nav entry |
 | **7.4** | Secure consultation attachments — multipart upload on `consultation.php`; validated by real MIME (`finfo`) + size (`upload_max_bytes`) + count; generated on-disk names in `uploads/consultation/` (guarded by `index.php`); `consultation_attachments` rows; request + files written in one transaction with cleanup on failure; bad type/size rejected |
+| **7.5** | Customer contact form — `contact.php` (name, email, subject, message); guests OK; optional session `user_id`; CSRF + server validation; subject whitelist + “Other”; PRG flash confirmation; `includes/contact.php` helpers; `assets/js/contact.js` |
 
 ---
 
@@ -335,7 +336,7 @@ These appear in the project instructions and package requirements. They support 
 - [x] 7.2 Product review submission (`reviews.php` + `product.php` form; `status = pending`; `includes/reviews.php`; client validation)
 - [x] 7.3 PC consultation request form (`consultation.php` + `includes/consultations.php`; `status = open`; owner-scoped; CSRF)
 - [x] 7.4 Secure consultation attachments (`finfo` MIME + size + count validation; generated names; transactional; cleanup on failure)
-- [ ] 7.5 Customer contact form
+- [x] 7.5 Customer contact form (`contact.php` + `includes/contact.php`; guests OK; optional `user_id`; flash confirmation)
 - [ ] 7.6 Consultation request history
 
 ### Stage 7.1 acceptance
@@ -367,4 +368,11 @@ These appear in the project instructions and package requirements. They support 
 - [x] Invalid type/oversized files are rejected without creating the request
 - [x] Accepted files are stored with generated names under `uploads/consultation/`
 - [x] A `consultation_attachments` row is written per file; failure rolls back and cleans up
+
+### Stage 7.5 acceptance
+
+- [x] Guests and logged-in customers can submit a contact message
+- [x] Valid messages are stored in `contact_messages` with confirmation shown
+- [x] CSRF and server-side validation reject incomplete/invalid submissions
+- [x] Logged-in `user_id` is taken from the session only (optional FK)
 

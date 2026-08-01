@@ -4596,6 +4596,41 @@ a.cart-item__name:hover {
   white-space: nowrap;
 }
 
+/* ==========================================================================
+   Contact form (Commit 7.5)
+   Public support message form — guests and logged-in customers.
+   ========================================================================== */
+
+.contact-page {
+  max-width: 44rem;
+}
+
+.contact-page__header {
+  margin-bottom: var(--cc-space-5);
+}
+
+.contact-page__intro {
+  color: var(--cc-color-text-muted);
+  margin: var(--cc-space-3) 0 0;
+}
+
+.contact-page__note {
+  margin: var(--cc-space-3) 0 0;
+  padding: var(--cc-space-3) var(--cc-space-4);
+  background: var(--cc-color-bg-muted);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-md);
+  font-size: 0.95rem;
+}
+
+.contact-form {
+  max-width: 40rem;
+}
+
+.contact-form__other[hidden] {
+  display: none !important;
+}
+
 .consult-status {
   display: inline-block;
   font-size: 0.8rem;
