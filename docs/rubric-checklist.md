@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 6 / Commit 6.5 (place order — convert cart to order record)
+**Last updated:** Stage 6 / Commit 6.6 (order history and order details)
 
 ### Status legend
 
@@ -172,6 +172,7 @@ These appear in the project instructions and package requirements. They support 
 | **6.3** | Persist carts for accounts — DB-backed `carts`/`cart_items` survive logout/login; session-cached count (`customcore_cart_count_cached`); login pre-loads count; nav badge (`.site-nav__badge`); all mutations refresh cache |
 | **6.4** | Validated checkout form — `checkout.php` with server + client validation; shipping address, phone, payment method (simulated); pre-filled from profile; `assets/js/checkout.js` blur/submit validation; CSS order-summary sidebar; data stored in session for Commit 6.5; rubric #4 now In progress |
 | **6.5** | Place order — `order-confirmation.php`: transaction inserts `orders` + `order_items` (frozen prices, names, build snapshots via `customcore_snapshot_build`); unique order number (CC-YYYYMMDD-XXXXXX); clears cart + refreshes count; confirmation page with receipt; CSS styles for order confirmation |
+| **6.6** | Order history + details — `order-history.php` (owner-scoped list); `order-details.php` (itemized lines, options JSON, build snapshots; foreign order IDs denied); confirmation reloads from DB via `?id=`; account-nav / profile activity wired |
 
 ---
 
@@ -307,4 +308,16 @@ These appear in the project instructions and package requirements. They support 
 - [x] 6.3 Persist carts for customer accounts (DB-backed; session-cached nav badge count; login pre-load)
 - [x] 6.4 Validated checkout form (`checkout.php` + `assets/js/checkout.js`; server + client validation)
 - [x] 6.5 Place order (`order-confirmation.php` — transaction: `orders` + `order_items`; frozen snapshots; clear cart; confirmation page)
+- [x] 6.6 Order history and details (`order-history.php` + `order-details.php`; ownership enforced; confirmation matches DB)
+
+### Stage 6 acceptance
+
+- [x] Cart holds catalogue products and saved custom builds
+- [x] Quantity update, remove, and clear keep totals accurate
+- [x] Cart persists across logout/login for the same account
+- [x] Checkout form validates shipping + simulated payment (no real card data)
+- [x] Cart converts to `orders` + `order_items` with frozen prices/snapshots
+- [x] Confirmation number matches the saved database order
+- [x] Order history lists only the current user's orders
+- [x] Order details deny access to another user's order ID
 

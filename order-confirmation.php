@@ -1,30 +1,23 @@
 <?php
 /**
- * CustomCore — Order Confirmation / Place Order (Commit 6.5).
+ * CustomCore — Order Confirmation / Place Order (Commits 6.5 + 6.6).
  *
  * File responsibility:
- *   Converts the validated checkout session data and the user's cart into a
- *   permanent order record (orders + order_items), clears the cart, then
- *   displays the confirmation page with order number and summary.
- *
- * Flow:
- *   1. Require login.
- *   2. Verify $_SESSION['_cc_checkout'] exists (redirect if missing).
- *   3. Load cart items, verify non-empty.
- *   4. In a transaction: insert order → insert order_items → clear cart.
- *   5. Clear session checkout data + refresh cart count cache.
- *   6. Display confirmation with order number, shipping info, and line items.
+ *   Two modes:
+ *   1. Place — when $_SESSION['_cc_checkout'] exists, convert the cart into a
+ *      permanent order (orders + order_items), clear the cart, then redirect
+ *      to this page with ?id= so the confirmation is loaded from the database.
+ *   2. View — when ?id=N is provided, load that order (owner-scoped) and show
+ *      the confirmation number and summary matching the saved DB record.
  *
  * Authentication requirements:
  *   Logged-in customer (customcore_require_login).
  *
  * Security:
- *   - No direct form submission; relies on session data set by checkout.php.
- *   - All prices recalculated from database (cart_items.unit_price) — never
- *     from client-side values.
- *   - Unique order_number generated server-side (not guessable).
- *   - Transaction ensures atomicity: all inserts succeed or none do.
- *   - Cart cleared only after successful commit.
+ *   - Prices snapshotted from cart_items (DB), never client totals.
+ *   - Unique order_number generated server-side.
+ *   - Transaction ensures atomicity.
+ *   - View mode enforces user_id ownership on every load.
  *   - All outputs escaped via customcore_e().
  */
 
@@ -39,170 +32,20 @@ require_once __DIR__ . '/includes/cart.php';
 customcore_require_login();
 
 $userId = customcore_current_user_id();
-$accountNavCurrent = 'cart';
-
-// ---------------------------------------------------------------------------
-// Guard: session checkout data must exist
-// ---------------------------------------------------------------------------
-
-if (!isset($_SESSION['_cc_checkout']) || !is_array($_SESSION['_cc_checkout'])) {
-    customcore_flash_warning('Please complete checkout before viewing this page.');
-    customcore_redirect('checkout.php');
-}
-
-$checkout = $_SESSION['_cc_checkout'];
-
-// ---------------------------------------------------------------------------
-// Load cart items and verify non-empty
-// ---------------------------------------------------------------------------
-
-$cartItems = [];
-$subtotal = 0.00;
-$orderPlaced = false;
-$orderNumber = '';
-$orderError = null;
-
-try {
-    $pdo = customcore_pdo();
-    $cartId = customcore_cart_id($pdo, $userId);
-    $cartItems = customcore_cart_items($pdo, $cartId);
-    $subtotal = customcore_cart_subtotal($cartItems);
-} catch (Throwable $exception) {
-    $orderError = customcore_is_debug()
-        ? $exception->getMessage()
-        : 'We could not load your cart. Please try again.';
-}
-
-if ($cartItems === [] && $orderError === null) {
-    customcore_flash_warning('Your cart is empty — no order to place.');
-    unset($_SESSION['_cc_checkout']);
-    customcore_redirect('cart.php');
-}
-
-// ---------------------------------------------------------------------------
-// Generate a unique order number
-// ---------------------------------------------------------------------------
+$accountNavCurrent = 'orders';
 
 /**
- * Create a human-readable order number: CC-YYYYMMDD-XXXXX
- * The random suffix plus the UNIQUE index guarantees no collision.
+ * Create a human-readable order number: CC-YYYYMMDD-XXXXXX
  */
 function customcore_generate_order_number(): string
 {
     $date = date('Ymd');
-    $random = strtoupper(bin2hex(random_bytes(3))); // 6 hex chars
+    $random = strtoupper(bin2hex(random_bytes(3)));
     return 'CC-' . $date . '-' . $random;
 }
 
-// ---------------------------------------------------------------------------
-// Place the order inside a transaction
-// ---------------------------------------------------------------------------
-
-if ($orderError === null) {
-    try {
-        $pdo->beginTransaction();
-
-        // Generate order number (retry once on unlikely collision)
-        $orderNumber = customcore_generate_order_number();
-
-        // Insert order record
-        $orderStmt = $pdo->prepare(
-            'INSERT INTO orders
-                (user_id, order_number, status, subtotal, total,
-                 shipping_name, shipping_phone, shipping_addr1, shipping_addr2,
-                 shipping_city, shipping_prov, shipping_postal, payment_method)
-             VALUES
-                (:user_id, :order_number, :status, :subtotal, :total,
-                 :shipping_name, :shipping_phone, :shipping_addr1, :shipping_addr2,
-                 :shipping_city, :shipping_prov, :shipping_postal, :payment_method)'
-        );
-        $orderStmt->execute([
-            ':user_id' => $userId,
-            ':order_number' => $orderNumber,
-            ':status' => 'pending',
-            ':subtotal' => $subtotal,
-            ':total' => $subtotal, // No tax/shipping calculated in simulation
-            ':shipping_name' => $checkout['shipping_name'] ?? '',
-            ':shipping_phone' => $checkout['shipping_phone'] ?? '',
-            ':shipping_addr1' => $checkout['shipping_addr1'] ?? '',
-            ':shipping_addr2' => $checkout['shipping_addr2'] ?? '',
-            ':shipping_city' => $checkout['shipping_city'] ?? '',
-            ':shipping_prov' => $checkout['shipping_prov'] ?? '',
-            ':shipping_postal' => $checkout['shipping_postal'] ?? '',
-            ':payment_method' => $checkout['payment_method'] ?? 'pay_on_pickup',
-        ]);
-
-        $orderId = (int) $pdo->lastInsertId();
-
-        // Insert order_items — snapshot each cart line
-        $itemStmt = $pdo->prepare(
-            'INSERT INTO order_items
-                (order_id, item_type, product_id, saved_build_id,
-                 item_name, quantity, unit_price, line_total,
-                 options_json, build_snapshot_json)
-             VALUES
-                (:order_id, :item_type, :product_id, :saved_build_id,
-                 :item_name, :quantity, :unit_price, :line_total,
-                 :options_json, :build_snapshot_json)'
-        );
-
-        foreach ($cartItems as $item) {
-            $buildSnapshot = null;
-
-            // For saved builds, snapshot the component list
-            if ($item['item_type'] === 'saved_build' && $item['saved_build_id'] !== null) {
-                $buildSnapshot = customcore_snapshot_build($pdo, $item['saved_build_id']);
-            }
-
-            $itemStmt->execute([
-                ':order_id' => $orderId,
-                ':item_type' => $item['item_type'],
-                ':product_id' => $item['product_id'],
-                ':saved_build_id' => $item['saved_build_id'],
-                ':item_name' => $item['name'],
-                ':quantity' => $item['quantity'],
-                ':unit_price' => $item['unit_price'],
-                ':line_total' => $item['line_total'],
-                ':options_json' => $item['options_json'],
-                ':build_snapshot_json' => $buildSnapshot,
-            ]);
-        }
-
-        // Clear cart items
-        customcore_cart_clear($pdo, $userId);
-
-        $pdo->commit();
-        $orderPlaced = true;
-
-        // Clean up session
-        unset($_SESSION['_cc_checkout']);
-        customcore_cart_refresh_count($pdo, $userId);
-
-    } catch (Throwable $exception) {
-        if ($pdo->inTransaction()) {
-            $pdo->rollBack();
-        }
-
-        // Handle duplicate order_number (extremely unlikely)
-        if (str_contains($exception->getMessage(), 'uq_orders_number')) {
-            $orderNumber = customcore_generate_order_number();
-            $orderError = 'A temporary conflict occurred. Please try again.';
-        } else {
-            $orderError = customcore_is_debug()
-                ? $exception->getMessage()
-                : 'We could not place your order. Please try again or contact support.';
-        }
-    }
-}
-
-// ---------------------------------------------------------------------------
-// Helper: snapshot build components for order_items.build_snapshot_json
-// ---------------------------------------------------------------------------
-
 /**
  * Create a JSON snapshot of a saved build's components for permanent storage.
- *
- * @return string|null JSON string or null if no items found.
  */
 function customcore_snapshot_build(PDO $pdo, int $buildId): ?string
 {
@@ -234,14 +77,185 @@ function customcore_snapshot_build(PDO $pdo, int $buildId): ?string
     return json_encode($snapshot, JSON_UNESCAPED_UNICODE);
 }
 
+/**
+ * Human-readable payment method label.
+ */
+function customcore_confirm_payment_label(string $method): string
+{
+    $labels = [
+        'pay_on_pickup' => 'Pay on pickup',
+        'simulated_credit' => 'Credit card (simulated)',
+        'simulated_debit' => 'Debit card (simulated)',
+        'simulated_paypal' => 'PayPal (simulated)',
+    ];
+
+    return $labels[$method] ?? ucfirst(str_replace('_', ' ', $method));
+}
+
+$orderError = null;
+$order = null;
+$items = [];
+
+// ---------------------------------------------------------------------------
+// MODE A — Place order from checkout session, then redirect to view mode
+// ---------------------------------------------------------------------------
+
+if (isset($_SESSION['_cc_checkout']) && is_array($_SESSION['_cc_checkout'])) {
+    $checkout = $_SESSION['_cc_checkout'];
+
+    try {
+        $pdo = customcore_pdo();
+        $cartId = customcore_cart_id($pdo, $userId);
+        $cartItems = customcore_cart_items($pdo, $cartId);
+        $subtotal = customcore_cart_subtotal($cartItems);
+
+        if ($cartItems === []) {
+            unset($_SESSION['_cc_checkout']);
+            customcore_flash_warning('Your cart is empty — no order to place.');
+            customcore_redirect('cart.php');
+        }
+
+        $pdo->beginTransaction();
+
+        $orderNumber = customcore_generate_order_number();
+
+        $orderStmt = $pdo->prepare(
+            'INSERT INTO orders
+                (user_id, order_number, status, subtotal, total,
+                 shipping_name, shipping_phone, shipping_addr1, shipping_addr2,
+                 shipping_city, shipping_prov, shipping_postal, payment_method)
+             VALUES
+                (:user_id, :order_number, :status, :subtotal, :total,
+                 :shipping_name, :shipping_phone, :shipping_addr1, :shipping_addr2,
+                 :shipping_city, :shipping_prov, :shipping_postal, :payment_method)'
+        );
+        $orderStmt->execute([
+            ':user_id' => $userId,
+            ':order_number' => $orderNumber,
+            ':status' => 'pending',
+            ':subtotal' => $subtotal,
+            ':total' => $subtotal,
+            ':shipping_name' => $checkout['shipping_name'] ?? '',
+            ':shipping_phone' => $checkout['shipping_phone'] ?? '',
+            ':shipping_addr1' => $checkout['shipping_addr1'] ?? '',
+            ':shipping_addr2' => $checkout['shipping_addr2'] ?? '',
+            ':shipping_city' => $checkout['shipping_city'] ?? '',
+            ':shipping_prov' => $checkout['shipping_prov'] ?? '',
+            ':shipping_postal' => $checkout['shipping_postal'] ?? '',
+            ':payment_method' => $checkout['payment_method'] ?? 'pay_on_pickup',
+        ]);
+
+        $newOrderId = (int) $pdo->lastInsertId();
+
+        $itemStmt = $pdo->prepare(
+            'INSERT INTO order_items
+                (order_id, item_type, product_id, saved_build_id,
+                 item_name, quantity, unit_price, line_total,
+                 options_json, build_snapshot_json)
+             VALUES
+                (:order_id, :item_type, :product_id, :saved_build_id,
+                 :item_name, :quantity, :unit_price, :line_total,
+                 :options_json, :build_snapshot_json)'
+        );
+
+        foreach ($cartItems as $item) {
+            $buildSnapshot = null;
+            if ($item['item_type'] === 'saved_build' && $item['saved_build_id'] !== null) {
+                $buildSnapshot = customcore_snapshot_build($pdo, $item['saved_build_id']);
+            }
+
+            $itemStmt->execute([
+                ':order_id' => $newOrderId,
+                ':item_type' => $item['item_type'],
+                ':product_id' => $item['product_id'],
+                ':saved_build_id' => $item['saved_build_id'],
+                ':item_name' => $item['name'],
+                ':quantity' => $item['quantity'],
+                ':unit_price' => $item['unit_price'],
+                ':line_total' => $item['line_total'],
+                ':options_json' => $item['options_json'],
+                ':build_snapshot_json' => $buildSnapshot,
+            ]);
+        }
+
+        customcore_cart_clear($pdo, $userId);
+        $pdo->commit();
+
+        unset($_SESSION['_cc_checkout']);
+        customcore_cart_refresh_count($pdo, $userId);
+
+        // PRG: confirmation is always loaded from the database.
+        customcore_redirect('order-confirmation.php?id=' . $newOrderId);
+    } catch (Throwable $exception) {
+        if (isset($pdo) && $pdo instanceof PDO && $pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
+
+        $orderError = customcore_is_debug()
+            ? $exception->getMessage()
+            : 'We could not place your order. Please try again or contact support.';
+    }
+}
+
+// ---------------------------------------------------------------------------
+// MODE B — View confirmation from database (owner-scoped)
+// ---------------------------------------------------------------------------
+
+$viewId = 0;
+if (isset($_GET['id']) && is_string($_GET['id']) && ctype_digit($_GET['id'])) {
+    $viewId = (int) $_GET['id'];
+}
+
+if ($orderError === null && $viewId > 0) {
+    try {
+        $pdo = customcore_pdo();
+
+        $orderStmt = $pdo->prepare(
+            'SELECT id, order_number, status, subtotal, total,
+                    shipping_name, shipping_phone, shipping_addr1, shipping_addr2,
+                    shipping_city, shipping_prov, shipping_postal, payment_method,
+                    created_at
+             FROM orders
+             WHERE id = :id AND user_id = :uid
+             LIMIT 1'
+        );
+        $orderStmt->execute([':id' => $viewId, ':uid' => $userId]);
+        $order = $orderStmt->fetch();
+
+        if ($order === false) {
+            customcore_flash_error('Order not found or you do not have permission to view it.');
+            customcore_redirect('order-history.php');
+        }
+
+        $itemStmt = $pdo->prepare(
+            'SELECT item_type, item_name, quantity, unit_price, line_total
+             FROM order_items
+             WHERE order_id = :oid
+             ORDER BY id ASC'
+        );
+        $itemStmt->execute([':oid' => $viewId]);
+        $items = $itemStmt->fetchAll();
+    } catch (Throwable $exception) {
+        $orderError = customcore_is_debug()
+            ? $exception->getMessage()
+            : 'We could not load your order confirmation. Please try again.';
+    }
+} elseif ($orderError === null) {
+    customcore_flash_warning('Please complete checkout before viewing this page.');
+    customcore_redirect('checkout.php');
+}
+
 // ---------------------------------------------------------------------------
 // Page metadata
 // ---------------------------------------------------------------------------
 
-$pageTitle = 'Order Confirmation — CustomCore';
+$orderNumber = $order !== null ? (string) $order['order_number'] : '';
+$pageTitle = $orderNumber !== ''
+    ? 'Order Confirmation ' . $orderNumber . ' — CustomCore'
+    : 'Order Confirmation — CustomCore';
 $pageDescription = 'Your order has been placed successfully.';
 $pageKeywords = 'CustomCore, order confirmation, receipt';
-$currentPage = 'checkout';
+$currentPage = 'orders';
 
 require_once __DIR__ . '/includes/header.php';
 ?>
@@ -257,9 +271,15 @@ require_once __DIR__ . '/includes/header.php';
         </div>
         <p>
             <a href="<?php echo customcore_e(customcore_url('checkout.php')); ?>">&larr; Return to checkout</a>
+            ·
+            <a href="<?php echo customcore_e(customcore_url('order-history.php')); ?>">Order history</a>
         </p>
 
-    <?php elseif ($orderPlaced): ?>
+    <?php elseif ($order !== null): ?>
+        <?php
+        $total = (float) $order['total'];
+        $status = (string) $order['status'];
+        ?>
         <header class="order-confirm__header">
             <h1 id="confirm-heading">Order placed successfully!</h1>
             <p class="order-confirm__subtitle">
@@ -270,38 +290,38 @@ require_once __DIR__ . '/includes/header.php';
             </p>
             <p class="order-confirm__note">
                 Please save this number for your records. You can track your order
-                status in your <a href="<?php echo customcore_e(customcore_url('order-history.php')); ?>">order history</a>.
+                status in your <a href="<?php echo customcore_e(customcore_url('order-history.php')); ?>">order history</a>
+                or view the
+                <a href="<?php echo customcore_e(customcore_url('order-details.php?id=' . (int) $order['id'])); ?>">full order details</a>.
             </p>
         </header>
 
-        <!-- Shipping details recap -->
         <div class="order-confirm__section">
             <h2 class="order-confirm__section-title">Shipping details</h2>
             <dl class="order-confirm__dl">
                 <dt>Name</dt>
-                <dd><?php echo customcore_e($checkout['shipping_name'] ?? ''); ?></dd>
+                <dd><?php echo customcore_e((string) $order['shipping_name']); ?></dd>
 
                 <dt>Phone</dt>
-                <dd><?php echo customcore_e($checkout['shipping_phone'] ?? ''); ?></dd>
+                <dd><?php echo customcore_e((string) $order['shipping_phone']); ?></dd>
 
                 <dt>Address</dt>
                 <dd>
-                    <?php echo customcore_e($checkout['shipping_addr1'] ?? ''); ?>
-                    <?php if (!empty($checkout['shipping_addr2'])): ?>
-                        <br><?php echo customcore_e($checkout['shipping_addr2']); ?>
+                    <?php echo customcore_e((string) $order['shipping_addr1']); ?>
+                    <?php if ((string) $order['shipping_addr2'] !== ''): ?>
+                        <br><?php echo customcore_e((string) $order['shipping_addr2']); ?>
                     <?php endif; ?>
                     <br>
-                    <?php echo customcore_e($checkout['shipping_city'] ?? ''); ?>,
-                    <?php echo customcore_e($checkout['shipping_prov'] ?? ''); ?>
-                    <?php echo customcore_e($checkout['shipping_postal'] ?? ''); ?>
+                    <?php echo customcore_e((string) $order['shipping_city']); ?>,
+                    <?php echo customcore_e((string) $order['shipping_prov']); ?>
+                    <?php echo customcore_e((string) $order['shipping_postal']); ?>
                 </dd>
 
                 <dt>Payment method</dt>
-                <dd><?php echo customcore_e(ucfirst(str_replace('_', ' ', $checkout['payment_method'] ?? 'pay on pickup'))); ?></dd>
+                <dd><?php echo customcore_e(customcore_confirm_payment_label((string) $order['payment_method'])); ?></dd>
             </dl>
         </div>
 
-        <!-- Line items -->
         <div class="order-confirm__section">
             <h2 class="order-confirm__section-title">Items ordered</h2>
             <table class="order-confirm__table">
@@ -314,55 +334,49 @@ require_once __DIR__ . '/includes/header.php';
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($cartItems as $item): ?>
+                    <?php foreach ($items as $item): ?>
                         <tr>
                             <td>
-                                <?php echo customcore_e($item['name']); ?>
-                                <?php if ($item['item_type'] === 'saved_build'): ?>
+                                <?php echo customcore_e((string) $item['item_name']); ?>
+                                <?php if ((string) $item['item_type'] === 'saved_build'): ?>
                                     <span class="order-confirm__badge">Build</span>
                                 <?php endif; ?>
                             </td>
-                            <td><?php echo customcore_e((string) $item['quantity']); ?></td>
-                            <td>$<?php echo customcore_e(number_format($item['unit_price'], 2)); ?></td>
-                            <td>$<?php echo customcore_e(number_format($item['line_total'], 2)); ?></td>
+                            <td><?php echo customcore_e((string) (int) $item['quantity']); ?></td>
+                            <td>$<?php echo customcore_e(number_format((float) $item['unit_price'], 2)); ?></td>
+                            <td>$<?php echo customcore_e(number_format((float) $item['line_total'], 2)); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
                 <tfoot>
                     <tr>
                         <td colspan="3" class="order-confirm__total-label">Total</td>
-                        <td class="order-confirm__total-value">$<?php echo customcore_e(number_format($subtotal, 2)); ?></td>
+                        <td class="order-confirm__total-value">$<?php echo customcore_e(number_format($total, 2)); ?></td>
                     </tr>
                 </tfoot>
             </table>
         </div>
 
-        <!-- Status -->
         <div class="order-confirm__section">
             <h2 class="order-confirm__section-title">Order status</h2>
             <p>
-                <span class="order-confirm__status">Pending</span> — we have received your order
-                and will begin processing it shortly.
+                <span class="order-confirm__status"><?php echo customcore_e(ucfirst($status)); ?></span>
+                — we have received your order and will begin processing it shortly.
             </p>
         </div>
 
-        <!-- Actions -->
         <div class="order-confirm__actions">
-            <a class="button button--primary" href="<?php echo customcore_e(customcore_url('order-history.php')); ?>">
-                View order history
+            <a class="button button--primary" href="<?php echo customcore_e(customcore_url('order-details.php?id=' . (int) $order['id'])); ?>">
+                View full details
+            </a>
+            <a class="button button--secondary" href="<?php echo customcore_e(customcore_url('order-history.php')); ?>">
+                Order history
             </a>
             <a class="button button--secondary" href="<?php echo customcore_e(customcore_url('catalogue.php')); ?>">
                 Continue shopping
             </a>
         </div>
 
-    <?php else: ?>
-        <header class="order-confirm__header">
-            <h1 id="confirm-heading">Processing your order&hellip;</h1>
-        </header>
-        <p>Something unexpected happened. Please check your
-            <a href="<?php echo customcore_e(customcore_url('order-history.php')); ?>">order history</a>
-            or contact support.</p>
     <?php endif; ?>
 
 </section>

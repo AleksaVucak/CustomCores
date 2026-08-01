@@ -34,15 +34,17 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 6.5 complete** — place order (convert cart to order record).
+**Commit 6.6 complete** — order history and order details pages.
 
-When a validated checkout form is submitted, `order-confirmation.php` converts
-the cart into a permanent order: inserts into `orders` + `order_items` (with
-frozen prices, names, and build snapshots), clears the cart, refreshes the nav
-badge, and displays a confirmation page with a unique order number, shipping
-recap, and itemized receipt. Everything runs inside a database transaction.
+Customers can browse their own orders on `order-history.php` and open an
+itemized receipt on `order-details.php` (ownership enforced — another user's
+order ID is denied). Confirmation now redirects to `?id=` and reloads the
+saved order from the database so the receipt matches the DB record. Account
+nav, profile activity, and confirmation CTAs all link into the order pages.
 
-Next: **Commit 6.6** — order history and order details pages.
+**Stage 6 complete** — cart → checkout → order → confirmation → history → details.
+
+Next: **Stage 7** — reviews, consultation requests, and customer support.
 
 ## Security notes
 

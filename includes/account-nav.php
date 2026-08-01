@@ -51,8 +51,8 @@ $accountNavItems = [
     ],
     'orders' => [
         'label' => 'Orders',
-        'href' => 'orders.php',
-        'ready' => is_file(dirname(__DIR__) . '/orders.php'),
+        'href' => 'order-history.php',
+        'ready' => is_file(dirname(__DIR__) . '/order-history.php'),
     ],
     'consultations' => [
         'label' => 'Consultations',

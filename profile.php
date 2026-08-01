@@ -87,7 +87,7 @@ try {
 
     // --- Recent activity (own rows only) ---------------------------------
     $orderStmt = $pdo->prepare(
-        'SELECT order_number, status, total, created_at
+        'SELECT id, order_number, status, total, created_at
          FROM orders
          WHERE user_id = :uid
          ORDER BY created_at DESC
@@ -101,9 +101,9 @@ try {
             'detail' => 'Status: ' . (string) $row['status']
                 . ' · $' . number_format((float) $row['total'], 2),
             'when' => (string) $row['created_at'],
-            'href' => is_file(__DIR__ . '/order-detail.php')
-                ? 'orders.php'
-                : null,
+            'href' => is_file(__DIR__ . '/order-details.php')
+                ? 'order-details.php?id=' . (int) $row['id']
+                : (is_file(__DIR__ . '/order-history.php') ? 'order-history.php' : null),
         ];
     }
 
@@ -236,7 +236,13 @@ require_once __DIR__ . '/includes/header.php';
                 <div class="profile-stats" aria-label="Account activity summary">
                     <article class="profile-stat">
                         <p class="profile-stat__value"><?php echo customcore_e((string) $counts['orders']); ?></p>
-                        <p class="profile-stat__label">Orders</p>
+                        <p class="profile-stat__label">
+                            <?php if (is_file(__DIR__ . '/order-history.php')): ?>
+                                <a href="<?php echo customcore_e(customcore_url('order-history.php')); ?>">Orders</a>
+                            <?php else: ?>
+                                Orders
+                            <?php endif; ?>
+                        </p>
                     </article>
                     <article class="profile-stat">
                         <p class="profile-stat__value"><?php echo customcore_e((string) $counts['builds']); ?></p>

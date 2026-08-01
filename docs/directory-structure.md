@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 6.5 complete — place order (convert cart to order record).**  
-`order-confirmation.php` inserts into `orders` + `order_items` in a transaction (frozen prices, build snapshots); clears cart; displays confirmation with unique order number, shipping recap, and itemized receipt.
+**Commit 6.6 complete — order history and order details pages.**  
+`order-history.php` lists owner-scoped orders; `order-details.php` shows itemized lines, options, and build snapshots with ownership enforcement; confirmation reloads from DB via `?id=`; account nav / profile wired. **Stage 6 complete.**
 
-Next: **Commit 6.6** — order history and order details pages.
+Next: **Stage 7** — reviews, consultation requests, and customer support.
