@@ -34,14 +34,14 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 5.8 complete** — build performance visualization.
+**Commit 5.9 complete** — context-sensitive builder Help.
 
-`api/chart-data.php` returns weighted gaming / productivity scores and catalogue
-upgrade ceilings from selected component IDs. `assets/js/charts.js` (Chart.js)
-renders a grouped bar chart with a permanent text fallback. The chart appears on
-the live builder, build summary, and saved-build detail pages.
+`help/pc-builder.html` documents every builder step, pricing, compatibility,
+performance charts, and saved-build workflows. Builder, summary, and saved-build
+pages link to the matching section anchors. `help/index.html` provides a Help
+centre entry point. Stage 5 (Custom PC Builder) is complete.
 
-Next: **Commit 5.9** — context-sensitive builder Help.
+Next: **Stage 6** — Cart, checkout, and orders.
 
 ## Security notes
 

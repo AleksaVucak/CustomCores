@@ -272,7 +272,11 @@ require_once __DIR__ . '/includes/header.php';
         <h1 id="build-heading"><?php echo customcore_e($buildName); ?></h1>
         <p class="context-help">
             Help:
-            <a href="<?php echo customcore_e(customcore_url('help/pc-builder.html')); ?>">PC Builder guide</a>
+            <a href="<?php echo customcore_e(customcore_url('help/pc-builder.html#manage-builds')); ?>">Manage builds guide</a>
+            ·
+            <a href="<?php echo customcore_e(customcore_url('help/pc-builder.html#performance')); ?>">Performance chart</a>
+            ·
+            <a href="<?php echo customcore_e(customcore_url('help/pc-builder.html')); ?>">Full PC Builder guide</a>
         </p>
     </header>
 

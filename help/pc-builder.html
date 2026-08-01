@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PC Builder guide — CustomCore Help</title>
+    <meta name="description" content="Step-by-step help for the CustomCore PC Builder: every component step, pricing, compatibility, performance charts, and saved builds.">
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body class="help-body">
+    <a class="skip-link" href="#help-main">Skip to main content</a>
+
+    <header class="help-site-header" role="banner">
+        <div class="help-site-header__inner">
+            <a class="help-site-header__brand" href="../index.php">CustomCore</a>
+            <nav class="help-site-header__nav" aria-label="Help">
+                <a href="index.html">Help centre</a>
+                <a href="../builder.php">Open PC Builder</a>
+                <a href="../catalogue.php">Catalogue</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="help-main" class="content-section help-page">
+        <header class="help-page__header">
+            <p class="help-page__eyebrow">Help · PC Builder</p>
+            <h1>Custom PC Builder guide</h1>
+            <p class="help-page__intro">
+                This guide explains every builder step, how live pricing and compatibility work,
+                how to read the performance chart, and how to save or manage a build.
+                Use the table of contents to jump to the step you are on.
+            </p>
+        </header>
+
+        <nav class="help-toc" aria-label="On this page">
+            <h2 class="help-toc__title">On this page</h2>
+            <ol class="help-toc__list">
+                <li><a href="#overview">How the builder works</a></li>
+                <li><a href="#step-cpu">Step 1 — CPU</a></li>
+                <li><a href="#step-motherboard">Step 2 — Motherboard</a></li>
+                <li><a href="#step-gpu">Step 3 — GPU</a></li>
+                <li><a href="#step-ram">Step 4 — RAM</a></li>
+                <li><a href="#step-storage">Step 5 — Storage</a></li>
+                <li><a href="#step-psu">Step 6 — PSU</a></li>
+                <li><a href="#step-case">Step 7 — Case</a></li>
+                <li><a href="#step-cooling">Step 8 — Cooling</a></li>
+                <li><a href="#step-os">Step 9 — Operating system</a></li>
+                <li><a href="#step-service">Step 10 — Assembly service (optional)</a></li>
+                <li><a href="#pricing">Live pricing &amp; trusted totals</a></li>
+                <li><a href="#compatibility">Compatibility checking</a></li>
+                <li><a href="#performance">Performance chart</a></li>
+                <li><a href="#summary">Build summary</a></li>
+                <li><a href="#saved-builds">Saving builds</a></li>
+                <li><a href="#manage-builds">Managing saved builds</a></li>
+                <li><a href="#tips">Tips &amp; common mistakes</a></li>
+            </ol>
+        </nav>
+
+        <article class="help-article">
+            <section id="overview" class="help-section">
+                <h2>How the builder works</h2>
+                <p>
+                    Open the <a href="../builder.php">Custom PC Builder</a> from the main navigation.
+                    You move through component categories one step at a time. Selections are stored
+                    in your browser session, so you can go back and change earlier steps without
+                    logging in.
+                </p>
+                <ul>
+                    <li><strong>Required steps</strong> must have a selection before you can finish.</li>
+                    <li><strong>Optional steps</strong> (Service) can be skipped.</li>
+                    <li>The right-hand summary shows your running total, compatibility status, and a live performance preview.</li>
+                    <li>On the last step, choose <strong>Review build</strong> to open the full summary.</li>
+                </ul>
+                <p>
+                    <a class="button button--sm" href="../builder.php">Start building</a>
+                </p>
+            </section>
+
+            <section id="step-cpu" class="help-section">
+                <h2>Step 1 — CPU</h2>
+                <p>
+                    Choose the processor. Match the <strong>socket</strong> (for example AM5 or LGA1700)
+                    to the motherboard you plan to use. Higher gaming or productivity scores usually
+                    mean stronger performance in those workloads.
+                </p>
+                <p><a href="../builder.php?step=1">Go to CPU step</a></p>
+            </section>
+
+            <section id="step-motherboard" class="help-section">
+                <h2>Step 2 — Motherboard</h2>
+                <p>
+                    The motherboard must use the <strong>same socket</strong> as your CPU and the
+                    <strong>same RAM type</strong> (DDR4 or DDR5) as your memory. Form factor
+                    (ATX, mATX, ITX) must fit inside your case. Some compact boards only support NVMe storage.
+                </p>
+                <p><a href="../builder.php?step=2">Go to Motherboard step</a></p>
+            </section>
+
+            <section id="step-gpu" class="help-section">
+                <h2>Step 3 — GPU</h2>
+                <p>
+                    Graphics cards drive most gaming performance. Check the listed card length —
+                    your case must have enough <strong>GPU clearance</strong>. Powerful GPUs also
+                    raise the power draw, so plan a larger PSU.
+                </p>
+                <p><a href="../builder.php?step=3">Go to GPU step</a></p>
+            </section>
+
+            <section id="step-ram" class="help-section">
+                <h2>Step 4 — RAM</h2>
+                <p>
+                    Memory must match the motherboard’s RAM type (DDR4 vs DDR5). More capacity helps
+                    multitasking and creative work; speed and size both influence the productivity score.
+                </p>
+                <p><a href="../builder.php?step=4">Go to RAM step</a></p>
+            </section>
+
+            <section id="step-storage" class="help-section">
+                <h2>Step 5 — Storage</h2>
+                <p>
+                    Pick NVMe or SATA storage. Confirm the motherboard’s
+                    <strong>supported storage</strong> list includes your drive’s interface.
+                    Some ITX boards are NVMe-only.
+                </p>
+                <p><a href="../builder.php?step=5">Go to Storage step</a></p>
+            </section>
+
+            <section id="step-psu" class="help-section">
+                <h2>Step 6 — PSU</h2>
+                <p>
+                    The power supply must cover the estimated draw of all other parts, with about
+                    <strong>20% headroom</strong> recommended. Below total draw is incompatible;
+                    enough wattage but less than 20% headroom triggers a warning.
+                </p>
+                <p><a href="../builder.php?step=6">Go to PSU step</a></p>
+            </section>
+
+            <section id="step-case" class="help-section">
+                <h2>Step 7 — Case</h2>
+                <p>
+                    The case must fit your motherboard form factor, leave room for the GPU length,
+                    and support your cooler type (air and/or liquid). Larger ATX cases are the most flexible.
+                </p>
+                <p><a href="../builder.php?step=7">Go to Case step</a></p>
+            </section>
+
+            <section id="step-cooling" class="help-section">
+                <h2>Step 8 — Cooling</h2>
+                <p>
+                    Air coolers must fit under the case’s maximum cooler height. Liquid (AIO) coolers
+                    need a case that supports liquid cooling. Compact cases may only allow low-profile air coolers.
+                </p>
+                <p><a href="../builder.php?step=8">Go to Cooling step</a></p>
+            </section>
+
+            <section id="step-os" class="help-section">
+                <h2>Step 9 — Operating system</h2>
+                <p>
+                    Choose an OS option (or none if you will install your own). This step is required
+                    in the builder flow so your quote includes licensing if you need it.
+                </p>
+                <p><a href="../builder.php?step=9">Go to OS step</a></p>
+            </section>
+
+            <section id="step-service" class="help-section">
+                <h2>Step 10 — Assembly service (optional)</h2>
+                <p>
+                    Optionally add assembly or setup services. You can
+                    <strong>Skip this step</strong> if you will build the PC yourself.
+                </p>
+                <p><a href="../builder.php?step=10">Go to Service step</a></p>
+            </section>
+
+            <section id="pricing" class="help-section">
+                <h2>Live pricing &amp; trusted totals</h2>
+                <p>
+                    As you change selections, the summary updates the this-step subtotal and running total
+                    immediately in your browser. CustomCore also rechecks prices on the server using
+                    database values, so a tampered browser price cannot change the trusted total.
+                </p>
+                <p>
+                    The build summary page always shows the database-backed total for your selected parts.
+                </p>
+            </section>
+
+            <section id="compatibility" class="help-section">
+                <h2>Compatibility checking</h2>
+                <p>
+                    Seven rules run against your selections. Status can be
+                    <strong>Compatible</strong>, <strong>Warning</strong>, or <strong>Incompatible</strong>.
+                </p>
+                <ol>
+                    <li>CPU and motherboard socket must match</li>
+                    <li>RAM type must match the motherboard</li>
+                    <li>Motherboard form factor must fit the case</li>
+                    <li>PSU wattage must cover estimated draw (with headroom guidance)</li>
+                    <li>Case GPU clearance must fit the graphics card</li>
+                    <li>Cooler must fit the case (height / liquid support)</li>
+                    <li>Motherboard must support the storage interface</li>
+                </ol>
+                <p>
+                    Incompatible builds cannot be saved until you fix the failing parts.
+                    Warnings (for example low PSU headroom) still allow saving.
+                </p>
+            </section>
+
+            <section id="performance" class="help-section">
+                <h2>Performance chart</h2>
+                <p>
+                    The performance visualization estimates <strong>gaming</strong> and
+                    <strong>productivity</strong> scores (1–100) from weighted CPU, GPU, RAM, and storage data.
+                    It also shows <strong>upgrade headroom</strong> compared with the best active catalogue parts.
+                </p>
+                <p>
+                    If the chart graphic does not load, the same numbers appear as a text summary underneath.
+                </p>
+            </section>
+
+            <section id="summary" class="help-section">
+                <h2>Build summary</h2>
+                <p>
+                    After the last step (or via <strong>Review build</strong>),
+                    <a href="../builder-results.php">builder-results.php</a> lists every part with
+                    trusted prices, compatibility details, power estimates, and the performance chart.
+                    Use <strong>Edit</strong> beside any category to jump back to that step.
+                </p>
+            </section>
+
+            <section id="saved-builds" class="help-section">
+                <h2>Saving builds</h2>
+                <p>
+                    Guests can review builds freely. To save, <a href="../login.php">log in</a>
+                    (or register), complete all required parts, and resolve incompatible errors.
+                    On the summary page, enter a build name (and optional notes), then choose
+                    <strong>Save build to my account</strong>.
+                </p>
+                <p>
+                    Prices and compatibility status are stored as a snapshot at save time.
+                </p>
+            </section>
+
+            <section id="manage-builds" class="help-section">
+                <h2>Managing saved builds</h2>
+                <p>
+                    Open <a href="../saved-builds.php">Saved builds</a> from your account menu to see every build you own.
+                    On a single build page you can:
+                </p>
+                <ul>
+                    <li><strong>Rename</strong> the build or update notes</li>
+                    <li><strong>Edit in builder</strong> — reloads the parts into the session builder</li>
+                    <li><strong>Delete</strong> the build permanently</li>
+                </ul>
+                <p>
+                    You can only view or change your own builds. Another customer’s builds are never shown.
+                </p>
+            </section>
+
+            <section id="tips" class="help-section">
+                <h2>Tips &amp; common mistakes</h2>
+                <ul>
+                    <li>Pick CPU and motherboard sockets together — AM5 CPUs need AM5 boards.</li>
+                    <li>Do not mix DDR4 RAM with a DDR5 motherboard (or the reverse).</li>
+                    <li>Long high-end GPUs often fail in tiny ITX cases — check clearance.</li>
+                    <li>Undersized PSUs are the most common late-step failure; follow the wattage estimate.</li>
+                    <li>Use <strong>Start over</strong> if you want a clean session build.</li>
+                    <li>After editing a saved build in the builder, save again from the summary to store the new configuration.</li>
+                </ul>
+            </section>
+        </article>
+
+        <footer class="help-page__footer">
+            <p>
+                Related:
+                <a href="index.html">Help centre</a> ·
+                <a href="../builder.php">PC Builder</a> ·
+                <a href="../saved-builds.php">Saved builds</a> ·
+                <a href="../contact.php">Contact</a>
+            </p>
+        </footer>
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+        <div class="site-footer__inner">
+            <p class="site-footer__brand">&copy; CustomCore</p>
+            <ul class="site-footer__links">
+                <li><a href="../about.php">About</a></li>
+                <li><a href="index.html">Help</a></li>
+                <li><a href="../privacy.php">Privacy</a></li>
+                <li><a href="../accessibility.php">Accessibility</a></li>
+            </ul>
+        </div>
+    </footer>
+</body>
+</html>

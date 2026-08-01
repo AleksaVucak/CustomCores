@@ -34,6 +34,10 @@
  *   The form includes data-compat-api pointing to api/compatibility-check.php.
  *   builder.js calls it on each change and renders a badge + per-rule results
  *   in the #builder-compat-status container.
+ *
+ * Context-sensitive Help (Commit 5.9):
+ *   Header and step tip link to help/pc-builder.html#step-{slug} for the
+ *   current category, plus pricing and compatibility anchors.
  */
 
 declare(strict_types=1);
@@ -283,7 +287,11 @@ require_once __DIR__ . '/includes/header.php';
         <h1 id="builder-heading">Custom PC Builder</h1>
         <p class="context-help">
             Help:
-            <a href="<?php echo customcore_e(customcore_url('help/pc-builder.html')); ?>">PC Builder guide</a>
+            <a href="<?php echo customcore_e(customcore_url('help/pc-builder.html#step-' . $categorySlug)); ?>">
+                <?php echo customcore_e($categoryName); ?> step guide
+            </a>
+            ·
+            <a href="<?php echo customcore_e(customcore_url('help/pc-builder.html')); ?>">Full PC Builder guide</a>
         </p>
     </header>
 
@@ -324,6 +332,17 @@ require_once __DIR__ . '/includes/header.php';
                 <?php echo customcore_e($isRequired ? '' : '(optional) '); ?>
                 <?php echo customcore_e($categoryName); ?>
             </h2>
+
+            <p class="builder-step-help">
+                Need help choosing?
+                <a href="<?php echo customcore_e(customcore_url('help/pc-builder.html#step-' . $categorySlug)); ?>">
+                    Read the <?php echo customcore_e($categoryName); ?> guide
+                </a>
+                ·
+                <a href="<?php echo customcore_e(customcore_url('help/pc-builder.html#compatibility')); ?>">Compatibility rules</a>
+                ·
+                <a href="<?php echo customcore_e(customcore_url('help/pc-builder.html#pricing')); ?>">Pricing</a>
+            </p>
 
             <?php if ($selectionError !== null): ?>
                 <div class="flash flash--error" role="alert">

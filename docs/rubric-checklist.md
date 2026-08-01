@@ -166,6 +166,7 @@ These appear in the project instructions and package requirements. They support 
 | **5.6** | Save builds — `builder-results.php` POST: CSRF + login + completeness + compat guard → `saved_builds` + `saved_build_items` insert; session cleared |
 | **5.7** | Saved-build management — `saved-builds.php` (list) + `saved-build.php` (view/rename/delete/edit-in-builder); ownership enforced |
 | **5.8** | Performance visualization — `api/chart-data.php`, Chart.js bar chart (gaming / productivity / upgrade headroom) + text fallback |
+| **5.9** | Context-sensitive builder Help — `help/pc-builder.html` (every step) + anchored links from builder/results/saved pages |
 
 ---
 
@@ -292,5 +293,9 @@ These appear in the project instructions and package requirements. They support 
 - [x] 5.6 Save builds (`builder-results.php` POST → `saved_builds` + `saved_build_items`)
 - [x] 5.7 Saved-build management (`saved-builds.php` + `saved-build.php`)
 - [x] 5.8 Build performance visualization (`api/chart-data.php` + `assets/js/charts.js`)
-- [ ] 5.9 Context-sensitive builder Help
+- [x] 5.9 Context-sensitive builder Help (`help/pc-builder.html`)
+
+### Stage 6 progress
+
+- [ ] 6.1 Shopping cart
 

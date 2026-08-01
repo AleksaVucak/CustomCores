@@ -418,7 +418,11 @@ require_once __DIR__ . '/includes/header.php';
         <h1 id="results-heading">Your build summary</h1>
         <p class="context-help">
             Help:
-            <a href="<?php echo customcore_e(customcore_url('help/pc-builder.html')); ?>">PC Builder guide</a>
+            <a href="<?php echo customcore_e(customcore_url('help/pc-builder.html#summary')); ?>">Build summary guide</a>
+            ·
+            <a href="<?php echo customcore_e(customcore_url('help/pc-builder.html#saved-builds')); ?>">How to save</a>
+            ·
+            <a href="<?php echo customcore_e(customcore_url('help/pc-builder.html')); ?>">Full PC Builder guide</a>
         </p>
         <p class="results-page__intro">
             Review every selected part, the trusted total from our database, compatibility

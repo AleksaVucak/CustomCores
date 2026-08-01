@@ -370,6 +370,153 @@ ol {
   font-size: 0.95rem;
 }
 
+.builder-step-help {
+  margin: calc(var(--cc-space-3) * -1) 0 var(--cc-space-4);
+  font-size: 0.9rem;
+  color: var(--cc-color-text-muted);
+}
+
+/* Static Help wiki pages (Commit 5.9+) */
+
+.help-body {
+  margin: 0;
+}
+
+.help-site-header {
+  border-bottom: 1px solid var(--cc-color-border);
+  background: var(--cc-color-bg-elevated);
+}
+
+.help-site-header__inner {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: var(--cc-space-3) var(--cc-space-4);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cc-space-3);
+}
+
+.help-site-header__brand {
+  font-family: var(--cc-font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--cc-color-accent);
+  text-decoration: none;
+}
+
+.help-site-header__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cc-space-3);
+  font-size: 0.95rem;
+}
+
+.help-site-header__nav a[aria-current="page"] {
+  font-weight: 700;
+  color: var(--cc-color-accent);
+}
+
+.help-page {
+  max-width: 48rem;
+  margin-inline: auto;
+}
+
+.help-page__eyebrow {
+  margin: 0 0 var(--cc-space-2);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--cc-color-text-muted);
+}
+
+.help-page__intro {
+  color: var(--cc-color-text-muted);
+  max-width: 40rem;
+}
+
+.help-toc {
+  margin: var(--cc-space-5) 0;
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-md);
+  background: var(--cc-color-bg-elevated);
+}
+
+.help-toc__title {
+  margin: 0 0 var(--cc-space-3);
+  font-size: 1rem;
+}
+
+.help-toc__list {
+  margin: 0;
+  padding-left: 1.25rem;
+  columns: 1;
+  gap: var(--cc-space-4);
+}
+
+@media (min-width: 40rem) {
+  .help-toc__list {
+    columns: 2;
+  }
+}
+
+.help-toc__list li {
+  break-inside: avoid;
+  margin-bottom: 0.35rem;
+  font-size: 0.92rem;
+}
+
+.help-section {
+  margin-bottom: var(--cc-space-6);
+  padding-top: var(--cc-space-2);
+  scroll-margin-top: 1rem;
+}
+
+.help-section h2 {
+  margin-top: 0;
+  font-size: 1.25rem;
+}
+
+.help-page__footer {
+  margin-top: var(--cc-space-6);
+  padding-top: var(--cc-space-4);
+  border-top: 1px solid var(--cc-color-border);
+  font-size: 0.95rem;
+  color: var(--cc-color-text-muted);
+}
+
+.help-hub-list {
+  list-style: none;
+  margin: var(--cc-space-5) 0;
+  padding: 0;
+  display: grid;
+  gap: var(--cc-space-4);
+}
+
+.help-hub-card {
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+  padding: var(--cc-space-4);
+}
+
+.help-hub-card__title {
+  margin: 0 0 var(--cc-space-2);
+  font-size: 1.15rem;
+}
+
+.help-hub-card__desc {
+  margin: 0 0 var(--cc-space-3);
+  color: var(--cc-color-text-muted);
+}
+
+.help-hub-card__links {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
 /* ==========================================================================
    8. Buttons
    ========================================================================== */

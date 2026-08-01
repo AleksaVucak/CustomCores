@@ -69,7 +69,11 @@ require_once __DIR__ . '/includes/header.php';
         <h1 id="builds-heading">Saved builds</h1>
         <p class="context-help">
             Help:
-            <a href="<?php echo customcore_e(customcore_url('help/pc-builder.html')); ?>">PC Builder guide</a>
+            <a href="<?php echo customcore_e(customcore_url('help/pc-builder.html#saved-builds')); ?>">Saving builds</a>
+            ·
+            <a href="<?php echo customcore_e(customcore_url('help/pc-builder.html#manage-builds')); ?>">Manage builds</a>
+            ·
+            <a href="<?php echo customcore_e(customcore_url('help/pc-builder.html')); ?>">Full PC Builder guide</a>
         </p>
     </header>
 
