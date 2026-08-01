@@ -34,18 +34,18 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 7.4 complete** — secure consultation attachments.
+
+The consultation form now accepts optional file attachments (PDF, TXT, PNG,
+JPG, WEBP). Each file is validated by its **real MIME type** (via `finfo`),
+size, and count; the on-disk name is randomly generated (never derived from
+user input); files are written to a directory guarded against direct browsing.
+The request and its attachments are stored atomically — if anything fails, the
+transaction rolls back and any moved files are removed.
+
 **Commit 7.3 complete** — PC consultation request form.
 
-Logged-in customers can request a personalised consultation from
-`consultation.php` (budget, games, software, performance goals, optional notes).
-Each valid submission is stored in `consultation_requests` with `status = open`
-and tied to the session `user_id`. CSRF protection and server-side validation
-(whitelisted budget) guard the form. Shared helpers live in
-`includes/consultations.php`. Secure attachments arrive in Commit 7.4.
-
-**Commit 7.2 complete** — product review submission.
-
-Next: **Commit 7.4** — secure consultation attachments.
+Next: **Commit 7.5** — customer contact form.
 
 ## Security notes
 

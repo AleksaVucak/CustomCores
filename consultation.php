@@ -4,13 +4,15 @@
  *
  * File responsibility:
  *   Lets a logged-in customer request a personalised PC consultation. Captures
- *   budget, games, software, performance goals, and optional notes, then stores
- *   the request in consultation_requests with status = open. Secure file
- *   attachments are added in Commit 7.4; customer history in Commit 7.6.
+ *   budget, games, software, performance goals, optional notes, and optional
+ *   secure file attachments (Commit 7.4), then stores the request in
+ *   consultation_requests (status = open) with any files in
+ *   consultation_attachments. Customer history arrives in Commit 7.6.
  *
  * Flow:
  *   GET  — show the form (pre-filled on validation errors).
- *   POST — validate CSRF + fields, insert request, flash success, redirect (PRG).
+ *   POST — validate CSRF + fields + files, insert request + attachments in a
+ *          single transaction, flash success, redirect (PRG).
  *
  * Authentication requirements:
  *   Logged-in customer (require_login). Each request is tied to the session
@@ -19,6 +21,11 @@
  * Security:
  *   - CSRF token required on POST.
  *   - Server-side validation of every field (budget whitelisted).
+ *   - Uploads validated by real MIME type (finfo), size, and count; on-disk
+ *     names are generated (never derived from user input); files land in a
+ *     directory guarded against direct browsing.
+ *   - Request + attachments are written atomically; moved files are cleaned up
+ *     if the transaction fails.
  *   - Ownership: user_id comes from the session, never the form.
  *   - All output escaped via customcore_e().
  */
@@ -66,19 +73,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $values = $validated['values'];
     $errors = $validated['errors'];
 
+    // Validate any uploaded attachments up front (real MIME type, size, count).
+    $normalizedFiles = customcore_consultation_normalize_files($_FILES['attachments'] ?? null);
+    $fileCheck = customcore_consultation_validate_files($normalizedFiles);
+    if (!$fileCheck['ok']) {
+        $errors['attachments'] = implode(' ', $fileCheck['errors']);
+    }
+
     if (!$csrfOk) {
         $formError = 'Your session expired. Please review the form and submit again.';
-    } elseif ($validated['ok']) {
+    } elseif ($validated['ok'] && $fileCheck['ok']) {
+        $movedPaths = [];
+        $pdo = null;
         try {
             $pdo = customcore_pdo();
-            $requestId = customcore_consultation_create($pdo, $userId, $values);
+            $pdo->beginTransaction();
 
+            $requestId = customcore_consultation_create($pdo, $userId, $values);
+            $storedCount = customcore_consultation_store_files(
+                $pdo,
+                $requestId,
+                $fileCheck['valid'],
+                $movedPaths
+            );
+
+            $pdo->commit();
+
+            $attachNote = $storedCount > 0
+                ? ' ' . $storedCount . ' file' . ($storedCount === 1 ? '' : 's') . ' attached.'
+                : '';
             customcore_flash_success(
                 'Thank you! Your consultation request (#' . $requestId
-                . ') has been submitted. Our team will review it and respond soon.'
+                . ') has been submitted.' . $attachNote
+                . ' Our team will review it and respond soon.'
             );
             customcore_redirect('consultation.php');
         } catch (Throwable $exception) {
+            if ($pdo instanceof PDO && $pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            // Remove any files that were moved before the failure.
+            customcore_consultation_cleanup_files($movedPaths);
+
             $formError = customcore_is_debug()
                 ? $exception->getMessage()
                 : 'We could not submit your request right now. Please try again later.';
@@ -129,6 +165,7 @@ require_once __DIR__ . '/includes/header.php';
                 class="form-stack consultation-form"
                 method="post"
                 action="<?php echo customcore_e(customcore_url('consultation.php')); ?>"
+                enctype="multipart/form-data"
                 novalidate
             >
                 <?php echo customcore_csrf_field(); ?>
@@ -230,6 +267,39 @@ require_once __DIR__ . '/includes/header.php';
                         <p class="form-error" id="err-notes"><?php echo customcore_e($errors['notes']); ?></p>
                     <?php endif; ?>
                 </div>
+
+                <?php
+                $maxMb = number_format(customcore_consultation_upload_max_bytes() / (1024 * 1024), 1);
+                ?>
+                <div class="form-row<?php echo isset($errors['attachments']) ? ' has-error' : ''; ?>">
+                    <label class="form-label" for="consult-attachments">
+                        Attachments <span class="form-optional">(optional)</span>
+                    </label>
+                    <input
+                        type="file"
+                        id="consult-attachments"
+                        name="attachments[]"
+                        class="consultation-form__file"
+                        multiple
+                        accept=".pdf,.txt,.png,.jpg,.jpeg,.webp,application/pdf,text/plain,image/png,image/jpeg,image/webp"
+                        <?php echo isset($errors['attachments']) ? 'aria-invalid="true" aria-describedby="err-attachments"' : ''; ?>
+                    >
+                    <p class="form-help">
+                        Optional reference files — screenshots, part lists, or quotes.
+                        Accepted: PDF, TXT, PNG, JPG, WEBP.
+                        Up to <?php echo customcore_e((string) CUSTOMCORE_CONSULTATION_MAX_FILES); ?> files,
+                        max <?php echo customcore_e($maxMb); ?> MB each.
+                    </p>
+                    <?php if (isset($errors['attachments'])) : ?>
+                        <p class="form-error" id="err-attachments"><?php echo customcore_e($errors['attachments']); ?></p>
+                    <?php endif; ?>
+                </div>
+
+                <?php if (isset($errors['attachments'])) : ?>
+                    <p class="consultation-form__reselect">
+                        For security, please re-select your files after fixing the error above.
+                    </p>
+                <?php endif; ?>
 
                 <div class="form-actions">
                     <button type="submit" class="button button--primary">Submit request</button>

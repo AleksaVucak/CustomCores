@@ -4543,6 +4543,59 @@ a.cart-item__name:hover {
   max-width: 40rem;
 }
 
+.consultation-form__file {
+  min-height: 0;
+  padding: 0.5rem;
+  background: var(--cc-color-bg-elevated);
+}
+
+.consultation-form__file::file-selector-button {
+  margin-right: var(--cc-space-3);
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-sm);
+  background: var(--cc-color-bg-muted);
+  color: var(--cc-color-text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.consultation-form__file::file-selector-button:hover {
+  background: var(--cc-color-accent-soft);
+}
+
+.consultation-form__reselect {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--cc-color-warning);
+}
+
+.consultation-attachments {
+  list-style: none;
+  margin: var(--cc-space-2) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--cc-space-2);
+}
+
+.consultation-attachments__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cc-space-3);
+  padding: var(--cc-space-2) var(--cc-space-3);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-sm);
+  background: var(--cc-color-bg-elevated);
+  font-size: 0.9rem;
+}
+
+.consultation-attachments__size {
+  color: var(--cc-color-text-muted);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
 .consult-status {
   display: inline-block;
   font-size: 0.8rem;

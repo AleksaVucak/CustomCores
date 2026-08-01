@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 7 / Commit 7.3 (PC consultation request form)
+**Last updated:** Stage 7 / Commit 7.4 (secure consultation attachments)
 
 ### Status legend
 
@@ -178,6 +178,7 @@ These appear in the project instructions and package requirements. They support 
 | **7.1** | Customer wishlist — `wishlist.php` (list, remove, clear, move-to-cart with server-recomputed default-config price); "Save to wishlist" on `product.php`; `includes/wishlist.php` helpers (`_add`/`_remove`/`_items`/`_contains`/`_count`); `INSERT IGNORE` dedupe + `UNIQUE(wishlist_id, product_id)`; all queries scoped to `user_id`; CSRF on every action |
 | **7.2** | Product review submission — form on `product.php` + `reviews.php` (rating 1–5, title, body); CSRF; login required; insert with `status = pending`; `includes/reviews.php` helpers + `assets/js/reviews.js` client validation; one pending/approved review per user/product; public lists still show approved only |
 | **7.3** | PC consultation request — `consultation.php` (budget, games, software, performance goals, optional notes); CSRF; login required; insert into `consultation_requests` with `status = open`; `includes/consultations.php` helpers (statuses/labels/classes, budget whitelist, validate, create); scoped to session `user_id`; account-nav entry |
+| **7.4** | Secure consultation attachments — multipart upload on `consultation.php`; validated by real MIME (`finfo`) + size (`upload_max_bytes`) + count; generated on-disk names in `uploads/consultation/` (guarded by `index.php`); `consultation_attachments` rows; request + files written in one transaction with cleanup on failure; bad type/size rejected |
 
 ---
 
@@ -333,7 +334,7 @@ These appear in the project instructions and package requirements. They support 
 - [x] 7.1 Customer wishlist (`wishlist.php` + `includes/wishlist.php`; save from `product.php`; move-to-cart; owner-scoped; CSRF)
 - [x] 7.2 Product review submission (`reviews.php` + `product.php` form; `status = pending`; `includes/reviews.php`; client validation)
 - [x] 7.3 PC consultation request form (`consultation.php` + `includes/consultations.php`; `status = open`; owner-scoped; CSRF)
-- [ ] 7.4 Secure consultation attachments
+- [x] 7.4 Secure consultation attachments (`finfo` MIME + size + count validation; generated names; transactional; cleanup on failure)
 - [ ] 7.5 Customer contact form
 - [ ] 7.6 Consultation request history
 
@@ -358,4 +359,12 @@ These appear in the project instructions and package requirements. They support 
 - [x] Valid submissions create a `consultation_requests` row with `status = open`
 - [x] Budget is validated against a whitelist; required text fields enforced
 - [x] The request is tied to the session `user_id` (never a form-supplied id)
+
+### Stage 7.4 acceptance
+
+- [x] Customers can attach PDF/TXT/PNG/JPG/WEBP files to a request
+- [x] Files are validated by real MIME type, size limit, and max count
+- [x] Invalid type/oversized files are rejected without creating the request
+- [x] Accepted files are stored with generated names under `uploads/consultation/`
+- [x] A `consultation_attachments` row is written per file; failure rolls back and cleans up
 

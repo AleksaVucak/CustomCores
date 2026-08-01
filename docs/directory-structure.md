@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 7.3 complete — PC consultation request form.**  
-`consultation.php` captures budget, games, software, performance goals, and optional notes; valid submits insert into `consultation_requests` with `status = open`, scoped to the session `user_id`. Helpers in `includes/consultations.php`; CSRF + server-side validation (whitelisted budget).
+**Commit 7.4 complete — secure consultation attachments.**  
+`consultation.php` accepts optional PDF/TXT/PNG/JPG/WEBP uploads validated by real MIME type (`finfo`), size, and count; stored under `uploads/consultation/` with generated names and recorded in `consultation_attachments`. Request + attachments are written in one transaction with file cleanup on failure. Helpers in `includes/consultations.php`.
 
-Next: **Commit 7.4** — secure consultation attachments.
+Next: **Commit 7.5** — customer contact form.
