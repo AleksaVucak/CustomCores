@@ -44,7 +44,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `api/` | Builder price, compatibility, search, chart data | 5.x, 8.x, 9.x |
 | `assets/css/` | External CSS (`main.css`, later `admin.css`, `print.css`) | 1.5 |
 | `assets/themes/` | RGB Gaming, Minimal Professional, Cyber Grid | 10.x |
-| `assets/js/` | External JS (`main.js`, later builder/cart/validation/charts/map) | 1.6 |
+| `assets/js/` | External JS (`main.js`, later builder/cart/checkout/validation/charts/map) | 1.6 |
 | `assets/images/` | ≥ 20 documented images | 8.1 |
 | `assets/media/` | ≥ 3 video/audio items | 8.2 |
 | `config/` | `database.example.php`, `app.php`; real `database.php` gitignored | 1.2–1.3 |
@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 6.3 complete — persist carts for customer accounts.**  
-DB-backed carts survive logout/login; session-cached count for nav badge; login pre-loads count; mutations refresh cache; CSS badge on Cart link.
+**Commit 6.4 complete — validated checkout form.**  
+`checkout.php` collects shipping address, phone, and payment method with server + client validation; `assets/js/checkout.js`; CSS layout with order summary sidebar; pre-filled from profile; data stored in session for order creation.
 
-Next: **Commit 6.4** — validated checkout form.
+Next: **Commit 6.5** — place order (convert cart to order record).

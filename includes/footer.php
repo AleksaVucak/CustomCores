@@ -47,6 +47,9 @@ $year = date('Y');
     <?php if (isset($currentPage) && $currentPage === 'cart') : ?>
         <script src="<?php echo customcore_e(customcore_url('assets/js/cart.js')); ?>" defer></script>
     <?php endif; ?>
+    <?php if (isset($currentPage) && $currentPage === 'checkout') : ?>
+        <script src="<?php echo customcore_e(customcore_url('assets/js/checkout.js')); ?>" defer></script>
+    <?php endif; ?>
     <?php if (!empty($loadCharts)) : ?>
         <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
         <script src="<?php echo customcore_e(customcore_url('assets/js/charts.js')); ?>" defer></script>

@@ -34,14 +34,15 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 6.3 complete** — persist carts for customer accounts.
+**Commit 6.4 complete** — validated checkout form.
 
-The cart is fully database-backed (`carts` + `cart_items` tables) so it survives
-logout and login. On login, the cart count is pre-loaded into the session. The nav
-shows a live badge with the item count. Every cart mutation refreshes the cached
-count so the badge stays accurate across all pages.
+The checkout page (`checkout.php`) collects shipping address, phone, and payment
+method via a validated form (server-side + `assets/js/checkout.js` client-side).
+The form pre-fills from the user's profile. An order summary sidebar shows cart
+items and subtotal. On valid submission, checkout data is stored in session for
+order creation (Commit 6.5). No real payment data is collected.
 
-Next: **Commit 6.4** — validated checkout form.
+Next: **Commit 6.5** — place order (convert cart to order record).
 
 ## Security notes
 

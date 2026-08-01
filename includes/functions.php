@@ -358,7 +358,16 @@ function customcore_url(string $path = ''): string
 function customcore_is_current_page(string $pageKey): bool
 {
     global $currentPage;
-    return isset($currentPage) && is_string($currentPage) && $currentPage === $pageKey;
+    if (!isset($currentPage) || !is_string($currentPage)) {
+        return false;
+    }
+    if ($currentPage === $pageKey) {
+        return true;
+    }
+    $subPages = [
+        'checkout' => 'cart',
+    ];
+    return isset($subPages[$currentPage]) && $subPages[$currentPage] === $pageKey;
 }
 
 /**

@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 6 / Commit 6.3 (persist carts for customer accounts)
+**Last updated:** Stage 6 / Commit 6.4 (validated checkout form)
 
 ### Status legend
 
@@ -31,7 +31,7 @@
 | 2 | No fewer than 20 products; each product has at least 2 options | 4 | MySQL `products` + `product_options`; seeds `database/seed-products.sql` + `database/seed-product-options.sql`; UI `catalogue.php`, `product.php` | SQL count ≥ 20 active products; query confirms every product has ≥ 2 options; options visible on product pages | 2.2–2.3, 3.3–3.4 | Complete — 20 products + options seeded; catalogue grid live (3.3); options visible on product detail (3.4) |
 | 3a | At least 3 different site-wide CSS templates (distinct look/layout) | 12 | `assets/themes/rgb-gaming.css`, `assets/themes/minimal-pro.css`, `assets/themes/cyber-grid.css` | Themes differ in colour, typography, nav, buttons, cards, spacing, borders, and layout treatment | 10.1–10.3 | Planned |
 | 3b | Ability to change the template dynamically | 4 | Admin `admin/themes.php`; MySQL `themes` / `site_settings`; theme loaded in shared header include | Admin selects theme → setting saved → public and admin pages load the chosen CSS | 2.6, 10.4–10.5 | In progress — theme + settings rows seeded (2.6); CSS files and switcher in Stage 10 |
-| 4 | Dynamic HTML forms on at least two pages (e.g. quote/calculator style) | 8 | Primary: `builder.php` (live price + options); `checkout.php` (validated order form). Extra safety: `register.php`, `consultation.php`, `contact.php` | Forms submit to PHP; builder prices recalculate; checkout creates order records without real payment data | 5.x, 6.4–6.5, 4.1, 7.x | Planned |
+| 4 | Dynamic HTML forms on at least two pages (e.g. quote/calculator style) | 8 | Primary: `builder.php` (live price + options); `checkout.php` (validated order form). Extra safety: `register.php`, `consultation.php`, `contact.php` | Forms submit to PHP; builder prices recalculate; checkout creates order records without real payment data | 5.x, 6.4–6.5, 4.1, 7.x | In progress — `builder.php` (5.x) and `checkout.php` (6.4) both live with validated forms |
 | 5 | PHP code and MySQL database well documented | 20 | PHP file/function comments; `database/schema.sql` comments; `docs/database-design.md` (+ ER diagram); import notes in `docs/database-import.md`; install notes in `docs/installation-guide.md` | Another developer can understand schema relationships and major PHP modules from comments + docs | 2.8, 12.4, 14.6–14.7 | In progress — ER design, schema comments, and import/backup guide complete (2.8); full installation guide later |
 | 6 | All code properly commented (HTML, CSS, JS, and related sources) | 8 | Structured comments in HTML/PHP views, `assets/css/*`, `assets/js/*`, SQL seeds | Major sections documented; comments explain purpose, not obvious syntax | 14.6–14.7 | Planned |
 | 7 | Help wiki: at least 5 different pages; context-sensitive Help links from the site | 10 | Static Help: `help/index.html`, `help/accounts.html`, `help/catalogue.html`, `help/pc-builder.html`, `help/orders.html`, `help/support.html` (6 pages; 5 required + hub). Context links from profile, catalogue, builder, checkout, consultation pages | Each Help article opens as its own page; feature pages link to the matching article (not only one generic Help link) | 11.1–11.7 | Planned |
@@ -170,6 +170,7 @@ These appear in the project instructions and package requirements. They support 
 | **6.1** | Shopping cart — `cart.php` (session-stored DB cart); `includes/cart.php` helpers; "Add to cart" on product + saved-build pages; quantity update, remove, clear; server-side price verification; CSRF |
 | **6.2** | Cart quantity & removal controls — bulk Update cart, +/- steppers, stock clamps, remove + clear with confirm; `assets/js/cart.js` live line/subtotal preview; helpers `customcore_cart_update_*` / `remove` / `clear` |
 | **6.3** | Persist carts for accounts — DB-backed `carts`/`cart_items` survive logout/login; session-cached count (`customcore_cart_count_cached`); login pre-loads count; nav badge (`.site-nav__badge`); all mutations refresh cache |
+| **6.4** | Validated checkout form — `checkout.php` with server + client validation; shipping address, phone, payment method (simulated); pre-filled from profile; `assets/js/checkout.js` blur/submit validation; CSS order-summary sidebar; data stored in session for Commit 6.5; rubric #4 now In progress |
 
 ---
 
@@ -303,4 +304,5 @@ These appear in the project instructions and package requirements. They support 
 - [x] 6.1 Shopping cart (`cart.php` + `includes/cart.php`)
 - [x] 6.2 Cart quantity and removal controls (`update` / `update_all` / `remove` / `clear` + `assets/js/cart.js`)
 - [x] 6.3 Persist carts for customer accounts (DB-backed; session-cached nav badge count; login pre-load)
+- [x] 6.4 Validated checkout form (`checkout.php` + `assets/js/checkout.js`; server + client validation)
 
