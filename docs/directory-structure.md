@@ -44,7 +44,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `api/` | Builder price, compatibility, search, chart data | 5.x, 8.x, 9.x |
 | `assets/css/` | External CSS (`main.css`, later `admin.css`, `print.css`) | 1.5 |
 | `assets/themes/` | RGB Gaming, Minimal Professional, Cyber Grid | 10.x |
-| `assets/js/` | External JS (`main.js`, later builder/cart/etc.) | 1.6 |
+| `assets/js/` | External JS (`main.js`, later builder/cart/validation/charts/map) | 1.6 |
 | `assets/images/` | ≥ 20 documented images | 8.1 |
 | `assets/media/` | ≥ 3 video/audio items | 8.2 |
 | `config/` | `database.example.php`, `app.php`; real `database.php` gitignored | 1.2–1.3 |
@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 6.1 complete — shopping cart.**  
-`cart.php` + `includes/cart.php`: database-backed cart supporting catalogue products and saved builds; add, update qty, remove, clear; server-side price verification; CSRF; account-nav integration.
+**Commit 6.2 complete — cart quantity and removal controls.**  
+`cart.php` + `includes/cart.php` helpers + `assets/js/cart.js`: stock-aware qty steppers, bulk update, remove, clear; live total preview; ownership-scoped mutations.
 
-Next: **Commit 6.2** — checkout page.
+Next: **Commit 6.3** — persist carts for customer accounts.

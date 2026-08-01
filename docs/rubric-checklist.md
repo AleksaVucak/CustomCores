@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 6 / Commit 6.1 (shopping cart)
+**Last updated:** Stage 6 / Commit 6.2 (cart quantity and removal controls)
 
 ### Status legend
 
@@ -168,6 +168,7 @@ These appear in the project instructions and package requirements. They support 
 | **5.8** | Performance visualization — `api/chart-data.php`, Chart.js bar chart (gaming / productivity / upgrade headroom) + text fallback |
 | **5.9** | Context-sensitive builder Help — `help/pc-builder.html` (every step) + anchored links from builder/results/saved pages |
 | **6.1** | Shopping cart — `cart.php` (session-stored DB cart); `includes/cart.php` helpers; "Add to cart" on product + saved-build pages; quantity update, remove, clear; server-side price verification; CSRF |
+| **6.2** | Cart quantity & removal controls — bulk Update cart, +/- steppers, stock clamps, remove + clear with confirm; `assets/js/cart.js` live line/subtotal preview; helpers `customcore_cart_update_*` / `remove` / `clear` |
 
 ---
 
@@ -299,4 +300,5 @@ These appear in the project instructions and package requirements. They support 
 ### Stage 6 progress
 
 - [x] 6.1 Shopping cart (`cart.php` + `includes/cart.php`)
+- [x] 6.2 Cart quantity and removal controls (`update` / `update_all` / `remove` / `clear` + `assets/js/cart.js`)
 

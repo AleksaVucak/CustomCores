@@ -34,14 +34,13 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 6.1 complete** — shopping cart.
+**Commit 6.2 complete** — cart quantity and removal controls.
 
-`cart.php` provides a fully functional database-backed shopping cart. Customers can
-add catalogue products (with configured options) from product pages, or add saved
-custom builds from the build management page. Cart supports quantity updates, item
-removal, and full clear. All prices are verified server-side. CSRF-protected.
+Cart lines support stock-aware quantity steppers, bulk **Update cart**, per-line
+**Remove**, and **Clear cart**. Server clamps keep line totals and the subtotal
+accurate; `assets/js/cart.js` previews totals live before submit.
 
-Next: **Commit 6.2** — checkout page.
+Next: **Commit 6.3** — persist carts for customer accounts.
 
 ## Security notes
 

@@ -1,11 +1,12 @@
 <?php
 /**
- * CustomCore — Cart helper functions (Commit 6.1).
+ * CustomCore — Cart helper functions (Commits 6.1–6.2).
  *
  * File responsibility:
  *   Shared cart operations: get or create the user's DB cart, add items,
- *   list items with product/build details, and count items for the nav badge.
- *   All queries are scoped to the current user_id (ownership enforced).
+ *   update/remove/clear lines (Commit 6.2), list items with product/build
+ *   details, and count items for the nav badge.
+ *   All mutations are scoped to the current user_id (ownership enforced).
  *
  * Authentication requirements:
  *   A logged-in user is expected. Callers must call customcore_require_login()
@@ -201,4 +202,259 @@ function customcore_cart_subtotal(array $items): float
         $total += (float) $item['line_total'];
     }
     return round($total, 2);
+}
+
+/**
+ * Load a single cart item owned by the given user.
+ *
+ * @return array|null Associative row or null when not found / not owned.
+ */
+function customcore_cart_owned_item(PDO $pdo, int $userId, int $itemId): ?array
+{
+    if ($itemId < 1 || $userId < 1) {
+        return null;
+    }
+
+    $stmt = $pdo->prepare(
+        'SELECT ci.id, ci.cart_id, ci.item_type, ci.product_id, ci.saved_build_id,
+                ci.quantity, ci.unit_price, ci.options_json,
+                p.stock_quantity, p.is_active
+         FROM cart_items ci
+         JOIN carts c ON c.id = ci.cart_id
+         LEFT JOIN products p ON ci.item_type = \'product\' AND p.id = ci.product_id
+         WHERE ci.id = :iid AND c.user_id = :uid
+         LIMIT 1'
+    );
+    $stmt->execute([':iid' => $itemId, ':uid' => $userId]);
+    $row = $stmt->fetch();
+
+    return $row !== false ? $row : null;
+}
+
+/**
+ * Clamp a requested quantity for a cart line (Commit 6.2).
+ *
+ * Rules:
+ *   - Saved builds are always quantity 1.
+ *   - Products are clamped to 1–99 and never above available stock.
+ *   - Quantity 0 means "remove" (caller should delete).
+ *
+ * @return array{quantity:int, remove:bool, warning:?string}
+ */
+function customcore_cart_clamp_quantity(array $itemRow, int $requestedQty): array
+{
+    $itemType = (string) ($itemRow['item_type'] ?? 'product');
+
+    if ($itemType === 'saved_build') {
+        return [
+            'quantity' => 1,
+            'remove' => false,
+            'warning' => $requestedQty !== 1
+                ? 'Custom builds are limited to a quantity of 1.'
+                : null,
+        ];
+    }
+
+    if ($requestedQty <= 0) {
+        return [
+            'quantity' => 0,
+            'remove' => true,
+            'warning' => null,
+        ];
+    }
+
+    $qty = max(1, min(99, $requestedQty));
+    $warning = null;
+
+    $stock = isset($itemRow['stock_quantity']) ? (int) $itemRow['stock_quantity'] : 99;
+    $isActive = !isset($itemRow['is_active']) || (int) $itemRow['is_active'] === 1;
+
+    if (!$isActive) {
+        return [
+            'quantity' => (int) ($itemRow['quantity'] ?? 1),
+            'remove' => false,
+            'warning' => 'This product is no longer available. Remove it or leave quantity unchanged.',
+        ];
+    }
+
+    if ($stock < 1) {
+        return [
+            'quantity' => (int) ($itemRow['quantity'] ?? 1),
+            'remove' => false,
+            'warning' => 'This product is out of stock. Remove it from your cart.',
+        ];
+    }
+
+    if ($qty > $stock) {
+        $qty = $stock;
+        $warning = 'Quantity reduced to available stock (' . $stock . ').';
+    }
+
+    return [
+        'quantity' => $qty,
+        'remove' => false,
+        'warning' => $warning,
+    ];
+}
+
+/**
+ * Update one cart line quantity (ownership-scoped). Quantity 0 removes the line.
+ *
+ * @return array{ok:bool, removed:bool, quantity:int, message:string}
+ */
+function customcore_cart_update_quantity(PDO $pdo, int $userId, int $itemId, int $requestedQty): array
+{
+    $item = customcore_cart_owned_item($pdo, $userId, $itemId);
+
+    if ($item === null) {
+        return [
+            'ok' => false,
+            'removed' => false,
+            'quantity' => 0,
+            'message' => 'Cart item not found.',
+        ];
+    }
+
+    $clamped = customcore_cart_clamp_quantity($item, $requestedQty);
+
+    if ($clamped['remove']) {
+        customcore_cart_remove_item($pdo, $userId, $itemId);
+
+        return [
+            'ok' => true,
+            'removed' => true,
+            'quantity' => 0,
+            'message' => 'Item removed from cart.',
+        ];
+    }
+
+    if ($clamped['warning'] !== null && (int) $item['quantity'] === (int) $clamped['quantity']
+        && (string) ($item['item_type'] ?? '') === 'product'
+        && ((int) ($item['is_active'] ?? 1) !== 1 || (int) ($item['stock_quantity'] ?? 0) < 1)
+    ) {
+        return [
+            'ok' => false,
+            'removed' => false,
+            'quantity' => (int) $item['quantity'],
+            'message' => (string) $clamped['warning'],
+        ];
+    }
+
+    $newQty = (int) $clamped['quantity'];
+
+    $upd = $pdo->prepare(
+        'UPDATE cart_items ci
+         JOIN carts c ON c.id = ci.cart_id
+         SET ci.quantity = :qty
+         WHERE ci.id = :iid AND c.user_id = :uid'
+    );
+    $upd->execute([
+        ':qty' => $newQty,
+        ':iid' => $itemId,
+        ':uid' => $userId,
+    ]);
+
+    $message = $clamped['warning'] !== null
+        ? (string) $clamped['warning']
+        : 'Cart updated.';
+
+    return [
+        'ok' => true,
+        'removed' => false,
+        'quantity' => $newQty,
+        'message' => $message,
+    ];
+}
+
+/**
+ * Bulk-update quantities from a map of item_id => quantity (Commit 6.2).
+ *
+ * @param array<int|string, int|string> $quantities
+ * @return array{ok:bool, updated:int, removed:int, messages:list<string>}
+ */
+function customcore_cart_update_quantities(PDO $pdo, int $userId, array $quantities): array
+{
+    $updated = 0;
+    $removed = 0;
+    $messages = [];
+
+    foreach ($quantities as $rawId => $rawQty) {
+        if (!is_numeric($rawId) || (int) $rawId < 1) {
+            continue;
+        }
+
+        $itemId = (int) $rawId;
+        $requestedQty = is_numeric($rawQty) ? (int) $rawQty : -1;
+
+        $result = customcore_cart_update_quantity($pdo, $userId, $itemId, $requestedQty);
+
+        if (!$result['ok']) {
+            $messages[] = $result['message'];
+            continue;
+        }
+
+        if ($result['removed']) {
+            $removed++;
+        } else {
+            $updated++;
+        }
+
+        if ($result['message'] !== 'Cart updated.' && $result['message'] !== 'Item removed from cart.') {
+            $messages[] = $result['message'];
+        }
+    }
+
+    if ($updated === 0 && $removed === 0 && $messages === []) {
+        return [
+            'ok' => true,
+            'updated' => 0,
+            'removed' => 0,
+            'messages' => ['No quantities were changed.'],
+        ];
+    }
+
+    return [
+        'ok' => true,
+        'updated' => $updated,
+        'removed' => $removed,
+        'messages' => $messages,
+    ];
+}
+
+/**
+ * Remove one cart line owned by the user. Returns true when a row was deleted.
+ */
+function customcore_cart_remove_item(PDO $pdo, int $userId, int $itemId): bool
+{
+    if ($itemId < 1 || $userId < 1) {
+        return false;
+    }
+
+    $stmt = $pdo->prepare(
+        'DELETE ci FROM cart_items ci
+         JOIN carts c ON c.id = ci.cart_id
+         WHERE ci.id = :iid AND c.user_id = :uid'
+    );
+    $stmt->execute([':iid' => $itemId, ':uid' => $userId]);
+
+    return $stmt->rowCount() > 0;
+}
+
+/**
+ * Remove every line from the user's cart. Returns the number of deleted rows.
+ */
+function customcore_cart_clear(PDO $pdo, int $userId): int
+{
+    if ($userId < 1) {
+        return 0;
+    }
+
+    $stmt = $pdo->prepare(
+        'DELETE ci FROM cart_items ci
+         JOIN carts c ON c.id = ci.cart_id
+         WHERE c.user_id = :uid'
+    );
+    $stmt->execute([':uid' => $userId]);
+
+    return $stmt->rowCount();
 }

@@ -1,17 +1,25 @@
 <?php
 /**
- * CustomCore — Shopping Cart (Commit 6.1).
+ * CustomCore — Shopping Cart (Commits 6.1–6.2).
  *
  * File responsibility:
  *   Displays the logged-in customer's shopping cart and processes add, update,
- *   and remove actions via POST. Supports two item types:
+ *   remove, and clear actions via POST. Supports two item types:
  *     - 'product'      – catalogue products (with optional configuration options).
  *     - 'saved_build'  – custom PC builds the user has saved.
+ *
+ * Commit 6.2 — quantity and removal controls:
+ *   - Per-line quantity inputs with stock-aware max
+ *   - Bulk "Update cart" for all product lines at once
+ *   - Per-line Remove and Clear cart (with confirm prompts)
+ *   - Server-side clamps keep line totals and subtotal accurate
+ *   - Client-side live line-total preview (assets/js/cart.js)
  *
  * Supported POST actions:
  *   - add_product:    Add a catalogue product (from product.php).
  *   - add_build:      Add a saved build (from saved-build.php).
- *   - update:         Change quantity of a cart item.
+ *   - update:         Change quantity of a single cart item.
+ *   - update_all:     Bulk-update quantities from the cart form.
  *   - remove:         Remove a cart item.
  *   - clear:          Remove all items from the cart.
  *
@@ -22,14 +30,8 @@
  *   - CSRF verification on all POST actions.
  *   - Server-side price verification for products (re-fetches from DB).
  *   - Ownership enforced (cart belongs to the session user).
- *   - Quantity bounds: 1–99.
+ *   - Quantity bounds: 0 (remove) or 1–99, never above stock.
  *   - Saved build ownership checked before adding.
- *
- * Database queries:
- *   - carts (get or create for user)
- *   - cart_items (CRUD)
- *   - products + product_options (price verification)
- *   - saved_builds + saved_build_items (build total verification)
  */
 
 declare(strict_types=1);
@@ -89,7 +91,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $quantity = max(1, min(99, $quantity));
 
-                // Verify product exists, is active, and has stock.
                 $prodStmt = $pdo->prepare(
                     'SELECT id, name, base_price, stock_quantity, is_active
                      FROM products
@@ -109,12 +110,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     customcore_redirect('product.php?id=' . $productId);
                 }
 
-                // Calculate server-trusted price with selected options.
                 $basePrice = (float) $prodRow['base_price'];
                 $selectedOptions = [];
                 $optionsDelta = 0.00;
 
-                // Collect posted option selections (format: option_<GroupName> = <option_id>).
                 $optStmt = $pdo->prepare(
                     'SELECT id, option_group, option_label, price_delta, is_default
                      FROM product_options
@@ -150,7 +149,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         }
                     }
 
-                    // If no valid selection, use the default.
                     if (!$matched) {
                         foreach ($groupOptions as $opt) {
                             if (!empty($opt['is_default'])) {
@@ -171,7 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $optionsJson = $selectedOptions !== [] ? json_encode($selectedOptions) : null;
 
                 customcore_cart_add_product($pdo, $cartId, $productId, $unitPrice, $quantity, $optionsJson);
-                customcore_flash_success(htmlspecialchars((string) $prodRow['name'], ENT_QUOTES, 'UTF-8') . ' added to your cart.');
+                customcore_flash_success((string) $prodRow['name'] . ' added to your cart.');
                 customcore_redirect('cart.php');
                 break;
 
@@ -188,7 +186,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     customcore_redirect('cart.php');
                 }
 
-                // Verify the build belongs to this user.
                 $buildStmt = $pdo->prepare(
                     'SELECT id, name, total_price
                      FROM saved_builds
@@ -205,7 +202,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $buildPrice = (float) $buildRow['total_price'];
 
-                // Re-calculate trusted total from item prices.
                 $itemStmt = $pdo->prepare(
                     'SELECT COALESCE(SUM(sbi.unit_price), 0) AS real_total
                      FROM saved_build_items sbi
@@ -218,12 +214,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 customcore_cart_add_build($pdo, $cartId, $savedBuildId, $buildPrice);
-                customcore_flash_success(htmlspecialchars((string) $buildRow['name'], ENT_QUOTES, 'UTF-8') . ' added to your cart.');
+                customcore_flash_success((string) $buildRow['name'] . ' added to your cart.');
                 customcore_redirect('cart.php');
                 break;
 
             // -----------------------------------------------------------------
-            // Update quantity
+            // Update a single line quantity (Commit 6.2)
             // -----------------------------------------------------------------
             case 'update':
                 $itemId = isset($_POST['item_id']) && is_string($_POST['item_id']) && ctype_digit($_POST['item_id'])
@@ -231,47 +227,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     : 0;
                 $newQty = isset($_POST['quantity']) && is_string($_POST['quantity']) && ctype_digit($_POST['quantity'])
                     ? (int) $_POST['quantity']
-                    : 0;
+                    : -1;
 
                 if ($itemId < 1) {
                     customcore_flash_error('Invalid item.');
                     customcore_redirect('cart.php');
                 }
 
-                $newQty = max(1, min(99, $newQty));
+                $result = customcore_cart_update_quantity($pdo, $userId, $itemId, $newQty);
 
-                // Ownership: verify item belongs to this user's cart.
-                $verifyStmt = $pdo->prepare(
-                    'SELECT ci.id, ci.item_type
-                     FROM cart_items ci
-                     JOIN carts c ON c.id = ci.cart_id
-                     WHERE ci.id = :iid AND c.user_id = :uid
-                     LIMIT 1'
-                );
-                $verifyStmt->execute([':iid' => $itemId, ':uid' => $userId]);
-                $verifyRow = $verifyStmt->fetch();
-
-                if ($verifyRow === false) {
-                    customcore_flash_error('Cart item not found.');
-                    customcore_redirect('cart.php');
+                if (!$result['ok']) {
+                    customcore_flash_warning($result['message']);
+                } elseif ($result['removed']) {
+                    customcore_flash_success($result['message']);
+                } elseif ($result['message'] !== 'Cart updated.') {
+                    customcore_flash_warning($result['message']);
+                } else {
+                    customcore_flash_success('Cart updated.');
                 }
 
-                // Builds are always qty 1.
-                if ((string) $verifyRow['item_type'] === 'saved_build') {
-                    $newQty = 1;
-                }
-
-                $updStmt = $pdo->prepare(
-                    'UPDATE cart_items SET quantity = :qty WHERE id = :id'
-                );
-                $updStmt->execute([':qty' => $newQty, ':id' => $itemId]);
-
-                customcore_flash_success('Cart updated.');
                 customcore_redirect('cart.php');
                 break;
 
             // -----------------------------------------------------------------
-            // Remove one item
+            // Bulk update all quantities (Commit 6.2)
+            // -----------------------------------------------------------------
+            case 'update_all':
+                $rawQuantities = isset($_POST['quantities']) && is_array($_POST['quantities'])
+                    ? $_POST['quantities']
+                    : [];
+
+                if ($rawQuantities === []) {
+                    customcore_flash_warning('No quantities were submitted.');
+                    customcore_redirect('cart.php');
+                }
+
+                $bulk = customcore_cart_update_quantities($pdo, $userId, $rawQuantities);
+
+                if ($bulk['messages'] !== []) {
+                    foreach ($bulk['messages'] as $msg) {
+                        customcore_flash_warning($msg);
+                    }
+                }
+
+                if ($bulk['updated'] > 0 || $bulk['removed'] > 0) {
+                    $parts = [];
+                    if ($bulk['updated'] > 0) {
+                        $parts[] = $bulk['updated'] === 1
+                            ? '1 quantity updated'
+                            : $bulk['updated'] . ' quantities updated';
+                    }
+                    if ($bulk['removed'] > 0) {
+                        $parts[] = $bulk['removed'] === 1
+                            ? '1 item removed'
+                            : $bulk['removed'] . ' items removed';
+                    }
+                    customcore_flash_success(implode('; ', $parts) . '.');
+                } elseif ($bulk['messages'] === []) {
+                    customcore_flash_success('Cart updated.');
+                }
+
+                customcore_redirect('cart.php');
+                break;
+
+            // -----------------------------------------------------------------
+            // Remove one item (Commit 6.2)
             // -----------------------------------------------------------------
             case 'remove':
                 $itemId = isset($_POST['item_id']) && is_string($_POST['item_id']) && ctype_digit($_POST['item_id'])
@@ -283,30 +303,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     customcore_redirect('cart.php');
                 }
 
-                // Ownership check.
-                $verifyStmt = $pdo->prepare(
-                    'DELETE ci FROM cart_items ci
-                     JOIN carts c ON c.id = ci.cart_id
-                     WHERE ci.id = :iid AND c.user_id = :uid'
-                );
-                $verifyStmt->execute([':iid' => $itemId, ':uid' => $userId]);
+                if (customcore_cart_remove_item($pdo, $userId, $itemId)) {
+                    customcore_flash_success('Item removed from cart.');
+                } else {
+                    customcore_flash_error('Cart item not found.');
+                }
 
-                customcore_flash_success('Item removed from cart.');
                 customcore_redirect('cart.php');
                 break;
 
             // -----------------------------------------------------------------
-            // Clear entire cart
+            // Clear entire cart (Commit 6.2)
             // -----------------------------------------------------------------
             case 'clear':
-                $clearStmt = $pdo->prepare(
-                    'DELETE ci FROM cart_items ci
-                     JOIN carts c ON c.id = ci.cart_id
-                     WHERE c.user_id = :uid'
-                );
-                $clearStmt->execute([':uid' => $userId]);
+                $cleared = customcore_cart_clear($pdo, $userId);
 
-                customcore_flash_success('Cart cleared.');
+                if ($cleared > 0) {
+                    customcore_flash_success('Cart cleared.');
+                } else {
+                    customcore_flash_warning('Your cart was already empty.');
+                }
+
                 customcore_redirect('cart.php');
                 break;
 
@@ -327,12 +344,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $cartItems = [];
 $subtotal = 0.00;
+$itemCount = 0;
 
 try {
     $pdo = customcore_pdo();
     $cartId = customcore_cart_id($pdo, $userId);
     $cartItems = customcore_cart_items($pdo, $cartId);
     $subtotal = customcore_cart_subtotal($cartItems);
+    foreach ($cartItems as $ci) {
+        $itemCount += (int) $ci['quantity'];
+    }
 } catch (Throwable $exception) {
     $cartError = customcore_is_debug()
         ? $exception->getMessage()
@@ -351,9 +372,20 @@ $currentPage = 'cart';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<section class="content-section cart-page" aria-labelledby="cart-heading">
+<section class="content-section cart-page" aria-labelledby="cart-heading" data-cart-page>
     <header class="cart-page__header">
         <h1 id="cart-heading">Shopping Cart</h1>
+        <?php if ($cartItems !== []): ?>
+            <p class="cart-page__count">
+                <?php echo customcore_e((string) $itemCount); ?>
+                <?php echo $itemCount === 1 ? 'item' : 'items'; ?>
+            </p>
+        <?php endif; ?>
+        <p class="context-help">
+            Help:
+            <a href="<?php echo customcore_e(customcore_url('help/index.html')); ?>">Help centre</a>
+            — cart quantities, remove, and clear controls keep your total accurate before checkout.
+        </p>
     </header>
 
     <div class="layout-split layout-split--account">
@@ -382,138 +414,233 @@ require_once __DIR__ . '/includes/header.php';
                 </div>
             <?php else: ?>
                 <div class="cart-items">
-                    <div class="table-wrap">
-                        <table class="data-table cart-table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Item</th>
-                                    <th scope="col" class="data-table__num">Unit price</th>
-                                    <th scope="col" class="data-table__num">Qty</th>
-                                    <th scope="col" class="data-table__num">Line total</th>
-                                    <th scope="col"><span class="visually-hidden">Actions</span></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($cartItems as $item): ?>
-                                    <?php
-                                    $isBuild = $item['item_type'] === 'saved_build';
-                                    $itemName = $item['name'];
-                                    $itemBrand = $item['brand'];
-                                    $unitPrice = $item['unit_price'];
-                                    $qty = $item['quantity'];
-                                    $lineTotal = $item['line_total'];
-                                    $itemLink = '';
-                                    $optionsSummary = '';
+                    <form
+                        id="cart-update-form"
+                        class="cart-update-form"
+                        method="post"
+                        action="<?php echo customcore_e(customcore_url('cart.php')); ?>"
+                        data-cart-update-form
+                    >
+                        <?php echo customcore_csrf_field(); ?>
+                        <input type="hidden" name="action" value="update_all">
 
-                                    if ($isBuild && $item['saved_build_id'] !== null) {
-                                        $itemLink = customcore_url('saved-build.php?id=' . $item['saved_build_id']);
-                                    } elseif (!$isBuild && $item['product_id'] !== null) {
-                                        $itemLink = customcore_url('product.php?id=' . $item['product_id']);
-                                    }
+                        <div class="table-wrap cart-table-wrap">
+                            <table class="data-table cart-table" data-cart-table>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Item</th>
+                                        <th scope="col" class="data-table__num">Unit price</th>
+                                        <th scope="col" class="data-table__num">Qty</th>
+                                        <th scope="col" class="data-table__num">Line total</th>
+                                        <th scope="col"><span class="visually-hidden">Actions</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($cartItems as $item): ?>
+                                        <?php
+                                        $isBuild = $item['item_type'] === 'saved_build';
+                                        $itemName = $item['name'];
+                                        $itemBrand = $item['brand'];
+                                        $unitPrice = $item['unit_price'];
+                                        $qty = $item['quantity'];
+                                        $lineTotal = $item['line_total'];
+                                        $itemLink = '';
+                                        $optionsSummary = '';
+                                        $stockMax = 99;
 
-                                    if (!$isBuild && $item['options_json'] !== null) {
-                                        $decoded = json_decode($item['options_json'], true);
-                                        if (is_array($decoded) && $decoded !== []) {
-                                            $labels = [];
-                                            foreach ($decoded as $optSnap) {
-                                                if (isset($optSnap['label'])) {
-                                                    $labels[] = (string) $optSnap['label'];
-                                                }
-                                            }
-                                            $optionsSummary = implode(', ', $labels);
+                                        if ($isBuild && $item['saved_build_id'] !== null) {
+                                            $itemLink = customcore_url('saved-build.php?id=' . $item['saved_build_id']);
+                                        } elseif (!$isBuild && $item['product_id'] !== null) {
+                                            $itemLink = customcore_url('product.php?id=' . $item['product_id']);
                                         }
-                                    }
 
-                                    $isUnavailable = false;
-                                    if (!$isBuild && (!$item['product_active'] || $item['product_id'] === null)) {
-                                        $isUnavailable = true;
-                                    }
-                                    ?>
-                                    <tr class="cart-item<?php echo $isUnavailable ? ' cart-item--unavailable' : ''; ?>">
-                                        <td class="cart-item__info">
-                                            <span class="cart-item__type-badge<?php echo $isBuild ? ' cart-item__type-badge--build' : ''; ?>">
-                                                <?php echo $isBuild ? 'Custom Build' : 'Product'; ?>
-                                            </span>
-                                            <?php if ($itemLink !== ''): ?>
-                                                <a href="<?php echo customcore_e($itemLink); ?>" class="cart-item__name">
-                                                    <?php echo customcore_e($itemName); ?>
-                                                </a>
-                                            <?php else: ?>
-                                                <span class="cart-item__name"><?php echo customcore_e($itemName); ?></span>
-                                            <?php endif; ?>
-                                            <?php if ($itemBrand !== ''): ?>
-                                                <span class="cart-item__brand"><?php echo customcore_e($itemBrand); ?></span>
-                                            <?php endif; ?>
-                                            <?php if ($optionsSummary !== ''): ?>
-                                                <span class="cart-item__options"><?php echo customcore_e($optionsSummary); ?></span>
-                                            <?php endif; ?>
-                                            <?php if ($isUnavailable): ?>
-                                                <span class="cart-item__badge cart-item__badge--warn">Unavailable</span>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td class="data-table__num">
-                                            $<?php echo customcore_e(number_format($unitPrice, 2)); ?>
-                                        </td>
-                                        <td class="data-table__num">
-                                            <?php if ($isBuild): ?>
-                                                <span>1</span>
-                                            <?php else: ?>
-                                                <form method="post" action="<?php echo customcore_e(customcore_url('cart.php')); ?>" class="cart-qty-form">
-                                                    <?php echo customcore_csrf_field(); ?>
-                                                    <input type="hidden" name="action" value="update">
-                                                    <input type="hidden" name="item_id" value="<?php echo customcore_e((string) $item['id']); ?>">
-                                                    <input
-                                                        type="number"
-                                                        name="quantity"
-                                                        value="<?php echo customcore_e((string) $qty); ?>"
-                                                        min="1"
-                                                        max="99"
-                                                        class="cart-qty-form__input"
-                                                        aria-label="Quantity for <?php echo customcore_e($itemName); ?>"
-                                                    >
-                                                    <button type="submit" class="button button--sm cart-qty-form__btn">Update</button>
-                                                </form>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td class="data-table__num">
-                                            $<?php echo customcore_e(number_format($lineTotal, 2)); ?>
-                                        </td>
-                                        <td class="data-table__num">
-                                            <form method="post" action="<?php echo customcore_e(customcore_url('cart.php')); ?>" class="cart-remove-form">
-                                                <?php echo customcore_csrf_field(); ?>
-                                                <input type="hidden" name="action" value="remove">
-                                                <input type="hidden" name="item_id" value="<?php echo customcore_e((string) $item['id']); ?>">
-                                                <button type="submit" class="button button--danger button--sm" aria-label="Remove <?php echo customcore_e($itemName); ?>">
+                                        if (!$isBuild && $item['options_json'] !== null) {
+                                            $decoded = json_decode($item['options_json'], true);
+                                            if (is_array($decoded) && $decoded !== []) {
+                                                $labels = [];
+                                                foreach ($decoded as $optSnap) {
+                                                    if (isset($optSnap['label'])) {
+                                                        $labels[] = (string) $optSnap['label'];
+                                                    }
+                                                }
+                                                $optionsSummary = implode(', ', $labels);
+                                            }
+                                        }
+
+                                        $isUnavailable = false;
+                                        if (!$isBuild) {
+                                            if (!$item['product_active'] || $item['product_id'] === null) {
+                                                $isUnavailable = true;
+                                            }
+                                            $stockMax = max(1, min(99, (int) $item['stock']));
+                                            if ((int) $item['stock'] < 1) {
+                                                $isUnavailable = true;
+                                                $stockMax = 1;
+                                            }
+                                        }
+                                        ?>
+                                        <tr
+                                            class="cart-item<?php echo $isUnavailable ? ' cart-item--unavailable' : ''; ?>"
+                                            data-cart-item
+                                            data-unit-price="<?php echo customcore_e(number_format($unitPrice, 2, '.', '')); ?>"
+                                            data-item-type="<?php echo customcore_e($item['item_type']); ?>"
+                                        >
+                                            <td class="cart-item__info" data-label="Item">
+                                                <span class="cart-item__type-badge<?php echo $isBuild ? ' cart-item__type-badge--build' : ''; ?>">
+                                                    <?php echo $isBuild ? 'Custom Build' : 'Product'; ?>
+                                                </span>
+                                                <?php if ($itemLink !== ''): ?>
+                                                    <a href="<?php echo customcore_e($itemLink); ?>" class="cart-item__name">
+                                                        <?php echo customcore_e($itemName); ?>
+                                                    </a>
+                                                <?php else: ?>
+                                                    <span class="cart-item__name"><?php echo customcore_e($itemName); ?></span>
+                                                <?php endif; ?>
+                                                <?php if ($itemBrand !== ''): ?>
+                                                    <span class="cart-item__brand"><?php echo customcore_e($itemBrand); ?></span>
+                                                <?php endif; ?>
+                                                <?php if ($optionsSummary !== ''): ?>
+                                                    <span class="cart-item__options"><?php echo customcore_e($optionsSummary); ?></span>
+                                                <?php endif; ?>
+                                                <?php if ($isUnavailable): ?>
+                                                    <span class="cart-item__badge cart-item__badge--warn">Unavailable</span>
+                                                <?php elseif (!$isBuild && (int) $item['stock'] > 0 && (int) $item['stock'] <= 5): ?>
+                                                    <span class="cart-item__badge cart-item__badge--stock">
+                                                        Only <?php echo customcore_e((string) (int) $item['stock']); ?> left
+                                                    </span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td class="data-table__num cart-item__unit" data-label="Unit price">
+                                                $<?php echo customcore_e(number_format($unitPrice, 2)); ?>
+                                            </td>
+                                            <td class="data-table__num cart-item__qty" data-label="Qty">
+                                                <?php if ($isBuild): ?>
+                                                    <span class="cart-item__qty-fixed" aria-label="Quantity 1 (custom builds are limited to one)">1</span>
+                                                <?php else: ?>
+                                                    <div class="cart-qty-controls">
+                                                        <button
+                                                            type="button"
+                                                            class="cart-qty-controls__btn"
+                                                            data-cart-qty-dec
+                                                            aria-label="Decrease quantity for <?php echo customcore_e($itemName); ?>"
+                                                            <?php echo $isUnavailable ? ' disabled' : ''; ?>
+                                                        >&minus;</button>
+                                                        <?php if ($isUnavailable): ?>
+                                                            <input
+                                                                type="number"
+                                                                value="<?php echo customcore_e((string) $qty); ?>"
+                                                                min="0"
+                                                                max="<?php echo customcore_e((string) $stockMax); ?>"
+                                                                class="cart-qty-form__input"
+                                                                data-cart-qty
+                                                                aria-label="Quantity for <?php echo customcore_e($itemName); ?>"
+                                                                disabled
+                                                            >
+                                                            <input type="hidden" name="quantities[<?php echo customcore_e((string) $item['id']); ?>]" value="<?php echo customcore_e((string) $qty); ?>">
+                                                        <?php else: ?>
+                                                            <input
+                                                                type="number"
+                                                                name="quantities[<?php echo customcore_e((string) $item['id']); ?>]"
+                                                                value="<?php echo customcore_e((string) $qty); ?>"
+                                                                min="0"
+                                                                max="<?php echo customcore_e((string) $stockMax); ?>"
+                                                                class="cart-qty-form__input"
+                                                                data-cart-qty
+                                                                aria-label="Quantity for <?php echo customcore_e($itemName); ?>"
+                                                            >
+                                                        <?php endif; ?>
+                                                        <button
+                                                            type="button"
+                                                            class="cart-qty-controls__btn"
+                                                            data-cart-qty-inc
+                                                            aria-label="Increase quantity for <?php echo customcore_e($itemName); ?>"
+                                                            <?php echo $isUnavailable ? ' disabled' : ''; ?>
+                                                        >+</button>
+                                                    </div>
+                                                    <?php if (!$isUnavailable): ?>
+                                                        <span class="cart-item__qty-hint">Set to 0 to remove</span>
+                                                    <?php endif; ?>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td class="data-table__num cart-item__line" data-label="Line total">
+                                                <span data-cart-line-total>
+                                                    $<?php echo customcore_e(number_format($lineTotal, 2)); ?>
+                                                </span>
+                                            </td>
+                                            <td class="data-table__num cart-item__actions" data-label="Actions">
+                                                <button
+                                                    type="submit"
+                                                    class="button button--danger button--sm"
+                                                    form="cart-remove-<?php echo customcore_e((string) $item['id']); ?>"
+                                                    data-cart-remove
+                                                    data-item-name="<?php echo customcore_e($itemName); ?>"
+                                                    aria-label="Remove <?php echo customcore_e($itemName); ?>"
+                                                >
                                                     Remove
                                                 </button>
-                                            </form>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th scope="row" colspan="3">Subtotal</th>
+                                        <td class="data-table__num data-table__total">
+                                            <span data-cart-subtotal>
+                                                $<?php echo customcore_e(number_format($subtotal, 2)); ?>
+                                            </span>
                                         </td>
+                                        <td></td>
                                     </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th scope="row" colspan="3">Subtotal</th>
-                                    <td class="data-table__num data-table__total">
-                                        $<?php echo customcore_e(number_format($subtotal, 2)); ?>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
+                                </tfoot>
+                            </table>
+                        </div>
 
-                    <div class="cart-actions">
-                        <form method="post" action="<?php echo customcore_e(customcore_url('cart.php')); ?>" class="cart-clear-form">
+                        <div class="cart-actions">
+                            <div class="cart-actions__left">
+                                <button type="submit" class="button button--secondary" data-cart-update-submit>
+                                    Update cart
+                                </button>
+                                <button
+                                    type="submit"
+                                    class="button button--danger button--sm"
+                                    form="cart-clear-form"
+                                    data-cart-clear
+                                >
+                                    Clear cart
+                                </button>
+                            </div>
+
+                            <a class="button" href="<?php echo customcore_e(customcore_url('checkout.php')); ?>">
+                                Proceed to checkout
+                            </a>
+                        </div>
+                    </form>
+
+                    <?php foreach ($cartItems as $item): ?>
+                        <form
+                            id="cart-remove-<?php echo customcore_e((string) $item['id']); ?>"
+                            method="post"
+                            action="<?php echo customcore_e(customcore_url('cart.php')); ?>"
+                            class="visually-hidden"
+                            hidden
+                        >
                             <?php echo customcore_csrf_field(); ?>
-                            <input type="hidden" name="action" value="clear">
-                            <button type="submit" class="button button--danger button--sm">Clear cart</button>
+                            <input type="hidden" name="action" value="remove">
+                            <input type="hidden" name="item_id" value="<?php echo customcore_e((string) $item['id']); ?>">
                         </form>
+                    <?php endforeach; ?>
 
-                        <a class="button" href="<?php echo customcore_e(customcore_url('checkout.php')); ?>">
-                            Proceed to checkout
-                        </a>
-                    </div>
+                    <form
+                        id="cart-clear-form"
+                        method="post"
+                        action="<?php echo customcore_e(customcore_url('cart.php')); ?>"
+                        class="visually-hidden"
+                        hidden
+                    >
+                        <?php echo customcore_csrf_field(); ?>
+                        <input type="hidden" name="action" value="clear">
+                    </form>
                 </div>
 
                 <div class="cart-continue">
