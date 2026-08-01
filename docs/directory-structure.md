@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 6.7 complete — customer order history.**  
-`order-history.php` owner-scoped order table with status filters; `includes/orders.php` shared labels/helpers. Users see only their own orders.
+**Commit 6.8 complete — customer order details.**  
+`order-details.php` itemized receipt with ownership-safe helpers (`customcore_order_fetch_owned` / `fetch_items`); foreign order IDs denied. **Stage 6 complete.**
 
-Next: **Commit 6.8** — customer order details (itemized; block other users' IDs).
+Next: **Stage 7** — wishlist, reviews, and consultations.

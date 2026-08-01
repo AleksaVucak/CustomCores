@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 6 / Commit 6.7 (customer order history)
+**Last updated:** Stage 6 / Commit 6.8 (customer order details — Stage 6 complete)
 
 ### Status legend
 
@@ -31,7 +31,7 @@
 | 2 | No fewer than 20 products; each product has at least 2 options | 4 | MySQL `products` + `product_options`; seeds `database/seed-products.sql` + `database/seed-product-options.sql`; UI `catalogue.php`, `product.php` | SQL count ≥ 20 active products; query confirms every product has ≥ 2 options; options visible on product pages | 2.2–2.3, 3.3–3.4 | Complete — 20 products + options seeded; catalogue grid live (3.3); options visible on product detail (3.4) |
 | 3a | At least 3 different site-wide CSS templates (distinct look/layout) | 12 | `assets/themes/rgb-gaming.css`, `assets/themes/minimal-pro.css`, `assets/themes/cyber-grid.css` | Themes differ in colour, typography, nav, buttons, cards, spacing, borders, and layout treatment | 10.1–10.3 | Planned |
 | 3b | Ability to change the template dynamically | 4 | Admin `admin/themes.php`; MySQL `themes` / `site_settings`; theme loaded in shared header include | Admin selects theme → setting saved → public and admin pages load the chosen CSS | 2.6, 10.4–10.5 | In progress — theme + settings rows seeded (2.6); CSS files and switcher in Stage 10 |
-| 4 | Dynamic HTML forms on at least two pages (e.g. quote/calculator style) | 8 | Primary: `builder.php` (live price + options); `checkout.php` (validated order form). Extra safety: `register.php`, `consultation.php`, `contact.php` | Forms submit to PHP; builder prices recalculate; checkout creates order records without real payment data | 5.x, 6.4–6.5, 4.1, 7.x | In progress — `builder.php` (5.x) and `checkout.php` (6.4) both live with validated forms |
+| 4 | Dynamic HTML forms on at least two pages (e.g. quote/calculator style) | 8 | Primary: `builder.php` (live price + options); `checkout.php` (validated order form). Extra safety: `register.php`, `consultation.php`, `contact.php` | Forms submit to PHP; builder prices recalculate; checkout creates order records without real payment data | 5.x, 6.4–6.5, 4.1, 7.x | Complete — `builder.php` (5.x) and `checkout.php` (6.4–6.5) create orders without real payment data |
 | 5 | PHP code and MySQL database well documented | 20 | PHP file/function comments; `database/schema.sql` comments; `docs/database-design.md` (+ ER diagram); import notes in `docs/database-import.md`; install notes in `docs/installation-guide.md` | Another developer can understand schema relationships and major PHP modules from comments + docs | 2.8, 12.4, 14.6–14.7 | In progress — ER design, schema comments, and import/backup guide complete (2.8); full installation guide later |
 | 6 | All code properly commented (HTML, CSS, JS, and related sources) | 8 | Structured comments in HTML/PHP views, `assets/css/*`, `assets/js/*`, SQL seeds | Major sections documented; comments explain purpose, not obvious syntax | 14.6–14.7 | Planned |
 | 7 | Help wiki: at least 5 different pages; context-sensitive Help links from the site | 10 | Static Help: `help/index.html`, `help/accounts.html`, `help/catalogue.html`, `help/pc-builder.html`, `help/orders.html`, `help/support.html` (6 pages; 5 required + hub). Context links from profile, catalogue, builder, checkout, consultation pages | Each Help article opens as its own page; feature pages link to the matching article (not only one generic Help link) | 11.1–11.7 | Planned |
@@ -174,6 +174,7 @@ These appear in the project instructions and package requirements. They support 
 | **6.5** | Place order — `order-confirmation.php`: transaction inserts `orders` + `order_items` (frozen prices, names, build snapshots via `customcore_snapshot_build`); unique order number (CC-YYYYMMDD-XXXXXX); clears cart + refreshes count; confirmation page with receipt; CSS styles for order confirmation |
 | **6.6** | Order confirmation page — `order-confirmation.php` places order then redirects to `?id=` and reloads confirmation from DB so the receipt matches the saved order |
 | **6.7** | Customer order history — `order-history.php` owner-scoped table (number, date, status, items, payment label, total); optional status filter; `includes/orders.php` shared helpers; users see only their orders |
+| **6.8** | Customer order details — `order-details.php` itemized receipt (shipping, payment label, frozen options/build snapshots); `customcore_order_fetch_owned` + `fetch_items` (JOIN ownership); foreign order IDs denied identically; Stage 6 complete |
 
 ---
 
@@ -311,7 +312,7 @@ These appear in the project instructions and package requirements. They support 
 - [x] 6.5 Place order (`order-confirmation.php` — transaction: `orders` + `order_items`; frozen snapshots; clear cart)
 - [x] 6.6 Order confirmation page (`order-confirmation.php?id=` — confirmation matches saved DB order)
 - [x] 6.7 Customer order history (`order-history.php` + `includes/orders.php`; owner-scoped; status filters)
-- [ ] 6.8 Customer order details (`order-details.php` — itemized; block other users' IDs)
+- [x] 6.8 Customer order details (`order-details.php` — itemized; ownership helpers; block other users' IDs)
 
 ### Stage 6 acceptance
 
@@ -322,5 +323,5 @@ These appear in the project instructions and package requirements. They support 
 - [x] Cart converts to `orders` + `order_items` with frozen prices/snapshots
 - [x] Confirmation number matches the saved database order
 - [x] Order history lists only the current user's orders
-- [ ] Order details deny access to another user's order ID
+- [x] Order details deny access to another user's order ID
 

@@ -34,14 +34,17 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 6.7 complete** — customer order history.
+**Commit 6.8 complete** — customer order details.
 
-`order-history.php` lists only the logged-in user's orders (owner-scoped SQL).
-The table shows order number, date, status, item count, payment method label,
-and total, with optional status filters and links to itemized details. Shared
-helpers live in `includes/orders.php`.
+`order-details.php` shows a full itemized receipt (shipping, payment label,
+frozen line items, options, and build snapshots). Ownership is enforced on
+both the order and its line items — a direct URL to another user's order ID
+is denied with no existence leak. Shared helpers:
+`customcore_order_fetch_owned()` / `customcore_order_fetch_items()`.
 
-Next: **Commit 6.8** — customer order details (ownership enforcement polish).
+**Stage 6 complete** — Catalogue → Cart → Checkout → Confirmation → History → Details.
+
+Next: **Stage 7** — wishlist, reviews, and consultations.
 
 ## Security notes
 

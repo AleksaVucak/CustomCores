@@ -4,17 +4,21 @@
  *
  * File responsibility:
  *   Displays a single itemized order that belongs to the logged-in customer.
- *   Shows shipping snapshot, payment method label, status, and every line
- *   item with frozen prices. For custom builds, expands the frozen component
- *   snapshot. Ownership is enforced: a direct URL to another user's order
- *   is denied.
+ *   Shows shipping snapshot, payment-method label, status, and every line
+ *   item with frozen prices. Product options and custom-build component
+ *   snapshots are expanded from JSON stored at checkout time.
  *
  * Authentication requirements:
  *   Logged-in customer. Ownership verified via user_id = session user.
  *
+ * Completion test:
+ *   Direct URL access to another user's order ID is denied.
+ *
  * Security:
- *   - Query always includes AND user_id = :uid (never trust id alone).
- *   - Missing / foreign order → flash error + redirect to history.
+ *   - Order loaded with customcore_order_fetch_owned() (id AND user_id).
+ *   - Line items loaded with customcore_order_fetch_items() which JOINs
+ *     orders so foreign order_ids cannot leak item rows.
+ *   - Missing / foreign order → identical flash + redirect (no existence leak).
  *   - All outputs escaped via customcore_e().
  *   - Payment method is a label only — never card data.
  */
@@ -47,7 +51,7 @@ if ($orderId <= 0) {
 }
 
 // ---------------------------------------------------------------------------
-// Load order — ownership enforced
+// Load order + items — ownership enforced on both queries
 // ---------------------------------------------------------------------------
 
 $order = null;
@@ -56,30 +60,10 @@ $loadError = null;
 
 try {
     $pdo = customcore_pdo();
+    $order = customcore_order_fetch_owned($pdo, $orderId, $userId);
 
-    $orderStmt = $pdo->prepare(
-        'SELECT id, user_id, order_number, status, subtotal, total,
-                shipping_name, shipping_phone, shipping_addr1, shipping_addr2,
-                shipping_city, shipping_prov, shipping_postal, payment_method,
-                created_at, updated_at
-         FROM orders
-         WHERE id = :id AND user_id = :uid
-         LIMIT 1'
-    );
-    $orderStmt->execute([':id' => $orderId, ':uid' => $userId]);
-    $order = $orderStmt->fetch();
-
-    if ($order !== false) {
-        $itemStmt = $pdo->prepare(
-            'SELECT id, item_type, product_id, saved_build_id, item_name,
-                    quantity, unit_price, line_total, options_json,
-                    build_snapshot_json, created_at
-             FROM order_items
-             WHERE order_id = :oid
-             ORDER BY id ASC'
-        );
-        $itemStmt->execute([':oid' => $orderId]);
-        $items = $itemStmt->fetchAll();
+    if ($order !== null) {
+        $items = customcore_order_fetch_items($pdo, $orderId, $userId);
     }
 } catch (Throwable $exception) {
     $loadError = customcore_is_debug()
@@ -87,12 +71,11 @@ try {
         : 'We could not load this order right now. Please try again later.';
 }
 
-if ($order === false || $order === null) {
-    if ($loadError === null) {
-        customcore_flash_error('Order not found or you do not have permission to view it.');
-    } else {
-        customcore_flash_error($loadError);
-    }
+// Deny missing orders and foreign IDs with the same message (no enumeration).
+if ($order === null) {
+    customcore_flash_error(
+        $loadError ?? 'Order not found or you do not have permission to view it.'
+    );
     customcore_redirect('order-history.php');
 }
 
@@ -101,7 +84,16 @@ $statusClass = customcore_order_status_class($status);
 $orderNumber = (string) $order['order_number'];
 $total = (float) $order['total'];
 $subtotal = (float) $order['subtotal'];
-$dateDisplay = customcore_order_format_datetime((string) $order['created_at'], 'F j, Y \a\t g:i A');
+$dateDisplay = customcore_order_format_datetime(
+    (string) $order['created_at'],
+    'F j, Y \a\t g:i A'
+);
+
+$linesSubtotal = 0.0;
+foreach ($items as $line) {
+    $linesSubtotal += (float) $line['line_total'];
+}
+$linesSubtotal = round($linesSubtotal, 2);
 
 $pageTitle = 'Order ' . $orderNumber . ' — CustomCore';
 $pageDescription = 'Itemized details for order ' . $orderNumber . '.';
@@ -128,108 +120,117 @@ require_once __DIR__ . '/includes/header.php';
         </aside>
 
         <div class="profile-page__main">
-            <?php if ($loadError !== null): ?>
-                <div class="flash flash--error" role="alert">
-                    <?php echo customcore_e($loadError); ?>
-                </div>
-            <?php else: ?>
 
-                <div class="order-details__meta">
-                    <p>
-                        <span class="order-status <?php echo customcore_e($statusClass); ?>">
-                            <?php echo customcore_e(customcore_order_status_label($status)); ?>
-                        </span>
-                        <?php if ($dateDisplay !== ''): ?>
-                            <span class="order-details__date">Placed <?php echo customcore_e($dateDisplay); ?></span>
-                        <?php endif; ?>
+            <div class="order-details__meta">
+                <p>
+                    <span class="order-status <?php echo customcore_e($statusClass); ?>">
+                        <?php echo customcore_e(customcore_order_status_label($status)); ?>
+                    </span>
+                    <?php if ($dateDisplay !== ''): ?>
+                        <span class="order-details__date">Placed <?php echo customcore_e($dateDisplay); ?></span>
+                    <?php endif; ?>
+                </p>
+                <p class="order-details__number-line">
+                    Confirmation number:
+                    <strong class="order-details__number"><?php echo customcore_e($orderNumber); ?></strong>
+                </p>
+            </div>
+
+            <div class="order-details__grid">
+                <section class="order-details__card" aria-labelledby="shipping-heading">
+                    <h2 id="shipping-heading" class="order-details__card-title">Shipping details</h2>
+                    <dl class="order-details__dl">
+                        <dt>Name</dt>
+                        <dd><?php echo customcore_e((string) $order['shipping_name']); ?></dd>
+
+                        <dt>Phone</dt>
+                        <dd><?php echo customcore_e((string) $order['shipping_phone']); ?></dd>
+
+                        <dt>Address</dt>
+                        <dd>
+                            <?php echo customcore_e((string) $order['shipping_addr1']); ?>
+                            <?php if ((string) $order['shipping_addr2'] !== ''): ?>
+                                <br><?php echo customcore_e((string) $order['shipping_addr2']); ?>
+                            <?php endif; ?>
+                            <br>
+                            <?php echo customcore_e((string) $order['shipping_city']); ?>,
+                            <?php echo customcore_e((string) $order['shipping_prov']); ?>
+                            <?php echo customcore_e((string) $order['shipping_postal']); ?>
+                        </dd>
+                    </dl>
+                </section>
+
+                <section class="order-details__card" aria-labelledby="payment-heading">
+                    <h2 id="payment-heading" class="order-details__card-title">Payment &amp; totals</h2>
+                    <dl class="order-details__dl">
+                        <dt>Payment method</dt>
+                        <dd><?php echo customcore_e(customcore_order_payment_label((string) $order['payment_method'])); ?></dd>
+
+                        <dt>Subtotal</dt>
+                        <dd>$<?php echo customcore_e(number_format($subtotal, 2)); ?></dd>
+
+                        <dt>Total</dt>
+                        <dd class="order-details__total">$<?php echo customcore_e(number_format($total, 2)); ?></dd>
+                    </dl>
+                    <p class="order-details__payment-note">
+                        Simulated checkout — no real payment card data was collected.
                     </p>
-                </div>
+                </section>
+            </div>
 
-                <div class="order-details__grid">
-                    <!-- Shipping -->
-                    <section class="order-details__card" aria-labelledby="shipping-heading">
-                        <h2 id="shipping-heading" class="order-details__card-title">Shipping details</h2>
-                        <dl class="order-details__dl">
-                            <dt>Name</dt>
-                            <dd><?php echo customcore_e((string) $order['shipping_name']); ?></dd>
+            <section class="order-details__items" aria-labelledby="items-heading">
+                <h2 id="items-heading" class="order-details__card-title">Items ordered</h2>
 
-                            <dt>Phone</dt>
-                            <dd><?php echo customcore_e((string) $order['shipping_phone']); ?></dd>
-
-                            <dt>Address</dt>
-                            <dd>
-                                <?php echo customcore_e((string) $order['shipping_addr1']); ?>
-                                <?php if ((string) $order['shipping_addr2'] !== ''): ?>
-                                    <br><?php echo customcore_e((string) $order['shipping_addr2']); ?>
-                                <?php endif; ?>
-                                <br>
-                                <?php echo customcore_e((string) $order['shipping_city']); ?>,
-                                <?php echo customcore_e((string) $order['shipping_prov']); ?>
-                                <?php echo customcore_e((string) $order['shipping_postal']); ?>
-                            </dd>
-                        </dl>
-                    </section>
-
-                    <!-- Payment & totals -->
-                    <section class="order-details__card" aria-labelledby="payment-heading">
-                        <h2 id="payment-heading" class="order-details__card-title">Payment &amp; totals</h2>
-                        <dl class="order-details__dl">
-                            <dt>Payment method</dt>
-                            <dd><?php echo customcore_e(customcore_order_payment_label((string) $order['payment_method'])); ?></dd>
-
-                            <dt>Subtotal</dt>
-                            <dd>$<?php echo customcore_e(number_format($subtotal, 2)); ?></dd>
-
-                            <dt>Total</dt>
-                            <dd class="order-details__total">$<?php echo customcore_e(number_format($total, 2)); ?></dd>
-                        </dl>
-                    </section>
-                </div>
-
-                <!-- Line items -->
-                <section class="order-details__items" aria-labelledby="items-heading">
-                    <h2 id="items-heading" class="order-details__card-title">Items ordered</h2>
-
-                    <?php if ($items === []): ?>
-                        <p>No line items were recorded for this order.</p>
-                    <?php else: ?>
-                        <div class="order-details-table-wrap">
-                            <table class="order-details-table">
-                                <thead>
+                <?php if ($items === []): ?>
+                    <p>No line items were recorded for this order.</p>
+                <?php else: ?>
+                    <div class="order-details-table-wrap">
+                        <table class="order-details-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Item</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Qty</th>
+                                    <th scope="col">Unit price</th>
+                                    <th scope="col">Line total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($items as $item): ?>
+                                    <?php
+                                    $isBuild = (string) $item['item_type'] === 'saved_build';
+                                    $productId = $item['product_id'] !== null ? (int) $item['product_id'] : null;
+                                    $optionLines = customcore_order_decode_options(
+                                        isset($item['options_json']) ? (string) $item['options_json'] : null
+                                    );
+                                    $buildParts = customcore_order_decode_build_snapshot(
+                                        isset($item['build_snapshot_json']) ? (string) $item['build_snapshot_json'] : null
+                                    );
+                                    ?>
                                     <tr>
-                                        <th scope="col">Item</th>
-                                        <th scope="col">Qty</th>
-                                        <th scope="col">Unit price</th>
-                                        <th scope="col">Line total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($items as $item): ?>
-                                        <?php
-                                        $isBuild = (string) $item['item_type'] === 'saved_build';
-                                        $optionLines = customcore_order_decode_options(
-                                            isset($item['options_json']) ? (string) $item['options_json'] : null
-                                        );
-                                        $buildParts = customcore_order_decode_build_snapshot(
-                                            isset($item['build_snapshot_json']) ? (string) $item['build_snapshot_json'] : null
-                                        );
-                                        ?>
-                                        <tr>
-                                            <td data-label="Item">
+                                        <td data-label="Item">
+                                            <?php if (!$isBuild && $productId !== null && $productId > 0): ?>
+                                                <a
+                                                    class="order-details__item-link"
+                                                    href="<?php echo customcore_e(customcore_url('product.php?id=' . $productId)); ?>"
+                                                >
+                                                    <strong><?php echo customcore_e((string) $item['item_name']); ?></strong>
+                                                </a>
+                                            <?php else: ?>
                                                 <strong><?php echo customcore_e((string) $item['item_name']); ?></strong>
-                                                <?php if ($isBuild): ?>
-                                                    <span class="order-confirm__badge">Build</span>
-                                                <?php endif; ?>
+                                            <?php endif; ?>
 
-                                                <?php if ($optionLines !== []): ?>
-                                                    <ul class="order-details__options">
-                                                        <?php foreach ($optionLines as $optLine): ?>
-                                                            <li><?php echo customcore_e($optLine); ?></li>
-                                                        <?php endforeach; ?>
-                                                    </ul>
-                                                <?php endif; ?>
+                                            <?php if ($optionLines !== []): ?>
+                                                <ul class="order-details__options">
+                                                    <?php foreach ($optionLines as $optLine): ?>
+                                                        <li><?php echo customcore_e($optLine); ?></li>
+                                                    <?php endforeach; ?>
+                                                </ul>
+                                            <?php endif; ?>
 
-                                                <?php if ($buildParts !== []): ?>
+                                            <?php if ($buildParts !== []): ?>
+                                                <details class="order-details__build">
+                                                    <summary>Build components (<?php echo customcore_e((string) count($buildParts)); ?>)</summary>
                                                     <ul class="order-details__build-parts">
                                                         <?php foreach ($buildParts as $part): ?>
                                                             <li>
@@ -243,35 +244,52 @@ require_once __DIR__ . '/includes/header.php';
                                                             </li>
                                                         <?php endforeach; ?>
                                                     </ul>
-                                                <?php endif; ?>
-                                            </td>
-                                            <td data-label="Qty"><?php echo customcore_e((string) (int) $item['quantity']); ?></td>
-                                            <td data-label="Unit price">$<?php echo customcore_e(number_format((float) $item['unit_price'], 2)); ?></td>
-                                            <td data-label="Line total">$<?php echo customcore_e(number_format((float) $item['line_total'], 2)); ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="3" class="order-confirm__total-label">Total</td>
-                                        <td class="order-confirm__total-value">$<?php echo customcore_e(number_format($total, 2)); ?></td>
+                                                </details>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td data-label="Type">
+                                            <?php if ($isBuild): ?>
+                                                <span class="order-confirm__badge">Build</span>
+                                            <?php else: ?>
+                                                <span class="order-details__type">Product</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td data-label="Qty"><?php echo customcore_e((string) (int) $item['quantity']); ?></td>
+                                        <td data-label="Unit price">$<?php echo customcore_e(number_format((float) $item['unit_price'], 2)); ?></td>
+                                        <td data-label="Line total">$<?php echo customcore_e(number_format((float) $item['line_total'], 2)); ?></td>
                                     </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    <?php endif; ?>
-                </section>
+                                <?php endforeach; ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" class="order-confirm__total-label">Items subtotal</td>
+                                    <td>$<?php echo customcore_e(number_format($linesSubtotal, 2)); ?></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="order-confirm__total-label">Order total</td>
+                                    <td class="order-confirm__total-value">$<?php echo customcore_e(number_format($total, 2)); ?></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                <?php endif; ?>
+            </section>
 
-                <div class="order-details__actions">
-                    <a class="button button--secondary" href="<?php echo customcore_e(customcore_url('order-history.php')); ?>">
-                        &larr; Order history
-                    </a>
-                    <a class="button button--primary" href="<?php echo customcore_e(customcore_url('catalogue.php')); ?>">
-                        Continue shopping
-                    </a>
-                </div>
+            <div class="order-details__actions">
+                <a class="button button--secondary" href="<?php echo customcore_e(customcore_url('order-history.php')); ?>">
+                    &larr; Order history
+                </a>
+                <a
+                    class="button button--secondary"
+                    href="<?php echo customcore_e(customcore_url('order-confirmation.php?id=' . (int) $order['id'])); ?>"
+                >
+                    View confirmation
+                </a>
+                <a class="button button--primary" href="<?php echo customcore_e(customcore_url('catalogue.php')); ?>">
+                    Continue shopping
+                </a>
+            </div>
 
-            <?php endif; ?>
         </div>
     </div>
 </section>

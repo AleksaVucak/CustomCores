@@ -4102,6 +4102,21 @@ a.cart-item__name:hover {
   color: var(--cc-color-muted);
 }
 
+.order-details__build {
+  margin-top: 0.45rem;
+  font-size: 0.85rem;
+}
+
+.order-details__build summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--cc-color-text);
+}
+
+.order-details__build-parts {
+  margin-top: 0.35rem;
+}
+
 .order-details__part-cat {
   font-weight: 600;
 }
@@ -4109,6 +4124,42 @@ a.cart-item__name:hover {
 .order-details__part-price {
   margin-left: 0.35rem;
   white-space: nowrap;
+}
+
+.order-details__item-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.order-details__item-link:hover,
+.order-details__item-link:focus-visible {
+  text-decoration: underline;
+  color: var(--cc-color-accent);
+}
+
+.order-details__type {
+  font-size: 0.78rem;
+  color: var(--cc-color-muted);
+  font-weight: 600;
+}
+
+.order-details__number-line {
+  margin: 0.35rem 0 0;
+  font-size: 0.9rem;
+  color: var(--cc-color-muted);
+}
+
+.order-details__number {
+  font-family: var(--cc-font-mono, monospace);
+  color: var(--cc-color-text);
+  letter-spacing: 0.02em;
+}
+
+.order-details__payment-note {
+  margin: var(--cc-space-2) 0 0;
+  font-size: 0.78rem;
+  color: var(--cc-color-muted);
+  font-style: italic;
 }
 
 .order-details__actions {

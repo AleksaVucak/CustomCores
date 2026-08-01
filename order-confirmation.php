@@ -195,32 +195,14 @@ if (isset($_GET['id']) && is_string($_GET['id']) && ctype_digit($_GET['id'])) {
 if ($orderError === null && $viewId > 0) {
     try {
         $pdo = customcore_pdo();
+        $order = customcore_order_fetch_owned($pdo, $viewId, $userId);
 
-        $orderStmt = $pdo->prepare(
-            'SELECT id, order_number, status, subtotal, total,
-                    shipping_name, shipping_phone, shipping_addr1, shipping_addr2,
-                    shipping_city, shipping_prov, shipping_postal, payment_method,
-                    created_at
-             FROM orders
-             WHERE id = :id AND user_id = :uid
-             LIMIT 1'
-        );
-        $orderStmt->execute([':id' => $viewId, ':uid' => $userId]);
-        $order = $orderStmt->fetch();
-
-        if ($order === false) {
+        if ($order === null) {
             customcore_flash_error('Order not found or you do not have permission to view it.');
             customcore_redirect('order-history.php');
         }
 
-        $itemStmt = $pdo->prepare(
-            'SELECT item_type, item_name, quantity, unit_price, line_total
-             FROM order_items
-             WHERE order_id = :oid
-             ORDER BY id ASC'
-        );
-        $itemStmt->execute([':oid' => $viewId]);
-        $items = $itemStmt->fetchAll();
+        $items = customcore_order_fetch_items($pdo, $viewId, $userId);
     } catch (Throwable $exception) {
         $orderError = customcore_is_debug()
             ? $exception->getMessage()
