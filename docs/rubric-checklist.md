@@ -161,6 +161,7 @@ These appear in the project instructions and package requirements. They support 
 | **5.1** | `builder.php` — multi-step custom PC builder form; 10 categories from DB; session-stored selections; live summary sidebar; CSRF; optional skip; reset |
 | **5.2** | Live client price calc — `assets/js/builder.js`; `data-price` on radios; this-step subtotal + running total update immediately on selection change |
 | **5.3** | Trusted server-side price — `api/builder-price.php` (POST JSON → DB-verified total); `builder.js` calls it on change; client total overwritten by server response |
+| **5.4** | Compatibility checking — `api/compatibility-check.php`; 7 rules (socket, RAM, form factor, PSU wattage, GPU clearance, cooler fit, storage); JS live badge + per-rule results |
 
 ---
 
@@ -282,7 +283,7 @@ These appear in the project instructions and package requirements. They support 
 - [x] 5.1 Multi-step PC Builder form (`builder.php`)
 - [x] 5.2 Live client-side price calculation (`assets/js/builder.js`)
 - [x] 5.3 Server-side price recalculation (`api/builder-price.php`)
-- [ ] 5.4 Component compatibility checking
+- [x] 5.4 Component compatibility checking (`api/compatibility-check.php`)
 - [ ] 5.5 Build summary page
 - [ ] 5.6 Save builds
 - [ ] 5.7 Saved-build management

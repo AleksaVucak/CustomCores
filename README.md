@@ -34,14 +34,15 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 5.3 complete** — trusted server-side price recalculation.
+**Commit 5.4 complete** — component compatibility checking.
 
-`api/builder-price.php` accepts a JSON array of component IDs via POST, looks up
-real prices from the database (ignoring any client-sent values), and returns the
-authoritative per-item and total cost. `builder.js` calls this endpoint after each
-selection change and overwrites the displayed total with the server-verified amount.
+`api/compatibility-check.php` evaluates all 7 seeded rules (socket, RAM type,
+form factor, PSU wattage, GPU clearance, cooler fit, storage interface) against
+the selected components and returns compatible / warning / incompatible results.
+`builder.js` calls this endpoint after each selection and displays a live status
+badge and per-rule detail in the summary sidebar.
 
-Next: **Commit 5.4** — component compatibility checking.
+Next: **Commit 5.5** — PC build summary page.
 
 ## Security notes
 

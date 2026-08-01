@@ -1076,6 +1076,75 @@ textarea[aria-invalid="true"]:focus-visible {
   color: var(--cc-color-warning, #856404);
 }
 
+/* Compatibility status (Commit 5.4) */
+
+.builder-compat {
+  margin-top: var(--cc-space-3);
+  padding-top: var(--cc-space-3);
+  border-top: 1px solid var(--cc-color-border);
+}
+
+.compat-badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--cc-radius-md);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.compat-badge--compatible {
+  background: var(--cc-color-success-bg, #d4edda);
+  color: var(--cc-color-success, #28a745);
+}
+
+.compat-badge--warning {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.compat-badge--incompatible {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.compat-badge--neutral {
+  background: var(--cc-color-bg);
+  color: var(--cc-color-text-muted);
+  font-weight: 400;
+  text-transform: none;
+  font-size: 0.78rem;
+}
+
+.compat-results {
+  list-style: none;
+  padding: 0;
+  margin: var(--cc-space-2) 0 0;
+  font-size: 0.78rem;
+}
+
+.compat-results__item {
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--cc-color-border);
+}
+
+.compat-results__item:last-child {
+  border-bottom: none;
+}
+
+.compat-results__item--pass {
+  color: var(--cc-color-success, #28a745);
+}
+
+.compat-results__item--warning {
+  color: #856404;
+}
+
+.compat-results__item--fail {
+  color: #721c24;
+}
+
 .builder-summary__actions {
   margin-top: var(--cc-space-3);
   text-align: center;

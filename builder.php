@@ -29,6 +29,11 @@
  *   Each radio carries data-price / data-name. assets/js/builder.js recalculates
  *   the this-step subtotal and running total immediately on selection change.
  *   Server-trusted totals arrive in Commit 5.3.
+ *
+ * Compatibility checking (Commit 5.4):
+ *   The form includes data-compat-api pointing to api/compatibility-check.php.
+ *   builder.js calls it on each change and renders a badge + per-rule results
+ *   in the #builder-compat-status container.
  */
 
 declare(strict_types=1);
@@ -337,6 +342,7 @@ require_once __DIR__ . '/includes/header.php';
                     data-other-total="<?php echo customcore_e(number_format($otherTotal, 2, '.', '')); ?>"
                     data-category-id="<?php echo $categoryId; ?>"
                     data-price-api="<?php echo customcore_e(customcore_url('api/builder-price.php')); ?>"
+                    data-compat-api="<?php echo customcore_e(customcore_url('api/compatibility-check.php')); ?>"
                     data-build-ids="<?php echo customcore_e(json_encode(
                         array_values(array_map('intval', array_filter($build, function ($id, $catKey) use ($categoryId) {
                             return (int) $catKey !== $categoryId;
@@ -504,6 +510,10 @@ require_once __DIR__ . '/includes/header.php';
                     id="builder-live-total"
                     aria-live="polite"
                 >$<?php echo customcore_e(number_format($runningTotal, 2)); ?></span>
+            </div>
+
+            <div class="builder-compat" id="builder-compat-status" aria-live="polite">
+                <span class="compat-badge compat-badge--neutral">Select more components to check compatibility</span>
             </div>
 
             <?php if (!empty($build)): ?>

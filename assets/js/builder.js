@@ -1,5 +1,5 @@
 /**
- * CustomCore — Live PC Builder price calculator (Commits 5.2 + 5.3)
+ * CustomCore — Live PC Builder price calculator + compatibility (Commits 5.2–5.4)
  * ----------------------------------------------------------------------------
  * File responsibility:
  *   1. Updates the builder summary subtotal and running total immediately when
@@ -8,15 +8,19 @@
  *      the database — ensuring tampered data-price attributes cannot trick the
  *      displayed total (Commit 5.3). The server response overwrites the client
  *      total and shows a verification badge.
+ *   3. After each change, calls api/compatibility-check.php to evaluate the
+ *      build against all active compatibility rules and displays the results
+ *      (compatible/warning/incompatible badge + per-rule messages) (Commit 5.4).
  *
  * Expected markup on builder.php:
  *   form#builder-form[data-builder-live][data-other-total][data-category-id]
- *     [data-price-api][data-build-ids]
+ *     [data-price-api][data-compat-api][data-build-ids]
  *   input.builder-option__radio[data-price][data-name]
  *   #builder-live-subtotal, #builder-live-total
  *   [data-live-category-row] with [data-live-part], [data-live-price],
  *   optional [data-live-empty]
  *   #builder-price-hint (server verification badge)
+ *   #builder-compat-status (compatibility results container)
  *
  * Loaded deferred from includes/footer.php when $currentPage === 'builder'.
  * ----------------------------------------------------------------------------
@@ -173,6 +177,7 @@
       }
       recalculate(form);
       verifyPriceServer(form);
+      checkCompatibility(form);
     });
 
     // Also respond to clicks on already-checked radios (label re-clicks).
@@ -197,12 +202,16 @@
         window.setTimeout(function () {
           recalculate(form);
           verifyPriceServer(form);
+          checkCompatibility(form);
         }, 0);
       }
     });
 
     // Ensure the displayed totals match the initial checked state.
     recalculate(form);
+
+    // Run initial compatibility check if there are existing selections.
+    checkCompatibility(form);
 
     document.body.setAttribute("data-cc-builder-live", "ready");
   }
@@ -338,7 +347,172 @@
     boot();
   }
 
-  // Expose for debugging / future builder features (compatibility, charts).
+  // ---------------------------------------------------------------------------
+  // Compatibility checking (Commit 5.4)
+  // ---------------------------------------------------------------------------
+
+  var compatTimer = null;
+
+  /**
+   * Call api/compatibility-check.php to evaluate the build against all rules.
+   * Debounced 400ms so rapid clicks don't flood the endpoint.
+   *
+   * @param {HTMLFormElement} form
+   * @returns {void}
+   */
+  function checkCompatibility(form) {
+    if (compatTimer) {
+      window.clearTimeout(compatTimer);
+    }
+    compatTimer = window.setTimeout(function () {
+      compatTimer = null;
+      doCompatCheck(form);
+    }, 400);
+  }
+
+  /**
+   * Perform the actual compatibility check request.
+   *
+   * @param {HTMLFormElement} form
+   * @returns {void}
+   */
+  function doCompatCheck(form) {
+    var apiUrl = form.getAttribute("data-compat-api");
+    if (!apiUrl) {
+      return;
+    }
+
+    var otherIds = [];
+    try {
+      otherIds = JSON.parse(form.getAttribute("data-build-ids") || "[]");
+    } catch (e) {
+      otherIds = [];
+    }
+
+    var selected = form.querySelector('input[name="component_id"]:checked');
+    var allIds = otherIds.slice();
+    if (selected && parseInt(selected.value, 10) > 0) {
+      allIds.push(parseInt(selected.value, 10));
+    }
+
+    if (allIds.length < 2) {
+      renderCompatStatus(null);
+      return;
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", apiUrl, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState !== 4) {
+        return;
+      }
+
+      if (xhr.status !== 200) {
+        renderCompatStatus(null);
+        return;
+      }
+
+      var resp;
+      try {
+        resp = JSON.parse(xhr.responseText);
+      } catch (e) {
+        renderCompatStatus(null);
+        return;
+      }
+
+      if (!resp || !resp.success) {
+        renderCompatStatus(null);
+        return;
+      }
+
+      renderCompatStatus(resp);
+    };
+
+    xhr.send(JSON.stringify({ components: allIds }));
+  }
+
+  /**
+   * Render the compatibility status in the summary panel.
+   *
+   * @param {object|null} resp The server response or null if unavailable.
+   * @returns {void}
+   */
+  function renderCompatStatus(resp) {
+    var container = document.getElementById("builder-compat-status");
+    if (!container) {
+      return;
+    }
+
+    if (!resp) {
+      container.innerHTML =
+        '<span class="compat-badge compat-badge--neutral">Select more components to check compatibility</span>';
+      return;
+    }
+
+    var statusClass = "compat-badge--compatible";
+    var statusLabel = "Compatible";
+
+    if (resp.status === "warning") {
+      statusClass = "compat-badge--warning";
+      statusLabel = "Warning";
+    } else if (resp.status === "incompatible") {
+      statusClass = "compat-badge--incompatible";
+      statusLabel = "Incompatible";
+    }
+
+    var html =
+      '<span class="compat-badge ' +
+      statusClass +
+      '">' +
+      statusLabel +
+      "</span>";
+
+    if (resp.results && resp.results.length > 0) {
+      html += '<ul class="compat-results">';
+      for (var i = 0; i < resp.results.length; i += 1) {
+        var r = resp.results[i];
+        if (r.status === "skip") {
+          continue;
+        }
+        var itemClass = "compat-results__item";
+        if (r.status === "pass") {
+          itemClass += " compat-results__item--pass";
+        } else if (r.status === "warning") {
+          itemClass += " compat-results__item--warning";
+        } else if (r.status === "fail") {
+          itemClass += " compat-results__item--fail";
+        }
+        html +=
+          '<li class="' +
+          itemClass +
+          '"><strong>' +
+          escapeHtml(r.name) +
+          ":</strong> " +
+          escapeHtml(r.message) +
+          "</li>";
+      }
+      html += "</ul>";
+    }
+
+    container.innerHTML = html;
+  }
+
+  /**
+   * Escape HTML special characters for safe innerHTML insertion.
+   *
+   * @param {string} str
+   * @returns {string}
+   */
+  function escapeHtml(str) {
+    var div = document.createElement("div");
+    div.appendChild(document.createTextNode(str || ""));
+    return div.innerHTML;
+  }
+
+  // Expose for debugging / future builder features.
   window.CustomCore = window.CustomCore || {};
   window.CustomCore.initBuilderLivePrice = initBuilderLivePrice;
+  window.CustomCore.checkCompatibility = checkCompatibility;
 })(window, document);

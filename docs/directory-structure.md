@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 5.3 complete.**  
-Trusted server price API: `api/builder-price.php` — POST JSON component IDs, returns DB-verified prices + total; `builder.js` calls it after each change and shows "✓ Total verified by server".
+**Commit 5.4 complete.**  
+Compatibility checking: `api/compatibility-check.php` — 7 rules (socket, RAM, form factor, PSU, GPU, cooler, storage); `builder.js` calls on each change; displays compatible/warning/incompatible badge + per-rule messages.
 
-Next: **Commit 5.4** — component compatibility checking.
+Next: **Commit 5.5** — PC build summary page.
