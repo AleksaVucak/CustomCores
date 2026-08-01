@@ -4631,6 +4631,114 @@ a.cart-item__name:hover {
   display: none !important;
 }
 
+/* ==========================================================================
+   Consultation history (Commit 7.6)
+   Owner-scoped list of requests with status, details, and admin responses.
+   ========================================================================== */
+
+.consultation-history-actions {
+  margin: 0 0 var(--cc-space-4);
+}
+
+.consultation-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--cc-space-4);
+}
+
+.consultation-card {
+  background: var(--cc-color-bg-elevated);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  padding: var(--cc-space-5);
+  box-shadow: var(--cc-shadow-sm);
+}
+
+.consultation-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--cc-space-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--cc-space-4);
+}
+
+.consultation-card__title {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.consultation-card__date {
+  margin: 0.15rem 0 0;
+  color: var(--cc-color-text-muted);
+  font-size: 0.85rem;
+}
+
+.consultation-card__details {
+  margin: 0;
+  display: grid;
+  gap: var(--cc-space-2);
+}
+
+.consultation-card__row {
+  display: grid;
+  grid-template-columns: 10rem 1fr;
+  gap: var(--cc-space-3);
+}
+
+.consultation-card__row dt {
+  font-weight: 600;
+  color: var(--cc-color-text-muted);
+}
+
+.consultation-card__row dd {
+  margin: 0;
+}
+
+.consultation-card__subheading {
+  font-size: 0.95rem;
+  margin: 0 0 var(--cc-space-2);
+}
+
+.consultation-card__attachments {
+  margin-top: var(--cc-space-4);
+  padding-top: var(--cc-space-4);
+  border-top: 1px solid var(--cc-color-border);
+}
+
+.consultation-card__response {
+  margin-top: var(--cc-space-4);
+  padding: var(--cc-space-4);
+  background: var(--cc-color-accent-soft);
+  border-radius: var(--cc-radius-md);
+}
+
+.consultation-card__response-body {
+  margin: 0;
+}
+
+.consultation-card__response-meta {
+  margin: var(--cc-space-2) 0 0;
+  font-size: 0.8rem;
+  color: var(--cc-color-text-muted);
+}
+
+.consultation-card__pending-note {
+  margin: var(--cc-space-4) 0 0;
+  color: var(--cc-color-text-muted);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+@media (max-width: 600px) {
+  .consultation-card__row {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+}
+
 .consult-status {
   display: inline-block;
   font-size: 0.8rem;

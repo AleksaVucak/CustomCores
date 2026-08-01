@@ -260,7 +260,13 @@ require_once __DIR__ . '/includes/header.php';
                     </article>
                     <article class="profile-stat">
                         <p class="profile-stat__value"><?php echo customcore_e((string) $counts['consultations']); ?></p>
-                        <p class="profile-stat__label">Consultations</p>
+                        <p class="profile-stat__label">
+                            <?php if (is_file(__DIR__ . '/consultation-history.php')): ?>
+                                <a href="<?php echo customcore_e(customcore_url('consultation-history.php')); ?>">Consultations</a>
+                            <?php else: ?>
+                                Consultations
+                            <?php endif; ?>
+                        </p>
                     </article>
                     <article class="profile-stat">
                         <p class="profile-stat__value"><?php echo customcore_e((string) $counts['reviews']); ?></p>

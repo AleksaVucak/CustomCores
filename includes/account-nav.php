@@ -60,7 +60,7 @@ $accountNavItems = [
         'ready' => is_file(dirname(__DIR__) . '/consultation.php'),
     ],
     'consultations' => [
-        'label' => 'Consultations',
+        'label' => 'Consultation history',
         'href' => 'consultation-history.php',
         'ready' => is_file(dirname(__DIR__) . '/consultation-history.php'),
     ],

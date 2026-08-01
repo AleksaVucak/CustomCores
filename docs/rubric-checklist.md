@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.3+)  
 **Purpose:** Map every graded requirement to planned evidence (page, file, and test).  
 **Rule:** Do not mark an item **Complete** until the live evidence exists and has been checked.  
-**Last updated:** Stage 7 / Commit 7.5 (customer contact form)
+**Last updated:** Stage 7 / Commit 7.6 (consultation request history — Stage 7 complete)
 
 ### Status legend
 
@@ -180,6 +180,7 @@ These appear in the project instructions and package requirements. They support 
 | **7.3** | PC consultation request — `consultation.php` (budget, games, software, performance goals, optional notes); CSRF; login required; insert into `consultation_requests` with `status = open`; `includes/consultations.php` helpers (statuses/labels/classes, budget whitelist, validate, create); scoped to session `user_id`; account-nav entry |
 | **7.4** | Secure consultation attachments — multipart upload on `consultation.php`; validated by real MIME (`finfo`) + size (`upload_max_bytes`) + count; generated on-disk names in `uploads/consultation/` (guarded by `index.php`); `consultation_attachments` rows; request + files written in one transaction with cleanup on failure; bad type/size rejected |
 | **7.5** | Customer contact form — `contact.php` (name, email, subject, message); guests OK; optional session `user_id`; CSRF + server validation; subject whitelist + “Other”; PRG flash confirmation; `includes/contact.php` helpers; `assets/js/contact.js` |
+| **7.6** | Consultation request history — `consultation-history.php` owner-scoped list (status, submitted details, admin response, attachments); optional status filter; secure per-owner downloads via `consultation-attachment.php` (JOIN ownership, path realpath guard, `nosniff`, RFC 5987 filename); foreign IDs return 404; `includes/consultations.php` list/fetch helpers; Stage 7 complete |
 
 ---
 
@@ -337,7 +338,7 @@ These appear in the project instructions and package requirements. They support 
 - [x] 7.3 PC consultation request form (`consultation.php` + `includes/consultations.php`; `status = open`; owner-scoped; CSRF)
 - [x] 7.4 Secure consultation attachments (`finfo` MIME + size + count validation; generated names; transactional; cleanup on failure)
 - [x] 7.5 Customer contact form (`contact.php` + `includes/contact.php`; guests OK; optional `user_id`; flash confirmation)
-- [ ] 7.6 Consultation request history
+- [x] 7.6 Consultation request history (`consultation-history.php` + `consultation-attachment.php`; owner-scoped; secure downloads; foreign IDs blocked)
 
 ### Stage 7.1 acceptance
 
@@ -375,4 +376,19 @@ These appear in the project instructions and package requirements. They support 
 - [x] Valid messages are stored in `contact_messages` with confirmation shown
 - [x] CSRF and server-side validation reject incomplete/invalid submissions
 - [x] Logged-in `user_id` is taken from the session only (optional FK)
+
+### Stage 7.6 acceptance
+
+- [x] Customers see a list of only their own consultation requests
+- [x] Each request shows its status and any administrator response
+- [x] A foreign request ID is never exposed (owner-scoped queries)
+- [x] Attachment downloads are owner-checked, path-guarded, and streamed safely
+
+### Stage 7 acceptance (overall)
+
+- [x] Wishlist works and is private to each user
+- [x] Reviews save as pending (moderation)
+- [x] Consultation requests save with `status = open`
+- [x] Upload validation rejects bad type/size; good files stored securely
+- [x] Private request history is protected (owner-only)
 

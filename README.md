@@ -34,17 +34,18 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 7.5 complete** — customer contact form.
+**Commit 7.6 complete** — consultation request history.
 
-Guests and logged-in customers can send a support message from `contact.php`
-(name, email, subject, message). Valid messages are stored in `contact_messages`
-with `is_read = 0`. Logged-in visitors get name/email pre-filled and an optional
-`user_id` link from the session. Success uses PRG with a flash confirmation.
-Shared helpers live in `includes/contact.php`.
+`consultation-history.php` lists the logged-in customer's consultation requests
+with status, the details they submitted, any administrator response, and secure
+links to download their own attachments. Ownership is enforced on every query —
+a foreign request or attachment ID is indistinguishable from a missing one.
+Attachment downloads flow through `consultation-attachment.php`, which
+re-checks ownership, guards the path, and streams the file as a download.
 
-**Commit 7.4 complete** — secure consultation attachments.
+**Stage 7 complete** — Wishlist · Reviews · Consultations (+ attachments) · Contact · History.
 
-Next: **Commit 7.6** — consultation request history.
+Next: **Stage 8** — multimedia, map, and visualizations.
 
 ## Security notes
 

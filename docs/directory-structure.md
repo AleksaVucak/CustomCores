@@ -80,7 +80,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 7.5 complete — customer contact form.**  
-`contact.php` stores general support messages in `contact_messages` (guests OK; optional session `user_id`). CSRF + server validation; subject select with “Other”; flash confirmation via PRG. Helpers in `includes/contact.php`; `assets/js/contact.js` toggles the custom subject field.
+**Commit 7.6 complete — consultation request history.**  
+`consultation-history.php` lists a customer's requests (status, details, admin response) with secure attachment downloads via `consultation-attachment.php` (owner-checked, path-guarded, streamed). Ownership enforced on every query. **Stage 7 complete.**
 
-Next: **Commit 7.6** — consultation request history.
+Next: **Stage 8** — multimedia, map, and visualizations.

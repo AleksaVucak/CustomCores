@@ -504,6 +504,114 @@ function customcore_consultation_attachments(PDO $pdo, int $requestId, int $user
 }
 
 /**
+ * Format a consultation datetime for display.
+ */
+function customcore_consultation_format_datetime(string $datetime, string $format = 'M j, Y g:i A'): string
+{
+    $ts = strtotime($datetime);
+    if ($ts === false) {
+        return $datetime;
+    }
+
+    return date($format, $ts);
+}
+
+/**
+ * List all consultation requests for a user, newest first, with an attachment
+ * count. Ownership is enforced by WHERE user_id = :uid.
+ *
+ * @return list<array<string, mixed>>
+ */
+function customcore_consultation_list(PDO $pdo, int $userId): array
+{
+    if ($userId < 1) {
+        return [];
+    }
+
+    $stmt = $pdo->prepare(
+        'SELECT cr.id, cr.budget, cr.games, cr.software, cr.performance_goals,
+                cr.notes, cr.status, cr.admin_response, cr.responded_at,
+                cr.created_at, cr.updated_at,
+                (SELECT COUNT(*) FROM consultation_attachments ca
+                 WHERE ca.consultation_request_id = cr.id) AS attachment_count
+         FROM consultation_requests cr
+         WHERE cr.user_id = :uid
+         ORDER BY cr.created_at DESC, cr.id DESC'
+    );
+    $stmt->execute([':uid' => $userId]);
+    $rows = $stmt->fetchAll();
+
+    return is_array($rows) ? $rows : [];
+}
+
+/**
+ * Fetch a single consultation request owned by the user, or null.
+ *
+ * Ownership is enforced by WHERE id = :id AND user_id = :uid, so a foreign
+ * request ID is indistinguishable from a non-existent one (no enumeration).
+ *
+ * @return array<string, mixed>|null
+ */
+function customcore_consultation_fetch_owned(PDO $pdo, int $requestId, int $userId): ?array
+{
+    if ($requestId < 1 || $userId < 1) {
+        return null;
+    }
+
+    $stmt = $pdo->prepare(
+        'SELECT id, user_id, budget, games, software, performance_goals,
+                notes, status, admin_response, responded_at, created_at, updated_at
+         FROM consultation_requests
+         WHERE id = :id AND user_id = :uid
+         LIMIT 1'
+    );
+    $stmt->execute([':id' => $requestId, ':uid' => $userId]);
+    $row = $stmt->fetch();
+
+    return $row === false ? null : $row;
+}
+
+/**
+ * Fetch a single attachment row owned by the user (ownership via JOIN), or null.
+ *
+ * @return array<string, mixed>|null
+ */
+function customcore_consultation_fetch_attachment(PDO $pdo, int $attachmentId, int $userId): ?array
+{
+    if ($attachmentId < 1 || $userId < 1) {
+        return null;
+    }
+
+    $stmt = $pdo->prepare(
+        'SELECT ca.id, ca.consultation_request_id, ca.original_filename,
+                ca.stored_filename, ca.mime_type, ca.file_size
+         FROM consultation_attachments ca
+         JOIN consultation_requests cr ON cr.id = ca.consultation_request_id
+         WHERE ca.id = :id AND cr.user_id = :uid
+         LIMIT 1'
+    );
+    $stmt->execute([':id' => $attachmentId, ':uid' => $userId]);
+    $row = $stmt->fetch();
+
+    return $row === false ? null : $row;
+}
+
+/**
+ * Human-readable file size (e.g. "1.2 MB", "834 KB").
+ */
+function customcore_consultation_format_size(int $bytes): string
+{
+    if ($bytes < 1024) {
+        return $bytes . ' B';
+    }
+    if ($bytes < 1024 * 1024) {
+        return number_format($bytes / 1024, 0) . ' KB';
+    }
+
+    return number_format($bytes / (1024 * 1024), 1) . ' MB';
+}
+
+/**
  * Insert a new consultation request (status = open).
  *
  * @param array{budget: string, games: string, software: string, performance_goals: string, notes: string} $values
