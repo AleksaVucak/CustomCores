@@ -74,4 +74,34 @@ return [
         'images' => 'assets/images',
         'media' => 'assets/media',
     ],
+
+    /**
+     * Store / service location shown on store-locations.php (Stage 8.4).
+     *
+     * IMPORTANT: This is a FICTIONAL location created for the academic project.
+     * The address, phone, and email do not represent a real business. Update the
+     * fields below to change the interactive map and the always-visible text
+     * fallback without editing page logic.
+     */
+    'store_location' => [
+        'name' => 'CustomCore Campus Service Desk',
+        'street' => '1000 Innovation Drive',
+        'city' => 'Windsor',
+        'region' => 'Ontario',
+        'postal_code' => 'N9C 4E6',
+        'country' => 'Canada',
+        'phone_display' => '519-555-0148',
+        'phone_href' => '+15195550148',
+        'email' => 'support@customcore.example',
+        'latitude' => 42.3049,
+        'longitude' => -83.0662,
+        'map_zoom' => 14,
+        'image' => 'assets/images/map/storefront-exterior.jpg',
+        'image_alt' => 'Modest computer service storefront with charcoal, white, and teal details.',
+        'hours' => [
+            'Monday–Friday' => '10:00 a.m.–7:00 p.m.',
+            'Saturday' => '11:00 a.m.–5:00 p.m.',
+            'Sunday' => 'Closed',
+        ],
+    ],
 ];

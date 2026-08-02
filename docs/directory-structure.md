@@ -44,7 +44,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `api/` | Builder price, compatibility, search, chart data | 5.x, 8.x, 9.x |
 | `assets/css/` | External CSS (`main.css`, later `admin.css`, `print.css`) | 1.5 |
 | `assets/themes/` | RGB Gaming, Minimal Professional, Cyber Grid | 10.x |
-| `assets/js/` | External JS (`main.js`, later builder/cart/checkout/reviews/contact/validation/charts/map) | 1.6 |
+| `assets/js/` | External JS (`main.js`, builder, cart, checkout, reviews, contact, `store-map.js`, validation, charts) | 1.6, 8.4 |
 | `assets/images/` | ≥ 20 documented images | 8.1 |
 | `assets/media/` | ≥ 3 video/audio items + captions | 8.2 |
 | `config/` | `database.example.php`, `app.php`; real `database.php` gitignored | 1.2–1.3 |
@@ -80,11 +80,11 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 8.3 complete — multimedia Learning Centre showcase.**  
-`media.php` presents an organized, responsive Learning Centre: a lesson directory with
-poster thumbnails, type/duration badges, and jump links to native HTML5 players with
-captions, learning outcomes, and transcripts. Media catalogue lives in `includes/media.php`
-(8.2); `assets/media/` holds two MP4 videos and one MP3 audio lesson with WebVTT captions.
+**Commit 8.4 complete — interactive store & service map.**  
+`store-locations.php` renders the fictional CustomCore Campus Service Desk with a Leaflet +
+OpenStreetMap map (`assets/js/store-map.js`, data-driven from `config/app.php`) plus an
+always-visible `<address>`, hours, and storefront photo that stay usable without JavaScript.
+Leaflet CSS/JS load only on this page via the shared header/footer.
 
-Next: **Commit 8.4** — interactive store & service map (`store-locations.php`) with a
-text address fallback, then public catalogue visualizations (8.5).
+Next: **Commit 8.5** — public catalogue visualizations (Chart.js from MySQL/seed data),
+then accessible fallbacks pass (8.6) and media credits (8.7).

@@ -2520,6 +2520,125 @@ textarea[aria-invalid="true"]:focus-visible {
 }
 
 /* ==========================================================================
+   Store & service location (Commit 8.4)
+   Interactive Leaflet map + always-visible text address fallback.
+   ========================================================================== */
+
+.location-page__header {
+  margin-bottom: var(--cc-space-5);
+}
+
+.location-page__eyebrow {
+  margin: 0 0 var(--cc-space-2);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cc-color-accent);
+}
+
+.location-page__intro {
+  max-width: 46rem;
+  margin: 0 0 var(--cc-space-3);
+  font-size: 1.08rem;
+  color: var(--cc-color-text-muted);
+}
+
+.location-layout {
+  display: grid;
+  gap: var(--cc-space-5);
+}
+
+.location-details h2 {
+  margin-top: 0;
+}
+
+.location-fallback {
+  margin: 0 0 var(--cc-space-4);
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-md);
+  background: rgba(15, 122, 110, 0.04);
+  font-style: normal;
+  line-height: 1.7;
+}
+
+.location-hours {
+  margin: 0 0 var(--cc-space-4);
+}
+
+.location-hours__row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--cc-space-3);
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--cc-color-border);
+}
+
+.location-hours__row:last-child {
+  border-bottom: none;
+}
+
+.location-hours dt {
+  font-weight: 600;
+}
+
+.location-hours dd {
+  margin: 0;
+  color: var(--cc-color-text-muted);
+}
+
+.location-note {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--cc-color-text-muted);
+}
+
+.location-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  margin-bottom: var(--cc-space-4);
+  border-radius: var(--cc-radius-lg);
+  border: 1px solid var(--cc-color-border);
+}
+
+.location-map {
+  height: 360px;
+  border-radius: var(--cc-radius-lg);
+  border: 1px solid var(--cc-color-border);
+  overflow: hidden;
+  background: rgba(15, 122, 110, 0.06);
+  /* Keep the map below sticky UI such as the header and flash messages. */
+  z-index: 0;
+}
+
+.location-map__noscript {
+  margin: 0;
+  padding: var(--cc-space-4);
+  color: var(--cc-color-text-muted);
+}
+
+.location-map__note {
+  margin: var(--cc-space-3) 0 0;
+  font-size: 0.85rem;
+  color: var(--cc-color-text-muted);
+}
+
+.location-popup {
+  line-height: 1.5;
+}
+
+@media (min-width: 900px) {
+  .location-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    align-items: start;
+  }
+}
+
+/* ==========================================================================
    10c. About / business case page (Commit 3.2)
    ========================================================================== */
 

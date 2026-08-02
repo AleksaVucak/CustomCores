@@ -34,6 +34,20 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 8.4 complete** — interactive store & service map with text fallback.
+
+`store-locations.php` shows the fictional CustomCore Campus Service Desk. An
+always-visible `<address>` block (name, street, city/region/postal, `tel:` and
+`mailto:` links), an hours list, and a storefront photo remain fully usable even
+if JavaScript, Leaflet, or the map tiles fail. The interactive map is a
+progressive enhancement: `assets/js/store-map.js` initialises Leaflet +
+OpenStreetMap from `data-*` attributes on the map container (no inline script,
+popup built from DOM text nodes), with scroll-wheel zoom enabled only while the
+map is focused so keyboard users are never trapped. Location data is centralised
+in `config/app.php` (`store_location`) for easy, non-programmer edits. Leaflet's
+CSS/JS load only on this page via the shared header/footer. Verified in a real
+browser: map tiles + marker render and the text address stays visible.
+
 **Commit 8.3 complete** — multimedia Learning Centre showcase.
 
 `media.php` is now an organized, responsive Learning Centre. A lesson directory
@@ -52,7 +66,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-Next: **Stage 8.4** — interactive store & service map with a text address fallback.
+Next: **Stage 8.5** — public catalogue data visualization (chart from MySQL/seed data).
 
 ## Security notes
 

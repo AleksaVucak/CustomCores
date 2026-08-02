@@ -66,6 +66,15 @@ if (!isset($currentPage) || !is_string($currentPage)) {
     <?php endif; ?>
     <!-- Favicon and expanded SEO metadata arrive in Stage 14 -->
     <link rel="stylesheet" href="<?php echo customcore_e(customcore_url('assets/css/main.css')); ?>">
+    <?php if ($currentPage === 'locations') : ?>
+        <!-- Leaflet map styles for the store & service map (Commit 8.4) -->
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIINfQ3ynhTUQFgfPUV3ppxA4IuaMPnLDjM="
+            crossorigin=""
+        >
+    <?php endif; ?>
     <!-- Active theme stylesheet is loaded from MySQL settings in Stage 10 -->
 </head>
 <body class="page-<?php echo customcore_e($currentPage !== '' ? $currentPage : 'default'); ?>">
