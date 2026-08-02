@@ -273,6 +273,10 @@ require_once __DIR__ . '/../includes/header.php';
                                         class="button button--ghost button--sm"
                                         href="<?php echo customcore_e(customcore_url('admin/product-edit.php?id=' . (int) $product['id'])); ?>"
                                     >Edit</a>
+                                    <a
+                                        class="button button--ghost button--sm"
+                                        href="<?php echo customcore_e(customcore_url('admin/product-options.php?product_id=' . (int) $product['id'])); ?>"
+                                    >Options</a>
                                     <?php if ($isActive) : ?>
                                         <a
                                             class="admin-actions__link"

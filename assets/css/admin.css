@@ -562,3 +562,67 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---- Product options (Commit 9.3) -------------------------------------- */
+
+.admin-options__product {
+  margin: 0 0 var(--cc-space-4);
+}
+
+.admin-options__product-name {
+  margin: 0 0 0.2rem;
+}
+
+.admin-options__form-wrap {
+  margin: 0 0 var(--cc-space-5);
+}
+
+.admin-options__form-wrap h2 {
+  margin: 0 0 var(--cc-space-3);
+}
+
+.admin-options__group {
+  margin: 0 0 var(--cc-space-5);
+}
+
+.admin-options__group-title {
+  margin: 0 0 var(--cc-space-2);
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--cc-color-border);
+  font-size: 1.1rem;
+}
+
+.admin-table--options {
+  width: 100%;
+  min-width: 560px;
+}
+
+.admin-table--options .is-disabled-row {
+  opacity: 0.6;
+}
+
+.admin-actions__link--button {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: var(--cc-color-link, #1f6b8f);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.admin-actions__link--button:hover,
+.admin-actions__link--button:focus-visible {
+  text-decoration: none;
+}
+
+.admin-options__picker {
+  padding: var(--cc-space-5);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+}
+
+.admin-options__picker h2 {
+  margin-top: 0;
+}

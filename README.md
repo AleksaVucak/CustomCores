@@ -36,6 +36,22 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 9.3 complete** — administrator product options management.
+
+`admin/product-options.php` lets an admin manage the configurable choices buyers
+pick on the product and PC&nbsp;Builder pages (RAM, Storage, Colour, Warranty, …).
+Pick a product (or arrive via the new "Options" link on the product list), then add,
+edit, reorder, price (positive **or** negative delta), enable/disable, set the
+default, and delete options — grouped by option group. Logic lives in
+`includes/admin-options.php`, which validates input and enforces the key invariant
+that each group keeps **exactly one active default** (auto-promoting a replacement
+when a default is disabled, deleted, or moved to another group) so the storefront
+and builder always price a valid configuration. Every action uses CSRF + the
+Post/Redirect/Get pattern with flash confirmations, and an advisory banner warns
+when a product drops below two active options or a group loses its default.
+Verified end-to-end against live MySQL (create, set-default, edit with a negative
+delta, disable-with-auto-promotion, and delete) with all test rows rolled back.
+
 **Commit 9.2 complete** — administrator product management (catalogue CRUD).
 
 Admins can now add, edit, price, stock, image, feature, and disable catalogue
@@ -143,7 +159,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Stage 8 complete.** Next: **Commit 9.3** — administrator product options management.
+**Stage 8 complete.** Next: **Commit 9.4** — administrator compatibility metadata management.
 
 ## Security notes
 
