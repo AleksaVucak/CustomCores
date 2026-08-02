@@ -36,6 +36,19 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 9.8 complete** — administrator review moderation.
+
+`admin/reviews.php` is the moderation queue for every product review. Search by
+title, body, product, or customer; filter by pending / approved / hidden (with live
+counts); pending reviews sort to the top. Per-review cards show the full body and
+offer CSRF-protected Approve, Hide, Mark pending, and Delete actions via
+Post/Redirect/Get. Logic lives in `includes/admin-reviews.php` (prepared statements;
+ENUM-validated status writes; intentional hard delete for moderation). Public
+catalogue and product pages continue to show only `status = 'approved'` — verified
+over HTTP that approving makes a review appear on `product.php` and hiding removes
+it again. Non-admins are blocked; CSRF-less deletes are rejected. Dashboard pending
+reviews now deep-link into the queue.
+
 **Commit 9.7 complete** — administrator consultation management.
 
 `admin/consultations.php` is a searchable, status-filterable, paginated queue of
@@ -234,7 +247,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Stage 8 complete.** Next: **Commit 9.8** — administrator review moderation.
+**Stage 8 complete.** Next: **Commit 9.9** — administrator reports.
 
 ## Security notes
 

@@ -248,7 +248,9 @@ require_once __DIR__ . '/../includes/header.php';
                                 <?php foreach ($pendingReviews as $review) : ?>
                                     <tr>
                                         <td>
-                                            <?php echo customcore_e((string) $review['product_name']); ?>
+                                            <a href="<?php echo customcore_e(customcore_url('admin/reviews.php?status=pending#review-title-' . (int) $review['id'])); ?>">
+                                                <?php echo customcore_e((string) $review['product_name']); ?>
+                                            </a>
                                             <span class="admin-table__sub"><?php echo customcore_e((string) $review['title']); ?></span>
                                         </td>
                                         <td><?php echo customcore_e(customcore_format_rating((int) $review['rating'])); ?></td>

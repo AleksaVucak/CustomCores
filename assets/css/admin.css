@@ -863,3 +863,55 @@
 .admin-consult-detail .admin-order-detail__grid {
   margin-bottom: var(--cc-space-4);
 }
+
+/* -------------------------------------------------------------------------
+ * Reviews (Commit 9.8)
+ * ------------------------------------------------------------------------- */
+.admin-review-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cc-space-4);
+  margin: var(--cc-space-4) 0 0;
+}
+
+.admin-review-card--pending {
+  border-color: var(--cc-color-accent, #c45c26);
+  box-shadow: inset 3px 0 0 var(--cc-color-accent, #c45c26);
+}
+
+.admin-review-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--cc-space-3);
+  margin-bottom: var(--cc-space-3);
+}
+
+.admin-review-card__title {
+  margin: 0 0 0.25rem;
+  font-size: 1.05rem;
+}
+
+.admin-review-card__meta {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--cc-color-text-muted);
+}
+
+.admin-review-card__rating {
+  font-weight: 600;
+  color: var(--cc-color-text);
+}
+
+.admin-review-card__body {
+  margin: 0 0 var(--cc-space-4);
+  line-height: 1.5;
+  white-space: normal;
+}
+
+.admin-review-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
