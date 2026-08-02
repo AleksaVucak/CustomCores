@@ -36,6 +36,19 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 9.9 complete** — administrator reports (Stage 9 finished).
+
+`admin/reports.php` charts live MySQL aggregates for **orders by status**, **active
+products by performance tier**, **user accounts by role and by status**, and
+**inventory health** (healthy / low / out of stock / disabled). Each chart embeds a
+Chart.js payload in a `data-admin-report-chart` attribute and is drawn by
+`assets/js/admin-reports.js` (Chart.js 4.4.1 loads only on this page via
+`$loadAdminReports`). A server-rendered accessible data table sits beside every
+canvas and remains the source of truth if JavaScript fails. Logic lives in
+`includes/admin-reports.php` — prepared/parameterless PDO queries only; verified
+that product-tier and inventory bucket totals match the live catalogue. KPI summary
+cards sit at the top. Non-admins are blocked from the page.
+
 **Commit 9.8 complete** — administrator review moderation.
 
 `admin/reviews.php` is the moderation queue for every product review. Search by
@@ -247,7 +260,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Stage 8 complete.** Next: **Commit 9.9** — administrator reports.
+**Stage 9 complete.** Next: **Commit 10.1** — site-wide CSS theme templates.
 
 ## Security notes
 

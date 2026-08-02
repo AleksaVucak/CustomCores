@@ -915,3 +915,88 @@
   gap: 0.5rem;
   align-items: center;
 }
+
+/* -------------------------------------------------------------------------
+ * Reports (Commit 9.9)
+ * ------------------------------------------------------------------------- */
+.admin-report-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--cc-space-4);
+  margin: 0 0 var(--cc-space-5);
+}
+
+.admin-report-panel {
+  margin-bottom: var(--cc-space-5);
+}
+
+.admin-report-chart {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: var(--cc-space-5);
+  align-items: start;
+}
+
+.admin-report-chart__canvas-wrap {
+  position: relative;
+  min-height: 260px;
+  height: 280px;
+}
+
+.admin-report-chart__canvas-wrap--sm {
+  min-height: 220px;
+  height: 240px;
+}
+
+.admin-report-chart__canvas-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.admin-report-chart__summary-title {
+  margin: 0 0 var(--cc-space-3);
+  font-size: 1rem;
+}
+
+.admin-report-chart__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.admin-report-chart__table th,
+.admin-report-chart__table td {
+  padding: 0.45rem 0.5rem;
+  border-bottom: 1px solid var(--cc-color-border);
+  text-align: left;
+}
+
+.admin-report-chart__table thead th {
+  font-size: 0.8rem;
+  color: var(--cc-color-text-muted);
+}
+
+.admin-report-chart__table tfoot th,
+.admin-report-chart__table tfoot td {
+  font-weight: 700;
+  border-top: 2px solid var(--cc-color-border);
+  border-bottom: 0;
+}
+
+.admin-report-chart__note {
+  margin: var(--cc-space-3) 0 0;
+  font-size: 0.82rem;
+  color: var(--cc-color-text-muted);
+}
+
+.admin-report-users {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--cc-space-5);
+}
+
+@media (max-width: 800px) {
+  .admin-report-chart {
+    grid-template-columns: 1fr;
+  }
+}

@@ -44,14 +44,14 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `api/` | Builder price, compatibility, search, chart data | 5.x, 8.x, 9.x |
 | `assets/css/` | External CSS (`main.css`, `admin.css`, later `print.css`) | 1.5, 9.1 |
 | `assets/themes/` | RGB Gaming, Minimal Professional, Cyber Grid | 10.x |
-| `assets/js/` | External JS (`main.js`, builder, cart, checkout, reviews, contact, `store-map.js`, `catalogue-chart.js`, validation, charts) | 1.6, 8.4, 8.5 |
+| `assets/js/` | External JS (`main.js`, builder, cart, checkout, reviews, contact, `store-map.js`, `catalogue-chart.js`, `admin-reports.js`, validation, charts) | 1.6, 8.4, 8.5 |
 | `assets/images/` | ≥ 20 documented images | 8.1 |
 | `assets/media/` | ≥ 3 video/audio items + captions | 8.2 |
 | `config/` | `database.example.php`, `app.php`; real `database.php` gitignored | 1.2–1.3 |
 | `database/` | Schema, seeds, create-admin script | 2.x |
 | `docs/` | Business case, rubric, sitemap, wireframes, ER design, media credits, image prompts, guides | 0.x–12.x, 8.7 |
 | `help/` | Static Help + training HTML (`pc-builder.html` shipped in 5.9; full wiki in 11.x) | 5.9, 11.x |
-| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, admin, admin-nav, admin-products, admin-product-form, admin-options, admin-compatibility, admin-orders, admin-users, admin-consultations, admin-reviews, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 14.x |
+| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, admin, admin-nav, admin-products, admin-product-form, admin-options, admin-compatibility, admin-orders, admin-users, admin-consultations, admin-reviews, admin-reports, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
 | `uploads/products/` | Product images uploaded by admin | 9.2 |
 
@@ -79,6 +79,12 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 ---
 
 ## 5. Status
+
+**Commit 9.9 complete — administrator reports (Stage 9 finished).**  
+`admin/reports.php` charts live MySQL aggregates for orders by status, products by
+performance tier, user accounts (role + status), and inventory health. Each chart has
+a server-rendered accessible table fallback; Chart.js loads only on this page via
+`$loadAdminReports` + `assets/js/admin-reports.js`. Logic in `includes/admin-reports.php`.
 
 **Commit 9.8 complete — administrator review moderation.**  
 `admin/reviews.php` lists pending/approved/hidden reviews (search + status filter +
@@ -175,4 +181,4 @@ OpenStreetMap map (`assets/js/store-map.js`, data-driven from `config/app.php`) 
 always-visible `<address>`, hours, and storefront photo that stay usable without JavaScript.
 Leaflet CSS/JS load only on this page via the shared header/footer.
 
-Next: **Commit 9.9** — administrator reports.
+Next: **Commit 10.1** — site-wide CSS theme templates.
