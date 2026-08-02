@@ -34,22 +34,25 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 8.2 complete** — three educational media items play with native controls.
+**Commit 8.3 complete** — multimedia Learning Centre showcase.
 
-Two short MP4 videos and one MP3 audio lesson live under `assets/media/`, each
-with a matching WebVTT caption file and poster image. A new helper,
-`customcore_media_url()`, resolves media paths only when the file exists under
-`assets/media/`. The Learning Centre page (`media.php`) lists all three lessons
-with native `<video controls>` / `<audio controls>` players, captions tracks,
-posters, learning outcomes, and expandable transcripts. The homepage Learning
-Centre teaser now embeds the PC Builder walkthrough instead of a Stage 8
-placeholder. Direct HTTP checks confirm the MP4, MP3, and VTT assets return 200
-with the correct content types.
+`media.php` is now an organized, responsive Learning Centre. A lesson directory
+at the top summarises the mix ("3 short lessons — 2 videos and 1 audio guide")
+and offers poster-thumbnail cards with type/duration badges that jump to each
+full player below. Each lesson plays with native `<video controls>` /
+`<audio controls>`, English caption tracks, learning outcomes, and an expandable
+transcript. Accessibility refinements: the standalone audio poster now carries a
+descriptive `alt`, video posters are treated as decorative, jumped-to lessons get
+a visible `:target` highlight and focus handling, and heading levels nest
+correctly (h1 → directory/lesson h2/h3 → outcomes h4).
+
+**Commit 8.2 complete** — three educational media items play with native controls
+(2× MP4, 1× MP3 under `assets/media/` with WebVTT captions; `customcore_media_url()`
+helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-Next: **Stage 8.3** — polish / confirm the multimedia Learning Centre presentation
-(organization already started with `media.php` in 8.2 so the items can play).
+Next: **Stage 8.4** — interactive store & service map with a text address fallback.
 
 ## Security notes
 

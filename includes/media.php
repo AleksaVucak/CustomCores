@@ -30,6 +30,7 @@ declare(strict_types=1);
  *   src_url:string,
  *   poster:?string,
  *   poster_url:?string,
+ *   poster_alt:string,
  *   captions:?string,
  *   captions_url:?string,
  *   learn:list<string>,
@@ -48,6 +49,7 @@ function customcore_media_items(): array
             'mime' => 'video/mp4',
             'src' => 'assets/media/how-to-use-pc-builder.mp4',
             'poster' => 'assets/images/media/pc-builder-poster.jpg',
+            'poster_alt' => 'Open PC case and neatly arranged components for the PC Builder tutorial.',
             'captions' => 'assets/media/captions/how-to-use-pc-builder.vtt',
             'learn' => [
                 'Move through the component categories in a sensible order',
@@ -71,6 +73,7 @@ function customcore_media_items(): array
             'mime' => 'video/mp4',
             'src' => 'assets/media/compatibility-basics.mp4',
             'poster' => 'assets/images/media/compatibility-basics-poster.jpg',
+            'poster_alt' => 'CPU, motherboard, memory, power supply, and graphics card arranged for a compatibility lesson.',
             'captions' => 'assets/media/captions/compatibility-basics.vtt',
             'learn' => [
                 'Match a processor socket to the motherboard',
@@ -95,6 +98,7 @@ function customcore_media_items(): array
             'mime' => 'audio/mpeg',
             'src' => 'assets/media/choosing-your-first-gaming-pc.mp3',
             'poster' => 'assets/images/media/first-gaming-pc-poster.jpg',
+            'poster_alt' => 'Four desktop PCs representing the Budget, Esports, High-Performance, and Creator tiers.',
             'captions' => 'assets/media/captions/choosing-your-first-gaming-pc.vtt',
             'learn' => [
                 'Understand the purpose of each CustomCore tier',
@@ -135,6 +139,7 @@ function customcore_media_items(): array
             'src_url' => $srcUrl,
             'poster' => $posterPath,
             'poster_url' => customcore_image_url($posterPath),
+            'poster_alt' => isset($item['poster_alt']) ? (string) $item['poster_alt'] : (string) $item['title'],
             'captions' => $captionsPath,
             'captions_url' => customcore_media_url($captionsPath),
             'learn' => array_values(array_map('strval', $item['learn'])),
@@ -159,6 +164,7 @@ function customcore_media_items(): array
  *   src_url:string,
  *   poster:?string,
  *   poster_url:?string,
+ *   poster_alt:string,
  *   captions:?string,
  *   captions_url:?string,
  *   learn:list<string>,

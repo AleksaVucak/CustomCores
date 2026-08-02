@@ -80,10 +80,11 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 8.2 complete — three educational media items.**  
-`assets/media/` holds two MP4 videos and one MP3 audio lesson with WebVTT captions.
-`media.php` plays all three with native HTML5 controls; the homepage teaser embeds the
-PC Builder walkthrough. Helpers live in `includes/media.php` and `customcore_media_url()`.
+**Commit 8.3 complete — multimedia Learning Centre showcase.**  
+`media.php` presents an organized, responsive Learning Centre: a lesson directory with
+poster thumbnails, type/duration badges, and jump links to native HTML5 players with
+captions, learning outcomes, and transcripts. Media catalogue lives in `includes/media.php`
+(8.2); `assets/media/` holds two MP4 videos and one MP3 audio lesson with WebVTT captions.
 
-Next: **Commit 8.3** — Learning Centre presentation polish (page already playable from 8.2),
-then map (8.4) and public catalogue visualizations (8.5).
+Next: **Commit 8.4** — interactive store & service map (`store-locations.php`) with a
+text address fallback, then public catalogue visualizations (8.5).

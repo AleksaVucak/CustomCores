@@ -1,11 +1,13 @@
 <?php
 /**
- * CustomCore — Multimedia Learning Centre (Commit 8.2).
+ * CustomCore — Multimedia Learning Centre (Commit 8.3).
  *
  * File responsibility:
- *   Public page that plays the educational video and audio guides with native
- *   HTML5 controls, posters, captions tracks, and readable transcripts so all
- *   three Learning Centre media items are playable in the browser.
+ *   Public showcase for the educational media. Presents an organized, responsive
+ *   directory of lessons that jump to full players, each playing with native
+ *   HTML5 controls, posters, caption tracks, learning outcomes, and readable
+ *   transcripts. Media catalogue and playable items come from includes/media.php
+ *   (Commit 8.2); this page focuses on presentation and context.
  *
  * Authentication requirements:
  *   None (public).
@@ -25,6 +27,33 @@ $pageKeywords = 'CustomCore learning centre, PC builder tutorial, PC compatibili
 $currentPage = 'media';
 
 $mediaItems = customcore_media_items();
+
+$videoCount = 0;
+$audioCount = 0;
+foreach ($mediaItems as $mediaItem) {
+    if ($mediaItem['type'] === 'video') {
+        $videoCount++;
+    } else {
+        $audioCount++;
+    }
+}
+
+/**
+ * Human-readable summary of the lesson mix (e.g. "2 videos and 1 audio guide").
+ */
+$mediaSummaryParts = [];
+if ($videoCount > 0) {
+    $mediaSummaryParts[] = $videoCount . ' ' . ($videoCount === 1 ? 'video' : 'videos');
+}
+if ($audioCount > 0) {
+    $mediaSummaryParts[] = $audioCount . ' ' . ($audioCount === 1 ? 'audio guide' : 'audio guides');
+}
+$mediaSummary = '';
+if ($mediaSummaryParts !== []) {
+    $mediaSummary = count($mediaSummaryParts) === 2
+        ? $mediaSummaryParts[0] . ' and ' . $mediaSummaryParts[1]
+        : $mediaSummaryParts[0];
+}
 
 require_once __DIR__ . '/includes/header.php';
 ?>
@@ -53,14 +82,62 @@ require_once __DIR__ . '/includes/header.php';
             <code>assets/media/</code>.
         </p>
     <?php else : ?>
-        <div class="media-grid">
-            <?php foreach ($mediaItems as $item) : ?>
+        <nav class="media-directory" aria-labelledby="media-directory-heading">
+            <div class="media-directory__intro">
+                <h2 id="media-directory-heading">Lessons in this centre</h2>
+                <?php if ($mediaSummary !== '') : ?>
+                    <p class="media-directory__summary">
+                        <?php echo customcore_e(count($mediaItems) . ' short ' . (count($mediaItems) === 1 ? 'lesson' : 'lessons')); ?>
+                        — <?php echo customcore_e($mediaSummary); ?>. Select a lesson to jump to its player.
+                    </p>
+                <?php endif; ?>
+            </div>
+
+            <ol class="media-directory__list">
+                <?php foreach ($mediaItems as $index => $item) : ?>
+                    <?php $isVideo = $item['type'] === 'video'; ?>
+                    <li class="media-directory__item">
+                        <a class="media-directory__card" href="#<?php echo customcore_e($item['id']); ?>">
+                            <span class="media-directory__thumb">
+                                <?php if ($item['poster_url'] !== null) : ?>
+                                    <img
+                                        src="<?php echo customcore_e($item['poster_url']); ?>"
+                                        alt=""
+                                        loading="lazy"
+                                        decoding="async"
+                                        width="480"
+                                        height="270"
+                                    >
+                                <?php endif; ?>
+                                <span class="media-directory__badge media-directory__badge--<?php echo $isVideo ? 'video' : 'audio'; ?>">
+                                    <?php echo $isVideo ? 'Video' : 'Audio'; ?>
+                                </span>
+                            </span>
+                            <span class="media-directory__text">
+                                <span class="media-directory__step">Lesson <?php echo customcore_e((string) ($index + 1)); ?></span>
+                                <span class="media-directory__name"><?php echo customcore_e($item['title']); ?></span>
+                                <span class="media-directory__duration"><?php echo customcore_e($item['duration_label']); ?></span>
+                            </span>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
+            </ol>
+        </nav>
+
+        <div class="media-grid" aria-label="Learning Centre lessons">
+            <?php foreach ($mediaItems as $index => $item) : ?>
                 <?php
                 $isVideo = $item['type'] === 'video';
                 $typeLabel = $isVideo ? 'Video' : 'Audio';
                 $playerId = 'media-player-' . $item['id'];
+                $titleId = 'media-title-' . $item['id'];
                 ?>
-                <article class="media-card" id="<?php echo customcore_e($item['id']); ?>">
+                <article
+                    class="media-card"
+                    id="<?php echo customcore_e($item['id']); ?>"
+                    aria-labelledby="<?php echo customcore_e($titleId); ?>"
+                    tabindex="-1"
+                >
                     <div class="media-card__player">
                         <?php if ($isVideo) : ?>
                             <video
@@ -94,7 +171,7 @@ require_once __DIR__ . '/includes/header.php';
                                 <img
                                     class="media-card__poster"
                                     src="<?php echo customcore_e($item['poster_url']); ?>"
-                                    alt="Poster for <?php echo customcore_e($item['title']); ?>"
+                                    alt="<?php echo customcore_e($item['poster_alt']); ?>"
                                     loading="lazy"
                                     decoding="async"
                                     width="960"
@@ -120,17 +197,20 @@ require_once __DIR__ . '/includes/header.php';
 
                     <div class="media-card__content">
                         <p class="media-card__meta">
-                            <?php echo customcore_e($typeLabel); ?>
-                            ·
-                            <?php echo customcore_e($item['duration_label']); ?>
+                            <span class="media-card__type media-card__type--<?php echo $isVideo ? 'video' : 'audio'; ?>">
+                                <?php echo customcore_e($typeLabel); ?>
+                            </span>
+                            <span class="media-card__duration"><?php echo customcore_e($item['duration_label']); ?></span>
                         </p>
-                        <h2 class="media-card__title"><?php echo customcore_e($item['title']); ?></h2>
+                        <h3 class="media-card__title" id="<?php echo customcore_e($titleId); ?>">
+                            <?php echo customcore_e($item['title']); ?>
+                        </h3>
                         <p class="media-card__description">
                             <?php echo customcore_e($item['description']); ?>
                         </p>
 
                         <?php if ($item['learn'] !== []) : ?>
-                            <h3 class="media-card__subheading">What you'll learn</h3>
+                            <h4 class="media-card__subheading">What you'll learn</h4>
                             <ul class="media-card__learn">
                                 <?php foreach ($item['learn'] as $point) : ?>
                                     <li><?php echo customcore_e($point); ?></li>
