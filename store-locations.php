@@ -154,7 +154,11 @@ require_once __DIR__ . '/includes/header.php';
                 <p class="location-map__note">
                     The map is supplementary. The complete location details remain available in
                     text beside the map if JavaScript or the map tiles are unavailable. Map data
-                    &copy; OpenStreetMap contributors.
+                    &copy; <a href="https://www.openstreetmap.org/copyright" rel="noopener noreferrer">OpenStreetMap</a>
+                    contributors. Interactive map powered by
+                    <a href="https://leafletjs.com/" rel="noopener noreferrer">Leaflet</a>.
+                    Full multimedia sources are listed in the
+                    <a href="<?php echo customcore_e(customcore_url('docs/media-credits.md')); ?>">media credits</a>.
                 </p>
             <?php endif; ?>
         </div>

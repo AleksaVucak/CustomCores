@@ -116,6 +116,20 @@ require_once __DIR__ . '/includes/header.php';
         </dl>
     </section>
 
+    <section class="accessibility-block" aria-labelledby="a11y-credits">
+        <h2 id="a11y-credits">Media sources and licences</h2>
+        <p>
+            Every image, video, audio file, caption track, chart library, and map tile source used
+            by CustomCore is documented with its origin and licence in the project media credits.
+            Prompts for AI-generated images are retained alongside that record.
+        </p>
+        <p>
+            <a href="<?php echo customcore_e(customcore_url('docs/media-credits.md')); ?>">Open media credits</a>
+            ·
+            <a href="<?php echo customcore_e(customcore_url('docs/image-prompts.md')); ?>">View image prompt record</a>
+        </p>
+    </section>
+
     <section class="accessibility-block" aria-labelledby="a11y-feedback">
         <h2 id="a11y-feedback">Tell us about a barrier</h2>
         <p>

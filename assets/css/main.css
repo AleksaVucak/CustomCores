@@ -2512,6 +2512,22 @@ textarea[aria-invalid="true"]:focus-visible {
   color: var(--cc-color-text-muted);
 }
 
+.learning-centre__credits {
+  margin-top: var(--cc-space-5);
+  padding-top: var(--cc-space-4);
+  border-top: 1px solid var(--cc-color-border);
+}
+
+.learning-centre__credits h2 {
+  margin-top: 0;
+  font-size: 1.15rem;
+}
+
+.learning-centre__credits p {
+  max-width: 44rem;
+  color: var(--cc-color-text-muted);
+}
+
 @media (min-width: 900px) {
   .media-card {
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);

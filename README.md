@@ -31,8 +31,20 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 - [Database import, verification, and backup](docs/database-import.md)
 - [Application directory structure](docs/directory-structure.md)
 - [Flash message usage](docs/flash-messages.md)
+- [Multimedia credits and licences](docs/media-credits.md)
+- [Stage 8 image prompt record](docs/image-prompts.md)
 
 ## Current status
+
+**Commit 8.7 complete** — multimedia credits (Stage 8 finished).
+
+`docs/media-credits.md` records the origin, licence, and creation date for every
+Stage 8 asset: all 33 images (20 product + 13 site extras), both educational
+MP4s, the MP3 audio guide, three WebVTT caption tracks, Chart.js 4.4.1 (MIT),
+and Leaflet 1.9.4 + OpenStreetMap tiles. Full AI image prompts are retained in
+`docs/image-prompts.md`. Credits are linked from the README, the Learning Centre,
+the accessibility statement, and the store-locations map note. Rubric #10d and
+#10e licence documentation is now complete.
 
 **Commit 8.6 complete** — accessible multimedia fallbacks.
 
@@ -96,7 +108,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-Next: **Stage 8.7** — multimedia credits (`docs/media-credits.md`).
+**Stage 8 complete.** Next: **Stage 9** — administration panel.
 
 ## Security notes
 

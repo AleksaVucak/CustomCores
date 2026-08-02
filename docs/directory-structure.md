@@ -49,7 +49,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `assets/media/` | ≥ 3 video/audio items + captions | 8.2 |
 | `config/` | `database.example.php`, `app.php`; real `database.php` gitignored | 1.2–1.3 |
 | `database/` | Schema, seeds, create-admin script | 2.x |
-| `docs/` | Business case, rubric, sitemap, wireframes, ER design, guides | 0.x–12.x |
+| `docs/` | Business case, rubric, sitemap, wireframes, ER design, media credits, image prompts, guides | 0.x–12.x, 8.7 |
 | `help/` | Static Help + training HTML (`pc-builder.html` shipped in 5.9; full wiki in 11.x) | 5.9, 11.x |
 | `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
@@ -80,6 +80,12 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
+**Commit 8.7 complete — multimedia credits (Stage 8 finished).**  
+`docs/media-credits.md` documents origin, licence, and date for every image,
+video, audio file, caption track, Chart.js, and Leaflet/OpenStreetMap resource.
+Retained AI prompts live in `docs/image-prompts.md`. Credits are linked from the
+README, Learning Centre, accessibility statement, and store-locations map note.
+
 **Commit 8.6 complete — accessible multimedia fallbacks.**  
 `accessibility.php` (public, linked from the shared footer) documents the text
 equivalent for every multimedia feature — image `alt`/placeholders, video/audio
@@ -101,4 +107,4 @@ OpenStreetMap map (`assets/js/store-map.js`, data-driven from `config/app.php`) 
 always-visible `<address>`, hours, and storefront photo that stay usable without JavaScript.
 Leaflet CSS/JS load only on this page via the shared header/footer.
 
-Next: **Commit 8.7** — multimedia credits (`docs/media-credits.md`).
+Next: **Stage 9** — administration panel.

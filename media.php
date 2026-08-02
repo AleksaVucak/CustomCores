@@ -249,6 +249,21 @@ require_once __DIR__ . '/includes/header.php';
             <a class="button button--ghost" href="<?php echo customcore_e(customcore_url('help/support.html')); ?>">Support guide</a>
         </p>
     </section>
+
+    <section class="learning-centre__credits" aria-labelledby="media-credits-heading">
+        <h2 id="media-credits-heading">Media credits</h2>
+        <p>
+            These lessons are original CustomCore academic productions with English captions and
+            full transcripts. Catalogue imagery is AI-generated for this university project and is
+            free of third-party product photography. Complete source, licence, and prompt records
+            are published in the project documentation.
+        </p>
+        <p>
+            <a href="<?php echo customcore_e(customcore_url('docs/media-credits.md')); ?>">Open media credits</a>
+            ·
+            <a href="<?php echo customcore_e(customcore_url('accessibility.php')); ?>">Accessibility statement</a>
+        </p>
+    </section>
 </section>
 
 <?php
