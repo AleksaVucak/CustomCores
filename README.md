@@ -36,6 +36,27 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 9.2 complete** — administrator product management (catalogue CRUD).
+
+Admins can now add, edit, price, stock, image, feature, and disable catalogue
+products from three protected screens — `admin/products.php` (searchable, filterable
+list with an enable/disable toggle), `admin/product-add.php`, and
+`admin/product-edit.php` — all behind `customcore_require_admin()`. Shared logic
+lives in `includes/admin-products.php`: input validation, automatic unique-slug
+generation, list/search queries, prepared-statement create/update, soft
+enable/disable (never a hard delete, so order and review history stay intact), and
+secure image uploads. Uploads never trust the browser: the real MIME type is
+detected with `finfo`, matched to a JPG/PNG/WEBP/GIF allowlist, capped at 2 MB, and
+saved under `uploads/products/` with a randomly generated filename; replaced or
+removed images are cleaned off disk. A shared form partial
+(`includes/admin-product-form.php`) keeps the add and edit screens identical, and
+`customcore_product_image_url()` lets uploaded images render across the catalogue,
+product, search, wishlist, and homepage pages alongside seeded assets. Every write
+uses CSRF protection and the Post/Redirect/Get pattern with flash confirmations.
+Verified end-to-end against live MySQL: login → create with image upload → edit
+(price/stock/category/image replace + remove) → disable, with the seeded catalogue
+count restored afterwards.
+
 **Commit 9.1 complete** — administrator dashboard from live MySQL.
 
 `admin/index.php` is now a real operations dashboard (still behind
@@ -122,7 +143,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Stage 8 complete.** Next after 9.1: **Commit 9.2** — administrator product management.
+**Stage 8 complete.** Next: **Commit 9.3** — administrator product options management.
 
 ## Security notes
 

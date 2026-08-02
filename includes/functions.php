@@ -418,6 +418,64 @@ function customcore_image_url(?string $path): ?string
 }
 
 /**
+ * Resolve an admin-uploaded product image path to a browser URL.
+ *
+ * Guards against traversal by requiring the path to live under uploads/products/
+ * with an image extension, and only returns a URL when the file exists. Static
+ * image files in this folder are served directly by the web server; the
+ * directory's index.php guard only blocks directory browsing.
+ *
+ * @param string|null $path Path relative to the project root (e.g. "uploads/products/ab12.jpg").
+ */
+function customcore_upload_url(?string $path): ?string
+{
+    if ($path === null) {
+        return null;
+    }
+
+    $path = trim(str_replace('\\', '/', $path));
+    $path = ltrim($path, '/');
+    if ($path === '') {
+        return null;
+    }
+
+    if (str_contains($path, '..') || strpbrk($path, "\r\n\t\0") !== false) {
+        return null;
+    }
+
+    if (!preg_match('#^uploads/products/[A-Za-z0-9_-]+\.(?:jpe?g|png|webp|gif)$#i', $path)) {
+        return null;
+    }
+
+    $fullPath = dirname(__DIR__) . '/' . $path;
+    if (!is_file($fullPath)) {
+        return null;
+    }
+
+    return customcore_url($path);
+}
+
+/**
+ * Resolve a product image path (seed asset OR admin upload) to a browser URL.
+ *
+ * Product images may live under assets/images/ (seeded catalogue) or
+ * uploads/products/ (uploaded by an administrator in Stage 9.2). This helper
+ * tries both safe locations and returns null when neither resolves, so callers
+ * fall back to a placeholder instead of rendering a broken <img>.
+ *
+ * @param string|null $path Stored products.image_path value.
+ */
+function customcore_product_image_url(?string $path): ?string
+{
+    $assetUrl = customcore_image_url($path);
+    if ($assetUrl !== null) {
+        return $assetUrl;
+    }
+
+    return customcore_upload_url($path);
+}
+
+/**
  * Resolve a project media path to a browser URL, but only if the file exists.
  *
  * Guards against path traversal by requiring the path to live under

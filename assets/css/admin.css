@@ -302,3 +302,263 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* ---- Product management (Commit 9.2) ----------------------------------- */
+
+.admin-toolbar {
+  margin: 0 0 var(--cc-space-4);
+}
+
+.admin-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--cc-space-3);
+  margin: 0 0 var(--cc-space-5);
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+}
+
+.admin-filter__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1 1 180px;
+}
+
+.admin-filter__field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--cc-color-text-muted);
+}
+
+.admin-filter__field input,
+.admin-filter__field select {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-sm);
+  background: var(--cc-color-bg-elevated);
+  color: var(--cc-color-text);
+  font: inherit;
+}
+
+.admin-filter__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex: 0 0 auto;
+}
+
+.admin-products__count {
+  margin: 0 0 var(--cc-space-3);
+  color: var(--cc-color-text-muted);
+  font-size: 0.9rem;
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+}
+
+.admin-table--products {
+  width: 100%;
+  min-width: 640px;
+}
+
+.admin-product-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.admin-product-cell__thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: var(--cc-radius-sm);
+  border: 1px solid var(--cc-color-border);
+  background: var(--cc-color-bg-muted);
+  flex: 0 0 auto;
+}
+
+.admin-product-cell__thumb--empty {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  color: var(--cc-color-text-muted);
+  text-align: center;
+}
+
+.admin-product-cell__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.admin-product-cell__name {
+  font-weight: 600;
+}
+
+.admin-badge {
+  display: inline-block;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.admin-badge--ok {
+  background: rgba(31, 107, 58, 0.14);
+  color: var(--cc-color-success);
+}
+
+.admin-badge--muted {
+  background: var(--cc-color-bg-muted);
+  color: var(--cc-color-text-muted);
+}
+
+.admin-badge--warn {
+  background: rgba(154, 107, 18, 0.16);
+  color: var(--cc-color-warning);
+}
+
+.admin-badge--danger {
+  background: rgba(163, 59, 45, 0.14);
+  color: var(--cc-color-danger);
+}
+
+.admin-badge--featured {
+  background: rgba(31, 107, 58, 0.1);
+  color: var(--cc-color-success);
+}
+
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.admin-actions__link {
+  font-size: 0.85rem;
+}
+
+.admin-inline-form {
+  display: inline;
+  margin: 0;
+}
+
+.button--success {
+  background: var(--cc-color-success);
+  color: #fff;
+  border-color: var(--cc-color-success);
+}
+
+.button--success:hover,
+.button--success:focus-visible {
+  filter: brightness(1.08);
+}
+
+/* ---- Product add/edit form (Commit 9.2) -------------------------------- */
+
+.admin-form {
+  padding: var(--cc-space-5);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+}
+
+.admin-form__grid {
+  display: grid;
+  gap: var(--cc-space-4);
+  grid-template-columns: 1fr 1fr;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-field--wide {
+  grid-column: 1 / -1;
+}
+
+.form-field label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.form-field input[type="text"],
+.form-field input[type="number"],
+.form-field input[type="file"],
+.form-field select,
+.form-field textarea {
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-sm);
+  background: var(--cc-color-bg-elevated);
+  color: var(--cc-color-text);
+  font: inherit;
+  width: 100%;
+}
+
+.form-field textarea {
+  resize: vertical;
+}
+
+.form-field [aria-invalid="true"] {
+  border-color: var(--cc-color-danger);
+}
+
+.form-hint {
+  font-size: 0.82rem;
+  color: var(--cc-color-text-muted);
+}
+
+.form-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 500;
+  font-size: 0.92rem;
+}
+
+.form-check input {
+  width: auto;
+}
+
+.admin-form__toggles {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--cc-space-4);
+}
+
+.admin-form__current-image {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.4rem;
+}
+
+.admin-form__current-image img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: var(--cc-radius-md);
+  border: 1px solid var(--cc-color-border);
+}
+
+.admin-form__actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: var(--cc-space-5);
+}
+
+@media (max-width: 640px) {
+  .admin-form__grid {
+    grid-template-columns: 1fr;
+  }
+}

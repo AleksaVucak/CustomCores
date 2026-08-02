@@ -168,7 +168,7 @@ $configuredPrice = $basePrice + $defaultDelta;
 $productName = $product !== null ? (string) $product['name'] : 'Product';
 $categoryName = $product !== null ? (string) ($product['category_name'] ?? '') : '';
 $productImageUrl = $product !== null
-    ? customcore_image_url($product['image_path'] ?? null)
+    ? customcore_product_image_url($product['image_path'] ?? null)
     : null;
 
 $pageTitle = $productName . ' — CustomCore';

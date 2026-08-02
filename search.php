@@ -171,7 +171,7 @@ require_once __DIR__ . '/includes/header.php';
                     $stock = (int) ($product['stock_quantity'] ?? 0);
                     $isFeatured = !empty($product['is_featured']);
                     $inStock = $stock > 0;
-                    $imageUrl = customcore_image_url($product['image_path'] ?? null);
+                    $imageUrl = customcore_product_image_url($product['image_path'] ?? null);
                     ?>
                     <article class="card product-card">
                         <?php if ($imageUrl !== null) : ?>

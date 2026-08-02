@@ -128,7 +128,7 @@ require_once __DIR__ . '/includes/header.php';
                     $short = (string) ($product['short_description'] ?? '');
                     $specCpu = (string) ($product['spec_cpu'] ?? '');
                     $specGpu = (string) ($product['spec_gpu'] ?? '');
-                    $imageUrl = customcore_image_url($product['image_path'] ?? null);
+                    $imageUrl = customcore_product_image_url($product['image_path'] ?? null);
                     ?>
                     <article class="card product-card">
                         <?php if ($imageUrl !== null) : ?>

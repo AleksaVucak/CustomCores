@@ -51,7 +51,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `database/` | Schema, seeds, create-admin script | 2.x |
 | `docs/` | Business case, rubric, sitemap, wireframes, ER design, media credits, image prompts, guides | 0.x–12.x, 8.7 |
 | `help/` | Static Help + training HTML (`pc-builder.html` shipped in 5.9; full wiki in 11.x) | 5.9, 11.x |
-| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, admin, admin-nav, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 14.x |
+| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, admin, admin-nav, admin-products, admin-product-form, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
 | `uploads/products/` | Product images uploaded by admin | 9.2 |
 
@@ -79,6 +79,16 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 ---
 
 ## 5. Status
+
+**Commit 9.2 complete — administrator product management.**  
+`admin/products.php` (list/search/filter + enable/disable toggle),
+`admin/product-add.php`, and `admin/product-edit.php` provide full catalogue CRUD
+behind `customcore_require_admin()`. Logic lives in `includes/admin-products.php`
+(validation, unique slugs, list queries, prepared create/update, soft
+enable/disable, and secure `finfo`-checked image uploads to `uploads/products/`);
+the add/edit forms share `includes/admin-product-form.php`. New
+`customcore_product_image_url()` renders uploaded images beside seeded assets on the
+catalogue, product, search, wishlist, and homepage pages. All writes use CSRF + PRG.
 
 **Commit 9.1 complete — administrator dashboard.**  
 `admin/index.php` shows live MySQL counts, attention alerts, recent activity, and a
@@ -113,4 +123,4 @@ OpenStreetMap map (`assets/js/store-map.js`, data-driven from `config/app.php`) 
 always-visible `<address>`, hours, and storefront photo that stay usable without JavaScript.
 Leaflet CSS/JS load only on this page via the shared header/footer.
 
-Next: **Commit 9.2** — administrator product management.
+Next: **Commit 9.3** — administrator product options management.

@@ -354,7 +354,7 @@ require_once __DIR__ . '/includes/header.php';
                         $pid = $item['product_id'];
                         $inStock = $item['is_active'] && $item['stock_quantity'] > 0;
                         $productHref = customcore_url('product.php?id=' . $pid);
-                        $imageUrl = customcore_image_url($item['image_path'] ?? null);
+                        $imageUrl = customcore_product_image_url($item['image_path'] ?? null);
                         ?>
                         <li class="wishlist-card">
                             <?php if ($imageUrl !== null) : ?>
