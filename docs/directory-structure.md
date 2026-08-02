@@ -51,7 +51,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `database/` | Schema, seeds, create-admin script | 2.x |
 | `docs/` | Business case, rubric, sitemap, wireframes, ER design, media credits, image prompts, guides | 0.x–12.x, 8.7 |
 | `help/` | Static Help + training HTML (`pc-builder.html` shipped in 5.9; full wiki in 11.x) | 5.9, 11.x |
-| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, admin, admin-nav, admin-products, admin-product-form, admin-options, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 14.x |
+| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, admin, admin-nav, admin-products, admin-product-form, admin-options, admin-compatibility, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
 | `uploads/products/` | Product images uploaded by admin | 9.2 |
 
@@ -79,6 +79,14 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 ---
 
 ## 5. Status
+
+**Commit 9.4 complete — administrator compatibility metadata management.**  
+`admin/compatibility.php` edits the metadata behind the PC Builder's checks: component
+attributes (only fields relevant to each category, with enable/disable) and the seven
+compatibility rules (name/description/severity/active; JSON config read-only). Logic in
+`includes/admin-compatibility.php` writes only a whitelisted set of columns via prepared
+statements; CSRF + PRG throughout. The `compatibility_rules` seed was (re)imported so the
+builder runs its checks.
 
 **Commit 9.3 complete — administrator product options management.**  
 `admin/product-options.php` manages a product's configurable options (RAM, Storage,
@@ -131,4 +139,4 @@ OpenStreetMap map (`assets/js/store-map.js`, data-driven from `config/app.php`) 
 always-visible `<address>`, hours, and storefront photo that stay usable without JavaScript.
 Leaflet CSS/JS load only on this page via the shared header/footer.
 
-Next: **Commit 9.4** — administrator compatibility metadata management.
+Next: **Commit 9.5** — administrator order management.

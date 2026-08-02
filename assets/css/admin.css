@@ -626,3 +626,63 @@
 .admin-options__picker h2 {
   margin-top: 0;
 }
+
+/* ---- Compatibility metadata (Commit 9.4) ------------------------------- */
+
+.admin-compat__section {
+  margin: 0 0 var(--cc-space-5);
+}
+
+.admin-compat__section h2 {
+  margin: 0 0 var(--cc-space-3);
+}
+
+.admin-compat__editor {
+  margin: 0 0 var(--cc-space-5);
+  padding: var(--cc-space-5);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+}
+
+.admin-compat__editor > h2 {
+  margin-top: 0;
+}
+
+.admin-table--compat {
+  width: 100%;
+  min-width: 720px;
+}
+
+.admin-table--rules {
+  width: 100%;
+  min-width: 520px;
+}
+
+.admin-compat__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admin-compat__chip {
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-sm);
+  background: var(--cc-color-bg-muted);
+  font-size: 0.8rem;
+}
+
+.admin-compat__chip-key {
+  color: var(--cc-color-text-muted);
+}
+
+.admin-compat__config {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  white-space: pre;
+  overflow-x: auto;
+}

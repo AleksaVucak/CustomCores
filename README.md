@@ -36,6 +36,27 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 9.4 complete** — administrator compatibility metadata management.
+
+`admin/compatibility.php` lets an admin edit the simplified compatibility metadata
+the PC&nbsp;Builder relies on, in two panels. **Component attributes**: each builder
+part is edited through a form that shows only the fields relevant to its category
+(e.g. CPU → socket/power/scores, Case → form factor/GPU & cooler clearance/supported
+cooling), with per-type validation and an enable/disable toggle that controls
+whether the part appears in the builder. **Compatibility rules**: the seven seeded
+checks can be renamed, re-described, switched between error/warning severity, and
+enabled/disabled; each rule's JSON wiring is shown read-only so the evaluator stays
+intact. Logic lives in `includes/admin-compatibility.php`, which writes only a fixed
+allow-list of columns (user input never names a column) via prepared statements, all
+behind CSRF + Post/Redirect/Get. Verified end-to-end against live MySQL that edits
+persist, non-edited columns (name/price) are untouched, and the builder's checker
+correctly reports a socket mismatch as incompatible afterward.
+
+> Setup note: this database's `compatibility_rules` table was empty, so the builder
+> was running zero checks. The canonical seven rules from
+> `database/seed-compatibility.sql` (idempotent; touches only that table) have been
+> (re)imported so the builder and this admin page work as intended.
+
 **Commit 9.3 complete** — administrator product options management.
 
 `admin/product-options.php` lets an admin manage the configurable choices buyers
@@ -159,7 +180,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Stage 8 complete.** Next: **Commit 9.4** — administrator compatibility metadata management.
+**Stage 8 complete.** Next: **Commit 9.5** — administrator order management.
 
 ## Security notes
 
