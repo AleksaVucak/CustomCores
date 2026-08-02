@@ -44,14 +44,14 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `api/` | Builder price, compatibility, search, chart data | 5.x, 8.x, 9.x |
 | `assets/css/` | External CSS (`main.css`, later `admin.css`, `print.css`) | 1.5 |
 | `assets/themes/` | RGB Gaming, Minimal Professional, Cyber Grid | 10.x |
-| `assets/js/` | External JS (`main.js`, builder, cart, checkout, reviews, contact, `store-map.js`, validation, charts) | 1.6, 8.4 |
+| `assets/js/` | External JS (`main.js`, builder, cart, checkout, reviews, contact, `store-map.js`, `catalogue-chart.js`, validation, charts) | 1.6, 8.4, 8.5 |
 | `assets/images/` | ≥ 20 documented images | 8.1 |
 | `assets/media/` | ≥ 3 video/audio items + captions | 8.2 |
 | `config/` | `database.example.php`, `app.php`; real `database.php` gitignored | 1.2–1.3 |
 | `database/` | Schema, seeds, create-admin script | 2.x |
 | `docs/` | Business case, rubric, sitemap, wireframes, ER design, guides | 0.x–12.x |
 | `help/` | Static Help + training HTML (`pc-builder.html` shipped in 5.9; full wiki in 11.x) | 5.9, 11.x |
-| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 14.x |
+| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
 | `uploads/products/` | Product images uploaded by admin | 9.2 |
 
@@ -80,11 +80,17 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
+**Commit 8.5 complete — public catalogue data visualization.**  
+`catalogue.php` charts active products per performance tier from live MySQL data.
+`includes/catalogue-stats.php` computes the counts/price ranges and the Chart.js payload;
+`assets/js/catalogue-chart.js` draws the bar chart from a `data-catalogue-chart` attribute
+(Chart.js loads only on this page via `$loadCatalogueChart`). An accessible data table is
+rendered server-side beside the canvas as the no-JS source of truth.
+
 **Commit 8.4 complete — interactive store & service map.**  
 `store-locations.php` renders the fictional CustomCore Campus Service Desk with a Leaflet +
 OpenStreetMap map (`assets/js/store-map.js`, data-driven from `config/app.php`) plus an
 always-visible `<address>`, hours, and storefront photo that stay usable without JavaScript.
 Leaflet CSS/JS load only on this page via the shared header/footer.
 
-Next: **Commit 8.5** — public catalogue visualizations (Chart.js from MySQL/seed data),
-then accessible fallbacks pass (8.6) and media credits (8.7).
+Next: **Commit 8.6** — accessibility & multimedia polish pass, then media credits (8.7).

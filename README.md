@@ -34,6 +34,21 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 8.5 complete** — public catalogue data visualization from live MySQL.
+
+`catalogue.php` opens with a "Catalogue at a glance" section that charts the
+number of active products in each performance tier. Counts and price ranges are
+computed server-side from the database by `customcore_catalogue_tier_stats()`
+(in `includes/catalogue-stats.php`) — never hard-coded — so the graph always
+reflects real seeded/administered data. The payload is JSON-encoded into a
+`data-catalogue-chart` attribute and drawn by `assets/js/catalogue-chart.js`
+using Chart.js (loaded from CDN only on this page via `$loadCatalogueChart`). An
+accessible data table listing each tier's count and price range is rendered
+server-side beside the canvas and remains the source of truth if Chart.js fails
+to load. A separate `try/catch` keeps a stats failure from blanking the product
+grid. Verified in a real browser: four bars (Budget/Esports/High-Performance/
+Creator, 5 each) render and the table mirrors the same figures.
+
 **Commit 8.4 complete** — interactive store & service map with text fallback.
 
 `store-locations.php` shows the fictional CustomCore Campus Service Desk. An
@@ -66,7 +81,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-Next: **Stage 8.5** — public catalogue data visualization (chart from MySQL/seed data).
+Next: **Stage 8.6** — accessibility & multimedia polish pass.
 
 ## Security notes
 

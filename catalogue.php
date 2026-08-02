@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/database.php';
+require_once __DIR__ . '/includes/catalogue-stats.php';
 
 $pageTitle = 'Catalogue — CustomCore Gaming PCs';
 $pageDescription = 'Browse all CustomCore configurable prebuilt gaming and creator PCs with filters and sorting.';
@@ -175,6 +176,40 @@ try {
 $productCount = count($products);
 
 // ---------------------------------------------------------------------------
+// Public catalogue visualization (Commit 8.5)
+// Active products per performance tier, computed live from MySQL. A separate
+// try/catch keeps a stats failure from blanking the product grid.
+// ---------------------------------------------------------------------------
+
+$tierStats = [];
+$totalActiveProducts = 0;
+$chartError = null;
+$chartJson = '';
+
+try {
+    $tierStats = customcore_catalogue_tier_stats(customcore_pdo());
+    foreach ($tierStats as $tier) {
+        $totalActiveProducts += (int) $tier['active_count'];
+    }
+
+    if ($tierStats !== []) {
+        $payload = customcore_catalogue_chart_payload($tierStats);
+        $encoded = json_encode(
+            $payload,
+            JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+        );
+        $chartJson = $encoded !== false ? $encoded : '';
+    }
+} catch (Throwable $exception) {
+    $chartError = customcore_is_debug()
+        ? $exception->getMessage()
+        : 'Catalogue chart data is temporarily unavailable.';
+}
+
+$showCatalogueChart = $chartJson !== '' && $totalActiveProducts > 0;
+$loadCatalogueChart = $showCatalogueChart;
+
+// ---------------------------------------------------------------------------
 // Helper: build a filter URL preserving current state
 // ---------------------------------------------------------------------------
 
@@ -231,6 +266,81 @@ require_once __DIR__ . '/includes/header.php';
             Use filters, sorting, and search to find your system.
         </p>
     </header>
+
+    <?php if ($showCatalogueChart) : ?>
+        <section class="catalogue-insights" aria-labelledby="catalogue-insights-heading">
+            <div class="section-heading">
+                <h2 id="catalogue-insights-heading">Catalogue at a glance</h2>
+                <p>
+                    CustomCore organizes its
+                    <strong><?php echo customcore_e((string) $totalActiveProducts); ?></strong>
+                    active systems into <?php echo customcore_e((string) count($tierStats)); ?>
+                    performance tiers, so you can compare options within a category
+                    without one section overwhelming the rest of the catalogue.
+                </p>
+            </div>
+
+            <div
+                class="catalogue-chart"
+                data-catalogue-chart="<?php echo customcore_e($chartJson); ?>"
+            >
+                <div class="catalogue-chart__canvas-wrap">
+                    <canvas
+                        id="tier-product-chart"
+                        class="catalogue-chart__canvas"
+                        role="img"
+                        aria-label="Bar chart of active products by performance tier. The same figures are listed in the table below."
+                    ></canvas>
+                </div>
+
+                <div class="catalogue-chart__summary">
+                    <h3 class="catalogue-chart__summary-title">Active products by performance tier</h3>
+                    <table class="catalogue-chart__table">
+                        <caption class="visually-hidden">
+                            Number of active products and price range in each performance tier.
+                        </caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Tier</th>
+                                <th scope="col">Active products</th>
+                                <th scope="col">Price range</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($tierStats as $tier) : ?>
+                                <?php
+                                $tierUrl = customcore_url('catalogue.php?category=' . rawurlencode((string) $tier['slug']));
+                                $priceRange = 'No active products';
+                                if ($tier['active_count'] > 0 && $tier['min_price'] !== null) {
+                                    if ($tier['max_price'] !== null && $tier['max_price'] > $tier['min_price']) {
+                                        $priceRange = '$' . number_format((float) $tier['min_price'], 0)
+                                            . ' – $' . number_format((float) $tier['max_price'], 0);
+                                    } else {
+                                        $priceRange = 'From $' . number_format((float) $tier['min_price'], 0);
+                                    }
+                                }
+                                ?>
+                                <tr>
+                                    <th scope="row">
+                                        <a href="<?php echo customcore_e($tierUrl); ?>">
+                                            <?php echo customcore_e((string) $tier['name']); ?>
+                                        </a>
+                                    </th>
+                                    <td><?php echo customcore_e((string) $tier['active_count']); ?></td>
+                                    <td><?php echo customcore_e($priceRange); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <p class="catalogue-chart__note">
+                        Figures are read live from the CustomCore catalogue database.
+                    </p>
+                </div>
+            </div>
+        </section>
+    <?php elseif ($chartError !== null && customcore_is_debug()) : ?>
+        <p class="flash flash--warning" role="status"><?php echo customcore_e($chartError); ?></p>
+    <?php endif; ?>
 
     <form class="search-form search-form--compact" method="get" action="<?php echo customcore_e(customcore_url('search.php')); ?>" role="search">
         <label class="search-form__label" for="catalogue-search-q">Search the catalogue</label>

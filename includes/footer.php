@@ -11,6 +11,7 @@
  *   Loads assets/js/contact.js when $currentPage is "contact" (Commit 7.5).
  *   Loads Leaflet CDN + assets/js/store-map.js when $currentPage is "locations" (Commit 8.4).
  *   Loads Chart.js CDN + assets/js/charts.js when $loadCharts is truthy (Commit 5.8).
+ *   Loads Chart.js CDN + assets/js/catalogue-chart.js when $loadCatalogueChart is truthy (Commit 8.5).
  *
  * Included after page body content on each layout-using page.
  */
@@ -69,9 +70,14 @@ $year = date('Y');
         ></script>
         <script src="<?php echo customcore_e(customcore_url('assets/js/store-map.js')); ?>" defer></script>
     <?php endif; ?>
-    <?php if (!empty($loadCharts)) : ?>
+    <?php if (!empty($loadCharts) || !empty($loadCatalogueChart)) : ?>
         <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+    <?php endif; ?>
+    <?php if (!empty($loadCharts)) : ?>
         <script src="<?php echo customcore_e(customcore_url('assets/js/charts.js')); ?>" defer></script>
+    <?php endif; ?>
+    <?php if (!empty($loadCatalogueChart)) : ?>
+        <script src="<?php echo customcore_e(customcore_url('assets/js/catalogue-chart.js')); ?>" defer></script>
     <?php endif; ?>
 </body>
 </html>

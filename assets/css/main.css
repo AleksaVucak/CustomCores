@@ -2520,6 +2520,90 @@ textarea[aria-invalid="true"]:focus-visible {
 }
 
 /* ==========================================================================
+   Public catalogue visualization (Commit 8.5)
+   Chart.js bar chart from live MySQL data + accessible data table.
+   ========================================================================== */
+
+.catalogue-insights {
+  margin-bottom: var(--cc-space-5);
+  padding: var(--cc-space-5);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+  box-shadow: var(--cc-shadow-sm);
+}
+
+.catalogue-chart {
+  display: grid;
+  gap: var(--cc-space-5);
+}
+
+.catalogue-chart__canvas-wrap {
+  position: relative;
+  width: 100%;
+  min-height: 260px;
+  height: 320px;
+}
+
+.catalogue-chart__canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.catalogue-chart__summary-title {
+  margin: 0 0 var(--cc-space-3);
+  font-size: 1.05rem;
+}
+
+.catalogue-chart__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.catalogue-chart__table th,
+.catalogue-chart__table td {
+  padding: 0.5rem 0.6rem;
+  text-align: left;
+  border-bottom: 1px solid var(--cc-color-border);
+}
+
+.catalogue-chart__table thead th {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--cc-color-text-muted);
+}
+
+.catalogue-chart__table tbody th {
+  font-weight: 600;
+}
+
+.catalogue-chart__table tbody th a {
+  color: var(--cc-color-accent);
+  text-decoration: none;
+}
+
+.catalogue-chart__table tbody th a:hover,
+.catalogue-chart__table tbody th a:focus-visible {
+  text-decoration: underline;
+}
+
+.catalogue-chart__note {
+  margin: var(--cc-space-3) 0 0;
+  font-size: 0.85rem;
+  color: var(--cc-color-text-muted);
+}
+
+@media (min-width: 900px) {
+  .catalogue-chart {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    align-items: center;
+  }
+}
+
+/* ==========================================================================
    Store & service location (Commit 8.4)
    Interactive Leaflet map + always-visible text address fallback.
    ========================================================================== */
