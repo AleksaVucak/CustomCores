@@ -438,11 +438,26 @@ require_once __DIR__ . '/includes/header.php';
                             $isFeatured = !empty($product['is_featured']);
                             $inStock = $stock > 0;
                             $compareInputId = 'compare-product-' . $productId;
+                            $imageUrl = customcore_image_url($product['image_path'] ?? null);
                             ?>
                             <article class="card product-card">
-                                <div class="product-card__media" aria-hidden="true">
-                                    <span class="product-card__media-label">PC</span>
-                                </div>
+                                <?php if ($imageUrl !== null) : ?>
+                                    <a class="product-card__media" href="<?php echo customcore_e($productUrl); ?>">
+                                        <img
+                                            class="product-card__image"
+                                            src="<?php echo customcore_e($imageUrl); ?>"
+                                            alt="<?php echo customcore_e($productName); ?>"
+                                            loading="lazy"
+                                            decoding="async"
+                                            width="640"
+                                            height="480"
+                                        >
+                                    </a>
+                                <?php else : ?>
+                                    <div class="product-card__media product-card__media--placeholder" aria-hidden="true">
+                                        <span class="product-card__media-label">PC</span>
+                                    </div>
+                                <?php endif; ?>
                                 <?php if ($isFeatured) : ?>
                                     <p class="product-card__badge">Featured</p>
                                 <?php endif; ?>

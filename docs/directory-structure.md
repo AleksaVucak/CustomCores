@@ -16,7 +16,7 @@ customcore/
 │   ├── css/               # Base, admin, and print stylesheets
 │   ├── themes/            # Three switchable site themes (Stage 10)
 │   ├── js/                # External JavaScript
-│   ├── images/            # Copyright-safe images (Stage 8)
+│   ├── images/            # Copyright-safe images: products/, hero/, categories/, ui/, media/, og/, map/ (Stage 8.1)
 │   └── media/             # Video/audio learning items (Stage 8)
 ├── config/                # App and database configuration (Commit 1.2+)
 ├── database/              # schema.sql, seeds, admin setup (Stage 2)

@@ -308,6 +308,18 @@ require_once __DIR__ . '/includes/header.php';
                 </div>
             <?php elseif ($items === []): ?>
                 <div class="wishlist-empty">
+                    <?php $emptyWishlistImage = customcore_image_url('assets/images/ui/empty-wishlist.jpg'); ?>
+                    <?php if ($emptyWishlistImage !== null) : ?>
+                        <img
+                            class="wishlist-empty__image"
+                            src="<?php echo customcore_e($emptyWishlistImage); ?>"
+                            alt=""
+                            loading="lazy"
+                            decoding="async"
+                            width="320"
+                            height="240"
+                        >
+                    <?php endif; ?>
                     <p>Your wishlist is empty.</p>
                     <div class="wishlist-empty__actions">
                         <a class="button button--primary" href="<?php echo customcore_e(customcore_url('catalogue.php')); ?>">
@@ -342,8 +354,22 @@ require_once __DIR__ . '/includes/header.php';
                         $pid = $item['product_id'];
                         $inStock = $item['is_active'] && $item['stock_quantity'] > 0;
                         $productHref = customcore_url('product.php?id=' . $pid);
+                        $imageUrl = customcore_image_url($item['image_path'] ?? null);
                         ?>
                         <li class="wishlist-card">
+                            <?php if ($imageUrl !== null) : ?>
+                                <a class="wishlist-card__media" href="<?php echo customcore_e($productHref); ?>">
+                                    <img
+                                        class="wishlist-card__image"
+                                        src="<?php echo customcore_e($imageUrl); ?>"
+                                        alt="<?php echo customcore_e($item['name']); ?>"
+                                        loading="lazy"
+                                        decoding="async"
+                                        width="480"
+                                        height="360"
+                                    >
+                                </a>
+                            <?php endif; ?>
                             <div class="wishlist-card__body">
                                 <h2 class="wishlist-card__name">
                                     <a href="<?php echo customcore_e($productHref); ?>">

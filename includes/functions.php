@@ -379,6 +379,45 @@ function customcore_url(string $path = ''): string
 }
 
 /**
+ * Resolve a project image path to a browser URL, but only if the file exists.
+ *
+ * Guards against path traversal and unexpected file types by requiring the
+ * path to live under assets/images/ with an image extension. Returns null when
+ * the path is empty, unsafe, or the file is not present on disk, so callers can
+ * fall back to a placeholder instead of rendering a broken <img>.
+ *
+ * @param string|null $path Path relative to the project root (e.g. "assets/images/products/corestart-entry.jpg").
+ * @return string|null Resolvable URL for the current script depth, or null.
+ */
+function customcore_image_url(?string $path): ?string
+{
+    if ($path === null) {
+        return null;
+    }
+
+    $path = trim(str_replace('\\', '/', $path));
+    $path = ltrim($path, '/');
+    if ($path === '') {
+        return null;
+    }
+
+    if (str_contains($path, '..') || strpbrk($path, "\r\n\t\0") !== false) {
+        return null;
+    }
+
+    if (!preg_match('#^assets/images/[A-Za-z0-9/_-]+\.(?:jpe?g|png|webp|gif|svg)$#i', $path)) {
+        return null;
+    }
+
+    $fullPath = dirname(__DIR__) . '/' . $path;
+    if (!is_file($fullPath)) {
+        return null;
+    }
+
+    return customcore_url($path);
+}
+
+/**
  * Whether the current page matches a navigation key.
  *
  * Pages set $currentPage before including the header (e.g. "home", "about").

@@ -54,6 +54,16 @@ if (!isset($currentPage) || !is_string($currentPage)) {
     <meta name="description" content="<?php echo customcore_e($pageDescription); ?>">
     <meta name="keywords" content="<?php echo customcore_e($pageKeywords); ?>">
     <title><?php echo customcore_e($pageTitle); ?></title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="<?php echo customcore_e($siteName); ?>">
+    <meta property="og:title" content="<?php echo customcore_e($pageTitle); ?>">
+    <meta property="og:description" content="<?php echo customcore_e($pageDescription); ?>">
+    <?php $ogImage = customcore_image_url('assets/images/og/social-share.jpg'); ?>
+    <?php if ($ogImage !== null) : ?>
+        <meta property="og:image" content="<?php echo customcore_e($ogImage); ?>">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="<?php echo customcore_e($ogImage); ?>">
+    <?php endif; ?>
     <!-- Favicon and expanded SEO metadata arrive in Stage 14 -->
     <link rel="stylesheet" href="<?php echo customcore_e(customcore_url('assets/css/main.css')); ?>">
     <!-- Active theme stylesheet is loaded from MySQL settings in Stage 10 -->

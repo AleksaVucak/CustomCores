@@ -34,18 +34,24 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
-**Commit 7.6 complete** — consultation request history.
+**Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-`consultation-history.php` lists the logged-in customer's consultation requests
-with status, the details they submitted, any administrator response, and secure
-links to download their own attachments. Ownership is enforced on every query —
-a foreign request or attachment ID is indistinguishable from a missing one.
-Attachment downloads flow through `consultation-attachment.php`, which
-re-checks ownership, guards the path, and streams the file as a download.
+Thirty-three studio-style, logo-free images live under `assets/images/`
+(`products/`, `hero/`, `categories/`, `ui/`, `media/`, `og/`, `map/`). Product
+photos render on the homepage, catalogue, search, product detail, and wishlist
+cards; the homepage hero and PC Builder header use background art; performance
+tiers show category banners; and empty cart/wishlist states use friendly
+illustrations. A new helper, `customcore_image_url()`, resolves a path only when
+the file physically exists under `assets/images/` (and passes a strict
+traversal/extension check), so any missing asset gracefully falls back to the
+original gradient placeholder instead of a broken image. Every content image has
+descriptive `alt` text, `loading`/`decoding` hints, and explicit dimensions to
+avoid layout shift. A social-share (`og:image`) is now emitted from the shared
+header.
 
 **Stage 7 complete** — Wishlist · Reviews · Consultations (+ attachments) · Contact · History.
 
-Next: **Stage 8** — multimedia, map, and visualizations.
+Next: **Stage 8.2** — video/audio learning-centre media.
 
 ## Security notes
 

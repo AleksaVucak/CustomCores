@@ -408,6 +408,18 @@ require_once __DIR__ . '/includes/header.php';
 
             <?php if ($cartItems === []): ?>
                 <div class="cart-empty" role="status">
+                    <?php $emptyCartImage = customcore_image_url('assets/images/ui/empty-cart.jpg'); ?>
+                    <?php if ($emptyCartImage !== null) : ?>
+                        <img
+                            class="cart-empty__image"
+                            src="<?php echo customcore_e($emptyCartImage); ?>"
+                            alt=""
+                            loading="lazy"
+                            decoding="async"
+                            width="320"
+                            height="240"
+                        >
+                    <?php endif; ?>
                     <p class="cart-empty__message">Your cart is empty.</p>
                     <div class="cart-empty__actions">
                         <a class="button" href="<?php echo customcore_e(customcore_url('catalogue.php')); ?>">

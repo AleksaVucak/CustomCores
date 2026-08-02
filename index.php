@@ -122,11 +122,26 @@ require_once __DIR__ . '/includes/header.php';
                     $short = (string) ($product['short_description'] ?? '');
                     $specCpu = (string) ($product['spec_cpu'] ?? '');
                     $specGpu = (string) ($product['spec_gpu'] ?? '');
+                    $imageUrl = customcore_image_url($product['image_path'] ?? null);
                     ?>
                     <article class="card product-card">
-                        <div class="product-card__media" aria-hidden="true">
-                            <span class="product-card__media-label">PC</span>
-                        </div>
+                        <?php if ($imageUrl !== null) : ?>
+                            <a class="product-card__media" href="<?php echo customcore_e($productUrl); ?>">
+                                <img
+                                    class="product-card__image"
+                                    src="<?php echo customcore_e($imageUrl); ?>"
+                                    alt="<?php echo customcore_e($productName); ?>"
+                                    loading="lazy"
+                                    decoding="async"
+                                    width="640"
+                                    height="480"
+                                >
+                            </a>
+                        <?php else : ?>
+                            <div class="product-card__media product-card__media--placeholder" aria-hidden="true">
+                                <span class="product-card__media-label">PC</span>
+                            </div>
+                        <?php endif; ?>
                         <h3 class="card__title">
                             <a href="<?php echo customcore_e($productUrl); ?>">
                                 <?php echo customcore_e($productName); ?>
@@ -180,9 +195,23 @@ require_once __DIR__ . '/includes/header.php';
                     $catSlug = (string) ($category['slug'] ?? '');
                     $catDesc = (string) ($category['description'] ?? '');
                     $catUrl = customcore_url('catalogue.php?category=' . rawurlencode($catSlug));
+                    $catImageUrl = customcore_image_url('assets/images/categories/' . $catSlug . '.jpg');
                     ?>
                     <li class="tier-list__item">
                         <a class="tier-card" href="<?php echo customcore_e($catUrl); ?>">
+                            <?php if ($catImageUrl !== null) : ?>
+                                <span class="tier-card__media">
+                                    <img
+                                        class="tier-card__image"
+                                        src="<?php echo customcore_e($catImageUrl); ?>"
+                                        alt="<?php echo customcore_e($catName . ' tier'); ?>"
+                                        loading="lazy"
+                                        decoding="async"
+                                        width="480"
+                                        height="300"
+                                    >
+                                </span>
+                            <?php endif; ?>
                             <h3 class="tier-card__title"><?php echo customcore_e($catName); ?></h3>
                             <?php if ($catDesc !== '') : ?>
                                 <p class="tier-card__text"><?php echo customcore_e($catDesc); ?></p>

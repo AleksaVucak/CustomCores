@@ -167,6 +167,9 @@ $configuredPrice = $basePrice + $defaultDelta;
 
 $productName = $product !== null ? (string) $product['name'] : 'Product';
 $categoryName = $product !== null ? (string) ($product['category_name'] ?? '') : '';
+$productImageUrl = $product !== null
+    ? customcore_image_url($product['image_path'] ?? null)
+    : null;
 
 $pageTitle = $productName . ' — CustomCore';
 $pageDescription = $product !== null
@@ -205,9 +208,23 @@ require_once __DIR__ . '/includes/header.php';
         </p>
 
         <header class="product-detail__header">
-            <div class="product-detail__media" aria-hidden="true">
-                <span class="product-card__media-label">PC</span>
-            </div>
+            <?php if ($productImageUrl !== null) : ?>
+                <div class="product-detail__media">
+                    <img
+                        class="product-detail__image"
+                        src="<?php echo customcore_e($productImageUrl); ?>"
+                        alt="<?php echo customcore_e($productName); ?>"
+                        loading="eager"
+                        decoding="async"
+                        width="960"
+                        height="720"
+                    >
+                </div>
+            <?php else : ?>
+                <div class="product-detail__media product-detail__media--placeholder" aria-hidden="true">
+                    <span class="product-card__media-label">PC</span>
+                </div>
+            <?php endif; ?>
             <div class="product-detail__info">
                 <h1 id="product-heading"><?php echo customcore_e($productName); ?></h1>
                 <p class="product-detail__brand">
