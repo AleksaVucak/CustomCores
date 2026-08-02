@@ -1,0 +1,304 @@
+/**
+ * CustomCore — Administrator area styles (Commit 9.1).
+ *
+ * Loaded only on admin pages via $loadAdminCss in includes/header.php.
+ * Builds on the shared design tokens from main.css.
+ */
+
+/* ---- Admin secondary nav ------------------------------------------------ */
+
+.admin-nav {
+  margin: 0 0 var(--cc-space-5);
+  padding: var(--cc-space-3);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+}
+
+.admin-nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admin-nav__link {
+  display: inline-block;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--cc-radius-sm);
+  color: var(--cc-color-text);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.admin-nav__link:hover,
+.admin-nav__link:focus-visible {
+  background: var(--cc-color-accent-soft);
+  color: var(--cc-color-accent-hover);
+}
+
+.admin-nav__link.is-active {
+  background: var(--cc-color-accent);
+  color: #fff;
+}
+
+.admin-nav__link--soon {
+  color: var(--cc-color-text-muted);
+  font-weight: 500;
+  cursor: default;
+  opacity: 0.72;
+}
+
+/* ---- Alerts ------------------------------------------------------------- */
+
+.admin-alerts {
+  margin-bottom: var(--cc-space-5);
+}
+
+.admin-alerts__list {
+  display: grid;
+  gap: var(--cc-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admin-alerts__item {
+  padding: var(--cc-space-3) var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-left-width: 4px;
+  border-radius: var(--cc-radius-md);
+  background: var(--cc-color-bg-elevated);
+}
+
+.admin-alerts__item--warning {
+  border-left-color: var(--cc-color-warning);
+  background: rgba(184, 134, 11, 0.06);
+}
+
+.admin-alerts__item--info {
+  border-left-color: var(--cc-color-accent);
+  background: rgba(15, 122, 110, 0.05);
+}
+
+.admin-alerts__title {
+  margin: 0 0 0.25rem;
+  font-weight: 700;
+}
+
+.admin-alerts__detail,
+.admin-alerts__action {
+  margin: 0;
+  color: var(--cc-color-text-muted);
+  font-size: 0.95rem;
+}
+
+.admin-alerts__action {
+  margin-top: 0.45rem;
+}
+
+/* ---- Stat cards --------------------------------------------------------- */
+
+.admin-stats {
+  margin-bottom: var(--cc-space-5);
+}
+
+.admin-stats__grid {
+  display: grid;
+  gap: var(--cc-space-3);
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.admin-stat {
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+  box-shadow: var(--cc-shadow-sm);
+}
+
+.admin-stat__label {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--cc-color-text-muted);
+}
+
+.admin-stat__value {
+  margin: 0.35rem 0;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--cc-color-text);
+}
+
+.admin-stat__meta {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--cc-color-text-muted);
+}
+
+/* ---- Status summary ----------------------------------------------------- */
+
+.admin-summary {
+  margin-bottom: var(--cc-space-5);
+}
+
+.admin-summary__grid {
+  display: grid;
+  gap: var(--cc-space-4);
+}
+
+.admin-summary__card {
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+}
+
+.admin-summary__card h3 {
+  margin: 0 0 var(--cc-space-3);
+  font-size: 1.05rem;
+}
+
+.admin-summary__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admin-summary__list li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--cc-space-3);
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--cc-color-border);
+  font-size: 0.95rem;
+}
+
+.admin-summary__list li:last-child {
+  border-bottom: 0;
+}
+
+.admin-summary__list span {
+  color: var(--cc-color-text-muted);
+}
+
+/* ---- Activity panels ---------------------------------------------------- */
+
+.admin-activity {
+  margin-bottom: var(--cc-space-5);
+}
+
+.admin-activity__grid {
+  display: grid;
+  gap: var(--cc-space-4);
+}
+
+.admin-activity__panel {
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+}
+
+.admin-activity__panel h3 {
+  margin: 0 0 var(--cc-space-3);
+  font-size: 1.05rem;
+}
+
+.admin-activity__empty {
+  margin: 0;
+  color: var(--cc-color-text-muted);
+  font-size: 0.95rem;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 0.5rem 0.4rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--cc-color-border);
+}
+
+.admin-table thead th {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--cc-color-text-muted);
+}
+
+.admin-table__sub {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.8rem;
+  color: var(--cc-color-text-muted);
+  font-weight: 400;
+}
+
+/* ---- Tool cards --------------------------------------------------------- */
+
+.admin-tools__intro {
+  max-width: 60ch;
+  color: var(--cc-color-text-muted);
+}
+
+.admin-tools__grid {
+  display: grid;
+  gap: var(--cc-space-3);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.admin-tool {
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+}
+
+.admin-tool--soon {
+  opacity: 0.78;
+  background: var(--cc-color-bg-muted);
+}
+
+.admin-tool__title {
+  margin: 0 0 0.4rem;
+  font-size: 1.05rem;
+}
+
+.admin-tool__desc {
+  margin: 0 0 var(--cc-space-3);
+  color: var(--cc-color-text-muted);
+  font-size: 0.92rem;
+}
+
+.admin-tool__meta {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--cc-color-text-muted);
+}
+
+.admin-tool__action {
+  margin: 0;
+}
+
+@media (min-width: 800px) {
+  .admin-summary__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .admin-activity__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

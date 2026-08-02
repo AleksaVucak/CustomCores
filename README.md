@@ -36,6 +36,20 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 9.1 complete** — administrator dashboard from live MySQL.
+
+`admin/index.php` is now a real operations dashboard (still behind
+`customcore_require_admin()`). Counts for products, orders, users, reviews,
+consultations, contact inbox, and stock warnings are computed by
+`includes/admin.php` from the database — never hard-coded. Attention alerts,
+recent activity tables (orders, pending reviews, open consultations, low stock),
+and a Stage 9–13 tool registry are included. Unavailable tools stay unlinked
+(“Coming in commit …”) so the nav never 404s; later commits light up
+automatically when their PHP files land. Shared chrome: `includes/admin-nav.php`
+and `assets/css/admin.css` (loaded via `$loadAdminCss`). Verified: guests are
+redirected to login; an administrator session renders live counts (e.g. pending
+reviews and low-stock products from seed data).
+
 **Commit 8.7 complete** — multimedia credits (Stage 8 finished).
 
 `docs/media-credits.md` records the origin, licence, and creation date for every
@@ -108,7 +122,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Stage 8 complete.** Next: **Stage 9** — administration panel.
+**Stage 8 complete.** Next after 9.1: **Commit 9.2** — administrator product management.
 
 ## Security notes
 

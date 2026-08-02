@@ -66,6 +66,9 @@ if (!isset($currentPage) || !is_string($currentPage)) {
     <?php endif; ?>
     <!-- Favicon and expanded SEO metadata arrive in Stage 14 -->
     <link rel="stylesheet" href="<?php echo customcore_e(customcore_url('assets/css/main.css')); ?>">
+    <?php if (!empty($loadAdminCss)) : ?>
+        <link rel="stylesheet" href="<?php echo customcore_e(customcore_url('assets/css/admin.css')); ?>">
+    <?php endif; ?>
     <?php if ($currentPage === 'locations') : ?>
         <!-- Leaflet map styles for the store & service map (Commit 8.4) -->
         <link
