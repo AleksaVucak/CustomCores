@@ -209,7 +209,9 @@ require_once __DIR__ . '/../includes/header.php';
                                 <?php foreach ($recentOrders as $order) : ?>
                                     <tr>
                                         <td>
-                                            <?php echo customcore_e((string) $order['order_number']); ?>
+                                            <a href="<?php echo customcore_e(customcore_url('admin/order-details.php?id=' . (int) $order['id'])); ?>">
+                                                <?php echo customcore_e((string) $order['order_number']); ?>
+                                            </a>
                                             <span class="admin-table__sub"><?php echo customcore_e(customcore_order_format_datetime((string) $order['created_at'])); ?></span>
                                         </td>
                                         <td>

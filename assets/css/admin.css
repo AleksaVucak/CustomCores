@@ -686,3 +686,116 @@
   white-space: pre;
   overflow-x: auto;
 }
+
+/* -------------------------------------------------------------------------
+ * Orders (Commit 9.5)
+ * ------------------------------------------------------------------------- */
+.admin-table--orders {
+  width: 100%;
+  min-width: 720px;
+}
+
+.admin-table--orders td .admin-table__sub {
+  display: block;
+}
+
+.admin-pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--cc-space-4);
+  margin: var(--cc-space-4) 0 0;
+  flex-wrap: wrap;
+}
+
+.admin-pagination__status {
+  font-size: 0.85rem;
+  color: var(--cc-color-text-muted);
+}
+
+/* Order detail cards */
+.admin-order-detail__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--cc-space-4);
+  margin: 0 0 var(--cc-space-5);
+}
+
+.admin-order-detail__grid--forms {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.admin-card {
+  padding: var(--cc-space-5);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+}
+
+.admin-card__title {
+  margin: 0 0 var(--cc-space-3);
+  font-size: 1.05rem;
+}
+
+.admin-dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.35rem var(--cc-space-4);
+  margin: 0;
+}
+
+.admin-dl dt {
+  font-weight: 600;
+  color: var(--cc-color-text-muted);
+}
+
+.admin-dl dd {
+  margin: 0;
+}
+
+.admin-order-detail__total {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.admin-order-detail__note {
+  margin: var(--cc-space-3) 0 0;
+  font-size: 0.82rem;
+  color: var(--cc-color-text-muted);
+}
+
+.admin-inline-form .form-field__label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.admin-table--order-items {
+  width: 100%;
+  min-width: 620px;
+}
+
+.admin-table--order-items tfoot th,
+.admin-table--order-items tfoot td {
+  font-weight: 700;
+  border-top: 2px solid var(--cc-color-border);
+}
+
+.admin-order-detail__options {
+  margin: 0.4rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.85rem;
+  color: var(--cc-color-text-muted);
+}
+
+.admin-order-detail__build {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+}
+
+.admin-order-detail__build ul {
+  margin: 0.3rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.admin-order-detail__part-cat {
+  color: var(--cc-color-text-muted);
+}

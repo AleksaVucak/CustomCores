@@ -51,7 +51,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `database/` | Schema, seeds, create-admin script | 2.x |
 | `docs/` | Business case, rubric, sitemap, wireframes, ER design, media credits, image prompts, guides | 0.x–12.x, 8.7 |
 | `help/` | Static Help + training HTML (`pc-builder.html` shipped in 5.9; full wiki in 11.x) | 5.9, 11.x |
-| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, admin, admin-nav, admin-products, admin-product-form, admin-options, admin-compatibility, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 14.x |
+| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, admin, admin-nav, admin-products, admin-product-form, admin-options, admin-compatibility, admin-orders, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
 | `uploads/products/` | Product images uploaded by admin | 9.2 |
 
@@ -79,6 +79,14 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 ---
 
 ## 5. Status
+
+**Commit 9.5 complete — administrator order management.**  
+`admin/orders.php` (search by number/name/email, status filter with live counts, and
+pagination) and `admin/order-details.php` (customer, shipping snapshot, payment label,
+frozen line items with decoded options/build parts, totals, status change, and internal
+admin notes). Logic lives in `includes/admin-orders.php`: prepared-statement
+list/search with pagination, admin-scope order + item fetch, ENUM-validated status
+writes, and notes writes. Both writes are CSRF + PRG; verified over HTTP end-to-end.
 
 **Commit 9.4 complete — administrator compatibility metadata management.**  
 `admin/compatibility.php` edits the metadata behind the PC Builder's checks: component
@@ -139,4 +147,4 @@ OpenStreetMap map (`assets/js/store-map.js`, data-driven from `config/app.php`) 
 always-visible `<address>`, hours, and storefront photo that stay usable without JavaScript.
 Leaflet CSS/JS load only on this page via the shared header/footer.
 
-Next: **Commit 9.5** — administrator order management.
+Next: **Commit 9.6** — administrator user management.

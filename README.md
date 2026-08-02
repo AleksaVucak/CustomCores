@@ -36,6 +36,24 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 9.5 complete** — administrator order management.
+
+`admin/orders.php` is a searchable, status-filterable, paginated index of every
+customer order: search by order number, customer name, or email; filter by status
+(with live per-status counts); and page through results 25 at a time.
+`admin/order-details.php` shows the full order — customer, account status, shipping
+snapshot, payment-method label, and every frozen line item (with decoded product
+options and custom-build components) plus totals — and lets an admin change the
+fulfilment status and record internal administrator notes (never shown to the
+customer, stored `NULL` when blank). Logic lives in `includes/admin-orders.php`:
+prepared-statement search/list with pagination, admin-scope fetch of any order and
+its items, status writes validated against the `orders.status` ENUM allow-list, and
+notes writes. Both writes are behind CSRF + Post/Redirect/Get with flash
+confirmations. Verified end-to-end against live MySQL and over HTTP (admin login →
+list → search → empty-state → detail → status change persists with success flash →
+notes save → a CSRF-less status POST is rejected and leaves the order unchanged),
+with the seeded data restored afterwards.
+
 **Commit 9.4 complete** — administrator compatibility metadata management.
 
 `admin/compatibility.php` lets an admin edit the simplified compatibility metadata
@@ -180,7 +198,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Stage 8 complete.** Next: **Commit 9.5** — administrator order management.
+**Stage 8 complete.** Next: **Commit 9.6** — administrator user management.
 
 ## Security notes
 
