@@ -36,6 +36,25 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 9.7 complete** — administrator consultation management.
+
+`admin/consultations.php` is a searchable, status-filterable, paginated queue of
+every PC advice request (search by customer name, email, or budget; live per-status
+counts) that surfaces open and in-progress requests first.
+`admin/consultation-details.php` shows the full request — customer + account status,
+budget, games/software/performance goals/notes, and every attachment — and lets an
+admin change the status and write or clear a response. Saving a non-empty response
+timestamps it and auto-advances an open/in-progress request to “Answered” (visible to
+the customer in their consultation history). `admin/consultation-attachment.php`
+streams any customer's uploads to staff, reusing the customer endpoint's hardening
+(admin-only, basename-guarded stored name, path confined to the upload directory,
+`nosniff`, sanitized RFC 5987 filename). Logic lives in
+`includes/admin-consultations.php` (prepared statements throughout; ENUM-validated
+status writes), and both detail writes are behind CSRF + Post/Redirect/Get. Verified
+against live MySQL and over HTTP end-to-end (list, search, status filter/empty-state,
+detail, attachment download byte-for-byte, response auto-advance, status change,
+CSRF-less POST rejected, and non-admins blocked from both the queue and downloads).
+
 **Commit 9.6 complete** — administrator user management.
 
 `admin/users.php` is a searchable, role- and status-filterable, paginated account
@@ -215,7 +234,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Stage 8 complete.** Next: **Commit 9.7** — administrator consultation management.
+**Stage 8 complete.** Next: **Commit 9.8** — administrator review moderation.
 
 ## Security notes
 

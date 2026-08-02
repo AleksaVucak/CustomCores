@@ -280,7 +280,9 @@ require_once __DIR__ . '/../includes/header.php';
                                 <?php foreach ($openConsultations as $consult) : ?>
                                     <tr>
                                         <td>
-                                            <?php echo customcore_e(trim((string) $consult['first_name'] . ' ' . (string) $consult['last_name'])); ?>
+                                            <a href="<?php echo customcore_e(customcore_url('admin/consultation-details.php?id=' . (int) $consult['id'])); ?>">
+                                                <?php echo customcore_e(trim((string) $consult['first_name'] . ' ' . (string) $consult['last_name'])); ?>
+                                            </a>
                                             <span class="admin-table__sub"><?php echo customcore_e((string) $consult['email']); ?></span>
                                         </td>
                                         <td><?php echo customcore_e((string) $consult['budget']); ?></td>

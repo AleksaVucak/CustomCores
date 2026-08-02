@@ -816,3 +816,50 @@
 .admin-user-detail .admin-order-detail__grid {
   margin-bottom: var(--cc-space-4);
 }
+
+/* -------------------------------------------------------------------------
+ * Consultations (Commit 9.7)
+ * ------------------------------------------------------------------------- */
+.admin-table--consultations {
+  width: 100%;
+  min-width: 720px;
+}
+
+.admin-table--consultations td .admin-table__sub {
+  display: block;
+}
+
+.admin-attachments {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.admin-attachments li {
+  margin-bottom: 0.35rem;
+}
+
+.admin-attachments .admin-table__sub {
+  margin-left: 0.5rem;
+}
+
+/* A description list that stacks each value under its term (long text blocks). */
+.admin-dl--stacked {
+  display: block;
+}
+
+.admin-dl--stacked dt {
+  margin-top: var(--cc-space-3);
+}
+
+.admin-dl--stacked dt:first-child {
+  margin-top: 0;
+}
+
+.admin-dl--stacked dd {
+  margin: 0.15rem 0 0;
+  white-space: normal;
+}
+
+.admin-consult-detail .admin-order-detail__grid {
+  margin-bottom: var(--cc-space-4);
+}
