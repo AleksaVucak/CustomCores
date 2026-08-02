@@ -1,0 +1,22 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:07.207
+PC compatibility means checking that your selected parts can connect, fit, and receive enough power.
+
+00:00:07.207 --> 00:00:17.777
+First, the processor socket must match the motherboard socket. A processor designed for one socket cannot be installed in a different socket.
+
+00:00:17.777 --> 00:00:27.386
+Second, the memory type must match the motherboard. A board designed for one memory generation cannot use a different generation.
+
+00:00:27.386 --> 00:00:42.761
+Third, the power supply needs enough wattage for the processor, graphics card, and the rest of the system. A reasonable safety margin is helpful, but a larger number is not automatically better.
+
+00:00:42.761 --> 00:00:56.213
+Physical space matters too. The motherboard must fit the case, the graphics card must fit within the supported length, and the cooler must fit without blocking other components.
+
+00:00:56.213 --> 00:01:02.940
+Finally, check storage support. The motherboard needs the correct connector for the selected drive.
+
+00:01:02.940 --> 00:01:14.471
+CustomCore simplifies these checks into Compatible, Warning, and Incompatible messages. These messages are educational estimates, so review the final specifications before purchasing real hardware.

@@ -1,0 +1,19 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:13.118
+Welcome to the CustomCore PC Builder. Start by choosing a processor, then select a motherboard that uses the same socket. Continue through memory, graphics, storage, power supply, case, and cooling.
+
+00:00:13.118 --> 00:00:23.176
+As you make selections, the price panel updates automatically. This total is an estimate based on the current component prices and selected services.
+
+00:00:23.176 --> 00:00:34.108
+Watch the compatibility panel while you build. A Compatible message means the current choices work together.
+
+00:00:34.108 --> 00:00:45.040
+A Warning means the build can continue, but you should review the note. An Incompatible message identifies a combination that must be changed, such as the wrong processor socket or an undersized power supply.
+
+00:00:45.040 --> 00:00:56.190
+Before finishing, review the build summary. Confirm each component, the estimated total, and any remaining warnings.
+
+00:00:56.190 --> 00:01:07.341
+If you are signed in, give the build a name and save it to your account. You can return later to edit it, add it to your cart, or use it when requesting a consultation.

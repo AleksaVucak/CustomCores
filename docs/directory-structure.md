@@ -17,7 +17,7 @@ customcore/
 │   ├── themes/            # Three switchable site themes (Stage 10)
 │   ├── js/                # External JavaScript
 │   ├── images/            # Copyright-safe images: products/, hero/, categories/, ui/, media/, og/, map/ (Stage 8.1)
-│   └── media/             # Video/audio learning items (Stage 8)
+│   └── media/             # Video/audio learning items + captions/ (Stage 8.2)
 ├── config/                # App and database configuration (Commit 1.2+)
 ├── database/              # schema.sql, seeds, admin setup (Stage 2)
 ├── docs/                  # Planning and project documentation
@@ -46,12 +46,12 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `assets/themes/` | RGB Gaming, Minimal Professional, Cyber Grid | 10.x |
 | `assets/js/` | External JS (`main.js`, later builder/cart/checkout/reviews/contact/validation/charts/map) | 1.6 |
 | `assets/images/` | ≥ 20 documented images | 8.1 |
-| `assets/media/` | ≥ 3 video/audio items | 8.2 |
+| `assets/media/` | ≥ 3 video/audio items + captions | 8.2 |
 | `config/` | `database.example.php`, `app.php`; real `database.php` gitignored | 1.2–1.3 |
 | `database/` | Schema, seeds, create-admin script | 2.x |
 | `docs/` | Business case, rubric, sitemap, wireframes, ER design, guides | 0.x–12.x |
 | `help/` | Static Help + training HTML (`pc-builder.html` shipped in 5.9; full wiki in 11.x) | 5.9, 11.x |
-| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 14.x |
+| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
 | `uploads/products/` | Product images uploaded by admin | 9.2 |
 
@@ -80,7 +80,10 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 7.6 complete — consultation request history.**  
-`consultation-history.php` lists a customer's requests (status, details, admin response) with secure attachment downloads via `consultation-attachment.php` (owner-checked, path-guarded, streamed). Ownership enforced on every query. **Stage 7 complete.**
+**Commit 8.2 complete — three educational media items.**  
+`assets/media/` holds two MP4 videos and one MP3 audio lesson with WebVTT captions.
+`media.php` plays all three with native HTML5 controls; the homepage teaser embeds the
+PC Builder walkthrough. Helpers live in `includes/media.php` and `customcore_media_url()`.
 
-Next: **Stage 8** — multimedia, map, and visualizations.
+Next: **Commit 8.3** — Learning Centre presentation polish (page already playable from 8.2),
+then map (8.4) and public catalogue visualizations (8.5).

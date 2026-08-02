@@ -34,24 +34,22 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 8.2 complete** — three educational media items play with native controls.
+
+Two short MP4 videos and one MP3 audio lesson live under `assets/media/`, each
+with a matching WebVTT caption file and poster image. A new helper,
+`customcore_media_url()`, resolves media paths only when the file exists under
+`assets/media/`. The Learning Centre page (`media.php`) lists all three lessons
+with native `<video controls>` / `<audio controls>` players, captions tracks,
+posters, learning outcomes, and expandable transcripts. The homepage Learning
+Centre teaser now embeds the PC Builder walkthrough instead of a Stage 8
+placeholder. Direct HTTP checks confirm the MP4, MP3, and VTT assets return 200
+with the correct content types.
+
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-Thirty-three studio-style, logo-free images live under `assets/images/`
-(`products/`, `hero/`, `categories/`, `ui/`, `media/`, `og/`, `map/`). Product
-photos render on the homepage, catalogue, search, product detail, and wishlist
-cards; the homepage hero and PC Builder header use background art; performance
-tiers show category banners; and empty cart/wishlist states use friendly
-illustrations. A new helper, `customcore_image_url()`, resolves a path only when
-the file physically exists under `assets/images/` (and passes a strict
-traversal/extension check), so any missing asset gracefully falls back to the
-original gradient placeholder instead of a broken image. Every content image has
-descriptive `alt` text, `loading`/`decoding` hints, and explicit dimensions to
-avoid layout shift. A social-share (`og:image`) is now emitted from the shared
-header.
-
-**Stage 7 complete** — Wishlist · Reviews · Consultations (+ attachments) · Contact · History.
-
-Next: **Stage 8.2** — video/audio learning-centre media.
+Next: **Stage 8.3** — polish / confirm the multimedia Learning Centre presentation
+(organization already started with `media.php` in 8.2 so the items can play).
 
 ## Security notes
 

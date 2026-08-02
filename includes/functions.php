@@ -418,6 +418,44 @@ function customcore_image_url(?string $path): ?string
 }
 
 /**
+ * Resolve a project media path to a browser URL, but only if the file exists.
+ *
+ * Guards against path traversal by requiring the path to live under
+ * assets/media/ with a video, audio, or caption extension. Returns null when
+ * the path is empty, unsafe, or the file is not present on disk.
+ *
+ * @param string|null $path Path relative to the project root (e.g. "assets/media/how-to-use-pc-builder.mp4").
+ * @return string|null Resolvable URL for the current script depth, or null.
+ */
+function customcore_media_url(?string $path): ?string
+{
+    if ($path === null) {
+        return null;
+    }
+
+    $path = trim(str_replace('\\', '/', $path));
+    $path = ltrim($path, '/');
+    if ($path === '') {
+        return null;
+    }
+
+    if (str_contains($path, '..') || strpbrk($path, "\r\n\t\0") !== false) {
+        return null;
+    }
+
+    if (!preg_match('#^assets/media/[A-Za-z0-9/_-]+\.(?:mp4|webm|ogg|mp3|wav|m4a|vtt)$#i', $path)) {
+        return null;
+    }
+
+    $fullPath = dirname(__DIR__) . '/' . $path;
+    if (!is_file($fullPath)) {
+        return null;
+    }
+
+    return customcore_url($path);
+}
+
+/**
  * Whether the current page matches a navigation key.
  *
  * Pages set $currentPage before including the header (e.g. "home", "about").

@@ -2157,6 +2157,27 @@ textarea[aria-invalid="true"]:focus-visible {
   gap: var(--cc-space-4);
 }
 
+.media-teaser__player {
+  overflow: hidden;
+  border-radius: var(--cc-radius-lg);
+  border: 1px solid var(--cc-color-border);
+  background: #102027;
+}
+
+.media-teaser__video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: #102027;
+}
+
+.media-teaser__title {
+  margin: 0 0 var(--cc-space-2);
+  font-family: var(--cc-font-display);
+  font-size: 1.2rem;
+}
+
 .media-teaser__placeholder {
   display: grid;
   align-content: center;
@@ -2190,6 +2211,160 @@ textarea[aria-invalid="true"]:focus-visible {
 
 .media-teaser__copy p:first-child {
   margin-top: 0;
+}
+
+/* ==========================================================================
+   Learning Centre (Commit 8.2)
+   Native HTML5 video/audio players for educational media.
+   ========================================================================== */
+
+.learning-centre__header {
+  margin-bottom: var(--cc-space-5);
+}
+
+.learning-centre__eyebrow {
+  margin: 0 0 var(--cc-space-2);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cc-color-accent);
+}
+
+.learning-centre__intro {
+  max-width: 44rem;
+  margin: 0 0 var(--cc-space-3);
+  font-size: 1.08rem;
+  color: var(--cc-color-text-muted);
+}
+
+.media-grid {
+  display: grid;
+  gap: var(--cc-space-5);
+  margin-bottom: var(--cc-space-5);
+}
+
+.media-card {
+  display: grid;
+  gap: var(--cc-space-4);
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+  box-shadow: var(--cc-shadow-sm);
+}
+
+.media-card__player {
+  overflow: hidden;
+  border-radius: var(--cc-radius-md);
+  background: #102027;
+}
+
+.media-card__video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: #102027;
+}
+
+.media-card__poster {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.media-card__audio {
+  display: block;
+  width: 100%;
+  margin-top: var(--cc-space-3);
+  padding: 0 var(--cc-space-3) var(--cc-space-3);
+}
+
+.media-card__meta {
+  margin: 0 0 var(--cc-space-2);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cc-color-accent);
+}
+
+.media-card__title {
+  margin: 0 0 var(--cc-space-2);
+  font-family: var(--cc-font-display);
+  font-size: 1.35rem;
+}
+
+.media-card__description {
+  margin: 0 0 var(--cc-space-3);
+  color: var(--cc-color-text-muted);
+}
+
+.media-card__subheading {
+  margin: 0 0 var(--cc-space-2);
+  font-size: 1rem;
+}
+
+.media-card__learn {
+  margin: 0 0 var(--cc-space-4);
+  padding-left: 1.2rem;
+  color: var(--cc-color-text-muted);
+}
+
+.media-card__transcript {
+  border-top: 1px solid var(--cc-color-border);
+  padding-top: var(--cc-space-3);
+}
+
+.media-card__transcript summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--cc-color-accent);
+}
+
+.media-card__transcript summary:hover,
+.media-card__transcript summary:focus-visible {
+  text-decoration: underline;
+}
+
+.media-card__transcript-body {
+  margin-top: var(--cc-space-3);
+}
+
+.media-card__transcript-body p {
+  margin: 0 0 var(--cc-space-3);
+  color: var(--cc-color-text-muted);
+  font-size: 0.95rem;
+}
+
+.media-card__transcript-body p:last-child {
+  margin-bottom: 0;
+}
+
+.learning-centre__help {
+  padding: var(--cc-space-5);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: rgba(15, 122, 110, 0.04);
+}
+
+.learning-centre__help h2 {
+  margin-top: 0;
+}
+
+.learning-centre__help > p {
+  max-width: 44rem;
+  color: var(--cc-color-text-muted);
+}
+
+@media (min-width: 900px) {
+  .media-card {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    align-items: start;
+  }
 }
 
 /* ==========================================================================

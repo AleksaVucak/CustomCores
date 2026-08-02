@@ -4,8 +4,8 @@
  *
  * File responsibility:
  *   Public landing page with hero, featured products and category tiers loaded
- *   from MySQL, a learning-centre teaser (media placeholder until Stage 8),
- *   and primary calls to action.
+ *   from MySQL, a learning-centre teaser with a playable educational video
+ *   (Commit 8.2), and primary calls to action.
  *
  * Authentication requirements:
  *   None (public).
@@ -19,6 +19,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/database.php';
+require_once __DIR__ . '/includes/media.php';
 
 $pageTitle = 'CustomCore — Custom Gaming PC Store & Builder';
 $pageDescription = 'Browse configurable gaming PCs and build a compatible custom system with CustomCore.';
@@ -28,6 +29,11 @@ $currentPage = 'home';
 $featuredProducts = [];
 $categories = [];
 $homeDataError = null;
+$homeMedia = customcore_media_item('how-to-use-pc-builder');
+if ($homeMedia === null) {
+    $mediaItems = customcore_media_items();
+    $homeMedia = $mediaItems[0] ?? null;
+}
 
 try {
     $pdo = customcore_pdo();
@@ -232,19 +238,52 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 
     <div class="media-teaser">
-        <div class="media-teaser__placeholder" role="img" aria-label="Video placeholder for upcoming learning centre guides">
-            <span class="media-teaser__badge">Video coming in Stage 8</span>
-            <p class="media-teaser__caption">
-                Guided walkthroughs will play here once copyright-safe media is added.
-            </p>
-        </div>
+        <?php if ($homeMedia !== null && $homeMedia['type'] === 'video') : ?>
+            <div class="media-teaser__player">
+                <video
+                    class="media-teaser__video"
+                    controls
+                    preload="metadata"
+                    <?php if ($homeMedia['poster_url'] !== null) : ?>
+                        poster="<?php echo customcore_e($homeMedia['poster_url']); ?>"
+                    <?php endif; ?>
+                >
+                    <source
+                        src="<?php echo customcore_e($homeMedia['src_url']); ?>"
+                        type="<?php echo customcore_e($homeMedia['mime']); ?>"
+                    >
+                    <?php if ($homeMedia['captions_url'] !== null) : ?>
+                        <track
+                            kind="captions"
+                            src="<?php echo customcore_e($homeMedia['captions_url']); ?>"
+                            srclang="en"
+                            label="English"
+                            default
+                        >
+                    <?php endif; ?>
+                    Your browser does not support HTML5 video.
+                </video>
+            </div>
+        <?php else : ?>
+            <div class="media-teaser__placeholder" role="img" aria-label="Learning centre media preview">
+                <span class="media-teaser__badge">Learning Centre</span>
+                <p class="media-teaser__caption">
+                    Open the Learning Centre for playable PC Builder, compatibility, and tier guides.
+                </p>
+            </div>
+        <?php endif; ?>
         <div class="media-teaser__copy">
-            <p>
-                Prefer reading first? Visit Help for catalogue and builder topics, or jump
-                straight into the interactive PC Builder when you are ready to configure parts.
-            </p>
+            <?php if ($homeMedia !== null) : ?>
+                <h3 class="media-teaser__title"><?php echo customcore_e($homeMedia['title']); ?></h3>
+                <p><?php echo customcore_e($homeMedia['description']); ?></p>
+            <?php else : ?>
+                <p>
+                    Prefer reading first? Visit Help for catalogue and builder topics, or jump
+                    straight into the interactive PC Builder when you are ready to configure parts.
+                </p>
+            <?php endif; ?>
             <p class="hero__actions">
-                <a class="button" href="<?php echo customcore_e(customcore_url('media.php')); ?>">Watch guides</a>
+                <a class="button" href="<?php echo customcore_e(customcore_url('media.php')); ?>">Watch all guides</a>
                 <a class="button button--secondary" href="<?php echo customcore_e(customcore_url('help/index.html')); ?>">Open Help</a>
             </p>
         </div>
