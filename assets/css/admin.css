@@ -597,7 +597,8 @@
   min-width: 560px;
 }
 
-.admin-table--options .is-disabled-row {
+.admin-table--options .is-disabled-row,
+.admin-table--users .is-disabled-row {
   opacity: 0.6;
 }
 
@@ -798,4 +799,20 @@
 
 .admin-order-detail__part-cat {
   color: var(--cc-color-text-muted);
+}
+
+/* -------------------------------------------------------------------------
+ * Users (Commit 9.6)
+ * ------------------------------------------------------------------------- */
+.admin-table--users {
+  width: 100%;
+  min-width: 760px;
+}
+
+.admin-table--users td .admin-badge {
+  margin-left: 0.35rem;
+}
+
+.admin-user-detail .admin-order-detail__grid {
+  margin-bottom: var(--cc-space-4);
 }

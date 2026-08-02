@@ -36,6 +36,23 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 9.6 complete** — administrator user management.
+
+`admin/users.php` is a searchable, role- and status-filterable, paginated account
+index (search by name or email; live role/status counts) with a one-click
+enable/disable toggle. `admin/user-edit.php` shows a full account — profile,
+activity summary (orders, lifetime spend, reviews, consultations, wishlist), and
+recent orders — and lets an admin enable/disable the login and change the role
+(Customer ↔ Administrator). Logic lives in `includes/admin-users.php`: prepared
+statements throughout, the password hash is never loaded into an admin view, role
+writes are validated against the `users.role` ENUM, and `customcore_admin_user_guard()`
+enforces two critical invariants — **an admin can never disable or demote their own
+account** (no self-lockout) and **the last active administrator can never be disabled
+or demoted**. Every write is behind CSRF + Post/Redirect/Get with flash
+confirmations. Verified against live MySQL and over HTTP end-to-end (list, search,
+role filter, disable/enable, promote, and rejection of self-disable, self-demote, and
+CSRF-less POSTs), with all accounts restored afterwards.
+
 **Commit 9.5 complete** — administrator order management.
 
 `admin/orders.php` is a searchable, status-filterable, paginated index of every
@@ -198,7 +215,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Stage 8 complete.** Next: **Commit 9.6** — administrator user management.
+**Stage 8 complete.** Next: **Commit 9.7** — administrator consultation management.
 
 ## Security notes
 
