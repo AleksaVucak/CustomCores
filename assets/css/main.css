@@ -5412,3 +5412,70 @@ a.cart-item__name:hover {
   background: var(--cc-color-bg-muted);
   color: var(--cc-color-text-muted);
 }
+
+/* ==========================================================================
+   Accessibility statement & multimedia fallbacks (Commit 8.6)
+   ========================================================================== */
+
+.accessibility-page__lead {
+  max-width: 60ch;
+  font-size: 1.1rem;
+  color: var(--cc-color-text-muted);
+}
+
+.accessibility-block {
+  margin-top: var(--cc-space-5);
+}
+
+.accessibility-list {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: var(--cc-space-2);
+  max-width: 70ch;
+}
+
+.accessibility-fallbacks {
+  margin: var(--cc-space-4) 0 0;
+  display: grid;
+  gap: var(--cc-space-3);
+  max-width: 78ch;
+}
+
+.accessibility-fallbacks dt {
+  font-weight: 700;
+  color: var(--cc-color-text);
+}
+
+.accessibility-fallbacks dd {
+  margin: 0.15rem 0 0;
+  padding: 0 0 var(--cc-space-3);
+  border-bottom: 1px solid var(--cc-color-border);
+  color: var(--cc-color-text-muted);
+}
+
+.accessibility-fallbacks dd:last-child {
+  border-bottom: 0;
+}
+
+/* Homepage teaser: link to the transcript/captions fallback. */
+.media-teaser__a11y {
+  font-size: 0.9rem;
+  color: var(--cc-color-text-muted);
+}
+
+/* ==========================================================================
+   Reduced-motion preference (Commit 8.6)
+   Honour users who ask their OS to minimise animation. Kept last so it wins.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

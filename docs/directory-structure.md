@@ -80,6 +80,14 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
+**Commit 8.6 complete — accessible multimedia fallbacks.**  
+`accessibility.php` (public, linked from the shared footer) documents the text
+equivalent for every multimedia feature — image `alt`/placeholders, video/audio
+captions + transcripts + download links, the catalogue chart data table (8.5),
+the builder chart text summary (5.8), and the store map address fallback (8.4).
+The homepage teaser links to the guide transcript, and `main.css` honours
+`prefers-reduced-motion`.
+
 **Commit 8.5 complete — public catalogue data visualization.**  
 `catalogue.php` charts active products per performance tier from live MySQL data.
 `includes/catalogue-stats.php` computes the counts/price ranges and the Chart.js payload;
@@ -93,4 +101,4 @@ OpenStreetMap map (`assets/js/store-map.js`, data-driven from `config/app.php`) 
 always-visible `<address>`, hours, and storefront photo that stay usable without JavaScript.
 Leaflet CSS/JS load only on this page via the shared header/footer.
 
-Next: **Commit 8.6** — accessibility & multimedia polish pass, then media credits (8.7).
+Next: **Commit 8.7** — multimedia credits (`docs/media-credits.md`).

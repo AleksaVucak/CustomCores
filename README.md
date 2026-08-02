@@ -34,6 +34,21 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 8.6 complete** — accessible multimedia fallbacks.
+
+Every piece of Stage 8 multimedia now has a documented text equivalent, so no
+information is locked inside media. A new public `accessibility.php` statement
+(linked from the footer) explains each fallback and links to it: descriptive
+`alt` text with graceful placeholders for images; native controls + English
+captions + expandable transcripts + download links for the video/audio guides;
+the live-data table beside the catalogue chart (8.5); the text score summary
+beside the builder performance chart (5.8); and the always-visible address,
+hours, and `<noscript>` message for the store map (8.4). The homepage video
+teaser now links straight to the guide's transcript/captions, and the stylesheet
+honours `prefers-reduced-motion`. Verified in a browser: the statement page lists
+all six multimedia types with working links and the teaser transcript link
+resolves to the correct Learning Centre lesson.
+
 **Commit 8.5 complete** — public catalogue data visualization from live MySQL.
 
 `catalogue.php` opens with a "Catalogue at a glance" section that charts the
@@ -81,7 +96,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-Next: **Stage 8.6** — accessibility & multimedia polish pass.
+Next: **Stage 8.7** — multimedia credits (`docs/media-credits.md`).
 
 ## Security notes
 

@@ -276,6 +276,13 @@ require_once __DIR__ . '/includes/header.php';
             <?php if ($homeMedia !== null) : ?>
                 <h3 class="media-teaser__title"><?php echo customcore_e($homeMedia['title']); ?></h3>
                 <p><?php echo customcore_e($homeMedia['description']); ?></p>
+                <p class="media-teaser__a11y">
+                    Prefer to read?
+                    <a href="<?php echo customcore_e(customcore_url('media.php#' . rawurlencode((string) $homeMedia['id']))); ?>">
+                        Open the full transcript and captions
+                    </a>
+                    in the Learning Centre — every guide works without playing the video.
+                </p>
             <?php else : ?>
                 <p>
                     Prefer reading first? Visit Help for catalogue and builder topics, or jump
