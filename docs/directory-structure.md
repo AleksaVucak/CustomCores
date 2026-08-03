@@ -14,7 +14,7 @@ customcore/
 ├── api/                   # Lightweight JSON/data endpoints (Stage 5+)
 ├── assets/
 │   ├── css/               # Base, admin, and print stylesheets
-│   ├── themes/            # Switchable site themes (Stage 10): rgb-gaming.css shipped in 10.1
+│   ├── themes/            # Switchable site themes (Stage 10): rgb-gaming.css (10.1), minimal-pro.css (10.2)
 │   ├── js/                # External JavaScript
 │   ├── images/            # Copyright-safe images: products/, hero/, categories/, ui/, media/, og/, map/ (Stage 8.1)
 │   └── media/             # Video/audio learning items + captions/ (Stage 8.2)
@@ -43,7 +43,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `admin/` | Protected admin UI | 9.x |
 | `api/` | Builder price, compatibility, search, chart data | 5.x, 8.x, 9.x |
 | `assets/css/` | External CSS (`main.css`, `admin.css`, later `print.css`) | 1.5, 9.1 |
-| `assets/themes/` | RGB Gaming (`rgb-gaming.css`, 10.1), Minimal Professional, Cyber Grid | 10.x |
+| `assets/themes/` | RGB Gaming (`rgb-gaming.css`, 10.1), Minimal Professional (`minimal-pro.css`, 10.2), Cyber Grid | 10.x |
 | `assets/js/` | External JS (`main.js`, builder, cart, checkout, reviews, contact, `store-map.js`, `catalogue-chart.js`, `admin-reports.js`, validation, charts) | 1.6, 8.4, 8.5 |
 | `assets/images/` | ≥ 20 documented images | 8.1 |
 | `assets/media/` | ≥ 3 video/audio items + captions | 8.2 |
@@ -79,6 +79,13 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 ---
 
 ## 5. Status
+
+**Commit 10.2 complete — Minimal Professional theme.**  
+`assets/themes/minimal-pro.css` is a light, editorial counterpoint to RGB
+Gaming: Fraunces serif display + Manrope sans, hairline borders, crisp corners,
+flat surfaces, and one professional blue accent. Re-declares the shared `--cc-*`
+tokens (public + admin re-skin) and refines the header, nav, buttons, cards, and
+footer. Uses the 10.1 `includes/theme.php` resolver + header wiring unchanged.
 
 **Commit 10.1 complete — RGB Gaming theme.**  
 `assets/themes/rgb-gaming.css` is a dark, high-contrast gaming theme layered over

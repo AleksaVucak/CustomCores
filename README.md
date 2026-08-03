@@ -36,6 +36,21 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 10.2 complete** — the **Minimal Professional** site theme.
+
+`assets/themes/minimal-pro.css` is the second switchable theme and a deliberate
+counterpoint to RGB Gaming: a calm, editorial, light "ink-on-paper" look. It
+re-declares the shared `--cc-*` tokens (so public and admin components re-skin
+automatically) and differs from the base and RGB themes in more than colour —
+an editorial **Fraunces** serif display paired with the humanist **Manrope**
+sans, hairline borders, crisper corners, flatter surfaces (elevation from thin
+borders rather than heavy shadow), a single professional blue accent, and a
+letter-spaced uppercase masthead nav. Solid ink-blue buttons and clean outline
+variants replace RGB's neon gradients. It plugs into the same
+`includes/theme.php` resolver and shared-header wiring from 10.1, so no PHP
+changes were needed. Verified over HTTP + in-browser across public pages and
+forms; the stylesheet loads last so it overrides `main.css`/`admin.css`.
+
 **Commit 10.1 complete** — the **RGB Gaming** site theme.
 
 `assets/themes/rgb-gaming.css` is a bold, dark "battlestation" theme layered on
@@ -280,7 +295,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Commit 10.1 complete.** Next: **Commit 10.2** — the Minimal Professional theme (`assets/themes/minimal-pro.css`).
+**Commit 10.2 complete.** Next: **Commit 10.3** — the Cyber Grid theme (`assets/themes/cyber-grid.css`).
 
 ## Security notes
 

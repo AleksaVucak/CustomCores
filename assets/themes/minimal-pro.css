@@ -1,0 +1,356 @@
+/*
+ * CustomCore — Theme: Minimal Professional (Stage 10.2)
+ * ----------------------------------------------------------------------------
+ * File responsibility:
+ *   A calm, editorial, light theme layered on top of assets/css/main.css. Where
+ *   RGB Gaming is dark and expressive, this theme is deliberately restrained:
+ *   an ink-on-paper palette, a refined serif/sans type pairing, hairline
+ *   borders, crisp corners, and flat surfaces with only the faintest shadow.
+ *   It differs from the base and RGB themes in colour, TYPOGRAPHY, borders,
+ *   radius, navigation, buttons, cards, and spacing rhythm — not colour alone.
+ *
+ * Loading model:
+ *   main.css loads first (foundation), admin.css second on admin pages, and
+ *   this theme file LAST from includes/header.php. Because it re-declares the
+ *   shared design tokens (:root custom properties) every token-driven public
+ *   and admin component re-skins automatically; a few targeted rules refine the
+ *   places main.css hard-codes decorative values (body, header, hero, nav,
+ *   buttons, cards, footer).
+ *
+ * Accessibility:
+ *   Ink text on near-white keeps contrast high; the single blue accent meets AA
+ *   for links, focus rings, and button fills. No motion is introduced.
+ *
+ * Sections:
+ *   1. Fonts
+ *   2. Tokens (colour, type, radius, shadow)
+ *   3. Page shell (body, headings, links)
+ *   4. Header, navigation & footer
+ *   5. Buttons
+ *   6. Forms & fields
+ *   7. Surfaces: hero, sections, cards, tables
+ *   8. Admin surfaces
+ * ----------------------------------------------------------------------------
+ */
+
+/* ==========================================================================
+   1. Fonts
+   Editorial serif display + humanist sans body. Distinct from the base
+   (Space Grotesk / DM Sans) and RGB Gaming. Falls back gracefully if the CDN
+   is blocked.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap");
+
+/* ==========================================================================
+   2. Tokens
+   Ink-on-paper palette with one professional blue accent.
+   ========================================================================== */
+
+:root {
+  --cc-font-display: "Fraunces", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --cc-font-body: "Manrope", "Segoe UI", "Helvetica Neue", system-ui, sans-serif;
+  --cc-font-mono: "Manrope", ui-monospace, monospace;
+
+  --cc-color-bg: #f6f7f9;
+  --cc-color-bg-elevated: #ffffff;
+  --cc-color-bg-muted: #eef1f4;
+  /* Deep slate used for footer, skip-link chip, headings, and the logo. */
+  --cc-color-surface-dark: #1b2430;
+  --cc-color-text: #1f2937;
+  --cc-color-text-muted: #64707d;
+  --cc-color-border: #e3e7ec;
+
+  --cc-color-accent: #2b57d6;
+  --cc-color-accent-hover: #1e42ad;
+  --cc-color-accent-soft: #e7edfb;
+
+  --cc-color-danger: #b23b34;
+  --cc-color-warning: #96690f;
+  --cc-color-success: #2b6a44;
+  --cc-color-focus: #2b57d6;
+
+  /* Crisp, understated corners (less rounded than the base). */
+  --cc-radius-sm: 0.125rem;
+  --cc-radius-md: 0.25rem;
+  --cc-radius-lg: 0.4rem;
+
+  /* Barely-there elevation — this theme leans on hairline borders, not shadow. */
+  --cc-shadow-sm: 0 1px 1px rgba(27, 36, 48, 0.04);
+  --cc-shadow-md: 0 12px 34px rgba(27, 36, 48, 0.07);
+
+  /* Roomier max width for an airier, document-like measure. */
+  --cc-width-max: 72rem;
+}
+
+/* ==========================================================================
+   3. Page shell
+   ========================================================================== */
+
+body {
+  color: var(--cc-color-text);
+  /* Flat paper background — no gradient wash. */
+  background: var(--cc-color-bg);
+  font-weight: 400;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--cc-color-surface-dark);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: clamp(2.1rem, 4vw, 3.1rem);
+}
+
+.site-logo {
+  color: var(--cc-color-surface-dark);
+  letter-spacing: -0.01em;
+}
+
+.site-logo:hover,
+.site-logo:focus-visible {
+  color: var(--cc-color-accent);
+}
+
+a {
+  text-underline-offset: 0.16em;
+}
+
+:focus-visible {
+  outline-color: var(--cc-color-focus);
+}
+
+/* ==========================================================================
+   4. Header, navigation & footer
+   ========================================================================== */
+
+.site-header {
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid var(--cc-color-border);
+  box-shadow: none;
+  backdrop-filter: saturate(1.05) blur(6px);
+}
+
+.nav-toggle {
+  background: var(--cc-color-bg-elevated);
+  border-color: var(--cc-color-border);
+  color: var(--cc-color-text);
+  border-radius: var(--cc-radius-md);
+}
+
+.nav-toggle:hover {
+  background: var(--cc-color-bg-muted);
+}
+
+/* Quiet, letter-spaced nav that reads as a professional masthead. */
+.site-nav__link {
+  color: var(--cc-color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.site-nav__link:hover,
+.site-nav__link:focus-visible {
+  color: var(--cc-color-text);
+}
+
+.site-nav__link.is-active,
+.site-nav__link[aria-current="page"] {
+  color: var(--cc-color-accent);
+  border-bottom-color: var(--cc-color-accent);
+}
+
+.site-nav__badge {
+  background: var(--cc-color-accent);
+  color: #fff;
+}
+
+.site-footer {
+  background: var(--cc-color-surface-dark);
+  color: #c4ccd6;
+  border-top: 1px solid var(--cc-color-border);
+}
+
+.site-footer a {
+  color: #e7edfb;
+}
+
+.site-footer a:hover,
+.site-footer a:focus-visible {
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   5. Buttons
+   Solid ink-blue primaries and clean outline variants — no gradients.
+   ========================================================================== */
+
+.button,
+button.button {
+  background: var(--cc-color-accent);
+  color: #fff;
+  border: 1px solid var(--cc-color-accent);
+  border-radius: var(--cc-radius-md);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow: none;
+}
+
+.button:hover,
+.button:focus-visible {
+  background: var(--cc-color-accent-hover);
+  border-color: var(--cc-color-accent-hover);
+  color: #fff;
+  box-shadow: none;
+}
+
+.button--primary {
+  background: var(--cc-color-accent);
+  color: #fff;
+}
+
+.button--primary:hover,
+.button--primary:focus-visible {
+  background: var(--cc-color-accent-hover);
+}
+
+.button--secondary {
+  background: #fff;
+  color: var(--cc-color-accent);
+  border-color: var(--cc-color-accent);
+}
+
+.button--secondary:hover,
+.button--secondary:focus-visible {
+  background: var(--cc-color-accent-soft);
+  color: var(--cc-color-accent-hover);
+}
+
+.button--danger {
+  background: var(--cc-color-danger);
+  border-color: var(--cc-color-danger);
+  color: #fff;
+}
+
+.button--danger:hover,
+.button--danger:focus-visible {
+  background: #8f2c26;
+  border-color: #8f2c26;
+  color: #fff;
+}
+
+.button--ghost {
+  background: transparent;
+  color: var(--cc-color-text-muted);
+  border-color: var(--cc-color-border);
+}
+
+.button--ghost:hover,
+.button--ghost:focus-visible {
+  color: var(--cc-color-accent);
+  border-color: var(--cc-color-accent);
+  background: transparent;
+}
+
+/* ==========================================================================
+   6. Forms & fields
+   ========================================================================== */
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="number"],
+input[type="search"],
+input[type="url"],
+input[type="date"],
+select,
+textarea {
+  background: #fff;
+  border-color: var(--cc-color-border);
+  border-radius: var(--cc-radius-md);
+  color: var(--cc-color-text);
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  border-color: var(--cc-color-focus);
+  box-shadow: 0 0 0 3px rgba(43, 87, 214, 0.16);
+}
+
+fieldset {
+  background: var(--cc-color-bg-elevated);
+  border-color: var(--cc-color-border);
+}
+
+legend {
+  font-family: var(--cc-font-body);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+/* ==========================================================================
+   7. Surfaces: hero, sections, cards, tables
+   Flat panels defined by hairline borders rather than heavy shadow.
+   ========================================================================== */
+
+.content-section,
+.hero {
+  background: var(--cc-color-bg-elevated);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  box-shadow: var(--cc-shadow-sm);
+}
+
+.hero {
+  background:
+    linear-gradient(180deg, #ffffff, #f7f9fc);
+  border-color: var(--cc-color-border);
+}
+
+.hero__support {
+  color: var(--cc-color-text-muted);
+}
+
+.card {
+  background: var(--cc-color-bg-elevated);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  box-shadow: none;
+}
+
+.card:hover {
+  border-color: #cfd6df;
+  box-shadow: var(--cc-shadow-md);
+}
+
+table {
+  color: var(--cc-color-text);
+}
+
+/* ==========================================================================
+   8. Admin surfaces
+   admin.css is token-driven, so it re-skins automatically. These small rules
+   keep the professional flat look consistent in the admin shell.
+   ========================================================================== */
+
+.admin-nav,
+.admin-alerts__item,
+.admin-card {
+  background: var(--cc-color-bg-elevated);
+  border-color: var(--cc-color-border);
+  box-shadow: none;
+}
+
+.admin-nav__link.is-active {
+  background: var(--cc-color-accent);
+  color: #fff;
+}
