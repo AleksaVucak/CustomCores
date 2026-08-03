@@ -80,6 +80,14 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
+**Commit 14.5 complete — advanced CSS interactions.**
+A dedicated section in `assets/css/main.css` adds `:focus-within` card elevation
+(keyboard parity with `:hover`), an animated mobile-menu reveal (`@keyframes
+cc-nav-reveal`), a focus-driven form-label highlight, and a hover-capability-gated
+deeper card lift (`@media (hover: hover) and (pointer: fine)`). All effects use the
+shared `--cc-*` tokens so the three themes inherit them and reduced-motion cancels the
+timing.
+
 **Commit 14.4 complete — accessibility and keyboard navigation.**
 Core flows are fully keyboard-operable. Existing skip link, `:focus-visible` ring,
 labelled controls, `aria-invalid`/`aria-describedby` errors, and `aria-live` flash

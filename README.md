@@ -51,6 +51,18 @@ to manage the store. Non-programmers updating catalogue content should read the
 
 ## Current status
 
+**Commit 14.5 complete** — advanced CSS interactions.
+
+A dedicated "Advanced CSS interactions" section in `assets/css/main.css` layers a tasteful
+polish pass on top of the existing advanced foundation (auto-fit responsive grids,
+`aspect-ratio` media, `clamp()` type, tokenised transitions, three themes). Cards now lift
+on `:focus-within` (keyboard parity with `:hover`, using the themed focus token); the mobile
+navigation panel animates open via a `@keyframes` reveal (since `display` can't transition);
+form rows highlight the active field's `<label>`; and a deeper card-lift is gated behind
+`@media (hover: hover) and (pointer: fine)` so touch devices never get a stuck hover. Every
+effect uses `--cc-*` tokens (so all three themes inherit it) and is neutralised by the
+reduced-motion blocks.
+
 **Commit 14.4 complete** — accessibility and keyboard navigation.
 
 The site's core flows now work end to end without a mouse. On top of the existing

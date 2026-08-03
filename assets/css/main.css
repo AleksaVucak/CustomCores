@@ -3844,6 +3844,10 @@ table.data-table {
     border-radius: var(--cc-radius-md);
     background: var(--cc-color-bg-elevated);
     box-shadow: var(--cc-shadow-sm);
+    /* Reveal animation (Commit 14.5) — display cannot transition, so the open
+       panel fades/slides in via a keyframe. Reduced-motion neutralises it. */
+    transform-origin: top center;
+    animation: cc-nav-reveal var(--cc-transition) ease both;
   }
 
   body.nav-enhanced .nav-toggle[aria-expanded="true"] {
@@ -3886,6 +3890,56 @@ table.data-table {
   .content-section,
   .hero {
     padding: var(--cc-space-4);
+  }
+}
+
+/* ==========================================================================
+   Advanced CSS interactions (Commit 14.5)
+   Cards, menus, transitions, and form states that layer visible, advanced
+   affordances on top of the base components. Everything here is additive and
+   uses the shared --cc-* tokens so the three themes inherit it automatically;
+   the reduced-motion blocks below cancel the timing for users who opt out.
+   ========================================================================== */
+
+/* Mobile navigation reveal keyframe (paired with .site-nav.is-open above). */
+@keyframes cc-nav-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem) scaleY(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+/* Keyboard parity: a card lifts when any descendant receives focus, mirroring
+   the pointer :hover affordance so keyboard users get the same feedback. */
+.card:focus-within {
+  transform: translateY(-2px);
+  box-shadow: var(--cc-shadow-md);
+  border-color: var(--cc-color-focus);
+}
+
+/* Form-state cue: highlight a field's label while that field is focused, tying
+   the label to the active control for a clearer editing state. */
+.form-label {
+  transition: color var(--cc-transition-fast);
+}
+
+.form-row:focus-within > .form-label {
+  color: var(--cc-color-accent);
+}
+
+/*
+ * Hover-only polish. Gated behind a fine-pointer hover query so touch devices
+ * never inherit a "stuck" hover state after a tap (an advanced, appropriate
+ * responsive technique). Deepens the lift and shadow for a tactile feel.
+ */
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    transform: translateY(-4px);
   }
 }
 
