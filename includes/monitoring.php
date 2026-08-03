@@ -70,6 +70,26 @@ function customcore_monitoring_status_label(string $status): string
 }
 
 /**
+ * CSS badge modifier class for a status, reusing the shared admin badge styles.
+ *
+ * UI helper kept alongside the other status helpers, mirroring how order and
+ * consultation status classes live with their domain logic.
+ */
+function customcore_monitoring_status_badge_class(string $status): string
+{
+    switch ($status) {
+        case 'offline':
+            return 'admin-badge--danger';
+        case 'warning':
+            return 'admin-badge--warn';
+        case 'online':
+            return 'admin-badge--ok';
+        default:
+            return 'admin-badge--muted';
+    }
+}
+
+/**
  * Combine several statuses into the single worst (most severe) one.
  *
  * @param list<string> $statuses

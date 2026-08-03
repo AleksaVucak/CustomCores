@@ -50,6 +50,22 @@ to manage the store. Non-programmers updating catalogue content should read the
 
 ## Current status
 
+**Commit 13.2 complete** — administrator monitoring dashboard.
+
+`admin/monitoring.php` renders the Stage 13 health-check report (from
+`customcore_monitoring_run()`) as an **online / warning / offline** status table behind
+`customcore_require_admin()`. It shows an overall status banner with per-status counts
+and a check timestamp, a per-service table (service · status badge · summary + safe
+details), and a legend explaining each status. Because the engine runs each check in
+isolation and never throws — and the admin guard uses session state only — the page
+**loads and displays every other service even when one check fails** (verified with the
+database offline: the DB row shows Offline while all other rows still render). Status
+badges reuse the shared `.admin-badge--ok/--warn/--danger` styles via
+`customcore_monitoring_status_badge_class()`; scoped `.monitor-*` styles were added to
+`admin.css`. The admin nav and dashboard tool card now light up the Monitoring link
+automatically (the tool registry detects the page file). Live statistics land in
+**Commit 13.3**.
+
 **Commit 13.1 complete** — application health checks (monitoring engine).
 
 `includes/monitoring.php` is the Stage 13 health-check engine. It runs seven

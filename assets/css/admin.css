@@ -1102,3 +1102,104 @@
   color: var(--cc-color-danger);
 }
 
+/* ---- Service monitoring (Commit 13.2) ---------------------------------- */
+
+.monitor-overall {
+  margin-top: var(--cc-space-5);
+  padding: var(--cc-space-4) var(--cc-space-5);
+  border: 1px solid var(--cc-color-border);
+  border-left: 4px solid var(--cc-color-success);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+  box-shadow: var(--cc-shadow-sm);
+}
+
+.monitor-overall--warning {
+  border-left-color: var(--cc-color-warning);
+}
+
+.monitor-overall--offline {
+  border-left-color: var(--cc-color-danger);
+}
+
+.monitor-overall__head {
+  display: flex;
+  align-items: center;
+  gap: var(--cc-space-3);
+}
+
+.monitor-overall__title {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.monitor-overall__summary {
+  margin: var(--cc-space-2) 0 0;
+}
+
+.monitor-overall__meta {
+  margin: var(--cc-space-1) 0 0;
+  font-size: 0.85rem;
+  color: var(--cc-color-text-muted);
+}
+
+.monitor-checks {
+  margin-top: var(--cc-space-6);
+}
+
+.admin-table--monitor th[scope="row"] {
+  white-space: nowrap;
+}
+
+.admin-table--monitor .monitor-row__status {
+  white-space: nowrap;
+}
+
+.monitor-row__summary {
+  margin: 0;
+}
+
+.monitor-row__list {
+  margin: var(--cc-space-2) 0 0;
+  padding-left: var(--cc-space-5);
+  font-size: 0.85rem;
+  color: var(--cc-color-text-muted);
+}
+
+.monitor-row__list li {
+  margin-bottom: 0.15rem;
+}
+
+/* Subtle left-edge tint so warning/offline rows stand out at a glance. */
+.monitor-row--warning th[scope="row"] {
+  box-shadow: inset 3px 0 0 var(--cc-color-warning);
+}
+
+.monitor-row--offline th[scope="row"] {
+  box-shadow: inset 3px 0 0 var(--cc-color-danger);
+}
+
+.monitor-legend {
+  margin-top: var(--cc-space-6);
+}
+
+.monitor-legend__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--cc-space-2);
+}
+
+.monitor-legend__list li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--cc-space-3);
+}
+
+.monitor-legend__note {
+  margin: var(--cc-space-3) 0 0;
+  font-size: 0.85rem;
+  color: var(--cc-color-text-muted);
+}
+

@@ -80,6 +80,16 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
+**Commit 13.2 complete — administrator monitoring dashboard.**
+`admin/monitoring.php` renders the health-check report from
+`customcore_monitoring_run()` as an online/warning/offline status table (overall banner
+with per-status counts + timestamp, per-service rows, and a status legend) behind
+`customcore_require_admin()`. It loads even when a check fails because the engine never
+throws and the admin guard is session-based. Status badges reuse the shared
+`.admin-badge` styles via `customcore_monitoring_status_badge_class()`; scoped
+`.monitor-*` rules were added to `assets/css/admin.css`. The admin nav/dashboard
+Monitoring links light up automatically. Live statistics arrive in Commit 13.3.
+
 **Commit 13.1 complete — application health checks.**
 `includes/monitoring.php` adds the Stage 13 monitoring engine: seven self-contained
 checks (PHP runtime, database, sessions, core files, upload storage, site theme,
