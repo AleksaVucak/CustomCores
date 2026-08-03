@@ -1,21 +1,22 @@
-# CustomCore — Security Audit: SQL, Output Escaping & CSRF
+# CustomCore — Security Audit: SQL, Output Escaping, CSRF & File Uploads
 
-**Document type:** Stage 14 security audit (Commits 14.8 & 14.9)
-**Purpose:** Record the evidence-based audit of every SQL execution path, every dynamic output site, and every state-changing request, confirming that no user input is concatenated into SQL, that all output is escaped, and that every state-changing request requires a valid CSRF token.
+**Document type:** Stage 14 security audit (Commits 14.8, 14.9 & 14.10)
+**Purpose:** Record the evidence-based audit of every SQL execution path, every dynamic output site, every state-changing request, and every file-upload path — confirming that no user input is concatenated into SQL, that all output is escaped, that every state-changing request requires a valid CSRF token, and that uploads are validated and dangerous files rejected.
 **Audience:** Developers, reviewers, and whoever maintains the live site.
-**Related:** upload hardening (Commit 14.10), session hardening in [`includes/functions.php`](../includes/functions.php), and the [rubric checklist](rubric-checklist.md).
+**Related:** session hardening in [`includes/functions.php`](../includes/functions.php) and the [rubric checklist](rubric-checklist.md).
 
 ---
 
 ## 1. Scope & result
 
-This audit covers three acceptance criteria across two commits:
+This audit covers four acceptance criteria across three commits:
 
 1. **Prepared statements** (14.8) — no raw user input is concatenated into SQL.
 2. **Output escaping** (14.8) — every dynamic value written to the page is escaped.
 3. **CSRF protection** (14.9) — every state-changing request requires a valid token; missing/invalid tokens are rejected.
+4. **File upload security** (14.10) — uploads validate type/MIME/size/name/storage; invalid and dangerous files are rejected.
 
-**Result: PASS.** Across the whole application (282 PHP functions, 41 view templates, 11 JavaScript modules) the audit found **zero SQL-injection and zero XSS vulnerabilities**, and one CSRF gap (logout via GET) which was **fixed** in 14.9 (see §5.3). Defense-in-depth patterns (integer clamping, identifier whitelists, open-redirect guards, client-side escaping) are in place.
+**Result: PASS.** Across the whole application (282 PHP functions, 41 view templates, 11 JavaScript modules) the audit found **zero SQL-injection and zero XSS vulnerabilities**, one CSRF gap (logout via GET) **fixed** in 14.9 (see §5.3), and robust upload validation to which one storage-execution hardening was **added** in 14.10 (see §6.4). Defense-in-depth patterns (integer clamping, identifier whitelists, open-redirect guards, client-side escaping, content-based upload detection) are in place.
 
 ---
 
@@ -159,7 +160,52 @@ Also confirmed over HTTP: `GET /logout.php` and a token-less `POST /logout.php` 
 
 ---
 
-## 6. Related protections (defense-in-depth)
+## 6. File upload security audit (Commit 14.10)
+
+**Result: PASS.** Both upload surfaces validate type, MIME, size, name, and storage, and reject invalid/dangerous files. One defense-in-depth hardening (script execution in the storage dirs) was added.
+
+### 6.1 Surfaces
+
+| Surface | Who | Handler | Storage |
+|---------|-----|---------|---------|
+| Product images | Admin | `includes/admin-products.php` (`…_validate_image`, `…_store_image`) | `uploads/products/` |
+| Consultation attachments | Customer | `includes/consultations.php` (`…_validate_files`, `…_store_files`) | `uploads/consultation/` |
+
+### 6.2 Checks confirmed
+
+- **Type / MIME (content-based, never trusted from the client)** — the real MIME is detected with `finfo` (`FILEINFO_MIME_TYPE`) and matched against an allowlist; the stored **extension is derived from the detected MIME**, not from the uploaded filename. Product images allow `jpg/png/webp/gif`; consultation allows `pdf/txt/png/jpg/webp`. **SVG is deliberately excluded** (it can carry script). If `finfo` is unavailable the upload **fails closed**.
+- **Size** — empty files rejected; each file capped at `upload_max_bytes` (2 MB, `config/app.php`); PHP `UPLOAD_ERR_INI_SIZE`/`FORM_SIZE` handled. Consultation additionally caps the count at `CUSTOMCORE_CONSULTATION_MAX_FILES` (5).
+- **Name** — the on-disk name is always `bin2hex(random_bytes(16))` + the trusted extension, so no user input reaches the filesystem path (no traversal, no double extension, no collisions). The original name is sanitized (`basename`, control chars stripped, length-clamped) and kept **for display only**.
+- **Storage** — `is_uploaded_file()` + `move_uploaded_file()`, `chmod 0644`, dir created `0755`; consultation storage runs inside the request transaction and cleans up moved files on rollback. Deletion is whitelisted by regex to `uploads/products/…` and refuses `..`.
+- **Serving** — attachments are streamed only through `consultation-attachment.php` / `admin/consultation-attachment.php`: login/ownership (or admin) enforced, generic 404 (no enumeration), `id` validated with `ctype_digit`, the on-disk path is `basename`-guarded **and** confirmed inside the upload dir via `realpath`, and the response uses `Content-Disposition: attachment`, `X-Content-Type-Options: nosniff`, an RFC 5987 filename, and `Cache-Control: private, no-store` with the output buffer flushed before `readfile`.
+
+### 6.3 Rejection demonstrated
+
+Running the app's exact `finfo` + allowlist logic against sample files:
+
+| File | Detected MIME | Product | Consultation |
+|------|---------------|---------|--------------|
+| `shell.php` (webshell) | `text/x-php` | reject | reject |
+| `evil.jpg` (PHP renamed `.jpg`) | `text/x-php` | reject | reject |
+| `evil.svg` (`<script>`) | `image/svg+xml` | reject | reject |
+| `real.pdf` | `application/pdf` | reject | accept → `.pdf` |
+| `real.txt` | `text/plain` | reject | accept → `.txt` |
+| malformed image | `application/octet-stream` | reject | reject |
+
+A disguised extension is ignored because the decision is content-based.
+
+### 6.4 Hardening added
+
+The upload dirs already had an `index.php` 403 guard against browsing. Added `.htaccess` for defense-in-depth against code execution should the application controls ever be bypassed:
+
+- `uploads/products/.htaccess` — `Options -Indexes`, disables the PHP engine (mod_php), and denies serving/executing any script-like extension (`.php/.phtml/.phar/.cgi/.pl/.py/.sh/…`). Images are still served normally.
+- `uploads/consultation/.htaccess` — `Options -Indexes` and **denies all direct web access** (these files are only ever delivered through the download endpoints; the `readfile` path is unaffected).
+
+Both files are Apache 2.2/2.4-safe (authz guarded per version), no-ops under PHP-FPM/non-Apache, and are tracked in git (`.gitignore` exceptions added).
+
+---
+
+## 7. Related protections (defense-in-depth)
 
 These are outside the SQL/escaping criteria but were confirmed during the audit:
 
@@ -167,11 +213,11 @@ These are outside the SQL/escaping criteria but were confirmed during the audit:
 - **Passwords** — `password_hash()` / `password_verify()` (never stored or echoed).
 - **Sessions** — HTTP-only + `SameSite=Lax` cookies, `Secure` under HTTPS, strict mode, idle/absolute timeouts (`customcore_session_harden()`).
 - **Error messages** — database/monitoring errors are scrubbed in production (`customcore_is_debug()` gate) so stack traces and paths never leak.
-- **File uploads** — audited in **Commit 14.10**.
+- **File uploads** — fully audited in **Commit 14.10** (see §6): content-based `finfo` allowlist, size/count limits, random on-disk names, hardened serving endpoints, and `.htaccess` execution guards.
 
 ---
 
-## 7. Re-running the audit
+## 8. Re-running the audit
 
 To reproduce from the repo root:
 
@@ -197,17 +243,22 @@ rg -n "innerHTML|insertAdjacentHTML|document\.write" assets/js
 rg -n 'method=["'"'"']post' -i --glob '*.php'
 rg -c "customcore_csrf_field\(" --glob '*.php'
 rg -n "customcore_csrf_verify\(" --glob '*.php'
+
+# 7. File uploads — every handler (verify finfo allowlist, size, random name):
+rg -n "\$_FILES|move_uploaded_file|is_uploaded_file|finfo_" --glob '*.php'
+ls -la uploads/products/.htaccess uploads/consultation/.htaccess   # storage hardening present
 ```
 
 ---
 
-## 8. Sign-off
+## 9. Sign-off
 
 | Criterion | Result |
 |-----------|--------|
 | No user input concatenated into SQL (14.8) | **PASS** |
 | All output escaped, server + client (14.8) | **PASS** |
 | CSRF token on every state-changing request; invalid rejected (14.9) | **PASS** |
-| Source changes required | 14.8: none · 14.9: logout hardened to token-verified POST |
+| Uploads validate type/MIME/size/name/storage; dangerous files rejected (14.10) | **PASS** |
+| Source changes required | 14.8: none · 14.9: logout hardened to token-verified POST · 14.10: added upload-dir `.htaccess` execution guards |
 
-Audited for Commits 14.8 & 14.9. Findings are current as of the Stage 14 security pass; re-run Sections 7–8 after adding new queries, output sites, or POST endpoints.
+Audited for Commits 14.8, 14.9 & 14.10. Findings are current as of the Stage 14 security pass; re-run Sections 8 after adding new queries, output sites, POST endpoints, or upload handlers.

@@ -14,14 +14,17 @@
 
 # -----------------------------------------------------------------------------
 # Uploaded user and admin content (directory placeholders use .gitkeep)
-# Allow a small index.php guard in each upload folder; ignore real uploads.
+# Allow the index.php guard and .htaccess hardening in each upload folder;
+# ignore real uploads.
 # -----------------------------------------------------------------------------
 /uploads/consultation/*
 !/uploads/consultation/.gitkeep
 !/uploads/consultation/index.php
+!/uploads/consultation/.htaccess
 /uploads/products/*
 !/uploads/products/.gitkeep
 !/uploads/products/index.php
+!/uploads/products/.htaccess
 
 # -----------------------------------------------------------------------------
 # PHP / Composer (Composer is not required; ignore if introduced locally)

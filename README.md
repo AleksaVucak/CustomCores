@@ -51,6 +51,21 @@ to manage the store. Non-programmers updating catalogue content should read the
 
 ## Current status
 
+**Commit 14.10 complete** — file upload security audit. **Stage 14 complete.**
+
+Audited both upload surfaces — admin product images (`includes/admin-products.php`) and
+customer consultation attachments (`includes/consultations.php`). Both detect the real file
+type with `finfo` and match a MIME **allowlist** (SVG deliberately excluded), derive the
+stored extension from the detected type, cap size (2 MB) and count (5 for consultations),
+store under a random `random_bytes` filename via `is_uploaded_file`/`move_uploaded_file`, and
+serve attachments only through hardened endpoints (ownership/admin check, generic 404,
+`realpath` confinement, `Content-Disposition: attachment`, `nosniff`, RFC 5987 filename). A
+content-based rejection demo confirmed a PHP webshell — even renamed `.jpg` — and an
+SVG-with-script are rejected. Added defense-in-depth `.htaccess` execution guards to
+`uploads/products/` (deny scripts) and `uploads/consultation/` (deny all direct access).
+Full write-up in [`docs/security-audit.md`](docs/security-audit.md) §6. This completes the
+Stage 14 security pass (prepared statements · output escaped · CSRF · uploads).
+
 **Commit 14.9 complete** — CSRF protection on all state-changing requests.
 
 Audited every state-changing request against the per-session token system

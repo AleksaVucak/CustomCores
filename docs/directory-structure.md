@@ -52,8 +52,8 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `docs/` | Business case, rubric, sitemap, wireframes, ER design, database import, media credits, image prompts, theme testing, Help context-link audit, the Stage 12 guides (front-end architecture, administrator, content-update, installation, deployment/troubleshooting), and the Stage 13 monitoring troubleshooting guide | 0.x–13.x, 8.7, 10.6, 11.7, 12.1–12.6, 13.5 |
 | `help/` | Static Help hub (`index.html`, 11.1) + topic articles (`pc-builder.html` from 5.9; `accounts.html` 11.2; `catalogue.html` 11.3; `orders.html` 11.4; `support.html` 11.5; `training.html` 11.6) | 5.9, 11.x |
 | `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, theme, admin, admin-nav, admin-products, admin-product-form, admin-options, admin-compatibility, admin-orders, admin-users, admin-consultations, admin-reviews, admin-reports, admin-themes, compatibility, performance, monitoring, seo | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 10.x, 13.x, 14.x |
-| `uploads/consultation/` | Validated consultation files | 7.4 |
-| `uploads/products/` | Product images uploaded by admin | 9.2 |
+| `uploads/consultation/` | Validated consultation files; `index.php` + `.htaccess` deny all direct web access (served only via download endpoints) | 7.4, 14.10 |
+| `uploads/products/` | Product images uploaded by admin; `index.php` + `.htaccess` block script execution (images still served) | 9.2, 14.10 |
 
 ---
 
@@ -61,8 +61,8 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 | Path | Tracking rule |
 | ---- | ------------- |
-| `uploads/consultation/*` | Ignored except `.gitkeep` |
-| `uploads/products/*` | Ignored except `.gitkeep` |
+| `uploads/consultation/*` | Ignored except `.gitkeep`, `index.php`, `.htaccess` |
+| `uploads/products/*` | Ignored except `.gitkeep`, `index.php`, `.htaccess` |
 | `config/database.php` | Ignored (secrets) |
 | `config/database.example.php` | Tracked (Commit 1.2) |
 | `.gitkeep` files | Keep empty directories in Git until real files replace them |
@@ -79,6 +79,15 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 ---
 
 ## 5. Status
+
+**Commit 14.10 complete — file upload security audit (Stage 14 complete).**
+Audited product-image and consultation-attachment uploads: content-based `finfo` MIME
+allowlist (SVG excluded), size/count caps, random on-disk names, `is_uploaded_file` +
+`move_uploaded_file` storage, and hardened download endpoints (`realpath` confinement,
+attachment disposition, `nosniff`). Added `.htaccess` execution guards — `uploads/products/`
+denies script execution (images still served); `uploads/consultation/` denies all direct
+web access (files reachable only via the download endpoints). See
+[`docs/security-audit.md`](security-audit.md) §6.
 
 **Commit 14.9 complete — CSRF protection on all state-changing requests.**
 Audited every POST form and handler against `includes/csrf.php`: all forms render
