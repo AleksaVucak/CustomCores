@@ -80,6 +80,13 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
+**Commit 14.7 complete — JavaScript and PHP documentation.**
+All `assets/js/*` files now have a file header plus JSDoc (purpose + `@param`/`@returns`) on
+every named function. A token-based audit confirmed all 282 PHP functions carry docblocks
+and every PHP file has a file-responsibility header (the three gaps found —
+`catalogue_filter_url()` and two flash helpers — were documented). `node --check` (all JS)
+and `php -l` (changed PHP) pass. Completes the Stage 14 comment pass (#5, #6).
+
 **Commit 14.6 complete — HTML and CSS comments.**
 CSS was already fully commented (section headers/dividers in `main.css`, `admin.css`, and
 the three themes). This commit adds structured, purpose-first `<!-- section -->` comments to

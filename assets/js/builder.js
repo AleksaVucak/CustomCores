@@ -335,6 +335,11 @@
     }
   }
 
+  /**
+   * Entry point: start the live-pricing/compatibility enhancement.
+   *
+   * @returns {void}
+   */
   function boot() {
     initBuilderLivePrice();
   }

@@ -213,6 +213,13 @@ $loadCatalogueChart = $showCatalogueChart;
 // Helper: build a filter URL preserving current state
 // ---------------------------------------------------------------------------
 
+/**
+ * Build a catalogue URL that preserves the current filter/sort state, applying
+ * any overrides. Empty values and default sort are dropped so URLs stay clean.
+ *
+ * @param array<string, string> $overrides Query values to override (e.g. ['category' => 'gaming']).
+ * @return string Root-relative catalogue URL with the merged query string.
+ */
 function catalogue_filter_url(array $overrides = []): string
 {
     $base = [

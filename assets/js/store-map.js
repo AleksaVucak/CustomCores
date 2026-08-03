@@ -11,6 +11,14 @@
 (function () {
   'use strict';
 
+  /**
+   * Build the marker popup from location fields using DOM nodes (values are set
+   * via textContent so they are treated as text, never HTML).
+   *
+   * @param {{name?: string, street?: string, locality?: string, phone?: string,
+   *   phoneHref?: string, email?: string}} data Location details from data-* attrs.
+   * @returns {HTMLDivElement} The popup content element.
+   */
   function buildPopup(data) {
     // Build popup content with DOM nodes so values are inserted as text, never HTML.
     var wrap = document.createElement('div');
@@ -56,6 +64,13 @@
     return wrap;
   }
 
+  /**
+   * Initialise the Leaflet map from #customcore-map data-* attributes and drop a
+   * marker with the store popup. No-op if the container, Leaflet, or valid
+   * coordinates are missing, leaving the text address as the fallback.
+   *
+   * @returns {void}
+   */
   function initMap() {
     var el = document.getElementById('customcore-map');
     if (!el || typeof L === 'undefined') {

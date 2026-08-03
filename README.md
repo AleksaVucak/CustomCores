@@ -51,6 +51,18 @@ to manage the store. Non-programmers updating catalogue content should read the
 
 ## Current status
 
+**Commit 14.7 complete** — JavaScript and PHP documentation.
+
+The final code-comment step. Every file in `assets/js/*` now carries a file header plus
+JSDoc (purpose and `@param`/`@returns`) on all named functions — the remaining gaps in
+`contact.js`, `catalogue-chart.js`, `store-map.js`, `admin-reports.js`, `help-hub.js`, and a
+few helpers in `cart.js`/`builder.js`/`charts.js` were filled. On the PHP side, a
+token-based audit of the whole tree confirmed that all 282 named functions have docblocks
+and every PHP file has a file-responsibility header; the only three gaps found
+(`catalogue_filter_url()` and two flash helpers) were documented. Verified with
+`node --check` on all JS and `php -l` on the changed PHP. This completes the Stage 14 comment
+pass (rubric #5 and #6).
+
 **Commit 14.6 complete** — HTML and CSS comments.
 
 The stylesheets were already fully documented (numbered section headers and dividers in

@@ -24,6 +24,12 @@
 
   var cards = Array.prototype.slice.call(list.querySelectorAll('.help-hub-card'));
 
+  /**
+   * Lower-case a value and collapse whitespace for case-insensitive matching.
+   *
+   * @param {string} value Raw text.
+   * @returns {string} Normalised text.
+   */
   function normalize(value) {
     return String(value || '')
       .toLowerCase()
@@ -31,11 +37,24 @@
       .trim();
   }
 
+  /**
+   * Build the searchable text for a card from its visible text plus any
+   * data-help-keywords.
+   *
+   * @param {Element} card A .help-hub-card element.
+   * @returns {string} Normalised searchable text.
+   */
   function cardText(card) {
     var keywords = card.getAttribute('data-help-keywords') || '';
     return normalize(card.textContent + ' ' + keywords);
   }
 
+  /**
+   * Show only cards whose text matches the current query and toggle the
+   * "no results" message.
+   *
+   * @returns {void}
+   */
   function applyFilter() {
     var query = normalize(input.value);
     var visible = 0;

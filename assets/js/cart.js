@@ -104,6 +104,13 @@
       return;
     }
 
+    /**
+     * Nudge the quantity by delta (+1 / -1), clamp it to the valid range, and
+     * refresh the displayed totals.
+     *
+     * @param {number} delta Amount to add to the current quantity.
+     * @returns {void}
+     */
     function step(delta) {
       var current = parseInt(input.value, 10);
       if (isNaN(current)) {

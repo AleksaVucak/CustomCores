@@ -96,16 +96,31 @@ function customcore_flash_set(string $type, string $message): void
 /**
  * Convenience helpers for the three supported flash types.
  */
+/**
+ * Queue a success flash for the next request.
+ *
+ * @param string $message Human-readable message (escaped on output).
+ */
 function customcore_flash_success(string $message): void
 {
     customcore_flash_set('success', $message);
 }
 
+/**
+ * Queue a warning flash for the next request.
+ *
+ * @param string $message Human-readable message (escaped on output).
+ */
 function customcore_flash_warning(string $message): void
 {
     customcore_flash_set('warning', $message);
 }
 
+/**
+ * Queue an error flash for the next request.
+ *
+ * @param string $message Human-readable message (escaped on output).
+ */
 function customcore_flash_error(string $message): void
 {
     customcore_flash_set('error', $message);

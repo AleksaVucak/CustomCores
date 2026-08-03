@@ -12,6 +12,12 @@
 (function (document) {
   "use strict";
 
+  /**
+   * Wire up the subject <select> so the "Custom subject" field appears only when
+   * "Other" is chosen. No-op if the expected fields are absent.
+   *
+   * @returns {void}
+   */
   function initContactForm() {
     var select = document.getElementById("contact-subject");
     var otherRow = document.getElementById("contact-subject-other-row");
@@ -21,6 +27,12 @@
       return;
     }
 
+    /**
+     * Show/hide the custom-subject row and toggle its required state to match
+     * the current selection.
+     *
+     * @returns {void}
+     */
     function syncOther() {
       var isOther = select.value === "Other";
       otherRow.hidden = !isOther;

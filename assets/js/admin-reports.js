@@ -16,6 +16,14 @@
 (function (window, document) {
   'use strict';
 
+  /**
+   * Build the Chart.js options object for a report chart, adding numeric axes for
+   * bar charts and a bottom legend for doughnut charts.
+   *
+   * @param {string} type Chart type ("bar" or "doughnut").
+   * @param {string} title Chart title text.
+   * @returns {Object} Chart.js options.
+   */
   function buildOptions(type, title) {
     var isDoughnut = type === 'doughnut';
     var options = {
@@ -62,6 +70,13 @@
     return options;
   }
 
+  /**
+   * Render a single report chart from one container's data-* attributes. No-op if
+   * the canvas, Chart.js, or a valid JSON payload is missing.
+   *
+   * @param {Element} root The .admin-report-chart container element.
+   * @returns {void}
+   */
   function initOne(root) {
     var canvas = root.querySelector('canvas');
     if (!canvas || typeof window.Chart === 'undefined') {
@@ -107,6 +122,11 @@
     });
   }
 
+  /**
+   * Render every report chart present on the page.
+   *
+   * @returns {void}
+   */
   function initAll() {
     var roots = document.querySelectorAll('[data-admin-report-chart]');
     for (var i = 0; i < roots.length; i += 1) {
@@ -114,6 +134,12 @@
     }
   }
 
+  /**
+   * Entry point. Chart.js is deferred just before this file, so poll briefly
+   * (up to ~2s) for it before drawing when the CDN is slow.
+   *
+   * @returns {void}
+   */
   function boot() {
     if (typeof window.Chart === 'undefined') {
       var tries = 0;

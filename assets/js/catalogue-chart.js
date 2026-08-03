@@ -17,6 +17,13 @@
 (function (window, document) {
   'use strict';
 
+  /**
+   * Read the server-embedded JSON payload and render the tier bar chart into the
+   * canvas. Silently returns when the container, canvas, Chart.js, or a valid
+   * payload is missing — the server-rendered data table remains the fallback.
+   *
+   * @returns {void}
+   */
   function initCatalogueChart() {
     var root = document.querySelector('[data-catalogue-chart]');
     if (!root) {
@@ -99,6 +106,12 @@
     });
   }
 
+  /**
+   * Entry point. Chart.js is deferred just before this file, so if the CDN is
+   * still loading, poll briefly (up to ~2s) before drawing the chart.
+   *
+   * @returns {void}
+   */
   function boot() {
     // Chart.js is deferred just before this file; if the CDN is slow, retry briefly.
     if (typeof window.Chart === 'undefined') {

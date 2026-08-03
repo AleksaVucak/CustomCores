@@ -328,6 +328,12 @@
     document.body.setAttribute("data-cc-charts", "ready");
   }
 
+  /**
+   * Entry point. Chart.js is deferred ahead of this file, so poll briefly for it
+   * before drawing the performance charts when the CDN is slow.
+   *
+   * @returns {void}
+   */
   function boot() {
     // Chart.js is deferred ahead of this file; if the CDN is slow, retry briefly.
     if (!window.Chart) {
