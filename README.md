@@ -50,6 +50,19 @@ to manage the store. Non-programmers updating catalogue content should read the
 
 ## Current status
 
+**Commit 13.4 complete** — production-safe monitoring error messages.
+
+A new `customcore_monitoring_safe_message()` sanitizer in `includes/monitoring.php`
+guarantees the monitoring page can never disclose sensitive internals. It cuts stack
+traces, reduces absolute filesystem paths to `[path]`, redacts credential fragments
+(`password=`/`pwd=`/`pass=`), collapses whitespace, and truncates long strings, falling
+back to a generic line when nothing safe remains. It is applied to **every dynamic error
+string** the page shows — the database health check, `customcore_monitoring_stats()`, and
+`admin/monitoring.php`'s report fallback — so production shows generic messages and even
+debug detail is scrubbed. Verified with `php -l`, a sanitizer unit test, and a full page
+render with MySQL offline: the output contained no absolute path, no stack trace, and no
+password fragment. Next up: a monitoring troubleshooting guide in **Commit 13.5**.
+
 **Commit 13.3 complete** — monitoring statistics.
 
 `customcore_monitoring_stats()` in `includes/monitoring.php` adds live counts for
@@ -62,7 +75,6 @@ available even when MySQL is offline; Learning Centre media availability is incl
 supporting context. The stats panel on `admin/monitoring.php` is loaded **separately**
 from the health-check table: a DB failure shows a safe warning flash and still displays
 filesystem image/media counts without blanking the online/warning/offline status table.
-Safe production error messaging for monitoring is hardened further in **Commit 13.4**.
 
 **Commit 13.2 complete** — administrator monitoring dashboard.
 

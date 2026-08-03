@@ -14,9 +14,11 @@
  *   - Every check is wrapped so it can NEVER throw. A failing dependency must
  *     downgrade its own status, not take down the monitoring page.
  *   - Messages are safe for production: no passwords, DSNs, absolute paths, or
- *     stack traces are exposed (Stage 13.4 hardens this further). Database
- *     errors reuse customcore_database_error_message(), which already respects
- *     debug mode and scrubs credentials.
+ *     stack traces are exposed. Database errors reuse
+ *     customcore_database_error_message() (respects debug mode, scrubs
+ *     credentials) and every dynamic error string is additionally passed
+ *     through customcore_monitoring_safe_message() (Stage 13.4), which strips
+ *     stack traces, absolute paths, and credential fragments even in debug.
  *   - Checks read real state (files on disk, PDO connection, config), never
  *     decorative hard-coded values.
  *
@@ -131,6 +133,60 @@ function customcore_monitoring_result(
 }
 
 /**
+ * Reduce an arbitrary error/exception message to a production-safe one (13.4).
+ *
+ * Defence-in-depth for anything dynamic that the monitoring page might display.
+ * It removes content that could disclose sensitive internals — stack traces,
+ * absolute filesystem paths, and credential fragments (password/pwd/pass=…) —
+ * then collapses whitespace and truncates length. Returns $fallback when the
+ * message is empty or nothing safe remains. Applied even in debug mode so a
+ * status page never reveals passwords, paths, or stack traces.
+ *
+ * Note: this operates only on error strings. The static check summaries and
+ * detail lines built elsewhere in this file already contain only safe,
+ * project-relative text and are not passed through here.
+ */
+function customcore_monitoring_safe_message(
+    string $message,
+    string $fallback = 'An unexpected error occurred.'
+): string {
+    $message = trim($message);
+    if ($message === '') {
+        return $fallback;
+    }
+
+    // Cut everything from the first stack-trace / "thrown in <path>" marker.
+    foreach (['Stack trace:', ' thrown in ', "\n#0", '#0 ', ' in /', ' in \\'] as $marker) {
+        $pos = strpos($message, $marker);
+        if ($pos !== false) {
+            $message = substr($message, 0, $pos);
+        }
+    }
+
+    // Collapse any remaining newlines/tabs so multi-line traces cannot slip in.
+    $message = (string) preg_replace('/\s+/', ' ', $message);
+
+    // Redact credential fragments such as password=..., pwd=..., pass=...
+    $message = (string) preg_replace('/\b(pass(?:word)?|pwd)\s*=\s*\S+/i', '$1=***', $message);
+
+    // Redact absolute filesystem paths (Unix: two or more /segments; Windows: C:\...).
+    $message = (string) preg_replace('#(?:/[A-Za-z0-9._-]+){2,}/?#', '[path]', $message);
+    $message = (string) preg_replace('#[A-Za-z]:\\\\[^\s]+#', '[path]', $message);
+
+    $message = trim($message);
+    if ($message === '' || $message === '[path]') {
+        return $fallback;
+    }
+
+    // Keep it short; monitoring is a status page, not a debugger.
+    if (strlen($message) > 200) {
+        $message = rtrim(substr($message, 0, 200)) . '…';
+    }
+
+    return $message;
+}
+
+/**
  * Absolute project root (the directory that contains includes/, config/, ...).
  */
 function customcore_monitoring_root(): string
@@ -217,11 +273,16 @@ function customcore_monitoring_check_database(): array
             'Connected and responding to queries.'
         );
     } catch (Throwable $exception) {
-        // customcore_database_error_message() is already production-safe and
-        // scrubs credentials; fall back to a generic line if it is unavailable.
-        $message = function_exists('customcore_database_error_message')
+        // customcore_database_error_message() is already production-safe (generic
+        // when debug is off); wrap it in the 13.4 sanitizer so even the debug
+        // detail can never leak paths, credentials, or a stack trace.
+        $raw = function_exists('customcore_database_error_message')
             ? customcore_database_error_message($exception)
             : 'The database is temporarily unavailable.';
+        $message = customcore_monitoring_safe_message(
+            $raw,
+            'The database is temporarily unavailable.'
+        );
 
         return customcore_monitoring_result(
             'database',
@@ -735,9 +796,13 @@ function customcore_monitoring_stats(): array
             'low_stock_threshold' => (int) ($dash['low_stock_threshold'] ?? customcore_admin_low_stock_threshold()),
         ];
     } catch (Throwable $exception) {
-        $empty['error'] = function_exists('customcore_database_error_message')
+        $raw = function_exists('customcore_database_error_message')
             ? customcore_database_error_message($exception)
             : 'Live database statistics are temporarily unavailable.';
+        $empty['error'] = customcore_monitoring_safe_message(
+            $raw,
+            'Live database statistics are temporarily unavailable.'
+        );
 
         return $empty;
     }

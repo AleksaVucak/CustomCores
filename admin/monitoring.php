@@ -45,8 +45,13 @@ $monitorError = null;
 try {
     $report = customcore_monitoring_run();
 } catch (Throwable $exception) {
+    // Production shows a generic line; debug shows a sanitized detail that still
+    // never exposes passwords, absolute paths, or a stack trace (Commit 13.4).
     $monitorError = customcore_is_debug()
-        ? $exception->getMessage()
+        ? customcore_monitoring_safe_message(
+            $exception->getMessage(),
+            'The monitoring report is temporarily unavailable.'
+        )
         : 'The monitoring report is temporarily unavailable.';
 }
 

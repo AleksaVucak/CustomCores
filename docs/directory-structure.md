@@ -80,6 +80,13 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
+**Commit 13.4 complete — production-safe monitoring error messages.**
+`customcore_monitoring_safe_message()` in `includes/monitoring.php` strips stack traces,
+absolute filesystem paths, and credential fragments from every dynamic error string the
+monitoring page can display (database check, `customcore_monitoring_stats()`, and the page
+fallback), even in debug mode. Render-verified with MySQL offline: no path, stack trace,
+or password appears in the output.
+
 **Commit 13.3 complete — monitoring statistics.**
 `customcore_monitoring_stats()` adds live product / user / order / consultation /
 image / stock counts to `admin/monitoring.php`. DB totals reuse
