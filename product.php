@@ -204,7 +204,7 @@ require_once __DIR__ . '/includes/header.php';
 
         <p class="context-help">
             Help:
-            <a href="<?php echo customcore_e(customcore_url('help/catalogue.html')); ?>">Catalogue &amp; product guide</a>
+            <a href="<?php echo customcore_e(customcore_url('help/catalogue.html#product')); ?>">Catalogue &amp; product guide</a>
         </p>
 
         <header class="product-detail__header">

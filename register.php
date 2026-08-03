@@ -176,7 +176,7 @@ require_once __DIR__ . '/includes/header.php';
             </p>
             <p class="context-help">
                 Help:
-                <a href="<?php echo customcore_e(customcore_url('help/accounts.html')); ?>">Accounts guide</a>
+                <a href="<?php echo customcore_e(customcore_url('help/accounts.html#register')); ?>">Accounts guide</a>
             </p>
         </header>
 

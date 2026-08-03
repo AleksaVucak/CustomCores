@@ -259,7 +259,7 @@ require_once __DIR__ . '/includes/header.php';
         <h1 id="catalogue-heading">Catalogue</h1>
         <p class="context-help">
             Help:
-            <a href="<?php echo customcore_e(customcore_url('help/catalogue.html')); ?>">Catalogue guide</a>
+            <a href="<?php echo customcore_e(customcore_url('help/catalogue.html#browse')); ?>">Catalogue guide</a>
         </p>
         <p class="catalogue-page__intro">
             Configurable prebuilt gaming and creator PCs loaded from MySQL.

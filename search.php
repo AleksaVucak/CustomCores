@@ -94,7 +94,7 @@ require_once __DIR__ . '/includes/header.php';
         <h1 id="search-heading">Search catalogue</h1>
         <p class="context-help">
             Help:
-            <a href="<?php echo customcore_e(customcore_url('help/catalogue.html')); ?>">Catalogue guide</a>
+            <a href="<?php echo customcore_e(customcore_url('help/catalogue.html#search')); ?>">Catalogue guide</a>
         </p>
         <p class="search-page__intro">
             Find systems by name, category tier, brand, description, or key specs

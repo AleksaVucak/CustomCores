@@ -203,7 +203,7 @@ require_once __DIR__ . '/includes/header.php';
         <h1 id="profile-heading">My account</h1>
         <p class="context-help">
             Help:
-            <a href="<?php echo customcore_e(customcore_url('help/accounts.html')); ?>">Accounts guide</a>
+            <a href="<?php echo customcore_e(customcore_url('help/accounts.html#profile')); ?>">Accounts guide</a>
         </p>
     </header>
 

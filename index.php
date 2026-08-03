@@ -84,8 +84,10 @@ require_once __DIR__ . '/includes/header.php';
 <p class="context-help">
     New here?
     <a href="<?php echo customcore_e(customcore_url('help/index.html')); ?>">Open the Help centre</a>
-    or read our
-    <a href="<?php echo customcore_e(customcore_url('about.php')); ?>">business case</a>.
+    or follow the
+    <a href="<?php echo customcore_e(customcore_url('help/training.html#start')); ?>">step-by-step walkthrough</a>
+    ·
+    <a href="<?php echo customcore_e(customcore_url('about.php')); ?>">About CustomCore</a>
 </p>
 
 <?php if ($homeDataError !== null) : ?>

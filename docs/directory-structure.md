@@ -21,7 +21,7 @@ customcore/
 ├── config/                # App and database configuration (Commit 1.2+)
 ├── database/              # schema.sql, seeds, admin setup (Stage 2)
 ├── docs/                  # Planning and project documentation
-├── help/                  # Static Help wiki HTML (Stage 11): hub 11.1; accounts 11.2; catalogue 11.3; orders 11.4; support 11.5; training 11.6 (+ pc-builder 5.9)
+├── help/                  # Static Help wiki (Stage 11 complete): hub + 6 guides; context links audited in 11.7
 ├── includes/              # Shared PHP layout and helpers (Commit 1.4+)
 ├── uploads/
 │   ├── consultation/      # Safe consultation attachments
@@ -49,7 +49,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `assets/media/` | ≥ 3 video/audio items + captions | 8.2 |
 | `config/` | `database.example.php`, `app.php`; real `database.php` gitignored | 1.2–1.3 |
 | `database/` | Schema, seeds, create-admin script | 2.x |
-| `docs/` | Business case, rubric, sitemap, wireframes, ER design, media credits, image prompts, theme testing, guides | 0.x–12.x, 8.7, 10.6 |
+| `docs/` | Business case, rubric, sitemap, wireframes, ER design, media credits, image prompts, theme testing, Help context-link audit, guides | 0.x–12.x, 8.7, 10.6, 11.7 |
 | `help/` | Static Help hub (`index.html`, 11.1) + topic articles (`pc-builder.html` from 5.9; `accounts.html` 11.2; `catalogue.html` 11.3; `orders.html` 11.4; `support.html` 11.5; `training.html` 11.6) | 5.9, 11.x |
 | `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, theme, admin, admin-nav, admin-products, admin-product-form, admin-options, admin-compatibility, admin-orders, admin-users, admin-consultations, admin-reviews, admin-reports, admin-themes, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 10.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
@@ -79,6 +79,12 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 ---
 
 ## 5. Status
+
+**Commit 11.7 complete — context-sensitive Help links audited.**
+Every customer feature page links to its matching Help article (with section
+anchors where useful). Hub links remain on main nav, footer, and general entry
+pages. Audit map and verification notes are in `docs/help-context-links.md`.
+Stage 11 (Help wiki + training + context links) is finished.
 
 **Commit 11.6 complete — End-user training walkthrough.**
 `help/training.html` is a numbered walkthrough (account → shop or build → order →

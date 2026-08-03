@@ -197,7 +197,7 @@ require_once __DIR__ . '/includes/header.php';
         <h1 id="compare-heading">Compare systems</h1>
         <p class="context-help">
             Help:
-            <a href="<?php echo customcore_e(customcore_url('help/catalogue.html')); ?>">Catalogue guide</a>
+            <a href="<?php echo customcore_e(customcore_url('help/catalogue.html#compare')); ?>">Catalogue guide</a>
         </p>
         <p class="compare-page__intro">
             Select <?php echo customcore_e((string) COMPARE_MIN); ?>–

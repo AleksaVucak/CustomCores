@@ -66,7 +66,7 @@ require_once __DIR__ . '/includes/header.php';
             Planning a visit?
             <a href="<?php echo customcore_e(customcore_url('consultation.php')); ?>">Request a consultation</a>
             ·
-            <a href="<?php echo customcore_e(customcore_url('help/support.html')); ?>">Support guide</a>
+            <a href="<?php echo customcore_e(customcore_url('help/support.html#contact')); ?>">Support guide</a>
         </p>
     </header>
 

@@ -37,6 +37,17 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 11.7 complete** — context-sensitive Help links audited and polished.
+
+Every customer feature page now opens the **matching** Help article (with a
+section anchor where useful), not only the Help hub. Auth pages deep-link into
+`accounts.html`; catalogue/search/compare/product/wishlist into `catalogue.html`;
+builder/results/saved builds into `pc-builder.html`; cart/checkout/orders into
+`orders.html`; consultation/reviews/contact/store-locations into `support.html`.
+Homepage, About, and Learning Centre keep the hub as an entry point and also
+link the training walkthrough. Main nav and footer still open the hub. Audit
+map and completion evidence live in `docs/help-context-links.md`.
+
 **Commit 11.6 complete** — End-user training walkthrough.
 
 `help/training.html` is a numbered, beginner-friendly walkthrough matching the
@@ -433,7 +444,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Commit 11.6 complete.** The Help wiki is complete (hub + six guides with context-sensitive links). Next: **Commit 11.7** — Help wiki polish / context-link audit.
+**Commit 11.7 complete.** Context-sensitive Help links are audited (`docs/help-context-links.md`). Stage 11 Help wiki is finished. Next: **Stage 12** — Technical, administrator, and installation documentation (starting with Commit 12.1).
 
 ## Security notes
 

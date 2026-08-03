@@ -71,6 +71,8 @@ require_once __DIR__ . '/includes/header.php';
             Prefer reading?
             <a href="<?php echo customcore_e(customcore_url('help/index.html')); ?>">Open the Help centre</a>
             ·
+            <a href="<?php echo customcore_e(customcore_url('help/training.html#start')); ?>">End-user training</a>
+            ·
             <a href="<?php echo customcore_e(customcore_url('help/pc-builder.html')); ?>">PC Builder guide</a>
         </p>
     </header>
@@ -246,7 +248,7 @@ require_once __DIR__ . '/includes/header.php';
         <p class="hero__actions">
             <a class="button" href="<?php echo customcore_e(customcore_url('builder.php')); ?>">Start PC Builder</a>
             <a class="button button--secondary" href="<?php echo customcore_e(customcore_url('catalogue.php')); ?>">Browse catalogue</a>
-            <a class="button button--ghost" href="<?php echo customcore_e(customcore_url('help/support.html')); ?>">Support guide</a>
+            <a class="button button--ghost" href="<?php echo customcore_e(customcore_url('help/support.html#contact')); ?>">Support guide</a>
         </p>
     </section>
 
