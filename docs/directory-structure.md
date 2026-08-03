@@ -49,7 +49,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `assets/media/` | ≥ 3 video/audio items + captions | 8.2 |
 | `config/` | `database.example.php`, `app.php`; real `database.php` gitignored | 1.2–1.3 |
 | `database/` | Schema, seeds, create-admin script | 2.x |
-| `docs/` | Business case, rubric, sitemap, wireframes, ER design, media credits, image prompts, guides | 0.x–12.x, 8.7 |
+| `docs/` | Business case, rubric, sitemap, wireframes, ER design, media credits, image prompts, theme testing, guides | 0.x–12.x, 8.7, 10.6 |
 | `help/` | Static Help + training HTML (`pc-builder.html` shipped in 5.9; full wiki in 11.x) | 5.9, 11.x |
 | `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, theme, admin, admin-nav, admin-products, admin-product-form, admin-options, admin-compatibility, admin-orders, admin-users, admin-consultations, admin-reviews, admin-reports, admin-themes, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 10.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
@@ -79,6 +79,13 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 ---
 
 ## 5. Status
+
+**Commit 10.6 complete — cross-theme verification (Stage 10 finished).**  
+Walked 26 key public / account / admin pages under all three themes
+(78 checks). Every page returned HTTP 200 with the correct theme CSS linked
+after `main.css` (and after `admin.css` on admin pages), structural chrome
+present, and no PHP error leaks. Themes remain distinct (bg / accent / font /
+radius). No theme bugs found. Record: `docs/theme-testing.md`.
 
 **Commit 10.5 complete — safe theme fallback hardening.**  
 `includes/theme.php` resolves the active stylesheet through a five-step chain

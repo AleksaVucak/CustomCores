@@ -33,8 +33,19 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 - [Flash message usage](docs/flash-messages.md)
 - [Multimedia credits and licences](docs/media-credits.md)
 - [Stage 8 image prompt record](docs/image-prompts.md)
+- [Theme testing record](docs/theme-testing.md)
 
 ## Current status
+
+**Commit 10.6 complete** — cross-theme verification (Stage 10 finished).
+
+Key public, account, and admin pages were walked under all three themes
+(RGB Gaming, Minimal Professional, Cyber Grid). Every check asserted HTTP 200,
+correct stylesheet order (`main.css` → optional `admin.css` → theme), structural
+chrome (header/nav/footer/forms/tables/cards), and no PHP error leaks.
+**78 / 78 checks passed**; themes remain distinct in background, accent,
+display font, and radius. No theme-only layout bugs turned up. Results are
+recorded in `docs/theme-testing.md`. Active theme restored to RGB Gaming.
 
 **Commit 10.5 complete** — safe theme fallback hardening.
 
@@ -344,7 +355,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Commit 10.5 complete.** Next: **Commit 10.6** — verify all key pages across the three themes and record results.
+**Stage 10 complete.** Next: **Stage 11** — static Help wiki pages.
 
 ## Security notes
 
