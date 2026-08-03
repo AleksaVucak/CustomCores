@@ -36,6 +36,26 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 10.1 complete** — the **RGB Gaming** site theme.
+
+`assets/themes/rgb-gaming.css` is a bold, dark "battlestation" theme layered on
+top of `assets/css/main.css`. It re-declares the shared design tokens (the
+`--cc-*` CSS custom properties) so every token-driven component re-skins
+automatically, then targets the few places `main.css`/`admin.css` use
+hard-coded light colours (body/header backdrops, hero, flash banners, footer,
+and white-on-accent text). The palette is a high-contrast near-black surface
+with a cyan primary accent, an electric-blue focus ring, and a multi-hue RGB
+gradient reserved for expressive flourishes (gradient wordmark, animated header
+rail, active-nav glow). The active theme is resolved by `includes/theme.php`,
+which reads `site_settings.active_theme_id → themes.css_file` from MySQL and
+falls back safely to the seeded default theme and then to the
+`config/app.php` → `default_theme` slug when the database is unavailable; every
+candidate is path-validated and must exist on disk before it is linked. The
+shared header links the theme **last** so it overrides both public and admin
+surfaces, and all motion respects `prefers-reduced-motion`. Verified over HTTP
+that public and admin pages render with the correct stylesheet order
+(`main.css` → `admin.css` → theme).
+
 **Commit 9.9 complete** — administrator reports (Stage 9 finished).
 
 `admin/reports.php` charts live MySQL aggregates for **orders by status**, **active
@@ -260,7 +280,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Stage 9 complete.** Next: **Commit 10.1** — site-wide CSS theme templates.
+**Commit 10.1 complete.** Next: **Commit 10.2** — the Minimal Professional theme (`assets/themes/minimal-pro.css`).
 
 ## Security notes
 

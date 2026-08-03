@@ -78,7 +78,15 @@ if (!isset($currentPage) || !is_string($currentPage)) {
             crossorigin=""
         >
     <?php endif; ?>
-    <!-- Active theme stylesheet is loaded from MySQL settings in Stage 10 -->
+    <?php
+    // Active theme stylesheet (Stage 10): resolved from MySQL settings with a
+    // safe fallback chain, and linked LAST so it overrides main.css/admin.css.
+    require_once __DIR__ . '/theme.php';
+    $themeHref = customcore_active_theme_href();
+    ?>
+    <?php if ($themeHref !== null) : ?>
+        <link rel="stylesheet" href="<?php echo customcore_e($themeHref); ?>">
+    <?php endif; ?>
 </head>
 <body class="page-<?php echo customcore_e($currentPage !== '' ? $currentPage : 'default'); ?>">
     <a class="skip-link" href="#main-content">Skip to content</a>

@@ -1,0 +1,451 @@
+/*
+ * CustomCore — Theme: RGB Gaming (Stage 10.1)
+ * ----------------------------------------------------------------------------
+ * File responsibility:
+ *   A bold, dark "battlestation" theme layered on top of assets/css/main.css.
+ *   It re-declares the shared design tokens (:root custom properties) so every
+ *   component that already uses those tokens re-skins automatically, then adds
+ *   a handful of targeted overrides for the few places main.css / admin.css use
+ *   hard-coded light colours (body/header backgrounds, hero, flashes, footer,
+ *   and white-on-accent text).
+ *
+ * Loading model:
+ *   main.css loads first (foundation), admin.css second on admin pages, and
+ *   this theme file LAST from includes/header.php. Because it is loaded last it
+ *   wins for equal-specificity rules and overrides both the public and admin
+ *   surfaces through the shared tokens.
+ *
+ * Accessibility:
+ *   Palette keeps text/background contrast high on the dark surfaces, and every
+ *   animated flourish is disabled under prefers-reduced-motion.
+ *
+ * Sections:
+ *   1. Tokens (colour, type, radius, shadow) + RGB accent gradient
+ *   2. Page shell (body backdrop, headings, links)
+ *   3. Header, navigation & footer
+ *   4. Buttons
+ *   5. Forms & fields
+ *   6. Surfaces: hero, sections, cards, tables
+ *   7. Flash messages
+ *   8. Admin surfaces
+ *   9. Motion / reduced-motion
+ * ----------------------------------------------------------------------------
+ */
+
+/* ==========================================================================
+   1. Tokens
+   Dark "RGB" palette. Cyan is the primary accent with an electric-blue focus
+   ring; the multi-hue gradient is reserved for expressive flourishes only.
+   ========================================================================== */
+
+:root {
+  /* Expressive display face already ships in main.css; keep it, tighten body. */
+  --cc-font-display: "Space Grotesk", "Trebuchet MS", sans-serif;
+  --cc-font-body: "DM Sans", "Gill Sans", "Trebuchet MS", sans-serif;
+
+  --cc-color-bg: #0a0e15;
+  --cc-color-bg-elevated: #121a26;
+  --cc-color-bg-muted: #1a2333;
+  /* Kept genuinely dark: reused for the skip-link chip and the footer plate. */
+  --cc-color-surface-dark: #05070c;
+
+  --cc-color-text: #e8eef7;
+  --cc-color-text-muted: #93a6bd;
+  --cc-color-border: #273244;
+
+  --cc-color-accent: #00e5c0;
+  --cc-color-accent-hover: #2ff2d6;
+  --cc-color-accent-soft: rgba(0, 229, 192, 0.14);
+
+  --cc-color-danger: #ff5568;
+  --cc-color-warning: #ffb020;
+  --cc-color-success: #35d17d;
+  --cc-color-focus: #22b8ff;
+
+  /* Sharper, more "hardware" edges than the soft base radii. */
+  --cc-radius-sm: 0.2rem;
+  --cc-radius-md: 0.35rem;
+  --cc-radius-lg: 0.55rem;
+
+  /* Deeper shadows plus a reusable neon glow for interactive states. */
+  --cc-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.55);
+  --cc-shadow-md: 0 18px 42px rgba(0, 0, 0, 0.6);
+
+  /* Theme-only helpers (namespaced so they never clash with base tokens). */
+  --cc-rgb-gradient: linear-gradient(
+    90deg,
+    #00e5c0 0%,
+    #22b8ff 34%,
+    #6f6bff 62%,
+    #ff4d8d 100%
+  );
+  --cc-ink-on-accent: #041016;
+  --cc-glow-accent: 0 0 0 1px rgba(0, 229, 192, 0.35),
+    0 0 18px rgba(0, 229, 192, 0.28);
+  --cc-glow-focus: 0 0 0 3px rgba(34, 184, 255, 0.35);
+}
+
+/* ==========================================================================
+   2. Page shell
+   ========================================================================== */
+
+body {
+  color: var(--cc-color-text);
+  /* Subtle corner glows over a near-black base — not a flat gradient wash. */
+  background:
+    radial-gradient(
+      1200px 620px at 12% -8%,
+      rgba(0, 229, 192, 0.1),
+      transparent 60%
+    ),
+    radial-gradient(
+      1000px 560px at 100% 0%,
+      rgba(34, 184, 255, 0.09),
+      transparent 55%
+    ),
+    radial-gradient(
+      900px 700px at 85% 110%,
+      rgba(255, 77, 141, 0.07),
+      transparent 60%
+    ),
+    var(--cc-color-bg);
+  background-attachment: fixed;
+}
+
+/* Headings and the logo use surface-dark in main.css (a dark colour); flip them
+   to light so they stay legible on the dark backdrop. */
+h1,
+h2,
+h3,
+h4 {
+  color: var(--cc-color-text);
+  letter-spacing: 0.01em;
+}
+
+.site-logo {
+  color: var(--cc-color-text);
+  background: var(--cc-rgb-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+}
+
+.site-logo:hover,
+.site-logo:focus-visible {
+  color: var(--cc-color-accent);
+  filter: brightness(1.15) saturate(1.1);
+}
+
+:focus-visible {
+  outline-color: var(--cc-color-focus);
+}
+
+code {
+  color: var(--cc-color-accent-hover);
+}
+
+/* ==========================================================================
+   3. Header, navigation & footer
+   ========================================================================== */
+
+.site-header {
+  position: sticky;
+  background: rgba(9, 13, 20, 0.86);
+  border-bottom: 1px solid var(--cc-color-border);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(12px) saturate(1.1);
+}
+
+/* Thin animated RGB rail across the very top of the header. */
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--cc-rgb-gradient);
+  background-size: 200% 100%;
+  animation: cc-rgb-slide 6s linear infinite;
+}
+
+.nav-toggle {
+  background: var(--cc-color-bg-elevated);
+  border-color: var(--cc-color-border);
+  color: var(--cc-color-text);
+}
+
+.nav-toggle:hover {
+  background: var(--cc-color-bg-muted);
+  border-color: var(--cc-color-accent);
+}
+
+.site-nav__link {
+  color: var(--cc-color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.9rem;
+}
+
+.site-nav__link.is-active,
+.site-nav__link[aria-current="page"] {
+  color: var(--cc-color-accent);
+  border-bottom-color: var(--cc-color-accent);
+  text-shadow: 0 0 12px rgba(0, 229, 192, 0.5);
+}
+
+.site-nav__account {
+  border-left-color: var(--cc-color-border);
+}
+
+.site-nav__badge {
+  background: var(--cc-color-accent);
+  color: var(--cc-ink-on-accent);
+  box-shadow: var(--cc-glow-accent);
+}
+
+.site-footer {
+  background: var(--cc-color-surface-dark);
+  color: var(--cc-color-text-muted);
+  border-top: 1px solid var(--cc-color-border);
+  position: relative;
+}
+
+.site-footer::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: var(--cc-rgb-gradient);
+  opacity: 0.85;
+}
+
+.site-footer a {
+  color: var(--cc-color-accent);
+}
+
+.site-footer a:hover,
+.site-footer a:focus-visible {
+  color: var(--cc-color-accent-hover);
+}
+
+/* ==========================================================================
+   4. Buttons
+   Bright accent fills need dark ink (not white) to keep AA contrast.
+   ========================================================================== */
+
+.button,
+button.button {
+  background: linear-gradient(135deg, var(--cc-color-accent), #12c8ff);
+  color: var(--cc-ink-on-accent);
+  border-color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.button:hover,
+.button:focus-visible {
+  background: linear-gradient(135deg, var(--cc-color-accent-hover), #4dd6ff);
+  color: var(--cc-ink-on-accent);
+  box-shadow: var(--cc-glow-accent), 0 8px 20px rgba(0, 0, 0, 0.45);
+}
+
+.button--primary {
+  background: linear-gradient(135deg, var(--cc-color-accent), #12c8ff);
+  color: var(--cc-ink-on-accent);
+}
+
+.button--primary:hover,
+.button--primary:focus-visible {
+  background: linear-gradient(135deg, var(--cc-color-accent-hover), #4dd6ff);
+}
+
+.button--secondary {
+  background: transparent;
+  color: var(--cc-color-accent);
+  border-color: var(--cc-color-accent);
+}
+
+.button--secondary:hover,
+.button--secondary:focus-visible {
+  background: var(--cc-color-accent-soft);
+  color: var(--cc-color-accent-hover);
+  box-shadow: var(--cc-glow-accent);
+}
+
+.button--danger {
+  background: linear-gradient(135deg, var(--cc-color-danger), #ff2f6a);
+  color: #fff;
+}
+
+.button--danger:hover,
+.button--danger:focus-visible {
+  background: linear-gradient(135deg, #ff6b7c, #ff4d80);
+  color: #fff;
+}
+
+.button--ghost {
+  background: transparent;
+  color: var(--cc-color-text-muted);
+  border-color: var(--cc-color-border);
+}
+
+.button--ghost:hover,
+.button--ghost:focus-visible {
+  color: var(--cc-color-danger);
+  border-color: var(--cc-color-danger);
+}
+
+/* ==========================================================================
+   5. Forms & fields
+   ========================================================================== */
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="number"],
+input[type="search"],
+input[type="url"],
+input[type="date"],
+select,
+textarea {
+  background: #0d1522;
+  border-color: var(--cc-color-border);
+  color: var(--cc-color-text);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #6d7f96;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  border-color: var(--cc-color-focus);
+  box-shadow: var(--cc-glow-focus);
+}
+
+fieldset {
+  background: var(--cc-color-bg-elevated);
+  border-color: var(--cc-color-border);
+}
+
+/* Native form controls render their own light chrome; hint dark UI. */
+:root {
+  color-scheme: dark;
+}
+
+/* ==========================================================================
+   6. Surfaces: hero, sections, cards, tables
+   ========================================================================== */
+
+.content-section,
+.hero {
+  background: var(--cc-color-bg-elevated);
+  border-color: var(--cc-color-border);
+  box-shadow: var(--cc-shadow-sm);
+}
+
+.hero {
+  background:
+    linear-gradient(135deg, rgba(0, 229, 192, 0.14), transparent 42%),
+    linear-gradient(300deg, rgba(111, 107, 255, 0.12), transparent 45%),
+    linear-gradient(180deg, #141d2b, #0f1622);
+  border-color: var(--cc-color-border);
+}
+
+.card {
+  background: var(--cc-color-bg-elevated);
+  border-color: var(--cc-color-border);
+}
+
+.card:hover {
+  border-color: var(--cc-color-accent);
+  box-shadow: var(--cc-glow-accent), var(--cc-shadow-md);
+}
+
+table {
+  color: var(--cc-color-text);
+}
+
+th {
+  color: var(--cc-color-text);
+}
+
+/* ==========================================================================
+   7. Flash messages
+   main.css uses light pastel fills; recolour for the dark surface.
+   ========================================================================== */
+
+.flash {
+  background: var(--cc-color-bg-elevated);
+  border-color: var(--cc-color-border);
+  color: var(--cc-color-text);
+}
+
+.flash--success {
+  border-color: rgba(53, 209, 125, 0.55);
+  background: rgba(53, 209, 125, 0.12);
+  color: #8ef0b8;
+}
+
+.flash--warning {
+  border-color: rgba(255, 176, 32, 0.55);
+  background: rgba(255, 176, 32, 0.12);
+  color: #ffd784;
+}
+
+.flash--error {
+  border-color: rgba(255, 85, 104, 0.55);
+  background: rgba(255, 85, 104, 0.12);
+  color: #ff9aa6;
+}
+
+/* ==========================================================================
+   8. Admin surfaces
+   admin.css is token-driven, so most of it re-skins for free. These overrides
+   fix the few white-on-accent spots and add a little neon polish.
+   ========================================================================== */
+
+.admin-nav__link.is-active {
+  background: var(--cc-color-accent);
+  color: var(--cc-ink-on-accent);
+  box-shadow: var(--cc-glow-accent);
+}
+
+.admin-nav,
+.admin-alerts__item,
+.admin-card {
+  background: var(--cc-color-bg-elevated);
+  border-color: var(--cc-color-border);
+}
+
+/* Any element that fills with the accent needs dark ink for contrast. */
+.admin-badge--accent,
+.admin-badge--info,
+.button--success {
+  color: var(--cc-ink-on-accent);
+}
+
+/* ==========================================================================
+   9. Motion / reduced-motion
+   ========================================================================== */
+
+@keyframes cc-rgb-slide {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 200% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header::before {
+    animation: none;
+  }
+}
