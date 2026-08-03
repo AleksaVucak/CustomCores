@@ -97,7 +97,7 @@ require_once __DIR__ . '/includes/header.php';
         <h1 id="consultations-heading">Consultation history</h1>
         <p class="context-help">
             Help:
-            <a href="<?php echo customcore_e(customcore_url('help/support.html')); ?>">Consultation &amp; support guide</a>
+            <a href="<?php echo customcore_e(customcore_url('help/support.html#history')); ?>">Consultation &amp; support guide</a>
             — track your requests and our responses.
         </p>
     </header>

@@ -37,6 +37,20 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 11.5 complete** — Consultation & support Help page.
+
+`help/support.html` is a full consultation-and-support guide matching the shared
+Help shell (skip link, header nav, TOC, footer). It covers requesting a PC
+consultation, attaching files, tracking requests and responses, the four
+consultation statuses, writing product reviews, and the contact form — with copy
+and rules (login-gated consultations/reviews, required fields and length limits,
+PDF/TXT/PNG/JPG/WEBP attachments up to 5 files at ~2 MB each with real-MIME
+validation, guest-friendly contact, reviews pending-until-approved) matched to
+the live pages. Anchors (`#consultation`, `#attachments`, `#history`,
+`#responses`, `#reviews`, `#contact`) back the hub deep-links and the
+context-help links on `consultation.php`, `consultation-history.php`,
+`reviews.php`, and `contact.php`.
+
 **Commit 11.4 complete** — Cart & orders Help page.
 
 `help/orders.html` is a full cart-and-orders guide matching the shared Help shell
@@ -407,7 +421,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Commit 11.4 complete.** Next: **Commit 11.5** — Consultation & support Help page (`help/support.html`).
+**Commit 11.5 complete.** Next: **Commit 11.6** — End-user training walkthrough (`help/training.html`).
 
 ## Security notes
 

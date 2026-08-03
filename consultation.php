@@ -139,7 +139,7 @@ require_once __DIR__ . '/includes/header.php';
         <h1 id="consultation-heading">Request a PC consultation</h1>
         <p class="context-help">
             Help:
-            <a href="<?php echo customcore_e(customcore_url('help/support.html')); ?>">Consultation &amp; support guide</a>
+            <a href="<?php echo customcore_e(customcore_url('help/support.html#consultation')); ?>">Consultation &amp; support guide</a>
         </p>
     </header>
 

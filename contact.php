@@ -170,7 +170,7 @@ require_once __DIR__ . '/includes/header.php';
             <h1 id="contact-heading">Contact us</h1>
             <p class="context-help">
                 Help:
-                <a href="<?php echo customcore_e(customcore_url('help/support.html')); ?>">Support guide</a>
+                <a href="<?php echo customcore_e(customcore_url('help/support.html#contact')); ?>">Support guide</a>
             </p>
             <p class="contact-page__intro">
                 Have a question about an order, a product, or a custom build?

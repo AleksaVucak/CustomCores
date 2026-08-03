@@ -262,7 +262,7 @@ require_once __DIR__ . '/includes/header.php';
         </h1>
         <p class="context-help">
             Help:
-            <a href="<?php echo customcore_e(customcore_url('help/support.html')); ?>">Reviews &amp; support guide</a>
+            <a href="<?php echo customcore_e(customcore_url('help/support.html#reviews')); ?>">Reviews &amp; support guide</a>
         </p>
         <p class="reviews-page__intro">
             Only <strong>approved</strong> reviews are shown publicly.
