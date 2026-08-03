@@ -30,6 +30,8 @@ require_once __DIR__ . '/includes/header.php';
         <p class="context-help">
             Need guidance while shopping?
             <a href="<?php echo customcore_e(customcore_url('help/index.html')); ?>">Open the Help centre</a>
+            or follow the
+            <a href="<?php echo customcore_e(customcore_url('help/training.html#start')); ?>">step-by-step walkthrough</a>
         </p>
         <p class="about-page__lead">
             CustomCore is a database-driven gaming PC store and guided custom builder

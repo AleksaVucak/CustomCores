@@ -37,6 +37,18 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 11.6 complete** — End-user training walkthrough.
+
+`help/training.html` is a numbered, beginner-friendly walkthrough matching the
+shared Help shell (skip link, header nav, TOC, footer). It guides a new user from
+creating an account, through shopping the catalogue or building a custom PC, to
+placing an order and reviewing the first purchase — each step links into the live
+site and to the matching detailed guide. Anchors (`#start`, `#account`, `#shop`,
+`#build`, `#order`, `#review`, `#help`) back the hub deep-links, and `about.php`
+now links directly to the walkthrough. This completes the six-guide Help wiki
+(accounts, catalogue, PC Builder, orders, support, training) plus the hub, so
+rubric #7 is satisfied.
+
 **Commit 11.5 complete** — Consultation & support Help page.
 
 `help/support.html` is a full consultation-and-support guide matching the shared
@@ -421,7 +433,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Commit 11.5 complete.** Next: **Commit 11.6** — End-user training walkthrough (`help/training.html`).
+**Commit 11.6 complete.** The Help wiki is complete (hub + six guides with context-sensitive links). Next: **Commit 11.7** — Help wiki polish / context-link audit.
 
 ## Security notes
 
