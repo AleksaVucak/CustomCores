@@ -51,6 +51,21 @@ to manage the store. Non-programmers updating catalogue content should read the
 
 ## Current status
 
+**Commit 14.4 complete** — accessibility and keyboard navigation.
+
+The site's core flows now work end to end without a mouse. On top of the existing
+foundation — a skip link to `main#main-content`, a global `:focus-visible` ring, every
+control paired with a `<label>` (plus labelled search/filter regions), `aria-invalid` +
+`aria-describedby` on errored fields, and flash messages announced through `aria-live`
+with `role="alert"` / `role="status"` — this commit adds **error-focus management**: after
+a failed submit, `assets/js/main.js` moves keyboard/screen-reader focus to the first
+invalid field (or, on POST-form pages, the form-level error alert) and scrolls it into
+view, so the problem is announced and reachable immediately. It respects intentional
+in-page anchors and complements the pre-submit validation in `checkout.js` / `reviews.js` /
+`contact.js`. A `@media (prefers-contrast: more)` rule also strengthens the focus ring
+(outline-only, no layout shift), alongside the existing reduced-motion handling. This
+completes **Stage 14**.
+
 **Commit 14.3 complete** — semantic HTML structure.
 
 The shared shell already provides the document landmarks — `header[role=banner]`, a

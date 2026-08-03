@@ -80,6 +80,14 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
+**Commit 14.4 complete — accessibility and keyboard navigation.**
+Core flows are fully keyboard-operable. Existing skip link, `:focus-visible` ring,
+labelled controls, `aria-invalid`/`aria-describedby` errors, and `aria-live` flash
+messages are complemented by new error-focus management in `assets/js/main.js`
+(`initErrorFocus`): a failed submit moves focus to the first invalid field (or a
+POST-form error alert) and scrolls it into view. `assets/css/main.css` adds a
+`prefers-contrast: more` focus-ring reinforcement (outline-only). Stage 14 complete.
+
 **Commit 14.3 complete — semantic HTML structure.**
 Site-wide landmarks (`header`/`nav`/`main`/`footer` + `section`/`article` with
 `aria-labelledby`) confirmed, and heading hierarchy audited across all pages. Fixed the

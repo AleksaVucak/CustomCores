@@ -5555,3 +5555,21 @@ a.cart-item__name:hover {
     scroll-behavior: auto !important;
   }
 }
+
+/* ==========================================================================
+   Increased-contrast preference (Commit 14.4)
+   Strengthen the keyboard focus ring for users who ask their OS for more
+   contrast. Outline-only changes avoid any layout shift.
+   ========================================================================== */
+
+@media (prefers-contrast: more) {
+  :focus-visible {
+    outline-width: 4px;
+    outline-offset: 3px;
+  }
+
+  .skip-link:focus {
+    outline: 3px solid #fff;
+    outline-offset: 2px;
+  }
+}

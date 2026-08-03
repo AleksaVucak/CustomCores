@@ -16,6 +16,11 @@
  *   - Focus is kept within the header while the mobile menu is open
  *   - Resizing to desktop width closes the mobile menu state
  *
+ * Accessibility (Commit 14.4):
+ *   - After a failed form submit, keyboard/screen-reader focus is moved to the
+ *     first invalid field (or the form-level error alert) so the problem is
+ *     announced and reachable without a mouse.
+ *
  * Later stages:
  *   cart, validation, charts, and map scripts.
  *   Builder live pricing lives in assets/js/builder.js (Commit 5.2).
@@ -313,6 +318,90 @@
   }
 
   /**
+   * Whether an element can receive keyboard focus without a tabindex added.
+   *
+   * @param {Element} element Element to test.
+   * @returns {boolean}
+   */
+  function isNativelyFocusable(element) {
+    if (!element || element.hasAttribute("disabled")) {
+      return false;
+    }
+
+    var tag = element.tagName ? element.tagName.toLowerCase() : "";
+    if (tag === "input" || tag === "select" || tag === "textarea" || tag === "button") {
+      return true;
+    }
+
+    return tag === "a" && element.hasAttribute("href");
+  }
+
+  /**
+   * Move focus to an element, adding a temporary -1 tabindex when needed so
+   * non-interactive containers (such as an error alert) can still be focused.
+   *
+   * @param {HTMLElement|null} element Element to focus.
+   * @returns {void}
+   */
+  function focusForAccessibility(element) {
+    if (!element || typeof element.focus !== "function") {
+      return;
+    }
+
+    if (!isNativelyFocusable(element) && !element.hasAttribute("tabindex")) {
+      element.setAttribute("tabindex", "-1");
+    }
+
+    // Focus after the current paint so layout is settled before scrolling.
+    window.setTimeout(function () {
+      try {
+        element.focus();
+      } catch (error) {
+        return;
+      }
+
+      if (typeof element.scrollIntoView === "function") {
+        element.scrollIntoView({ block: "center", inline: "nearest" });
+      }
+    }, 0);
+  }
+
+  /**
+   * After a failed form submission, send focus to the first problem so keyboard
+   * and screen-reader users are taken straight to what needs fixing.
+   *
+   * Priority:
+   *   1. The first field marked aria-invalid="true".
+   *   2. Otherwise, a form-level error alert on a page that posts a form
+   *      (e.g. an expired CSRF token), ignoring read-only status banners.
+   *
+   * @returns {void}
+   */
+  function initErrorFocus() {
+    // Respect intentional anchor navigation (skip link / in-page links).
+    var hash = window.location.hash;
+    if (hash && hash.length > 1) {
+      try {
+        if (qs(hash)) {
+          return;
+        }
+      } catch (error) {
+        // Malformed hash — fall through to normal error handling.
+      }
+    }
+
+    var target = qs('[aria-invalid="true"]');
+
+    if (!target && qs('form[method="post"], form[method="POST"]')) {
+      target = qs('.flash--error[role="alert"]');
+    }
+
+    if (target) {
+      focusForAccessibility(target);
+    }
+  }
+
+  /**
    * Shared application bootstrap.
    *
    * @returns {void}
@@ -321,6 +410,7 @@
     document.documentElement.classList.add("js");
     document.body.setAttribute("data-cc-js", "ready");
     initNavigation();
+    initErrorFocus();
   }
 
   var CustomCore = window.CustomCore || {};
@@ -332,7 +422,9 @@
   CustomCore.toggleClass = toggleClass;
   CustomCore.setAria = setAria;
   CustomCore.createFocusTrap = createFocusTrap;
+  CustomCore.focusForAccessibility = focusForAccessibility;
   CustomCore.initNavigation = initNavigation;
+  CustomCore.initErrorFocus = initErrorFocus;
   CustomCore.init = init;
 
   window.CustomCore = CustomCore;
