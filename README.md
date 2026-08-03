@@ -30,12 +30,50 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 - [Database entity-relationship design](docs/database-design.md)
 - [Database import, verification, and backup](docs/database-import.md)
 - [Application directory structure](docs/directory-structure.md)
+- [Front-end architecture documentation](docs/frontend-documentation.md)
+- [Administrator user guide](docs/administrator-guide.md)
+- [Content update guide (non-programmers)](docs/content-update-guide.md)
+- [Complete installation guide](docs/installation-guide.md)
+- [Deployment and troubleshooting guide](docs/deployment-troubleshooting.md)
+- [Help context-link audit](docs/help-context-links.md)
 - [Flash message usage](docs/flash-messages.md)
 - [Multimedia credits and licences](docs/media-credits.md)
 - [Stage 8 image prompt record](docs/image-prompts.md)
 - [Theme testing record](docs/theme-testing.md)
 
+### Quick start
+
+New to the project? Start with the **[installation guide](docs/installation-guide.md)** to get
+running from a clean checkout, then the **[administrator guide](docs/administrator-guide.md)**
+to manage the store. Non-programmers updating catalogue content should read the
+**[content update guide](docs/content-update-guide.md)**.
+
 ## Current status
+
+**Stage 12 complete (Commits 12.1–12.6)** — technical, administrator, and installation documentation.
+
+The project documentation set is now complete. Five new guides were added and the
+README/structure/rubric docs updated:
+
+- [`docs/frontend-documentation.md`](docs/frontend-documentation.md) (12.1) — the shared
+  HTML shell (`header`/`navigation`/`footer`), the `--cc-*` token/theme system
+  (`main.css` / `admin.css` / `assets/themes/*`), the vanilla-JS modules (builder, cart,
+  checkout, map, charts, help-hub), the 900px responsive nav toggle, and how the active
+  theme resolves (`includes/theme.php`).
+- [`docs/administrator-guide.md`](docs/administrator-guide.md) (12.2) — task-oriented guide
+  to every admin tool (dashboard, products, options, compatibility, orders, users,
+  consultations, reviews, reports, themes) with its safety rules.
+- [`docs/content-update-guide.md`](docs/content-update-guide.md) (12.3) — non-programmer
+  instructions for products, images, options, store details, and adding Learning Centre
+  media (rubric #10f).
+- [`docs/installation-guide.md`](docs/installation-guide.md) (12.4) — clean-checkout install
+  (requirements → code → config → database → admin → uploads → run → verify).
+- [`docs/deployment-troubleshooting.md`](docs/deployment-troubleshooting.md) (12.5) —
+  shared-hosting deployment, HTTPS/session behaviour, a troubleshooting table, and
+  backup/rollback.
+
+All five guides point at real files and describe the single, actual architecture. Next:
+**Stage 13** — backend monitoring page.
 
 **Commit 11.7 complete** — context-sensitive Help links audited and polished.
 
@@ -444,7 +482,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Commit 11.7 complete.** Context-sensitive Help links are audited (`docs/help-context-links.md`). Stage 11 Help wiki is finished. Next: **Stage 12** — Technical, administrator, and installation documentation (starting with Commit 12.1).
+**Stage 12 complete (Commits 12.1–12.6).** Front-end, administrator, content-update, installation, and deployment/troubleshooting documentation shipped, and the README/structure/rubric docs updated. Next: **Stage 13** — backend monitoring page (`admin/monitoring.php`).
 
 ## Security notes
 

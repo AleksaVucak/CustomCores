@@ -49,7 +49,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `assets/media/` | ≥ 3 video/audio items + captions | 8.2 |
 | `config/` | `database.example.php`, `app.php`; real `database.php` gitignored | 1.2–1.3 |
 | `database/` | Schema, seeds, create-admin script | 2.x |
-| `docs/` | Business case, rubric, sitemap, wireframes, ER design, media credits, image prompts, theme testing, Help context-link audit, guides | 0.x–12.x, 8.7, 10.6, 11.7 |
+| `docs/` | Business case, rubric, sitemap, wireframes, ER design, database import, media credits, image prompts, theme testing, Help context-link audit, and the Stage 12 guides (front-end architecture, administrator, content-update, installation, deployment/troubleshooting) | 0.x–12.x, 8.7, 10.6, 11.7, 12.1–12.6 |
 | `help/` | Static Help hub (`index.html`, 11.1) + topic articles (`pc-builder.html` from 5.9; `accounts.html` 11.2; `catalogue.html` 11.3; `orders.html` 11.4; `support.html` 11.5; `training.html` 11.6) | 5.9, 11.x |
 | `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, theme, admin, admin-nav, admin-products, admin-product-form, admin-options, admin-compatibility, admin-orders, admin-users, admin-consultations, admin-reviews, admin-reports, admin-themes, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 10.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
@@ -79,6 +79,14 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 ---
 
 ## 5. Status
+
+**Stage 12 complete (Commits 12.1–12.6) — project documentation set finished.**
+Five new guides were added under `docs/`: front-end architecture
+(`frontend-documentation.md`, 12.1), administrator guide (`administrator-guide.md`,
+12.2), non-programmer content-update guide (`content-update-guide.md`, 12.3),
+installation guide (`installation-guide.md`, 12.4), and deployment/troubleshooting
+(`deployment-troubleshooting.md`, 12.5). The README, this structure doc, and the
+rubric checklist were updated (12.6). No application code changed in Stage 12.
 
 **Commit 11.7 complete — context-sensitive Help links audited.**
 Every customer feature page links to its matching Help article (with section
