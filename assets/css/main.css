@@ -512,11 +512,22 @@ ol {
   gap: var(--cc-space-4);
 }
 
+@media (min-width: 48rem) {
+  .help-hub-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 .help-hub-card {
   border: 1px solid var(--cc-color-border);
   border-radius: var(--cc-radius-lg);
   background: var(--cc-color-bg-elevated);
   padding: var(--cc-space-4);
+  scroll-margin-top: 1rem;
+}
+
+.help-hub-card[hidden] {
+  display: none;
 }
 
 .help-hub-card__title {
@@ -530,9 +541,48 @@ ol {
 }
 
 .help-hub-card__links {
-  margin: 0;
+  margin: 0 0 var(--cc-space-2);
   font-size: 0.9rem;
 }
+
+.help-hub-card__related {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--cc-color-text-muted);
+}
+
+.help-hub-search {
+  margin: 0 0 var(--cc-space-5);
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-md);
+  background: var(--cc-color-bg-elevated);
+}
+
+.help-hub-search__label {
+  display: block;
+  margin-bottom: var(--cc-space-2);
+  font-weight: 600;
+}
+
+.help-hub-search__input {
+  width: 100%;
+  max-width: 36rem;
+}
+
+.help-hub-search__hint {
+  margin: var(--cc-space-2) 0 0;
+}
+
+.help-hub-search__empty {
+  margin: var(--cc-space-3) 0 0;
+  color: var(--cc-color-text-muted);
+}
+
+.help-hub-search__empty[hidden] {
+  display: none;
+}
+
 
 /* ==========================================================================
    8. Buttons

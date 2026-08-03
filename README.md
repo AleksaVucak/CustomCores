@@ -37,6 +37,18 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 11.1 complete** — Help centre homepage.
+
+`help/index.html` is now a full Help hub: six guide cards (Accounts, Catalogue,
+PC Builder, Cart & orders, Consultation & support, End-user training) with jump
+TOC anchors, section deep-links, and related live-site links. A progressive
+search filter (`assets/js/help-hub.js`) narrows cards by title, body, and
+keywords without hiding content when JavaScript is off. Shared Help chrome
+matches `pc-builder.html` (skip link, header nav, footer). Hub styles in
+`main.css` add the search panel and a two-column card grid on wider viewports.
+The existing PC Builder guide remains linked and live; remaining article files
+arrive in Commits 11.2–11.6 and 11.8.
+
 **Commit 10.6 complete** — cross-theme verification (Stage 10 finished).
 
 Key public, account, and admin pages were walked under all three themes
@@ -355,7 +367,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Stage 10 complete.** Next: **Stage 11** — static Help wiki pages.
+**Commit 11.1 complete.** Next: **Commit 11.2** — Accounts & profile Help page (`help/accounts.html`).
 
 ## Security notes
 
