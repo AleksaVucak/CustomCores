@@ -94,14 +94,17 @@ require_once __DIR__ . '/../includes/header.php';
         </p>
     </header>
 
+    <!-- Admin section navigation -->
     <?php require __DIR__ . '/../includes/admin-nav.php'; ?>
 
+    <!-- Flash: monitoring report error, otherwise render report -->
     <?php if ($monitorError !== null || $report === null) : ?>
         <p class="flash flash--error" role="alert">
             <?php echo customcore_e($monitorError ?? 'The monitoring report is temporarily unavailable.'); ?>
         </p>
     <?php else : ?>
 
+        <!-- Overall status banner with per-status counts -->
         <section
             class="monitor-overall monitor-overall--<?php echo customcore_e($overallStatus); ?>"
             aria-labelledby="monitor-overall-heading"
@@ -124,6 +127,7 @@ require_once __DIR__ . '/../includes/header.php';
             </p>
         </section>
 
+        <!-- Service checks table: online, warning, offline -->
         <section class="monitor-checks" aria-labelledby="monitor-checks-heading">
             <h2 id="monitor-checks-heading">Service checks</h2>
             <table class="admin-table admin-table--monitor">
@@ -165,6 +169,7 @@ require_once __DIR__ . '/../includes/header.php';
             </table>
         </section>
 
+        <!-- Live statistics: catalogue, accounts, orders, stock -->
         <section class="monitor-stats admin-stats" aria-labelledby="monitor-stats-heading">
             <h2 id="monitor-stats-heading">Live statistics</h2>
             <p class="monitor-stats__intro">
@@ -257,6 +262,7 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
         </section>
 
+        <!-- Status legend and refresh guidance -->
         <section class="monitor-legend" aria-labelledby="monitor-legend-heading">
             <h2 id="monitor-legend-heading">What the statuses mean</h2>
             <ul class="monitor-legend__list">

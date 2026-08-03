@@ -109,12 +109,15 @@ require_once __DIR__ . '/../includes/header.php';
         </p>
     </header>
 
+    <!-- Admin section navigation -->
     <?php require __DIR__ . '/../includes/admin-nav.php'; ?>
 
+    <!-- Flash: report load error, otherwise render charts -->
     <?php if ($reportError !== null) : ?>
         <p class="flash flash--error" role="alert"><?php echo customcore_e($reportError); ?></p>
     <?php else : ?>
 
+        <!-- KPI stat cards: orders, products, accounts, inventory -->
         <section class="admin-report-kpis-section" aria-labelledby="admin-report-kpis-heading">
             <h2 id="admin-report-kpis-heading">At a glance</h2>
             <div class="admin-report-kpis">

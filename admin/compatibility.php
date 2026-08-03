@@ -236,8 +236,10 @@ require_once __DIR__ . '/../includes/header.php';
         </p>
     </header>
 
+    <!-- Admin section navigation -->
     <?php require __DIR__ . '/../includes/admin-nav.php'; ?>
 
+    <!-- Flash: compatibility data load error -->
     <?php if ($loadError !== null) : ?>
         <p class="flash flash--error" role="alert"><?php echo customcore_e($loadError); ?></p>
     <?php endif; ?>
@@ -247,6 +249,7 @@ require_once __DIR__ . '/../includes/header.php';
         $slug = (string) $editComponent['category_slug'];
         $fields = customcore_admin_compat_fields_for($slug);
         ?>
+        <!-- Component metadata edit form -->
         <div class="admin-compat__editor" id="component-editor">
             <h2>Edit component metadata</h2>
             <p class="admin-table__sub">
@@ -341,6 +344,7 @@ require_once __DIR__ . '/../includes/header.php';
                 : $rawConfig;
         }
         ?>
+        <!-- Compatibility rule edit form -->
         <div class="admin-compat__editor" id="rule-editor">
             <h2>Edit compatibility rule</h2>
             <p class="admin-table__sub">
@@ -413,9 +417,11 @@ require_once __DIR__ . '/../includes/header.php';
     <?php endif; ?>
 
     <?php // ----- Component metadata list ----- ?>
+    <!-- Component attributes list with search and toggles -->
     <section class="admin-compat__section" aria-labelledby="compat-components-heading">
         <h2 id="compat-components-heading">Component attributes</h2>
 
+        <!-- Search & filter: name/brand and category -->
         <form class="admin-filter" method="get" action="<?php echo customcore_e(customcore_url('admin/compatibility.php')); ?>">
             <div class="admin-filter__field">
                 <label for="filter-q">Search</label>
@@ -444,6 +450,7 @@ require_once __DIR__ . '/../includes/header.php';
         <?php if ($components === []) : ?>
             <p class="admin-activity__empty">No components match your filters.</p>
         <?php else : ?>
+            <!-- Component attributes table with active toggles -->
             <div class="admin-table-wrap">
                 <table class="admin-table admin-table--compat">
                     <thead>
@@ -514,6 +521,7 @@ require_once __DIR__ . '/../includes/header.php';
     </section>
 
     <?php // ----- Rules list ----- ?>
+    <!-- Compatibility rules list -->
     <section class="admin-compat__section" aria-labelledby="compat-rules-heading">
         <h2 id="compat-rules-heading">Compatibility rules</h2>
         <p class="admin-products__count">
@@ -523,6 +531,7 @@ require_once __DIR__ . '/../includes/header.php';
         <?php if ($rules === []) : ?>
             <p class="admin-activity__empty">No compatibility rules are defined.</p>
         <?php else : ?>
+            <!-- Rules table: severity, status, active toggles -->
             <div class="admin-table-wrap">
                 <table class="admin-table admin-table--rules">
                     <thead>

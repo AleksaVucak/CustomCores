@@ -80,6 +80,14 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
+**Commit 14.6 complete — HTML and CSS comments.**
+CSS was already fully commented (section headers/dividers in `main.css`, `admin.css`, and
+the three themes). This commit adds structured, purpose-first `<!-- section -->` comments to
+the HTML template portion of all 41 view files (25 public/customer + 16 admin), marking
+major landmarks (hero, filters, results grids, tables, forms, KPI cards, charts, flash/empty
+states). Additions-only (0 deletions per `git diff --numstat`) and all `php -l` clean. JS +
+PHP documentation follows in 14.7.
+
 **Commit 14.5 complete — advanced CSS interactions.**
 A dedicated section in `assets/css/main.css` adds `:focus-within` card elevation
 (keyboard parity with `:hover`), an animated mobile-menu reveal (`@keyframes

@@ -110,8 +110,10 @@ require_once __DIR__ . '/../includes/header.php';
         </p>
     </header>
 
+    <!-- Admin section navigation -->
     <?php require __DIR__ . '/../includes/admin-nav.php'; ?>
 
+    <!-- Flash: theme load error or empty seed state, else theme picker -->
     <?php if ($listError !== null) : ?>
         <p class="flash flash--error" role="alert"><?php echo customcore_e($listError); ?></p>
     <?php elseif ($themes === []) : ?>
@@ -122,6 +124,7 @@ require_once __DIR__ . '/../includes/header.php';
         </p>
     <?php else : ?>
 
+        <!-- Currently active theme summary -->
         <div class="admin-themes__status" role="status">
             <p class="admin-themes__status-label">Currently active</p>
             <?php if ($activeTheme !== null) : ?>
@@ -146,6 +149,7 @@ require_once __DIR__ . '/../includes/header.php';
             <?php endif; ?>
         </div>
 
+        <!-- Theme picker: cards with active theme selection -->
         <div class="admin-themes__grid" role="list">
             <?php foreach ($themes as $theme) : ?>
                 <?php

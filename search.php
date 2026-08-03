@@ -89,7 +89,9 @@ $resultCount = count($products);
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Search page: query form and matching-product results -->
 <section class="content-section search-page" aria-labelledby="search-heading">
+    <!-- Page header: title, help link, and intro -->
     <header class="search-page__header">
         <h1 id="search-heading">Search catalogue</h1>
         <p class="context-help">
@@ -102,6 +104,7 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </header>
 
+    <!-- Search form: keyword query submitted via GET -->
     <form class="search-form" method="get" action="<?php echo customcore_e(customcore_url('search.php')); ?>" role="search">
         <label class="search-form__label" for="search-q">Search terms</label>
         <div class="search-form__row">
@@ -126,6 +129,7 @@ require_once __DIR__ . '/includes/header.php';
         </div>
     <?php endif; ?>
 
+    <!-- Results: prompt before searching, otherwise the match count and grid -->
     <?php if (!$searched) : ?>
         <p class="empty-state">
             Enter a search term above to find matching systems.

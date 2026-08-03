@@ -51,6 +51,19 @@ to manage the store. Non-programmers updating catalogue content should read the
 
 ## Current status
 
+**Commit 14.6 complete** — HTML and CSS comments.
+
+The stylesheets were already fully documented (numbered section headers and dividers in
+`assets/css/main.css` and `assets/css/admin.css`, plus rich file headers and 120–150 section
+dividers in each of the three themes). This commit completes the markup side by adding
+structured, purpose-first `<!-- section -->` comments to the HTML template portion of every
+view — 25 public/customer pages and 16 admin pages (41 files in total). The comments mark
+major landmarks (hero, filters, results grids, data tables, forms and fieldsets, KPI cards,
+chart panels, and flash/empty-state branches) and explain intent rather than restating
+tags. The change is additions-only (verified with `git diff --numstat` — zero deletions)
+and every file passes `php -l`. JavaScript and PHP function/section documentation is the
+final step in **Commit 14.7**.
+
 **Commit 14.5 complete** — advanced CSS interactions.
 
 A dedicated "Advanced CSS interactions" section in `assets/css/main.css` layers a tasteful

@@ -198,6 +198,7 @@ $hasEditProfile = is_file(__DIR__ . '/edit-profile.php');
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Account dashboard: profile summary and activity -->
 <section class="content-section profile-page" aria-labelledby="profile-heading">
     <header class="profile-page__header">
         <h1 id="profile-heading">My account</h1>
@@ -207,13 +208,16 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </header>
 
+    <!-- Profile load warning banner -->
     <?php if ($profileError !== null) : ?>
         <div class="flash flash--warning" role="status">
             <?php echo customcore_e($profileError); ?>
         </div>
     <?php endif; ?>
 
+    <!-- Account layout: sidebar navigation plus main content -->
     <div class="layout-split layout-split--account">
+        <!-- Account section navigation -->
         <aside class="profile-page__aside">
             <?php require __DIR__ . '/includes/account-nav.php'; ?>
         </aside>
@@ -233,6 +237,7 @@ require_once __DIR__ . '/includes/header.php';
                     </p>
                 </div>
 
+                <!-- Activity counts summary grid -->
                 <div class="profile-stats" aria-label="Account activity summary">
                     <article class="profile-stat">
                         <p class="profile-stat__value"><?php echo customcore_e((string) $counts['orders']); ?></p>
@@ -274,6 +279,7 @@ require_once __DIR__ . '/includes/header.php';
                     </article>
                 </div>
 
+                <!-- Profile details: contact and address -->
                 <section class="profile-details" aria-labelledby="details-heading">
                     <h2 id="details-heading">Profile details</h2>
                     <dl class="profile-details__list">
@@ -317,6 +323,7 @@ require_once __DIR__ . '/includes/header.php';
                     </dl>
                 </section>
 
+                <!-- Recent activity list with empty state -->
                 <section class="profile-activity" aria-labelledby="activity-heading">
                     <h2 id="activity-heading">Recent activity</h2>
                     <?php if ($activity === []) : ?>

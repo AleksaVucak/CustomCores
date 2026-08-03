@@ -251,6 +251,7 @@ if ($filterProduct !== null) {
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Reviews page: approved review list and submission form -->
 <section class="content-section reviews-page" aria-labelledby="reviews-heading">
     <header class="reviews-page__header">
         <h1 id="reviews-heading">
@@ -270,12 +271,14 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </header>
 
+    <!-- Warning banner when reviews cannot be loaded -->
     <?php if ($reviewsError !== null) : ?>
         <div class="flash flash--warning" role="status">
             <?php echo customcore_e($reviewsError); ?>
         </div>
     <?php endif; ?>
 
+    <!-- Toolbar: review count, average rating, and filter links -->
     <div class="reviews-toolbar">
         <p class="reviews-toolbar__count" aria-live="polite">
             <?php if ($reviewCount === 0) : ?>
@@ -308,6 +311,7 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </div>
 
+    <!-- Empty state when no approved reviews exist yet -->
     <?php if ($reviewCount === 0 && $reviewsError === null) : ?>
         <p class="empty-state">
             <?php if ($filterProduct !== null) : ?>
@@ -319,6 +323,7 @@ require_once __DIR__ . '/includes/header.php';
             <?php endif; ?>
         </p>
     <?php elseif ($reviewCount > 0) : ?>
+        <!-- Review list: one card per approved review -->
         <ul class="review-list">
             <?php foreach ($reviews as $review) : ?>
                 <?php
@@ -351,6 +356,7 @@ require_once __DIR__ . '/includes/header.php';
         </ul>
     <?php endif; ?>
 
+    <!-- Review submission: login prompt, existing notice, or form -->
     <section class="review-submit" aria-labelledby="review-submit-heading">
         <h2 id="review-submit-heading">Write a review</h2>
 
@@ -388,6 +394,7 @@ require_once __DIR__ . '/includes/header.php';
                 </div>
             <?php endif; ?>
 
+            <!-- Review form: product, star rating, title, and body -->
             <form
                 id="review-form"
                 class="review-form form-stack"

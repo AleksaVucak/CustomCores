@@ -201,6 +201,7 @@ $pageKeywords = 'CustomCore, admin, product options';
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
+<!-- Product options: manage configurable choices and price deltas -->
 <section class="content-section admin-page admin-options" aria-labelledby="admin-options-heading">
     <header class="admin-page__header">
         <h1 id="admin-options-heading">Product options</h1>
@@ -215,12 +216,15 @@ require_once __DIR__ . '/../includes/header.php';
         </p>
     </header>
 
+    <!-- Admin section navigation -->
     <?php require __DIR__ . '/../includes/admin-nav.php'; ?>
 
+    <!-- Load error banner -->
     <?php if ($loadError !== null) : ?>
         <p class="flash flash--error" role="alert"><?php echo customcore_e($loadError); ?></p>
     <?php endif; ?>
 
+    <!-- No product chosen: product picker; otherwise the options manager -->
     <?php if ($product === null) : ?>
         <div class="admin-options__picker">
             <h2>Choose a product</h2>
@@ -245,6 +249,7 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
     <?php else : ?>
 
+        <!-- Product header: name, base price, category, and edit link -->
         <div class="admin-options__product">
             <h2 class="admin-options__product-name"><?php echo customcore_e((string) $product['name']); ?></h2>
             <p class="admin-table__sub">
@@ -263,6 +268,7 @@ require_once __DIR__ . '/../includes/header.php';
             $summaryFlags[] = 'Missing a default in: ' . implode(', ', $summary['groups_without_default']) . '.';
         }
         ?>
+        <!-- Configuration warnings: too few options or missing group defaults -->
         <?php if ($summaryFlags !== []) : ?>
             <div class="flash flash--warning" role="status">
                 <?php foreach ($summaryFlags as $flag) : ?>

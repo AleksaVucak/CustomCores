@@ -24,6 +24,7 @@ $currentPage = 'about';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- About page: CustomCore business case and audience overview -->
 <article class="content-section about-page">
     <header class="about-page__header">
         <h1>About CustomCore</h1>
@@ -39,6 +40,7 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </header>
 
+    <!-- Business case: what CustomCore is and how it works -->
     <section class="about-block" aria-labelledby="about-business-case">
         <h2 id="about-business-case">Business case</h2>
         <p>
@@ -62,6 +64,7 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </section>
 
+    <!-- Target audiences CustomCore serves -->
     <section class="about-block" aria-labelledby="about-audience">
         <h2 id="about-audience">Who CustomCore is for</h2>
         <p>
@@ -96,6 +99,7 @@ require_once __DIR__ . '/includes/header.php';
         </ul>
     </section>
 
+    <!-- The core buyer problem CustomCore addresses -->
     <section class="about-block" aria-labelledby="about-problem">
         <h2 id="about-problem">The problem we solve</h2>
         <p>
@@ -114,6 +118,7 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </section>
 
+    <!-- Our solution: catalogue, guided builder, and account tools -->
     <section class="about-block" aria-labelledby="about-solution">
         <h2 id="about-solution">Our solution</h2>
         <p>
@@ -168,6 +173,7 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </section>
 
+    <!-- Catalogue strategy: tiers and configurable prebuilts -->
     <section class="about-block" aria-labelledby="about-catalogue">
         <h2 id="about-catalogue">Catalogue strategy</h2>
         <p>
@@ -188,8 +194,10 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </section>
 
+    <!-- Feature overview across public, customer, and admin roles -->
     <section class="about-block" aria-labelledby="about-features">
         <h2 id="about-features">What the site includes</h2>
+        <!-- Three-column grid of feature groups -->
         <div class="about-feature-grid">
             <div>
                 <h3>Public</h3>
@@ -216,6 +224,7 @@ require_once __DIR__ . '/includes/header.php';
         </div>
     </section>
 
+    <!-- Call to action: next steps for visitors -->
     <section class="about-block about-block--cta" aria-labelledby="about-next">
         <h2 id="about-next">What you can do next</h2>
         <p>

@@ -60,6 +60,7 @@ try {
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
+<!-- Admin dashboard: live counts, alerts, recent activity, and tools -->
 <section class="content-section admin-page admin-dashboard" aria-labelledby="admin-heading">
     <header class="admin-page__header">
         <h1 id="admin-heading">Administrator dashboard</h1>
@@ -74,12 +75,15 @@ require_once __DIR__ . '/../includes/header.php';
         </p>
     </header>
 
+    <!-- Admin section navigation -->
     <?php require __DIR__ . '/../includes/admin-nav.php'; ?>
 
+    <!-- Dashboard body: error banner, otherwise live stats -->
     <?php if ($dashboardError !== null) : ?>
         <p class="flash flash--error" role="alert"><?php echo customcore_e($dashboardError); ?></p>
     <?php elseif ($stats !== null) : ?>
 
+        <!-- Needs-attention alerts, or an all-clear status message -->
         <?php if ($alerts !== []) : ?>
             <section class="admin-alerts" aria-labelledby="admin-alerts-heading">
                 <h2 id="admin-alerts-heading">Needs attention</h2>
@@ -108,6 +112,7 @@ require_once __DIR__ . '/../includes/header.php';
             </p>
         <?php endif; ?>
 
+        <!-- At a glance: KPI stat cards -->
         <section class="admin-stats" aria-labelledby="admin-stats-heading">
             <h2 id="admin-stats-heading">At a glance</h2>
             <div class="admin-stats__grid">
@@ -162,6 +167,7 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
         </section>
 
+        <!-- Status summary: order status counts and account/inbox totals -->
         <section class="admin-summary" aria-labelledby="admin-summary-heading">
             <h2 id="admin-summary-heading">Status summary</h2>
             <div class="admin-summary__grid">
@@ -188,6 +194,7 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
         </section>
 
+        <!-- Recent activity: latest orders, reviews, consultations, low stock -->
         <section class="admin-activity" aria-labelledby="admin-activity-heading">
             <h2 id="admin-activity-heading">Recent activity</h2>
             <div class="admin-activity__grid">
@@ -334,6 +341,7 @@ require_once __DIR__ . '/../includes/header.php';
 
     <?php endif; ?>
 
+    <!-- Management tools: registry of Stage 9–13 admin pages -->
     <section class="admin-tools" aria-labelledby="admin-tools-heading">
         <h2 id="admin-tools-heading">Management tools</h2>
         <p class="admin-tools__intro">

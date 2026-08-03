@@ -129,6 +129,7 @@ $currentQuery = customcore_admin_products_query($filters);
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
+<!-- Product management: filters, toolbar, and catalogue table -->
 <section class="content-section admin-page admin-products" aria-labelledby="admin-products-heading">
     <header class="admin-page__header">
         <h1 id="admin-products-heading">Manage products</h1>
@@ -141,14 +142,17 @@ require_once __DIR__ . '/../includes/header.php';
         </p>
     </header>
 
+    <!-- Admin section navigation -->
     <?php require __DIR__ . '/../includes/admin-nav.php'; ?>
 
+    <!-- Toolbar: add-product entry point -->
     <div class="admin-toolbar">
         <a class="button" href="<?php echo customcore_e(customcore_url('admin/product-add.php')); ?>">
             + Add product
         </a>
     </div>
 
+    <!-- Filters: search + category + status (GET) -->
     <form class="admin-filter" method="get" action="<?php echo customcore_e(customcore_url('admin/products.php')); ?>">
         <div class="admin-filter__field">
             <label for="filter-q">Search</label>
@@ -189,6 +193,7 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
     </form>
 
+    <!-- Results: error banner, empty state, or product listing -->
     <?php if ($listError !== null) : ?>
         <p class="flash flash--error" role="alert"><?php echo customcore_e($listError); ?></p>
     <?php elseif ($products === []) : ?>
@@ -203,6 +208,7 @@ require_once __DIR__ . '/../includes/header.php';
             Showing <?php echo customcore_e((string) count($products)); ?>
             product<?php echo count($products) === 1 ? '' : 's'; ?>.
         </p>
+        <!-- Product table: image, category, price, stock, status, and row actions -->
         <div class="admin-table-wrap">
             <table class="admin-table admin-table--products">
                 <thead>

@@ -136,8 +136,10 @@ require_once __DIR__ . '/../includes/header.php';
         </p>
     </header>
 
+    <!-- Admin section navigation -->
     <?php require __DIR__ . '/../includes/admin-nav.php'; ?>
 
+    <!-- Customer summary and attachment download cards -->
     <div class="admin-order-detail__grid">
         <section class="admin-card" aria-labelledby="customer-heading">
             <h2 id="customer-heading" class="admin-card__title">Customer</h2>
@@ -181,6 +183,7 @@ require_once __DIR__ . '/../includes/header.php';
         </section>
     </div>
 
+    <!-- Full advice request details -->
     <section class="admin-card" aria-labelledby="request-heading">
         <h2 id="request-heading" class="admin-card__title">Request details</h2>
         <dl class="admin-dl admin-dl--stacked">
@@ -201,6 +204,7 @@ require_once __DIR__ . '/../includes/header.php';
         </dl>
     </section>
 
+    <!-- Status update and customer response forms -->
     <div class="admin-order-detail__grid admin-order-detail__grid--forms">
         <section class="admin-card" aria-labelledby="status-heading">
             <h2 id="status-heading" class="admin-card__title">Update status</h2>

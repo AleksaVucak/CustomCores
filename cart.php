@@ -378,6 +378,7 @@ $currentPage = 'cart';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Shopping cart page: item management and checkout entry point -->
 <section class="content-section cart-page" aria-labelledby="cart-heading" data-cart-page>
     <header class="cart-page__header">
         <h1 id="cart-heading">Shopping Cart</h1>
@@ -394,18 +395,23 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </header>
 
+    <!-- Account layout: sidebar navigation beside main cart content -->
     <div class="layout-split layout-split--account">
+        <!-- Account navigation sidebar -->
         <aside class="profile-page__aside">
             <?php require __DIR__ . '/includes/account-nav.php'; ?>
         </aside>
 
+        <!-- Main cart content column -->
         <div class="profile-page__main">
+            <!-- Error banner when a cart action or load fails -->
             <?php if ($cartError !== null): ?>
                 <div class="flash flash--error" role="alert">
                     <?php echo customcore_e($cartError); ?>
                 </div>
             <?php endif; ?>
 
+            <!-- Empty-cart state, otherwise the cart items and totals -->
             <?php if ($cartItems === []): ?>
                 <div class="cart-empty" role="status">
                     <?php $emptyCartImage = customcore_image_url('assets/images/ui/empty-cart.jpg'); ?>
@@ -432,6 +438,7 @@ require_once __DIR__ . '/includes/header.php';
                 </div>
             <?php else: ?>
                 <div class="cart-items">
+                    <!-- Cart form: line quantities and bulk update/clear -->
                     <form
                         id="cart-update-form"
                         class="cart-update-form"
@@ -442,6 +449,7 @@ require_once __DIR__ . '/includes/header.php';
                         <?php echo customcore_csrf_field(); ?>
                         <input type="hidden" name="action" value="update_all">
 
+                        <!-- Cart items table: unit price, quantity, and line totals -->
                         <div class="table-wrap cart-table-wrap">
                             <table class="data-table cart-table" data-cart-table>
                                 <thead>
@@ -614,6 +622,7 @@ require_once __DIR__ . '/includes/header.php';
                             </table>
                         </div>
 
+                        <!-- Cart actions: update, clear, and proceed to checkout -->
                         <div class="cart-actions">
                             <div class="cart-actions__left">
                                 <button type="submit" class="button button--secondary" data-cart-update-submit>
@@ -635,6 +644,7 @@ require_once __DIR__ . '/includes/header.php';
                         </div>
                     </form>
 
+                    <!-- Hidden per-item remove forms triggered by row buttons -->
                     <?php foreach ($cartItems as $item): ?>
                         <form
                             id="cart-remove-<?php echo customcore_e((string) $item['id']); ?>"
@@ -661,6 +671,7 @@ require_once __DIR__ . '/includes/header.php';
                     </form>
                 </div>
 
+                <!-- Continue-shopping link back to the catalogue -->
                 <div class="cart-continue">
                     <a href="<?php echo customcore_e(customcore_url('catalogue.php')); ?>">
                         &larr; Continue shopping

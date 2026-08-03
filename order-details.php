@@ -103,6 +103,7 @@ $currentPage = 'orders';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Order details page: itemized view of a single order -->
 <section class="content-section profile-page order-details-page" aria-labelledby="order-details-heading">
     <header class="profile-page__header">
         <h1 id="order-details-heading">Order <?php echo customcore_e($orderNumber); ?></h1>
@@ -114,13 +115,17 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </header>
 
+    <!-- Account layout: sidebar navigation beside main content -->
     <div class="layout-split layout-split--account">
+        <!-- Account navigation sidebar -->
         <aside class="profile-page__aside">
             <?php require __DIR__ . '/includes/account-nav.php'; ?>
         </aside>
 
+        <!-- Main order-details content column -->
         <div class="profile-page__main">
 
+            <!-- Order meta: status, placed date, and confirmation number -->
             <div class="order-details__meta">
                 <p>
                     <span class="order-status <?php echo customcore_e($statusClass); ?>">
@@ -136,7 +141,9 @@ require_once __DIR__ . '/includes/header.php';
                 </p>
             </div>
 
+            <!-- Summary grid: shipping and payment/totals cards -->
             <div class="order-details__grid">
+                <!-- Shipping details card -->
                 <section class="order-details__card" aria-labelledby="shipping-heading">
                     <h2 id="shipping-heading" class="order-details__card-title">Shipping details</h2>
                     <dl class="order-details__dl">
@@ -160,6 +167,7 @@ require_once __DIR__ . '/includes/header.php';
                     </dl>
                 </section>
 
+                <!-- Payment method and order totals card -->
                 <section class="order-details__card" aria-labelledby="payment-heading">
                     <h2 id="payment-heading" class="order-details__card-title">Payment &amp; totals</h2>
                     <dl class="order-details__dl">
@@ -178,6 +186,7 @@ require_once __DIR__ . '/includes/header.php';
                 </section>
             </div>
 
+            <!-- Line items: options, build snapshots, and totals -->
             <section class="order-details__items" aria-labelledby="items-heading">
                 <h2 id="items-heading" class="order-details__card-title">Items ordered</h2>
 
@@ -275,6 +284,7 @@ require_once __DIR__ . '/includes/header.php';
                 <?php endif; ?>
             </section>
 
+            <!-- Page actions: back to history, confirmation, keep shopping -->
             <div class="order-details__actions">
                 <a class="button button--secondary" href="<?php echo customcore_e(customcore_url('order-history.php')); ?>">
                     &larr; Order history

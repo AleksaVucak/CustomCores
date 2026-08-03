@@ -146,12 +146,15 @@ require_once __DIR__ . '/../includes/header.php';
         </p>
     </header>
 
+    <!-- Admin section navigation -->
     <?php require __DIR__ . '/../includes/admin-nav.php'; ?>
 
+    <!-- Flash: account list load error -->
     <?php if ($listError !== null) : ?>
         <p class="flash flash--error" role="alert"><?php echo customcore_e($listError); ?></p>
     <?php endif; ?>
 
+    <!-- Search & filter: name/email, role, status -->
     <form class="admin-filter" method="get" action="<?php echo customcore_e(customcore_url('admin/users.php')); ?>">
         <div class="admin-filter__field">
             <label for="filter-q">Search</label>
@@ -190,6 +193,7 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
     </form>
 
+    <!-- Results: empty state or accounts table -->
     <?php if ($result['rows'] === []) : ?>
         <p class="admin-activity__empty">No accounts match your filters.</p>
     <?php else : ?>
@@ -199,6 +203,7 @@ require_once __DIR__ . '/../includes/header.php';
             · page <?php echo customcore_e((string) $result['page']); ?>
             of <?php echo customcore_e((string) $result['pages']); ?>
         </p>
+        <!-- Users table: role, status, orders, account actions -->
         <div class="admin-table-wrap">
             <table class="admin-table admin-table--users">
                 <thead>
@@ -270,6 +275,7 @@ require_once __DIR__ . '/../includes/header.php';
             </table>
         </div>
 
+        <!-- Pagination controls -->
         <?php if ($result['pages'] > 1) : ?>
             <nav class="admin-pagination" aria-label="User pages">
                 <?php if ($result['page'] > 1) : ?>

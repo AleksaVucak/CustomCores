@@ -27,6 +27,7 @@ $currentPage = 'accessibility';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Accessibility statement and multimedia text-alternative index -->
 <article class="content-section accessibility-page">
     <header class="accessibility-page__header">
         <h1>Accessibility at CustomCore</h1>
@@ -42,6 +43,7 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </header>
 
+    <!-- Accessibility commitments: keyboard, semantics, contrast, motion -->
     <section class="accessibility-block" aria-labelledby="a11y-commitments">
         <h2 id="a11y-commitments">Our commitments</h2>
         <ul class="accessibility-list">
@@ -57,6 +59,7 @@ require_once __DIR__ . '/includes/header.php';
         </ul>
     </section>
 
+    <!-- Text fallbacks for every image, video, audio, chart, and map -->
     <section class="accessibility-block" aria-labelledby="a11y-multimedia">
         <h2 id="a11y-multimedia">Text alternatives for every multimedia feature</h2>
         <p>
@@ -64,6 +67,7 @@ require_once __DIR__ . '/includes/header.php';
             ships with a fallback so the same information is available as text:
         </p>
 
+        <!-- Per-medium fallback list with links to the real pages -->
         <dl class="accessibility-fallbacks">
             <dt>Images</dt>
             <dd>
@@ -116,6 +120,7 @@ require_once __DIR__ . '/includes/header.php';
         </dl>
     </section>
 
+    <!-- Media sources and licences with links to credit records -->
     <section class="accessibility-block" aria-labelledby="a11y-credits">
         <h2 id="a11y-credits">Media sources and licences</h2>
         <p>
@@ -130,6 +135,7 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </section>
 
+    <!-- Feedback prompt for reporting accessibility barriers -->
     <section class="accessibility-block" aria-labelledby="a11y-feedback">
         <h2 id="a11y-feedback">Tell us about a barrier</h2>
         <p>

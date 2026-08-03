@@ -160,8 +160,10 @@ require_once __DIR__ . '/../includes/header.php';
         </p>
     </header>
 
+    <!-- Admin section navigation -->
     <?php require __DIR__ . '/../includes/admin-nav.php'; ?>
 
+    <!-- Profile and activity summary cards -->
     <div class="admin-order-detail__grid">
         <section class="admin-card" aria-labelledby="profile-heading">
             <h2 id="profile-heading" class="admin-card__title">Profile</h2>
@@ -207,6 +209,7 @@ require_once __DIR__ . '/../includes/header.php';
         </section>
     </div>
 
+    <!-- Self-account notice: cannot change own status or role -->
     <?php if ($isSelf) : ?>
         <p class="flash flash--warning" role="status">
             You are viewing your own account. To prevent accidental lockout, you cannot
@@ -214,6 +217,7 @@ require_once __DIR__ . '/../includes/header.php';
         </p>
     <?php endif; ?>
 
+    <!-- Account status and role management forms -->
     <div class="admin-order-detail__grid admin-order-detail__grid--forms">
         <section class="admin-card" aria-labelledby="status-heading">
             <h2 id="status-heading" class="admin-card__title">Account status</h2>
@@ -266,6 +270,7 @@ require_once __DIR__ . '/../includes/header.php';
         </section>
     </div>
 
+    <!-- Recent orders: empty state or orders table -->
     <section class="admin-card" aria-labelledby="orders-heading">
         <h2 id="orders-heading" class="admin-card__title">Recent orders</h2>
         <?php if ($recentOrders === []) : ?>

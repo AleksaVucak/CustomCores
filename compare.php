@@ -192,6 +192,7 @@ $compareRows = [
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Compare page: pick 2-4 systems, then view their fields side by side -->
 <section class="content-section compare-page" aria-labelledby="compare-heading">
     <header class="compare-page__header">
         <h1 id="compare-heading">Compare systems</h1>
@@ -206,6 +207,7 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </header>
 
+    <!-- Flash notices: data load errors and selection-limit warnings -->
     <?php if ($compareError !== null) : ?>
         <div class="flash flash--warning" role="status">
             <?php echo customcore_e($compareError); ?>
@@ -218,6 +220,7 @@ require_once __DIR__ . '/includes/header.php';
         </div>
     <?php endif; ?>
 
+    <!-- Picker form: checklist of active catalogue products to compare -->
     <?php if ($allProducts !== []) : ?>
         <form
             class="compare-picker"
@@ -266,6 +269,7 @@ require_once __DIR__ . '/includes/header.php';
         </form>
     <?php endif; ?>
 
+    <!-- Comparison output: too-few notice, the side-by-side table, or empty states -->
     <?php if ($compareCount > 0 && $compareCount < COMPARE_MIN) : ?>
         <p class="empty-state">
             Select at least <?php echo customcore_e((string) COMPARE_MIN); ?> systems to see a side-by-side comparison.
@@ -281,6 +285,7 @@ require_once __DIR__ . '/includes/header.php';
             </p>
         </div>
 
+        <!-- Scrollable side-by-side table: one column per product, one row per field -->
         <div class="compare-table-wrap" tabindex="0" role="region" aria-label="Product comparison table">
             <table class="compare-table">
                 <thead>

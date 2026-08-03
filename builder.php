@@ -282,6 +282,7 @@ $loadCharts = true;
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- PC Builder: one step per component category with live pricing and compatibility -->
 <section class="content-section builder-page" aria-labelledby="builder-heading">
     <header class="builder-page__header">
         <h1 id="builder-heading">Custom PC Builder</h1>
@@ -324,6 +325,7 @@ require_once __DIR__ . '/includes/header.php';
         </ol>
     </nav>
 
+    <!-- Split layout: component picker on the left, live build summary on the right -->
     <div class="builder-layout">
         <!-- Left: Component picker -->
         <div class="builder-layout__picker">
@@ -350,6 +352,7 @@ require_once __DIR__ . '/includes/header.php';
                 </div>
             <?php endif; ?>
 
+            <!-- Empty state, or the selection form that drives live pricing and compatibility -->
             <?php if (empty($components)): ?>
                 <p>No components available for this category.</p>
             <?php else: ?>

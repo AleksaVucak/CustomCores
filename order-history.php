@@ -94,6 +94,7 @@ try {
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Order history page: list of the customer's past orders -->
 <section class="content-section profile-page order-history-page" aria-labelledby="orders-heading">
     <header class="profile-page__header">
         <h1 id="orders-heading">Order history</h1>
@@ -104,16 +105,21 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </header>
 
+    <!-- Account layout: sidebar navigation beside main content -->
     <div class="layout-split layout-split--account">
+        <!-- Account navigation sidebar -->
         <aside class="profile-page__aside">
             <?php require __DIR__ . '/includes/account-nav.php'; ?>
         </aside>
 
+        <!-- Main order-history content column -->
         <div class="profile-page__main">
+            <!-- Error banner when the history fails to load -->
             <?php if ($loadError !== null): ?>
                 <div class="flash flash--error" role="alert">
                     <?php echo customcore_e($loadError); ?>
                 </div>
+            <!-- Empty state when the customer has no orders yet -->
             <?php elseif ($totalForUser === 0): ?>
                 <div class="order-history-empty">
                     <p>You have not placed any orders yet.</p>
@@ -128,6 +134,7 @@ require_once __DIR__ . '/includes/header.php';
                 </div>
             <?php else: ?>
 
+                <!-- Toolbar: result summary and status filter links -->
                 <div class="order-history-toolbar">
                     <p class="order-history-toolbar__summary">
                         <?php if ($statusFilter !== ''): ?>
@@ -145,6 +152,7 @@ require_once __DIR__ . '/includes/header.php';
                         <?php endif; ?>
                     </p>
 
+                    <!-- Status filter navigation -->
                     <nav class="order-history-filters" aria-label="Filter orders by status">
                         <a
                             class="order-history-filters__link<?php echo $statusFilter === '' ? ' is-active' : ''; ?>"
@@ -159,6 +167,7 @@ require_once __DIR__ . '/includes/header.php';
                     </nav>
                 </div>
 
+                <!-- Empty state when no orders match the active filter -->
                 <?php if ($orders === []): ?>
                     <div class="order-history-empty order-history-empty--filtered">
                         <p>
@@ -171,6 +180,7 @@ require_once __DIR__ . '/includes/header.php';
                         </a>
                     </div>
                 <?php else: ?>
+                    <!-- Orders table: number, date, status, totals, and details link -->
                     <div class="order-history-table-wrap">
                         <table class="order-history-table">
                             <thead>

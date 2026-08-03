@@ -92,6 +92,7 @@ try {
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Consultation history: the customer's own requests and responses -->
 <section class="content-section profile-page consultation-history-page" aria-labelledby="consultations-heading">
     <header class="profile-page__header">
         <h1 id="consultations-heading">Consultation history</h1>
@@ -102,11 +103,14 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </header>
 
+    <!-- Account layout: sidebar navigation and main content -->
     <div class="layout-split layout-split--account">
+        <!-- Account section navigation -->
         <aside class="profile-page__aside">
             <?php require __DIR__ . '/includes/account-nav.php'; ?>
         </aside>
 
+        <!-- Main column: error, empty state, or request list -->
         <div class="profile-page__main">
             <?php if ($loadError !== null): ?>
                 <div class="flash flash--error" role="alert">
@@ -126,6 +130,7 @@ require_once __DIR__ . '/includes/header.php';
                 </div>
             <?php else: ?>
 
+                <!-- Toolbar: result summary and status filter links -->
                 <div class="order-history-toolbar">
                     <p class="order-history-toolbar__summary">
                         <?php if ($statusFilter !== ''): ?>
@@ -163,6 +168,7 @@ require_once __DIR__ . '/includes/header.php';
                     </a>
                 </div>
 
+                <!-- Empty state when the status filter matches nothing -->
                 <?php if ($requests === []): ?>
                     <div class="order-history-empty order-history-empty--filtered">
                         <p>
@@ -175,6 +181,7 @@ require_once __DIR__ . '/includes/header.php';
                         </a>
                     </div>
                 <?php else: ?>
+                    <!-- Request list: one card per consultation request -->
                     <ul class="consultation-list">
                         <?php foreach ($requests as $req): ?>
                             <?php

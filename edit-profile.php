@@ -286,6 +286,7 @@ $accountNavCurrent = 'edit-profile';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Edit profile page: account details and password forms -->
 <section class="content-section profile-page" aria-labelledby="edit-heading">
     <header class="profile-page__header">
         <h1 id="edit-heading">Edit profile</h1>
@@ -295,19 +296,23 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </header>
 
+    <!-- Page-level error banner -->
     <?php if ($pageError !== null) : ?>
         <div class="flash flash--error" role="alert">
             <?php echo customcore_e($pageError); ?>
         </div>
     <?php endif; ?>
 
+    <!-- Account layout: sidebar navigation plus main content -->
     <div class="layout-split layout-split--account">
+        <!-- Account section navigation -->
         <aside class="profile-page__aside">
             <?php require __DIR__ . '/includes/account-nav.php'; ?>
         </aside>
 
         <div class="profile-page__main">
             <?php if ($user !== null) : ?>
+                <!-- Account details form: name, email, phone, and address -->
                 <section class="edit-section" aria-labelledby="details-heading">
                     <h2 id="details-heading">Account details</h2>
                     <form class="form-stack" method="post" action="<?php echo customcore_e(customcore_url('edit-profile.php')); ?>" novalidate>
@@ -425,6 +430,7 @@ require_once __DIR__ . '/includes/header.php';
                     </form>
                 </section>
 
+                <!-- Change password form: current and new password -->
                 <section class="edit-section" aria-labelledby="password-heading">
                     <h2 id="password-heading">Change password</h2>
                     <form class="form-stack" method="post" action="<?php echo customcore_e(customcore_url('edit-profile.php')); ?>" novalidate>

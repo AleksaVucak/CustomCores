@@ -228,8 +228,10 @@ $currentPage = 'orders';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Order confirmation page: place-failure notice or placed-order receipt -->
 <section class="content-section order-confirm" aria-labelledby="confirm-heading">
 
+    <!-- Failure state when the order could not be placed -->
     <?php if ($orderError !== null): ?>
         <header class="order-confirm__header">
             <h1 id="confirm-heading">Order could not be placed</h1>
@@ -248,6 +250,7 @@ require_once __DIR__ . '/includes/header.php';
         $total = (float) $order['total'];
         $status = (string) $order['status'];
         ?>
+        <!-- Success header with confirmation number and tracking links -->
         <header class="order-confirm__header">
             <h1 id="confirm-heading">Order placed successfully!</h1>
             <p class="order-confirm__subtitle">
@@ -269,6 +272,7 @@ require_once __DIR__ . '/includes/header.php';
             </p>
         </header>
 
+        <!-- Shipping details snapshot -->
         <div class="order-confirm__section">
             <h2 class="order-confirm__section-title">Shipping details</h2>
             <dl class="order-confirm__dl">
@@ -295,6 +299,7 @@ require_once __DIR__ . '/includes/header.php';
             </dl>
         </div>
 
+        <!-- Ordered items table with per-line and order totals -->
         <div class="order-confirm__section">
             <h2 class="order-confirm__section-title">Items ordered</h2>
             <table class="order-confirm__table">
@@ -330,6 +335,7 @@ require_once __DIR__ . '/includes/header.php';
             </table>
         </div>
 
+        <!-- Current order status -->
         <div class="order-confirm__section">
             <h2 class="order-confirm__section-title">Order status</h2>
             <p>
@@ -338,6 +344,7 @@ require_once __DIR__ . '/includes/header.php';
             </p>
         </div>
 
+        <!-- Post-order actions: details, history, keep shopping -->
         <div class="order-confirm__actions">
             <a class="button button--primary" href="<?php echo customcore_e(customcore_url('order-details.php?id=' . (int) $order['id'])); ?>">
                 View full details

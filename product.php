@@ -181,8 +181,10 @@ $currentPage = 'catalogue';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Product detail: single system with specs, options, wishlist, and reviews -->
 <article class="content-section product-detail" aria-labelledby="product-heading">
 
+    <!-- Error banner when the product is missing or invalid; otherwise the full detail -->
     <?php if ($detailError !== null) : ?>
         <div class="flash flash--warning" role="alert">
             <?php echo customcore_e($detailError); ?>
@@ -192,6 +194,7 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     <?php elseif ($product !== null) : ?>
 
+        <!-- Breadcrumb trail back to catalogue and category -->
         <nav class="product-detail__breadcrumb" aria-label="Breadcrumb">
             <a href="<?php echo customcore_e(customcore_url('catalogue.php')); ?>">Catalogue</a>
             <span aria-hidden="true">/</span>
@@ -207,6 +210,7 @@ require_once __DIR__ . '/includes/header.php';
             <a href="<?php echo customcore_e(customcore_url('help/catalogue.html#product')); ?>">Catalogue &amp; product guide</a>
         </p>
 
+        <!-- Product hero: image, name, brand, price, and stock status -->
         <header class="product-detail__header">
             <?php if ($productImageUrl !== null) : ?>
                 <div class="product-detail__media">
@@ -256,12 +260,15 @@ require_once __DIR__ . '/includes/header.php';
             </div>
         </header>
 
+        <!-- Main detail body: description, specs, configurator, wishlist, reviews -->
         <div class="product-detail__body">
+            <!-- Long-form description of the system -->
             <section class="product-detail__description" aria-labelledby="desc-heading">
                 <h2 id="desc-heading">About this system</h2>
                 <p><?php echo customcore_e((string) $product['description']); ?></p>
             </section>
 
+            <!-- Default specifications table (only populated spec rows shown) -->
             <section class="product-detail__specs" aria-labelledby="specs-heading">
                 <h2 id="specs-heading">Default specifications</h2>
                 <table class="specs-table">
@@ -302,6 +309,7 @@ require_once __DIR__ . '/includes/header.php';
                 </table>
             </section>
 
+            <!-- Configurator: option groups plus add-to-cart, or a simple cart form when no options -->
             <?php if ($optionGroups !== []) : ?>
                 <form class="product-detail__cart-form" method="post" action="<?php echo customcore_e(customcore_url('cart.php')); ?>">
                     <?php echo customcore_csrf_field(); ?>
@@ -411,6 +419,7 @@ require_once __DIR__ . '/includes/header.php';
                 <?php endif; ?>
             <?php endif; ?>
 
+            <!-- Wishlist save/remove for logged-in customers, or a log-in prompt -->
             <div class="product-detail__wishlist">
                 <?php if ($isLoggedIn) : ?>
                     <?php if ($onWishlist) : ?>
@@ -438,6 +447,7 @@ require_once __DIR__ . '/includes/header.php';
                 <?php endif; ?>
             </div>
 
+            <!-- Approved reviews summary, list, and pending-review submission form -->
             <section class="product-detail__reviews" aria-labelledby="reviews-heading">
                 <h2 id="reviews-heading">Customer reviews</h2>
                 <p class="product-detail__reviews-summary">

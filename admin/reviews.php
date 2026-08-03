@@ -171,12 +171,15 @@ require_once __DIR__ . '/../includes/header.php';
         </p>
     </header>
 
+    <!-- Admin section navigation -->
     <?php require __DIR__ . '/../includes/admin-nav.php'; ?>
 
+    <!-- Flash: review list load error -->
     <?php if ($listError !== null) : ?>
         <p class="flash flash--error" role="alert"><?php echo customcore_e($listError); ?></p>
     <?php endif; ?>
 
+    <!-- Search & filter: text search and status -->
     <form class="admin-filter" method="get" action="<?php echo customcore_e(customcore_url('admin/reviews.php')); ?>">
         <div class="admin-filter__field">
             <label for="filter-q">Search</label>
@@ -203,6 +206,7 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
     </form>
 
+    <!-- Results: empty state or review moderation list -->
     <?php if ($result['rows'] === []) : ?>
         <p class="admin-activity__empty">No reviews match your filters.</p>
     <?php else : ?>
@@ -214,6 +218,7 @@ require_once __DIR__ . '/../includes/header.php';
             of <?php echo customcore_e((string) $result['pages']); ?>
         </p>
 
+        <!-- Review cards: approve, hide, pending, delete actions -->
         <div class="admin-review-list">
             <?php foreach ($result['rows'] as $review) : ?>
                 <?php
@@ -302,6 +307,7 @@ require_once __DIR__ . '/../includes/header.php';
             <?php endforeach; ?>
         </div>
 
+        <!-- Pagination controls -->
         <?php if ($result['pages'] > 1) : ?>
             <nav class="admin-pagination" aria-label="Review pages">
                 <?php if ($result['page'] > 1) : ?>

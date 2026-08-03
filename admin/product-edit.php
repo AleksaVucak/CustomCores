@@ -138,6 +138,7 @@ $currentPage = 'admin';
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
+<!-- Edit product: shared product form pre-filled with existing values -->
 <section class="content-section admin-page admin-product-form" aria-labelledby="admin-edit-heading">
     <header class="admin-page__header">
         <h1 id="admin-edit-heading">Edit product</h1>
@@ -154,12 +155,15 @@ require_once __DIR__ . '/../includes/header.php';
         </p>
     </header>
 
+    <!-- Admin section navigation -->
     <?php require __DIR__ . '/../includes/admin-nav.php'; ?>
 
+    <!-- Form-level error banner (e.g. expired session) -->
     <?php if (isset($formErrors['form'])) : ?>
         <p class="flash flash--error" role="alert"><?php echo customcore_e($formErrors['form']); ?></p>
     <?php endif; ?>
 
+    <!-- Product form: CSRF + product id plus shared add/edit fieldsets partial -->
     <form
         class="admin-form"
         method="post"

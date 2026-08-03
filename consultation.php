@@ -134,6 +134,7 @@ $currentPage = 'consultation';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Consultation request page: guided PC advice form -->
 <section class="content-section profile-page consultation-page" aria-labelledby="consultation-heading">
     <header class="profile-page__header">
         <h1 id="consultation-heading">Request a PC consultation</h1>
@@ -143,11 +144,14 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </header>
 
+    <!-- Account layout: sidebar navigation and main content -->
     <div class="layout-split layout-split--account">
+        <!-- Account section navigation -->
         <aside class="profile-page__aside">
             <?php require __DIR__ . '/includes/account-nav.php'; ?>
         </aside>
 
+        <!-- Main column: intro, error banner, and request form -->
         <div class="profile-page__main">
             <p class="consultation-page__intro">
                 Not sure which components you need? Tell us how you plan to use your PC and we'll
@@ -155,12 +159,14 @@ require_once __DIR__ . '/includes/header.php';
                 <span class="form-required" aria-hidden="true">*</span> are required.
             </p>
 
+            <!-- Submission error banner -->
             <?php if ($formError !== null) : ?>
                 <div class="flash flash--error" role="alert">
                     <?php echo customcore_e($formError); ?>
                 </div>
             <?php endif; ?>
 
+            <!-- Consultation form: budget, needs, goals, and attachments -->
             <form
                 class="form-stack consultation-form"
                 method="post"
@@ -271,6 +277,7 @@ require_once __DIR__ . '/includes/header.php';
                 <?php
                 $maxMb = number_format(customcore_consultation_upload_max_bytes() / (1024 * 1024), 1);
                 ?>
+                <!-- Optional secure file attachments -->
                 <div class="form-row<?php echo isset($errors['attachments']) ? ' has-error' : ''; ?>">
                     <label class="form-label" for="consult-attachments">
                         Attachments <span class="form-optional">(optional)</span>

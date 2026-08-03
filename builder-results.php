@@ -413,6 +413,7 @@ if (
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Build summary: parts list with trusted prices, compatibility, estimates, and save -->
 <section class="content-section results-page" aria-labelledby="results-heading">
     <header class="results-page__header">
         <h1 id="results-heading">Your build summary</h1>
@@ -430,6 +431,7 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </header>
 
+    <!-- Notices: parts removed as unavailable, and missing required components -->
     <?php if ($staleSelections !== []): ?>
         <div class="flash flash--warning" role="status">
             One or more previously selected parts are no longer available and were removed from your build.
@@ -444,11 +446,13 @@ require_once __DIR__ . '/includes/header.php';
         </div>
     <?php endif; ?>
 
+    <!-- Split layout: selected parts table on the left, summary sidebar on the right -->
     <div class="results-layout">
         <!-- Parts list -->
         <div class="results-layout__parts">
             <h2 class="results-section-title">Selected components</h2>
 
+            <!-- One row per category with trusted DB prices and an edit link; total in the footer -->
             <table class="results-table">
                 <thead>
                     <tr>
@@ -556,6 +560,7 @@ require_once __DIR__ . '/includes/header.php';
 
         <!-- Sidebar: compatibility + estimates + actions -->
         <aside class="results-layout__aside" aria-label="Compatibility and estimates">
+            <!-- Compatibility panel: overall badge plus per-rule pass/warning/fail results -->
             <div class="results-panel">
                 <h2 class="results-section-title">Compatibility</h2>
                 <p class="results-panel__status">
@@ -592,6 +597,7 @@ require_once __DIR__ . '/includes/header.php';
                 <?php endif; ?>
             </div>
 
+            <!-- Estimates panel: power draw, recommended PSU, and performance scores/chart -->
             <div class="results-panel">
                 <h2 class="results-section-title">Estimates</h2>
                 <dl class="results-estimates">
@@ -660,6 +666,7 @@ require_once __DIR__ . '/includes/header.php';
                 </p>
             </div>
 
+            <!-- Next steps: save form for logged-in customers, or a log-in prompt for guests -->
             <div class="results-panel results-panel--actions">
                 <h2 class="results-section-title">Next steps</h2>
 

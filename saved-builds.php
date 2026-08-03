@@ -64,6 +64,7 @@ try {
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Saved builds page: the customer's stored PC builds -->
 <section class="content-section profile-page" aria-labelledby="builds-heading">
     <header class="profile-page__header">
         <h1 id="builds-heading">Saved builds</h1>
@@ -77,7 +78,9 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </header>
 
+    <!-- Account layout: sidebar navigation plus main content -->
     <div class="layout-split layout-split--account">
+        <!-- Account section navigation -->
         <aside class="profile-page__aside">
             <?php require __DIR__ . '/includes/account-nav.php'; ?>
         </aside>
@@ -88,6 +91,7 @@ require_once __DIR__ . '/includes/header.php';
                     <?php echo customcore_e($loadError); ?>
                 </div>
             <?php elseif ($builds === []): ?>
+                <!-- Empty state: no saved builds yet -->
                 <div class="saved-builds-empty">
                     <p>You have no saved builds yet.</p>
                     <a class="button" href="<?php echo customcore_e(customcore_url('builder.php')); ?>">
@@ -95,6 +99,7 @@ require_once __DIR__ . '/includes/header.php';
                     </a>
                 </div>
             <?php else: ?>
+                <!-- Saved builds grid -->
                 <div class="saved-builds-grid">
                     <?php foreach ($builds as $b): ?>
                         <?php
@@ -165,6 +170,7 @@ require_once __DIR__ . '/includes/header.php';
                     <?php endforeach; ?>
                 </div>
 
+                <!-- Create-new-build action -->
                 <div class="saved-builds-actions">
                     <a class="button button--secondary" href="<?php echo customcore_e(customcore_url('builder.php')); ?>">
                         Create a new build

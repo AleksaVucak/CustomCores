@@ -68,6 +68,7 @@ try {
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Hero: brand statement and primary calls to action -->
 <section class="hero hero--home" aria-labelledby="home-hero-heading">
     <p class="hero__brand">CustomCore</p>
     <h1 id="home-hero-heading">Build a gaming PC you can trust</h1>
@@ -81,6 +82,7 @@ require_once __DIR__ . '/includes/header.php';
     </p>
 </section>
 
+<!-- Context help: quick links into the Help centre and About page -->
 <p class="context-help">
     New here?
     <a href="<?php echo customcore_e(customcore_url('help/index.html')); ?>">Open the Help centre</a>
@@ -90,6 +92,7 @@ require_once __DIR__ . '/includes/header.php';
     <a href="<?php echo customcore_e(customcore_url('about.php')); ?>">About CustomCore</a>
 </p>
 
+<!-- Catalogue availability notice: shown only if the database is unreachable -->
 <?php if ($homeDataError !== null) : ?>
     <div class="flash flash--warning" role="status">
         <?php echo customcore_e($homeDataError); ?>
@@ -99,7 +102,9 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 <?php endif; ?>
 
+<!-- Two-column feature area: featured products and performance tiers -->
 <div class="layout-split layout-split--home">
+    <!-- Featured systems: active + featured products pulled from MySQL -->
     <section class="content-section home-featured" aria-labelledby="featured-heading">
         <div class="section-heading">
             <h2 id="featured-heading">Featured systems</h2>
@@ -185,6 +190,7 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </section>
 
+    <!-- Performance tiers: active catalogue categories -->
     <section class="content-section home-categories" aria-labelledby="categories-heading">
         <div class="section-heading">
             <h2 id="categories-heading">Performance tiers</h2>
@@ -233,6 +239,7 @@ require_once __DIR__ . '/includes/header.php';
     </section>
 </div>
 
+<!-- Learning centre teaser: playable guide video with a read-instead fallback -->
 <section class="content-section home-media" aria-labelledby="media-heading">
     <div class="section-heading">
         <h2 id="media-heading">Learning centre</h2>

@@ -286,6 +286,7 @@ $currentPage = 'wishlist';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Wishlist page: saved products for the current customer -->
 <section class="content-section profile-page wishlist-page" aria-labelledby="wishlist-heading">
     <header class="profile-page__header">
         <h1 id="wishlist-heading">Wishlist</h1>
@@ -296,7 +297,9 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </header>
 
+    <!-- Account layout: sidebar navigation plus main content -->
     <div class="layout-split layout-split--account">
+        <!-- Account section navigation -->
         <aside class="profile-page__aside">
             <?php require __DIR__ . '/includes/account-nav.php'; ?>
         </aside>
@@ -307,6 +310,7 @@ require_once __DIR__ . '/includes/header.php';
                     <?php echo customcore_e($loadError); ?>
                 </div>
             <?php elseif ($items === []): ?>
+                <!-- Empty wishlist state with browse prompts -->
                 <div class="wishlist-empty">
                     <?php $emptyWishlistImage = customcore_image_url('assets/images/ui/empty-wishlist.jpg'); ?>
                     <?php if ($emptyWishlistImage !== null) : ?>
@@ -331,6 +335,7 @@ require_once __DIR__ . '/includes/header.php';
                     </div>
                 </div>
             <?php else: ?>
+                <!-- Wishlist toolbar: item count and clear action -->
                 <div class="wishlist-toolbar">
                     <p class="wishlist-toolbar__summary">
                         You have
@@ -348,6 +353,7 @@ require_once __DIR__ . '/includes/header.php';
                     </form>
                 </div>
 
+                <!-- Saved products grid -->
                 <ul class="wishlist-grid">
                     <?php foreach ($items as $item): ?>
                         <?php

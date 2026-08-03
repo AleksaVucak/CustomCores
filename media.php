@@ -58,6 +58,7 @@ if ($mediaSummaryParts !== []) {
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Learning Centre: playable video/audio guides with transcripts -->
 <section class="content-section learning-centre" aria-labelledby="learning-heading">
     <header class="learning-centre__header">
         <p class="learning-centre__eyebrow">CustomCore Learning Centre</p>
@@ -77,6 +78,7 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </header>
 
+    <!-- Empty state when no media files are on the server -->
     <?php if ($mediaItems === []) : ?>
         <p class="empty-state" role="status">
             Educational media files are not available on this server yet.
@@ -84,6 +86,7 @@ require_once __DIR__ . '/includes/header.php';
             <code>assets/media/</code>.
         </p>
     <?php else : ?>
+        <!-- Lesson directory: quick-jump links to each player -->
         <nav class="media-directory" aria-labelledby="media-directory-heading">
             <div class="media-directory__intro">
                 <h2 id="media-directory-heading">Lessons in this centre</h2>
@@ -95,6 +98,7 @@ require_once __DIR__ . '/includes/header.php';
                 <?php endif; ?>
             </div>
 
+            <!-- Directory cards, one per lesson -->
             <ol class="media-directory__list">
                 <?php foreach ($mediaItems as $index => $item) : ?>
                     <?php $isVideo = $item['type'] === 'video'; ?>
@@ -126,6 +130,7 @@ require_once __DIR__ . '/includes/header.php';
             </ol>
         </nav>
 
+        <!-- Player grid: HTML5 video/audio with captions and transcripts -->
         <div class="media-grid" aria-label="Learning Centre lessons">
             <?php foreach ($mediaItems as $index => $item) : ?>
                 <?php
@@ -236,6 +241,7 @@ require_once __DIR__ . '/includes/header.php';
         </div>
     <?php endif; ?>
 
+    <!-- How the lessons connect to catalogue and PC Builder -->
     <section class="learning-centre__help" aria-labelledby="shopping-help-heading">
         <h2 id="shopping-help-heading">How these lessons help you shop CustomCore</h2>
         <p>
@@ -252,6 +258,7 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </section>
 
+    <!-- Media credits and licensing note -->
     <section class="learning-centre__credits" aria-labelledby="media-credits-heading">
         <h2 id="media-credits-heading">Media credits</h2>
         <p>

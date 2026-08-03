@@ -52,6 +52,7 @@ $currentPage = 'locations';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Store & service location: map plus text-based address fallback -->
 <section class="content-section location-page" aria-labelledby="location-heading">
     <header class="location-page__header">
         <p class="location-page__eyebrow">Fictional coursework location</p>
@@ -70,7 +71,9 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </header>
 
+    <!-- Two-column layout: details on the left, map on the right -->
     <div class="location-layout">
+        <!-- Always-visible address, hours, and contact fallback -->
         <div class="location-details">
             <h2 id="location-details-heading">Location details</h2>
 
@@ -97,6 +100,7 @@ require_once __DIR__ . '/includes/header.php';
                 <?php endif; ?>
             </address>
 
+            <!-- Opening hours list when configured -->
             <?php if ($locHours !== []) : ?>
                 <h3>Hours</h3>
                 <dl class="location-hours">
@@ -115,6 +119,7 @@ require_once __DIR__ . '/includes/header.php';
             </p>
         </div>
 
+        <!-- Location photo and interactive map column -->
         <div class="location-map-column">
             <?php if ($locImageUrl !== null) : ?>
                 <img
@@ -128,6 +133,7 @@ require_once __DIR__ . '/includes/header.php';
                 >
             <?php endif; ?>
 
+            <!-- Store map: Leaflet/OpenStreetMap with noscript fallback -->
             <?php if ($hasMap) : ?>
                 <div
                     id="customcore-map"

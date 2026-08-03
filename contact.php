@@ -164,7 +164,9 @@ $currentPage = 'contact';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Contact page: public support message form -->
 <section class="content-section contact-page" aria-labelledby="contact-heading">
+    <!-- Intro and form layout wrapper -->
     <div class="contact-layout">
         <header class="contact-page__header">
             <h1 id="contact-heading">Contact us</h1>
@@ -194,13 +196,16 @@ require_once __DIR__ . '/includes/header.php';
             <?php endif; ?>
         </header>
 
+        <!-- Main column: error banner and contact form -->
         <div class="contact-page__main">
+            <!-- Submission error banner -->
             <?php if ($formError !== null) : ?>
                 <div class="flash flash--error" role="alert">
                     <?php echo customcore_e($formError); ?>
                 </div>
             <?php endif; ?>
 
+            <!-- Contact form: name, email, subject, message -->
             <form
                 class="form-stack contact-form"
                 method="post"
@@ -210,6 +215,7 @@ require_once __DIR__ . '/includes/header.php';
             >
                 <?php echo customcore_csrf_field(); ?>
 
+                <!-- Name and email, side by side -->
                 <div class="form-row--inline">
                     <div class="form-row<?php echo isset($errors['name']) ? ' has-error' : ''; ?>">
                         <label class="form-label" for="contact-name">
@@ -273,6 +279,7 @@ require_once __DIR__ . '/includes/header.php';
                     <?php endif; ?>
                 </div>
 
+                <!-- Custom subject field, shown only for "Other" -->
                 <div
                     class="form-row contact-form__other<?php echo isset($errors['subject_other']) ? ' has-error' : ''; ?>"
                     id="contact-subject-other-row"

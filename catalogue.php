@@ -254,7 +254,9 @@ $sortLabels = [
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Catalogue page: page intro, live tier chart, search, filters, and results -->
 <section class="content-section catalogue-page" aria-labelledby="catalogue-heading">
+    <!-- Page header: title, help link, and intro copy -->
     <header class="catalogue-page__header">
         <h1 id="catalogue-heading">Catalogue</h1>
         <p class="context-help">
@@ -267,6 +269,7 @@ require_once __DIR__ . '/includes/header.php';
         </p>
     </header>
 
+    <!-- Catalogue insights: live products-per-tier chart with an accessible data table -->
     <?php if ($showCatalogueChart) : ?>
         <section class="catalogue-insights" aria-labelledby="catalogue-insights-heading">
             <div class="section-heading">
@@ -342,6 +345,7 @@ require_once __DIR__ . '/includes/header.php';
         <p class="flash flash--warning" role="status"><?php echo customcore_e($chartError); ?></p>
     <?php endif; ?>
 
+    <!-- Quick search: hands the query off to search.php -->
     <form class="search-form search-form--compact" method="get" action="<?php echo customcore_e(customcore_url('search.php')); ?>" role="search">
         <label class="search-form__label" for="catalogue-search-q">Search the catalogue</label>
         <div class="search-form__row">
@@ -364,7 +368,9 @@ require_once __DIR__ . '/includes/header.php';
         </div>
     <?php endif; ?>
 
+    <!-- Two-column body: filter sidebar + product results -->
     <div class="layout-split layout-split--catalogue">
+        <!-- Filter sidebar: category, brand, price, stock, and sort controls (GET) -->
         <aside class="catalogue-filters" aria-label="Product filters">
             <form method="get" action="<?php echo customcore_e(customcore_url('catalogue.php')); ?>">
                 <h2 class="catalogue-filters__heading">Filters</h2>
@@ -457,7 +463,9 @@ require_once __DIR__ . '/includes/header.php';
             </form>
         </aside>
 
+        <!-- Results column: quick tier tabs, result summary, and product grid -->
         <div class="catalogue-results">
+            <!-- Quick tier filter: one-click category switching -->
             <?php if ($categories !== []) : ?>
                 <nav class="catalogue-tiers" aria-label="Quick tier filter">
                     <a
@@ -478,6 +486,7 @@ require_once __DIR__ . '/includes/header.php';
                 </nav>
             <?php endif; ?>
 
+            <!-- Toolbar: live result count, active filter summary, and sort label -->
             <div class="catalogue-toolbar">
                 <p class="catalogue-toolbar__count" aria-live="polite">
                     <strong><?php echo customcore_e((string) $productCount); ?></strong>
@@ -513,6 +522,7 @@ require_once __DIR__ . '/includes/header.php';
                 </p>
             <?php endif; ?>
 
+            <!-- Product results: empty state, otherwise the compare-enabled grid -->
             <?php if ($products === [] && $catalogueError === null) : ?>
                 <p class="empty-state">
                     No systems match the current filters.

@@ -128,8 +128,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 require_once __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Login page: authentication card for returning customers -->
 <section class="content-section auth-page" aria-labelledby="login-heading">
     <div class="auth-card">
+        <!-- Card heading and help link -->
         <header class="auth-card__header">
             <h1 id="login-heading">Log in</h1>
             <p class="auth-card__intro">
@@ -141,12 +143,14 @@ require_once __DIR__ . '/includes/header.php';
             </p>
         </header>
 
+        <!-- Login error banner -->
         <?php if ($formError !== null) : ?>
             <div class="flash flash--error" role="alert">
                 <?php echo customcore_e($formError); ?>
             </div>
         <?php endif; ?>
 
+        <!-- Login form: email and password credentials -->
         <form class="form-stack auth-form" method="post" action="<?php echo customcore_e(customcore_url('login.php')); ?>" novalidate>
             <?php echo customcore_csrf_field(); ?>
 

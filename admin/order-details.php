@@ -111,6 +111,7 @@ $pageKeywords = 'CustomCore, admin, order';
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
+<!-- Order detail: customer/shipping/payment, status and notes forms, line items -->
 <section class="content-section admin-page admin-order-detail" aria-labelledby="admin-order-heading">
     <header class="admin-page__header">
         <h1 id="admin-order-heading">Order <?php echo customcore_e((string) $order['order_number']); ?></h1>
@@ -125,8 +126,10 @@ require_once __DIR__ . '/../includes/header.php';
         </p>
     </header>
 
+    <!-- Admin section navigation -->
     <?php require __DIR__ . '/../includes/admin-nav.php'; ?>
 
+    <!-- Snapshot cards: customer, shipping address, and payment/totals -->
     <div class="admin-order-detail__grid">
         <section class="admin-card" aria-labelledby="customer-heading">
             <h2 id="customer-heading" class="admin-card__title">Customer</h2>
@@ -181,6 +184,7 @@ require_once __DIR__ . '/../includes/header.php';
         </section>
     </div>
 
+    <!-- Admin actions: update fulfilment status and internal notes (POST) -->
     <div class="admin-order-detail__grid admin-order-detail__grid--forms">
         <section class="admin-card" aria-labelledby="status-heading">
             <h2 id="status-heading" class="admin-card__title">Update status</h2>
@@ -218,11 +222,13 @@ require_once __DIR__ . '/../includes/header.php';
         </section>
     </div>
 
+    <!-- Items ordered: empty state, otherwise frozen line-item table -->
     <section class="admin-card" aria-labelledby="items-heading">
         <h2 id="items-heading" class="admin-card__title">Items ordered</h2>
         <?php if ($items === []) : ?>
             <p>No line items were recorded for this order.</p>
         <?php else : ?>
+            <!-- Line items: name/options/build, type, qty, unit price, line total -->
             <div class="admin-table-wrap">
                 <table class="admin-table admin-table--order-items">
                     <thead>

@@ -72,6 +72,7 @@ $pageKeywords = 'CustomCore, admin, orders';
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
+<!-- Orders management: filters, results table, and pagination -->
 <section class="content-section admin-page admin-orders" aria-labelledby="admin-orders-heading">
     <header class="admin-page__header">
         <h1 id="admin-orders-heading">Orders</h1>
@@ -84,12 +85,15 @@ require_once __DIR__ . '/../includes/header.php';
         </p>
     </header>
 
+    <!-- Admin section navigation -->
     <?php require __DIR__ . '/../includes/admin-nav.php'; ?>
 
+    <!-- Load error banner -->
     <?php if ($listError !== null) : ?>
         <p class="flash flash--error" role="alert"><?php echo customcore_e($listError); ?></p>
     <?php endif; ?>
 
+    <!-- Filters: search + status with counts (GET) -->
     <form class="admin-filter" method="get" action="<?php echo customcore_e(customcore_url('admin/orders.php')); ?>">
         <div class="admin-filter__field">
             <label for="filter-q">Search</label>
@@ -116,6 +120,7 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
     </form>
 
+    <!-- Results: empty state, otherwise order count and table -->
     <?php if ($result['rows'] === []) : ?>
         <p class="admin-activity__empty">No orders match your filters.</p>
     <?php else : ?>
@@ -125,6 +130,7 @@ require_once __DIR__ . '/../includes/header.php';
             · page <?php echo customcore_e((string) $result['page']); ?>
             of <?php echo customcore_e((string) $result['pages']); ?>
         </p>
+        <!-- Orders table: number, customer, items, total, status, and view action -->
         <div class="admin-table-wrap">
             <table class="admin-table admin-table--orders">
                 <thead>
@@ -167,6 +173,7 @@ require_once __DIR__ . '/../includes/header.php';
             </table>
         </div>
 
+        <!-- Pagination: previous/next across order pages -->
         <?php if ($result['pages'] > 1) : ?>
             <nav class="admin-pagination" aria-label="Order pages">
                 <?php if ($result['page'] > 1) : ?>
