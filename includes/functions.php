@@ -379,6 +379,167 @@ function customcore_url(string $path = ''): string
 }
 
 /**
+ * Project-root-relative path of the current script (e.g. "admin/products.php").
+ *
+ * Derives the path from SCRIPT_NAME and the known script depth, so it works
+ * whether the app is served from the domain root or a subfolder such as
+ * "/~yourid/customcore/". Returns an empty string if it cannot be determined.
+ */
+function customcore_current_project_path(): string
+{
+    $scriptName = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
+    $segments = array_values(array_filter(explode('/', $scriptName), static fn (string $s): bool => $s !== ''));
+    if ($segments === []) {
+        return '';
+    }
+
+    $take = min(customcore_script_depth() + 1, count($segments));
+
+    return implode('/', array_slice($segments, -$take));
+}
+
+/**
+ * URL path of the project root (the part of SCRIPT_NAME before the current
+ * project-relative path). Empty string when the app is served from the
+ * document root. Consistent with customcore_url()'s depth model.
+ */
+function customcore_app_base_path(): string
+{
+    $scriptName = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
+    $segments = array_values(array_filter(explode('/', $scriptName), static fn (string $s): bool => $s !== ''));
+    if ($segments === []) {
+        return '';
+    }
+
+    $take = min(customcore_script_depth() + 1, count($segments));
+    $baseParts = array_slice($segments, 0, max(0, count($segments) - $take));
+
+    return $baseParts === [] ? '' : '/' . implode('/', $baseParts);
+}
+
+/**
+ * Absolute canonical URL for SEO (Commit 14.1).
+ *
+ * Builds a self-referencing canonical for the current page, or a canonical for
+ * an explicit project-relative target. Prefers config/app.php → base_url (which
+ * may include a subfolder); otherwise derives scheme + host from the request.
+ *
+ * A self canonical uses the exact SCRIPT_NAME, so it is always correct
+ * regardless of how deep in a subfolder the app is deployed. When base_url is
+ * configured with a subfolder, its path is stripped from SCRIPT_NAME so the
+ * subfolder is never duplicated.
+ *
+ * @param string|false|null $override false disables canonical; a non-empty
+ *   string is treated as a project-relative target (its own query is kept as-is);
+ *   null/'' means "use the current request URL".
+ * @param bool $includeQuery Append the current query string for the default
+ *   (self-referencing) canonical. Ignored when $override is a string.
+ * @return string|null Absolute URL, or null when a safe one cannot be built.
+ */
+function customcore_canonical_url($override = null, bool $includeQuery = true): ?string
+{
+    if ($override === false) {
+        return null;
+    }
+
+    $hasOverride = is_string($override) && $override !== '';
+    $target = $hasOverride ? ltrim(str_replace('\\', '/', $override), '/') : '';
+    $scriptName = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
+
+    $app = customcore_app_config();
+    $base = isset($app['base_url']) ? trim((string) $app['base_url']) : '';
+
+    if ($base !== '') {
+        $root = rtrim($base, '/');
+
+        if ($hasOverride) {
+            return $root . '/' . $target;
+        }
+
+        // Self canonical: strip the base URL's path from SCRIPT_NAME so the
+        // subfolder is not duplicated (independent of script depth).
+        $basePath = rtrim((string) (parse_url($base, PHP_URL_PATH) ?? ''), '/');
+        if ($basePath !== '' && str_starts_with($scriptName, $basePath . '/')) {
+            $projectRel = ltrim(substr($scriptName, strlen($basePath)), '/');
+        } else {
+            $projectRel = customcore_current_project_path();
+        }
+
+        if ($projectRel === '') {
+            return null;
+        }
+
+        $url = $root . '/' . $projectRel;
+    } else {
+        $scheme = customcore_request_is_https() ? 'https' : 'http';
+        $host = (string) ($_SERVER['HTTP_HOST'] ?? '');
+        // Only trust a well-formed host[:port]; never build a URL from junk.
+        if ($host === '' || !preg_match('/^[A-Za-z0-9.\-]+(?::\d+)?$/', $host)) {
+            return null;
+        }
+
+        if ($hasOverride) {
+            $url = $scheme . '://' . $host . customcore_app_base_path() . '/' . $target;
+        } else {
+            if ($scriptName === '') {
+                return null;
+            }
+            $url = $scheme . '://' . $host . $scriptName;
+        }
+    }
+
+    if ($includeQuery && !$hasOverride) {
+        $query = (string) ($_SERVER['QUERY_STRING'] ?? '');
+        if ($query !== '') {
+            $url .= '?' . $query;
+        }
+    }
+
+    return $url;
+}
+
+/**
+ * Whether the current page should be excluded from search-engine indexing.
+ *
+ * Centralises noindex policy so pages do not each repeat it (Commit 14.1):
+ *   - any page under admin/ is always noindex;
+ *   - a page may opt in explicitly with $pageNoindex = true;
+ *   - per-user/private customer pages (cart, checkout, account, orders, saved
+ *     builds, wishlist, histories) are noindex because they are useless or
+ *     duplicative in a public index.
+ *
+ * The public sitemap/robots.txt in Commit 14.2 reinforces these exclusions.
+ */
+function customcore_is_noindex_page(): bool
+{
+    global $pageNoindex;
+    if (isset($pageNoindex) && $pageNoindex === true) {
+        return true;
+    }
+
+    $scriptName = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
+    if (str_contains($scriptName, '/admin/')) {
+        return true;
+    }
+
+    $private = [
+        'cart.php',
+        'checkout.php',
+        'order-confirmation.php',
+        'order-details.php',
+        'order-history.php',
+        'profile.php',
+        'edit-profile.php',
+        'wishlist.php',
+        'saved-builds.php',
+        'saved-build.php',
+        'consultation-history.php',
+    ];
+
+    return in_array(basename($scriptName), $private, true);
+}
+
+/**
  * Resolve a project image path to a browser URL, but only if the file exists.
  *
  * Guards against path traversal and unexpected file types by requiring the

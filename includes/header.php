@@ -7,6 +7,12 @@
  *   Expects pages to set $pageTitle and optionally $pageDescription, $pageKeywords,
  *   and $currentPage before including this file.
  *
+ * Optional SEO overrides (Commit 14.1):
+ *   $pageCanonical — project-relative canonical target, or false to omit the
+ *                    <link rel="canonical">. Defaults to a self-referencing URL.
+ *   $pageNoindex   — set true to force <meta name="robots"> noindex. Admin and
+ *                    per-user private pages are noindexed automatically.
+ *
  * Authentication requirements:
  *   None for the include itself. Private pages add auth checks before this include.
  *
@@ -54,17 +60,44 @@ if (!isset($currentPage) || !is_string($currentPage)) {
     <meta name="description" content="<?php echo customcore_e($pageDescription); ?>">
     <meta name="keywords" content="<?php echo customcore_e($pageKeywords); ?>">
     <title><?php echo customcore_e($pageTitle); ?></title>
+
+    <?php
+    // Search-engine indexing policy (Commit 14.1). Public content pages are
+    // indexable; admin and per-user private pages are excluded.
+    $robotsDirective = customcore_is_noindex_page() ? 'noindex, nofollow' : 'index, follow';
+    ?>
+    <meta name="robots" content="<?php echo customcore_e($robotsDirective); ?>">
+
+    <?php
+    // Canonical URL (Commit 14.1). A page may set $pageCanonical to a
+    // project-relative target, or to false to suppress the tag entirely.
+    $canonicalUrl = customcore_canonical_url($pageCanonical ?? null);
+    ?>
+    <?php if ($canonicalUrl !== null) : ?>
+        <link rel="canonical" href="<?php echo customcore_e($canonicalUrl); ?>">
+    <?php endif; ?>
+
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="<?php echo customcore_e($siteName); ?>">
     <meta property="og:title" content="<?php echo customcore_e($pageTitle); ?>">
     <meta property="og:description" content="<?php echo customcore_e($pageDescription); ?>">
+    <?php if ($canonicalUrl !== null) : ?>
+        <meta property="og:url" content="<?php echo customcore_e($canonicalUrl); ?>">
+    <?php endif; ?>
     <?php $ogImage = customcore_image_url('assets/images/og/social-share.jpg'); ?>
     <?php if ($ogImage !== null) : ?>
         <meta property="og:image" content="<?php echo customcore_e($ogImage); ?>">
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:image" content="<?php echo customcore_e($ogImage); ?>">
     <?php endif; ?>
-    <!-- Favicon and expanded SEO metadata arrive in Stage 14 -->
+
+    <!-- Favicon, theme colour, and web app manifest (Commit 14.1) -->
+    <link rel="icon" type="image/svg+xml" href="<?php echo customcore_e(customcore_url('favicon.svg')); ?>">
+    <link rel="icon" href="<?php echo customcore_e(customcore_url('favicon.svg')); ?>" sizes="any">
+    <link rel="apple-touch-icon" href="<?php echo customcore_e(customcore_url('favicon.svg')); ?>">
+    <link rel="manifest" href="<?php echo customcore_e(customcore_url('site.webmanifest')); ?>">
+    <meta name="theme-color" content="#12151c">
+
     <link rel="stylesheet" href="<?php echo customcore_e(customcore_url('assets/css/main.css')); ?>">
     <?php if (!empty($loadAdminCss)) : ?>
         <link rel="stylesheet" href="<?php echo customcore_e(customcore_url('assets/css/admin.css')); ?>">

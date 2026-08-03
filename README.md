@@ -51,6 +51,22 @@ to manage the store. Non-programmers updating catalogue content should read the
 
 ## Current status
 
+**Commit 14.1 complete** — page-specific SEO metadata.
+
+Every page already sets a unique title, description, and keywords; this commit finishes the
+SEO head in `includes/header.php`. It adds a scalable brand **`favicon.svg`**, a
+**`site.webmanifest`**, and a `theme-color`; a self-referencing absolute
+**`<link rel="canonical">`** plus matching `og:url` via a new `customcore_canonical_url()`
+helper (uses the exact `SCRIPT_NAME` so it is correct whether the app runs at the domain
+root or in a `~user/subfolder`, strips a configured `base_url` path so the subfolder is
+never duplicated, and supports a `$pageCanonical` override or `false` to disable); and a
+**`<meta name="robots">`** directive that is `index, follow` for public content but
+`noindex, nofollow` for admin and per-user private pages (cart, checkout, account, orders,
+saved builds, wishlist, histories) via a centralised `customcore_is_noindex_page()` — no
+per-page edits. Verified with `php -l`, no lint, rendered public and admin pages, and
+canonical unit tests (root, subfolder, base_url-with-subfolder, override, disabled). Next
+up: `sitemap.xml` + `robots.txt` in **Commit 14.2**.
+
 **Commit 13.5 complete** — monitoring troubleshooting guide.
 
 [`docs/monitoring-troubleshooting.md`](docs/monitoring-troubleshooting.md) documents the

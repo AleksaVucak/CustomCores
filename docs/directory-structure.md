@@ -80,6 +80,13 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
+**Commit 14.1 complete — page-specific SEO metadata.**
+`includes/header.php` now emits a full SEO head: a scalable brand `favicon.svg` +
+`site.webmanifest` + `theme-color`, a subfolder-safe self-referencing
+`<link rel="canonical">` and `og:url` (`customcore_canonical_url()`), and a
+`<meta name="robots">` that noindexes admin + private per-user pages
+(`customcore_is_noindex_page()`). New root files: `favicon.svg`, `site.webmanifest`.
+
 **Commit 13.5 complete — monitoring troubleshooting guide.**
 `docs/monitoring-troubleshooting.md` documents the `admin/monitoring.php` dashboard: how to
 read it and a symptom-driven troubleshooting reference for all seven health checks (message
