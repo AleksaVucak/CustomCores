@@ -50,6 +50,20 @@ to manage the store. Non-programmers updating catalogue content should read the
 
 ## Current status
 
+**Commit 13.3 complete** — monitoring statistics.
+
+`customcore_monitoring_stats()` in `includes/monitoring.php` adds live counts for
+**products, users, orders, consultation requests, images, and stock** to the monitoring
+dashboard. Database totals **reuse `customcore_admin_dashboard_stats()`** so they never
+diverge from the admin home screen (verified: products 20/20, users, orders, consultations,
+low stock 4, pending reviews — all match). Product and site image counts are read from
+disk (`assets/images/products`, `uploads/products`, other image folders) so they remain
+available even when MySQL is offline; Learning Centre media availability is included as
+supporting context. The stats panel on `admin/monitoring.php` is loaded **separately**
+from the health-check table: a DB failure shows a safe warning flash and still displays
+filesystem image/media counts without blanking the online/warning/offline status table.
+Safe production error messaging for monitoring is hardened further in **Commit 13.4**.
+
 **Commit 13.2 complete** — administrator monitoring dashboard.
 
 `admin/monitoring.php` renders the Stage 13 health-check report (from

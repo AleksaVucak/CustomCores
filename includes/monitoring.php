@@ -8,7 +8,7 @@
  *   summary) for a core part of the site — the PHP runtime, the database,
  *   sessions, critical files, upload directories, the active theme, and the
  *   Learning Centre media. The Stage 13.2 administrator dashboard renders these
- *   results; Stage 13.3 adds live statistics on top.
+ *   results; Stage 13.3 adds live statistics via customcore_monitoring_stats().
  *
  * Design rules:
  *   - Every check is wrapped so it can NEVER throw. A failing dependency must
@@ -30,6 +30,8 @@
  *   require_once __DIR__ . '/monitoring.php';
  *   $report = customcore_monitoring_run();
  *   // $report['overall'], $report['generated_at'], $report['checks'][...]
+ *   $stats = customcore_monitoring_stats();
+ *   // $stats['available'], products/users/orders/requests/images/stock counts
  */
 
 declare(strict_types=1);
@@ -565,6 +567,179 @@ function customcore_monitoring_check_media(): array
             'warning',
             'Media status could not be fully determined.'
         );
+    }
+}
+
+/**
+ * Count image files under a project-relative directory (non-recursive).
+ *
+ * Only recognises common image extensions. Skips non-files (e.g. index.php
+ * guards). Returns 0 when the directory is missing or unreadable — never throws.
+ */
+function customcore_monitoring_count_image_files(string $relativeDir): int
+{
+    $root = customcore_monitoring_root();
+    $relativeDir = trim(str_replace('\\', '/', $relativeDir), '/');
+    if ($relativeDir === '' || str_contains($relativeDir, '..')) {
+        return 0;
+    }
+
+    $dir = $root . '/' . $relativeDir;
+    if (!is_dir($dir)) {
+        return 0;
+    }
+
+    $count = 0;
+    $entries = @scandir($dir);
+    if ($entries === false) {
+        return 0;
+    }
+
+    foreach ($entries as $entry) {
+        if ($entry === '.' || $entry === '..') {
+            continue;
+        }
+        $path = $dir . '/' . $entry;
+        if (!is_file($path)) {
+            continue;
+        }
+        if (preg_match('/\.(jpe?g|png|webp|gif)$/i', $entry) === 1) {
+            $count++;
+        }
+    }
+
+    return $count;
+}
+
+/**
+ * Live monitoring statistics: products, users, orders, requests, images, stock.
+ *
+ * Database-backed counts reuse customcore_admin_dashboard_stats() so monitoring
+ * and the admin dashboard never diverge. Image and media counts are read from
+ * disk so they remain available even when MySQL is offline.
+ *
+ * Never throws. When the database is unavailable, available=false and a safe
+ * error message is returned; filesystem image/media counts are still filled so
+ * the page can show something useful without blanking the health-check table.
+ *
+ * @return array{
+ *   available:bool,
+ *   error:?string,
+ *   generated_at:string,
+ *   products_total:int,
+ *   products_active:int,
+ *   products_inactive:int,
+ *   users_total:int,
+ *   users_customers:int,
+ *   users_admins:int,
+ *   orders_total:int,
+ *   orders_open:int,
+ *   consultations_total:int,
+ *   consultations_needs_attention:int,
+ *   contact_unread:int,
+ *   reviews_pending:int,
+ *   images_product_seeded:int,
+ *   images_product_uploaded:int,
+ *   images_product_total:int,
+ *   images_site:int,
+ *   media_lessons_declared:int,
+ *   media_lessons_available:int,
+ *   stock_low:int,
+ *   stock_out:int,
+ *   low_stock_threshold:int
+ * }
+ */
+function customcore_monitoring_stats(): array
+{
+    $generatedAt = date('Y-m-d H:i:s');
+
+    // Filesystem counts are independent of MySQL and always attempted.
+    $imagesSeeded = customcore_monitoring_count_image_files('assets/images/products');
+    $imagesUploaded = customcore_monitoring_count_image_files('uploads/products');
+    $imagesSite = 0;
+    foreach (['hero', 'categories', 'ui', 'media', 'og', 'map'] as $subdir) {
+        $imagesSite += customcore_monitoring_count_image_files('assets/images/' . $subdir);
+    }
+
+    $mediaDeclared = 0;
+    $mediaAvailable = 0;
+    try {
+        require_once __DIR__ . '/media.php';
+        if (function_exists('customcore_media_catalogue')) {
+            $mediaDeclared = count(customcore_media_catalogue());
+        }
+        if (function_exists('customcore_media_items')) {
+            $mediaAvailable = count(customcore_media_items());
+        }
+    } catch (Throwable $exception) {
+        // Leave media counts at 0; do not fail the whole stats panel.
+    }
+
+    $empty = [
+        'available' => false,
+        'error' => null,
+        'generated_at' => $generatedAt,
+        'products_total' => 0,
+        'products_active' => 0,
+        'products_inactive' => 0,
+        'users_total' => 0,
+        'users_customers' => 0,
+        'users_admins' => 0,
+        'orders_total' => 0,
+        'orders_open' => 0,
+        'consultations_total' => 0,
+        'consultations_needs_attention' => 0,
+        'contact_unread' => 0,
+        'reviews_pending' => 0,
+        'images_product_seeded' => $imagesSeeded,
+        'images_product_uploaded' => $imagesUploaded,
+        'images_product_total' => $imagesSeeded + $imagesUploaded,
+        'images_site' => $imagesSite,
+        'media_lessons_declared' => $mediaDeclared,
+        'media_lessons_available' => $mediaAvailable,
+        'stock_low' => 0,
+        'stock_out' => 0,
+        'low_stock_threshold' => 5,
+    ];
+
+    try {
+        require_once __DIR__ . '/database.php';
+        require_once __DIR__ . '/admin.php';
+        $pdo = customcore_pdo();
+        $dash = customcore_admin_dashboard_stats($pdo);
+
+        return [
+            'available' => true,
+            'error' => null,
+            'generated_at' => $generatedAt,
+            'products_total' => (int) ($dash['products_total'] ?? 0),
+            'products_active' => (int) ($dash['products_active'] ?? 0),
+            'products_inactive' => (int) ($dash['products_inactive'] ?? 0),
+            'users_total' => (int) ($dash['users_total'] ?? 0),
+            'users_customers' => (int) ($dash['users_customers'] ?? 0),
+            'users_admins' => (int) ($dash['users_admins'] ?? 0),
+            'orders_total' => (int) ($dash['orders_total'] ?? 0),
+            'orders_open' => (int) ($dash['orders_open'] ?? 0),
+            'consultations_total' => (int) ($dash['consultations_total'] ?? 0),
+            'consultations_needs_attention' => (int) ($dash['consultations_needs_attention'] ?? 0),
+            'contact_unread' => (int) ($dash['contact_unread'] ?? 0),
+            'reviews_pending' => (int) ($dash['reviews_pending'] ?? 0),
+            'images_product_seeded' => $imagesSeeded,
+            'images_product_uploaded' => $imagesUploaded,
+            'images_product_total' => $imagesSeeded + $imagesUploaded,
+            'images_site' => $imagesSite,
+            'media_lessons_declared' => $mediaDeclared,
+            'media_lessons_available' => $mediaAvailable,
+            'stock_low' => (int) ($dash['products_low_stock'] ?? 0),
+            'stock_out' => (int) ($dash['products_out_of_stock'] ?? 0),
+            'low_stock_threshold' => (int) ($dash['low_stock_threshold'] ?? customcore_admin_low_stock_threshold()),
+        ];
+    } catch (Throwable $exception) {
+        $empty['error'] = function_exists('customcore_database_error_message')
+            ? customcore_database_error_message($exception)
+            : 'Live database statistics are temporarily unavailable.';
+
+        return $empty;
     }
 }
 

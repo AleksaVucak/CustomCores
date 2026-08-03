@@ -1147,6 +1147,25 @@
   margin-top: var(--cc-space-6);
 }
 
+.monitor-stats {
+  margin-top: var(--cc-space-6);
+}
+
+.monitor-stats__intro {
+  margin: 0 0 var(--cc-space-4);
+  color: var(--cc-color-text-muted);
+}
+
+.monitor-stats__extra {
+  margin-top: var(--cc-space-4);
+  font-size: 0.9rem;
+  color: var(--cc-color-text-muted);
+}
+
+.monitor-stats__extra p {
+  margin: 0;
+}
+
 .admin-table--monitor th[scope="row"] {
   white-space: nowrap;
 }

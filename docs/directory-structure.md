@@ -80,6 +80,13 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
+**Commit 13.3 complete — monitoring statistics.**
+`customcore_monitoring_stats()` adds live product / user / order / consultation /
+image / stock counts to `admin/monitoring.php`. DB totals reuse
+`customcore_admin_dashboard_stats()` (verified to match); image and media counts are
+read from disk and remain available when MySQL is offline. Stats load separately from
+the health-check table so a DB failure never blanks the status rows.
+
 **Commit 13.2 complete — administrator monitoring dashboard.**
 `admin/monitoring.php` renders the health-check report from
 `customcore_monitoring_run()` as an online/warning/offline status table (overall banner
