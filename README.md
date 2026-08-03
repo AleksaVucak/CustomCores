@@ -36,6 +36,20 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 10.4 complete** — administrator theme switching.
+
+`admin/themes.php` lists the three seeded site themes (RGB Gaming, Minimal
+Professional, Cyber Grid) and lets an administrator activate one sitewide.
+Selection is written to `site_settings.active_theme_id` with CSRF protection and
+Post/Redirect/Get. Helpers in `includes/admin-themes.php` validate the chosen
+`themes.id`, confirm the stylesheet path is safe and present on disk, then
+insert/update the setting. The shared header already resolves that value via
+`includes/theme.php` (10.1), so public and admin pages load the new CSS
+immediately. Themes with a missing CSS file cannot be activated. Guests are
+blocked by `customcore_require_admin()`. Verified over HTTP: login → activate
+Minimal Professional / Cyber Grid / RGB Gaming → homepage stylesheet updates;
+bad CSRF and invalid theme ids rejected; setting restored to RGB Gaming.
+
 **Commit 10.3 complete** — the **Cyber Grid** site theme (all three templates shipped).
 
 `assets/themes/cyber-grid.css` is the third switchable theme and a technical
@@ -312,7 +326,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Commit 10.3 complete.** Next: **Commit 10.4** — the administrator theme switcher (`admin/themes.php`) writing `site_settings.active_theme_id`.
+**Commit 10.4 complete.** Next: **Commit 10.5** — harden safe theme fallbacks (missing/invalid setting, missing CSS, path traversal).
 
 ## Security notes
 

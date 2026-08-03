@@ -122,7 +122,7 @@ function customcore_admin_tools(): array
             'label' => 'Themes',
             'href' => 'admin/themes.php',
             'description' => 'Choose the active site-wide CSS theme.',
-            'commit' => '10.x',
+            'commit' => '10.4',
         ],
         [
             'key' => 'monitoring',

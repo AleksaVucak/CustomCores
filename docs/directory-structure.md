@@ -40,7 +40,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 | Path | Responsibility | First major commits |
 | ---- | -------------- | ------------------- |
-| `admin/` | Protected admin UI | 9.x |
+| `admin/` | Protected admin UI (products, options, compatibility, orders, users, consultations, reviews, reports, themes) | 9.x, 10.4 |
 | `api/` | Builder price, compatibility, search, chart data | 5.x, 8.x, 9.x |
 | `assets/css/` | External CSS (`main.css`, `admin.css`, later `print.css`) | 1.5, 9.1 |
 | `assets/themes/` | RGB Gaming (`rgb-gaming.css`, 10.1), Minimal Professional (`minimal-pro.css`, 10.2), Cyber Grid (`cyber-grid.css`, 10.3) | 10.x |
@@ -51,7 +51,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `database/` | Schema, seeds, create-admin script | 2.x |
 | `docs/` | Business case, rubric, sitemap, wireframes, ER design, media credits, image prompts, guides | 0.x–12.x, 8.7 |
 | `help/` | Static Help + training HTML (`pc-builder.html` shipped in 5.9; full wiki in 11.x) | 5.9, 11.x |
-| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, theme, admin, admin-nav, admin-products, admin-product-form, admin-options, admin-compatibility, admin-orders, admin-users, admin-consultations, admin-reviews, admin-reports, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 10.x, 14.x |
+| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, theme, admin, admin-nav, admin-products, admin-product-form, admin-options, admin-compatibility, admin-orders, admin-users, admin-consultations, admin-reviews, admin-reports, admin-themes, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 10.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
 | `uploads/products/` | Product images uploaded by admin | 9.2 |
 
@@ -79,6 +79,13 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 ---
 
 ## 5. Status
+
+**Commit 10.4 complete — administrator theme switching.**  
+`admin/themes.php` lists seeded themes and activates one via CSRF + PRG into
+`site_settings.active_theme_id`. Logic in `includes/admin-themes.php` validates
+the theme id and on-disk CSS path before writing. Shared header +
+`includes/theme.php` apply the choice sitewide. Verified over HTTP
+(activate → public CSS updates; CSRF / invalid id / guest blocked).
 
 **Commit 10.3 complete — Cyber Grid theme (all three templates shipped).**  
 `assets/themes/cyber-grid.css` is a technical HUD/grid look: visible blueprint

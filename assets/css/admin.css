@@ -1000,3 +1000,105 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---- Theme switcher (Commit 10.4) ---------------------------------------- */
+
+.admin-themes__status {
+  margin: 0 0 var(--cc-space-5);
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-left: 4px solid var(--cc-color-accent);
+  border-radius: var(--cc-radius-md);
+  background: var(--cc-color-bg-elevated);
+}
+
+.admin-themes__status-label {
+  margin: 0 0 0.25rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cc-color-text-muted);
+}
+
+.admin-themes__status-value {
+  margin: 0;
+}
+
+.admin-themes__status-meta {
+  display: inline-block;
+  margin-left: 0.5rem;
+  color: var(--cc-color-text-muted);
+  font-size: 0.92rem;
+}
+
+.admin-themes__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--cc-space-4);
+  margin: 0 0 var(--cc-space-5);
+}
+
+.admin-theme-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cc-space-3);
+  padding: var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-color-bg-elevated);
+}
+
+.admin-theme-card.is-active {
+  border-color: var(--cc-color-accent);
+  box-shadow: inset 3px 0 0 var(--cc-color-accent);
+}
+
+.admin-theme-card.is-unavailable {
+  opacity: 0.78;
+}
+
+.admin-theme-card__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--cc-space-2);
+}
+
+.admin-theme-card__title {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.admin-theme-card__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.admin-theme-card__blurb {
+  margin: 0;
+  color: var(--cc-color-text-muted);
+  font-size: 0.95rem;
+}
+
+.admin-theme-card__meta {
+  margin: 0;
+}
+
+.admin-theme-card__form {
+  margin-top: auto;
+}
+
+.admin-theme-card__note {
+  margin: 0;
+  margin-top: auto;
+  font-size: 0.9rem;
+  color: var(--cc-color-text-muted);
+}
+
+.admin-theme-card__note--warn {
+  color: var(--cc-color-danger);
+}
+
