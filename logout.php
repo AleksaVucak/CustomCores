@@ -16,6 +16,10 @@
  *   None. Guests who hit this URL are still redirected cleanly.
  *
  * Security:
+ *   - Logging out is a state-changing action, so it is only performed on a
+ *     POST request carrying a valid CSRF token (Commit 14.9). GET requests and
+ *     missing/invalid tokens are ignored — this defeats logout-CSRF attacks
+ *     such as <img src="logout.php"> that would otherwise force a sign-out.
  *   - Uses customcore_logout() to wipe $_SESSION and expire the cookie with
  *     the same path / Secure / HttpOnly / SameSite flags used at start.
  *   - Starts a fresh empty session only to carry a one-time flash message.
@@ -27,8 +31,23 @@ declare(strict_types=1);
 require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/flash.php';
+require_once __DIR__ . '/includes/csrf.php';
 
 customcore_session_start();
+
+// Reject anything that is not a token-verified POST. An unverified request
+// (GET link prefetch, cross-site forgery) must never clear the session.
+$isPost = ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST';
+$tokenOk = customcore_csrf_verify(
+    isset($_POST['_csrf']) && is_string($_POST['_csrf']) ? $_POST['_csrf'] : null
+);
+
+if (!$isPost || !$tokenOk) {
+    if (customcore_is_logged_in()) {
+        customcore_redirect(is_file(__DIR__ . '/profile.php') ? 'profile.php' : 'index.php');
+    }
+    customcore_redirect('login.php');
+}
 
 $wasLoggedIn = customcore_is_logged_in();
 

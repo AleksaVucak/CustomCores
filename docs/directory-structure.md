@@ -80,6 +80,14 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
+**Commit 14.9 complete — CSRF protection on all state-changing requests.**
+Audited every POST form and handler against `includes/csrf.php`: all forms render
+`customcore_csrf_field()` and all handlers verify + reject missing/invalid tokens; read-only
+`api/` endpoints are non-mutating. Fixed the one gap — **logout** was a GET link
+(logout-CSRF); it is now a token-verified POST form in `includes/navigation.php` and
+`includes/account-nav.php`, and `logout.php` clears the session only on a valid POST. See
+[`docs/security-audit.md`](security-audit.md) §5.
+
 **Commit 14.8 complete — security audit (prepared statements & output escaping).**
 New [`docs/security-audit.md`](security-audit.md) records an evidence-based review: every DB
 call is a static literal or a bound prepared statement (dynamic `WHERE`/`IN`/`LIMIT`/`SET`

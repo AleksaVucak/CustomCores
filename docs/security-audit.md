@@ -1,20 +1,21 @@
-# CustomCore — Security Audit: Prepared Statements & Output Escaping
+# CustomCore — Security Audit: SQL, Output Escaping & CSRF
 
-**Document type:** Stage 14 security audit (Commit 14.8)
-**Purpose:** Record the evidence-based audit of every SQL execution path and every dynamic output site, confirming that no user input is concatenated into SQL and that all output is escaped.
+**Document type:** Stage 14 security audit (Commits 14.8 & 14.9)
+**Purpose:** Record the evidence-based audit of every SQL execution path, every dynamic output site, and every state-changing request, confirming that no user input is concatenated into SQL, that all output is escaped, and that every state-changing request requires a valid CSRF token.
 **Audience:** Developers, reviewers, and whoever maintains the live site.
-**Related:** CSRF protection (Commit 14.9), upload hardening (Commit 14.10), session hardening in [`includes/functions.php`](../includes/functions.php), and the [rubric checklist](rubric-checklist.md).
+**Related:** upload hardening (Commit 14.10), session hardening in [`includes/functions.php`](../includes/functions.php), and the [rubric checklist](rubric-checklist.md).
 
 ---
 
 ## 1. Scope & result
 
-This audit covers the two acceptance criteria for Commit 14.8:
+This audit covers three acceptance criteria across two commits:
 
-1. **Prepared statements** — no raw user input is concatenated into SQL.
-2. **Output escaping** — every dynamic value written to the page is escaped.
+1. **Prepared statements** (14.8) — no raw user input is concatenated into SQL.
+2. **Output escaping** (14.8) — every dynamic value written to the page is escaped.
+3. **CSRF protection** (14.9) — every state-changing request requires a valid token; missing/invalid tokens are rejected.
 
-**Result: PASS.** Across the whole application (282 PHP functions, 41 view templates, 11 JavaScript modules) the audit found **zero SQL-injection and zero XSS vulnerabilities**. No source changes were required; this document is the audit record. Defense-in-depth patterns (integer clamping, identifier whitelists, open-redirect guards, client-side escaping) are already in place.
+**Result: PASS.** Across the whole application (282 PHP functions, 41 view templates, 11 JavaScript modules) the audit found **zero SQL-injection and zero XSS vulnerabilities**, and one CSRF gap (logout via GET) which was **fixed** in 14.9 (see §5.3). Defense-in-depth patterns (integer clamping, identifier whitelists, open-redirect guards, client-side escaping) are in place.
 
 ---
 
@@ -119,19 +120,58 @@ All dynamic output is escaped on the server and on the client. **Acceptance met:
 
 ---
 
-## 5. Related protections (defense-in-depth)
+## 5. CSRF protection audit (Commit 14.9)
 
-These are outside 14.8's two criteria but were confirmed during the audit:
+**Result: PASS.** Every state-changing request requires a valid per-session CSRF token, and missing/invalid tokens are rejected.
+
+### 5.1 The token mechanism
+
+`includes/csrf.php` provides three helpers:
+
+- `customcore_csrf_token()` — 32 random bytes (`random_bytes(32)`, hex) stored in the session.
+- `customcore_csrf_field()` — renders `<input type="hidden" name="_csrf" value="…">` (escaped).
+- `customcore_csrf_verify(?string $token)` — compares with `hash_equals()` (timing-safe); returns `false` for a missing, empty, or non-matching token.
+
+### 5.2 Coverage
+
+- **Every `<form method="post">`** in the app renders `customcore_csrf_field()` — verified by cross-referencing all POST forms against `csrf_field()` calls (counts match per file).
+- **Every POST handler** calls `customcore_csrf_verify($_POST['_csrf'] ?? null)` and **rejects on failure** — either a redirect with a "session expired" flash (`cart`, `wishlist`, `reviews`, `saved-build`) or a blocking error branch that prevents the mutation (`login`, `register`, `checkout`, `consultation`, `builder`, `builder-results`, `edit-profile`, `contact`, and all `admin/*` write pages).
+- **Read-only `api/` endpoints** (`builder-price.php`, `compatibility-check.php`, `chart-data.php`) accept POST but perform **no writes** (no `INSERT`/`UPDATE`/`DELETE`/`exec`), so they are not state-changing and do not require a token.
+
+### 5.3 Gap found and fixed: logout CSRF
+
+**Finding:** `logout.php` was reachable by **GET** via a plain nav link with no token. Logging out is state-changing, so this was a logout-CSRF vector (e.g. `<img src="logout.php">` forcing a sign-out).
+
+**Fix:**
+- `logout.php` now performs the logout **only** on a POST request with a valid CSRF token; a GET or a missing/invalid token redirects the visitor without touching the session.
+- The logout controls in `includes/navigation.php` and `includes/account-nav.php` are now `<form method="post" action="logout.php">` with `customcore_csrf_field()` and a submit button styled to match the surrounding links (`assets/css/main.css`).
+
+Verified truth table (exact conditions used by `logout.php`):
+
+| Request | Result |
+|--------|--------|
+| GET + valid token | redirect, **no logout** |
+| POST + no token | redirect, **no logout** |
+| POST + wrong token | redirect, **no logout** |
+| POST + valid token | **logout performed** |
+
+Also confirmed over HTTP: `GET /logout.php` and a token-less `POST /logout.php` both return `303 → login.php` without clearing an authenticated session.
+
+---
+
+## 6. Related protections (defense-in-depth)
+
+These are outside the SQL/escaping criteria but were confirmed during the audit:
 
 - **Open redirect / header injection** — redirect targets are fixed literals or validated by `customcore_is_safe_return_target()` / `customcore_is_safe_local_path()`, which reject absolute URLs, protocol-relative `//host`, path traversal, backslashes, and CR/LF/NUL.
 - **Passwords** — `password_hash()` / `password_verify()` (never stored or echoed).
 - **Sessions** — HTTP-only + `SameSite=Lax` cookies, `Secure` under HTTPS, strict mode, idle/absolute timeouts (`customcore_session_harden()`).
 - **Error messages** — database/monitoring errors are scrubbed in production (`customcore_is_debug()` gate) so stack traces and paths never leak.
-- **CSRF** — state-changing forms already carry tokens; formalised and audited in **Commit 14.9**.
+- **File uploads** — audited in **Commit 14.10**.
 
 ---
 
-## 6. Re-running the audit
+## 7. Re-running the audit
 
 To reproduce from the repo root:
 
@@ -151,16 +191,23 @@ rg -n "echo\s+\$_(GET|POST|REQUEST|SERVER|COOKIE)" --glob '*.php'   # expect: no
 
 # 5. Client-side HTML injection (verify escapeHtml / static):
 rg -n "innerHTML|insertAdjacentHTML|document\.write" assets/js
+
+# 6. CSRF — compare POST forms against csrf_field() renders, and every
+#    POST handler against a csrf_verify() call:
+rg -n 'method=["'"'"']post' -i --glob '*.php'
+rg -c "customcore_csrf_field\(" --glob '*.php'
+rg -n "customcore_csrf_verify\(" --glob '*.php'
 ```
 
 ---
 
-## 7. Sign-off
+## 8. Sign-off
 
 | Criterion | Result |
 |-----------|--------|
-| No user input concatenated into SQL | **PASS** |
-| All output escaped (server + client) | **PASS** |
-| Source changes required | None |
+| No user input concatenated into SQL (14.8) | **PASS** |
+| All output escaped, server + client (14.8) | **PASS** |
+| CSRF token on every state-changing request; invalid rejected (14.9) | **PASS** |
+| Source changes required | 14.8: none · 14.9: logout hardened to token-verified POST |
 
-Audited for Commit 14.8. Findings are current as of the Stage 14 security pass; re-run Section 6 after adding new queries or output sites.
+Audited for Commits 14.8 & 14.9. Findings are current as of the Stage 14 security pass; re-run Sections 7–8 after adding new queries, output sites, or POST endpoints.

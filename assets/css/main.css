@@ -281,6 +281,19 @@ code {
   border-bottom-color: var(--cc-color-accent);
 }
 
+/* Logout posts with a CSRF token; reset the button to match nav links. */
+.site-nav__logout {
+  margin: 0;
+}
+
+.site-nav__logout .site-nav__link {
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
 .site-nav__account {
   padding-left: var(--cc-space-3);
   border-left: 1px solid var(--cc-color-border);
@@ -878,6 +891,20 @@ textarea[aria-invalid="true"]:focus-visible {
 .account-nav__link[aria-current="page"] {
   background: var(--cc-color-accent-soft);
   color: var(--cc-color-accent);
+}
+
+/* Logout posts with a CSRF token; reset the button to match nav links. */
+.account-nav__logout {
+  margin: 0;
+}
+
+.account-nav__logout .account-nav__link {
+  width: 100%;
+  background: none;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
 }
 
 .profile-welcome {

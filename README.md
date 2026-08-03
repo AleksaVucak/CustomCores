@@ -51,6 +51,20 @@ to manage the store. Non-programmers updating catalogue content should read the
 
 ## Current status
 
+**Commit 14.9 complete** — CSRF protection on all state-changing requests.
+
+Audited every state-changing request against the per-session token system
+(`includes/csrf.php`: `random_bytes(32)` token, `hash_equals()` verification). Confirmed
+that **every** `<form method="post">` renders `customcore_csrf_field()` and **every** POST
+handler verifies the token and rejects missing/invalid submissions (with a "session expired"
+flash or a blocking error). The read-only `api/` endpoints perform no writes, so they are not
+state-changing. The audit found and fixed one gap: **logout** was reachable via a GET link
+(a logout-CSRF vector) and is now a token-verified POST form in both nav includes, with
+`logout.php` refusing to clear the session on a GET or a missing/invalid token. Verified via
+an HTTP test and the guard truth table. Details in
+[`docs/security-audit.md`](docs/security-audit.md) §5. Next: file-upload security audit in
+**Commit 14.10**.
+
 **Commit 14.8 complete** — security audit (prepared statements & output escaping).
 
 An evidence-based audit of every SQL execution path and every dynamic output site,

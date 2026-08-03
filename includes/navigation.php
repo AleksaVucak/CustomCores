@@ -20,6 +20,10 @@ if (!function_exists('customcore_url')) {
 
 require_once __DIR__ . '/auth.php';
 
+if (!function_exists('customcore_csrf_field')) {
+    require_once __DIR__ . '/csrf.php';
+}
+
 $navLoggedIn = customcore_is_logged_in();
 $navIsAdmin = customcore_is_admin();
 $navUserName = customcore_current_user_name();
@@ -98,10 +102,15 @@ $navItems = [
             </li>
             <?php if ($navHasLogout) : ?>
                 <li>
-                    <a
-                        class="site-nav__link<?php echo customcore_e(customcore_nav_class('logout')); ?>"
-                        href="<?php echo customcore_e(customcore_url('logout.php')); ?>"
-                    >Log out</a>
+                    <!-- Logout is state-changing, so it posts with a CSRF token -->
+                    <form
+                        class="site-nav__logout"
+                        method="post"
+                        action="<?php echo customcore_e(customcore_url('logout.php')); ?>"
+                    >
+                        <?php echo customcore_csrf_field(); ?>
+                        <button type="submit" class="site-nav__link">Log out</button>
+                    </form>
                 </li>
             <?php endif; ?>
         <?php else : ?>

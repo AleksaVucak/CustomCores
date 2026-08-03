@@ -19,6 +19,10 @@ if (!function_exists('customcore_url')) {
     require_once __DIR__ . '/functions.php';
 }
 
+if (!function_exists('customcore_csrf_field')) {
+    require_once __DIR__ . '/csrf.php';
+}
+
 if (!isset($accountNavCurrent) || !is_string($accountNavCurrent)) {
     $accountNavCurrent = 'profile';
 }
@@ -79,11 +83,23 @@ $accountNavItems = [
                 continue;
             } ?>
             <li class="account-nav__item">
-                <a
-                    class="account-nav__link<?php echo $accountNavCurrent === $key ? ' is-active' : ''; ?>"
-                    href="<?php echo customcore_e(customcore_url((string) $item['href'])); ?>"
-                    <?php echo $accountNavCurrent === $key ? 'aria-current="page"' : ''; ?>
-                ><?php echo customcore_e((string) $item['label']); ?></a>
+                <?php if ($key === 'logout') : ?>
+                    <!-- Logout is state-changing, so it posts with a CSRF token -->
+                    <form
+                        class="account-nav__logout"
+                        method="post"
+                        action="<?php echo customcore_e(customcore_url((string) $item['href'])); ?>"
+                    >
+                        <?php echo customcore_csrf_field(); ?>
+                        <button type="submit" class="account-nav__link"><?php echo customcore_e((string) $item['label']); ?></button>
+                    </form>
+                <?php else : ?>
+                    <a
+                        class="account-nav__link<?php echo $accountNavCurrent === $key ? ' is-active' : ''; ?>"
+                        href="<?php echo customcore_e(customcore_url((string) $item['href'])); ?>"
+                        <?php echo $accountNavCurrent === $key ? 'aria-current="page"' : ''; ?>
+                    ><?php echo customcore_e((string) $item['label']); ?></a>
+                <?php endif; ?>
             </li>
         <?php endforeach; ?>
     </ul>
