@@ -80,6 +80,15 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
+**Commit 10.5 complete — safe theme fallback hardening.**  
+`includes/theme.php` resolves the active stylesheet through a five-step chain
+(active setting → is_active_default → config slug → canonical `rgb-gaming` →
+`assets/themes/*.css` scan). Every candidate is path-validated
+(`^assets/themes/<slug>.css`, no traversal) and must exist on disk; DB access is
+try/catch-wrapped and `main.css` always loads, so the site is never unstyled and
+`css_file` can never smuggle a foreign path. Covered by automated + HTTP tests
+(invalid id, missing/corrupt paths, empty tables, corrupt config → canonical).
+
 **Commit 10.4 complete — administrator theme switching.**  
 `admin/themes.php` lists seeded themes and activates one via CSRF + PRG into
 `site_settings.active_theme_id`. Logic in `includes/admin-themes.php` validates

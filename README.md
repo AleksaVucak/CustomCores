@@ -36,6 +36,24 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 10.5 complete** — safe theme fallback hardening.
+
+`includes/theme.php` now resolves the active stylesheet through a five-step,
+defence-in-depth chain: (1) `site_settings.active_theme_id → themes.css_file`,
+(2) `themes.is_active_default = 1`, (3) `config/app.php → default_theme`,
+(4) a hard-coded canonical `rgb-gaming` slug (independent of DB and config), and
+(5) a last-resort scan of `assets/themes/*.css`. Every candidate — from any
+source — is validated by `customcore_theme_normalise_path()` (only
+`^assets/themes/<slug>.css` is accepted, blocking `../` traversal, absolute
+paths, subdirectories, query strings, and non-CSS files) and must exist on disk
+before it is linked, so a missing/renamed/corrupt value transparently falls
+through. Database access stays wrapped in try/catch, and because `main.css` is
+always linked first the site is never left unstyled. Verified with 33 automated
+assertions (path traversal rejection, missing/invalid ids, corrupt paths, empty
+tables, corrupt config → canonical) plus HTTP checks confirming a bad
+`active_theme_id` still yields RGB Gaming and a traversal `css_file` never leaks
+`config/app.php`.
+
 **Commit 10.4 complete** — administrator theme switching.
 
 `admin/themes.php` lists the three seeded site themes (RGB Gaming, Minimal
@@ -326,7 +344,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Commit 10.4 complete.** Next: **Commit 10.5** — harden safe theme fallbacks (missing/invalid setting, missing CSS, path traversal).
+**Commit 10.5 complete.** Next: **Commit 10.6** — verify all key pages across the three themes and record results.
 
 ## Security notes
 
