@@ -1,0 +1,484 @@
+/*
+ * CustomCore — Theme: Cyber Grid (Stage 10.3)
+ * ----------------------------------------------------------------------------
+ * File responsibility:
+ *   A technical "HUD / holo-terminal" theme layered on top of
+ *   assets/css/main.css. It is the third switchable theme and is deliberately
+ *   distinct from the other two:
+ *     - RGB Gaming (10.1): dark, rounded, neon-cyan glow, Space Grotesk.
+ *     - Minimal Professional (10.2): light, serif, hairline, flat, blue.
+ *     - Cyber Grid (10.3): dark with a VISIBLE background grid, ANGULAR sci-fi
+ *       + monospace type, ZERO-radius square edges, corner-cut buttons, and a
+ *       mint-green primary with a mint→magenta accent rail.
+ *
+ * Loading model:
+ *   main.css loads first, admin.css second on admin pages, and this file LAST
+ *   from includes/header.php. It re-declares the shared design tokens (:root
+ *   custom properties) so every token-driven public and admin component
+ *   re-skins automatically, then adds targeted rules for the places main.css /
+ *   admin.css hard-code decorative values.
+ *
+ * Accessibility:
+ *   Light text on near-black keeps contrast high; the mint accent uses dark ink
+ *   on fills to stay legible. The grid backdrop is very low-contrast so it never
+ *   competes with content, and every animated flourish is disabled under
+ *   prefers-reduced-motion.
+ *
+ * Sections:
+ *   1. Fonts
+ *   2. Tokens (colour, type, radius, shadow) + grid/accent helpers
+ *   3. Page shell (grid backdrop, headings, links)
+ *   4. Header, navigation & footer
+ *   5. Buttons (corner-cut, monospace)
+ *   6. Forms & fields
+ *   7. Surfaces: hero, sections, cards, tables
+ *   8. Flash messages
+ *   9. Admin surfaces
+ *  10. Motion / reduced-motion
+ * ----------------------------------------------------------------------------
+ */
+
+/* ==========================================================================
+   1. Fonts
+   Angular sci-fi display + technical monospace/humanist body. Distinct from the
+   base (Space Grotesk / DM Sans), RGB Gaming, and Minimal Professional.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Chakra+Petch:wght@400;500;600;700&family=Share+Tech+Mono&display=swap");
+
+/* ==========================================================================
+   2. Tokens
+   Near-black surfaces, mint-green primary, mint→magenta accent rail.
+   ========================================================================== */
+
+:root {
+  --cc-font-display: "Orbitron", "Chakra Petch", "Trebuchet MS", sans-serif;
+  --cc-font-body: "Chakra Petch", "Segoe UI", system-ui, sans-serif;
+  --cc-font-mono: "Share Tech Mono", ui-monospace, "Courier New", monospace;
+
+  --cc-color-bg: #05080d;
+  --cc-color-bg-elevated: #0b111b;
+  --cc-color-bg-muted: #111a26;
+  /* Kept genuinely darkest: skip-link chip + footer plate. */
+  --cc-color-surface-dark: #03050a;
+
+  --cc-color-text: #d7e6f2;
+  --cc-color-text-muted: #8397ad;
+  --cc-color-border: #1d2c3b;
+
+  --cc-color-accent: #24f39b;
+  --cc-color-accent-hover: #5affbb;
+  --cc-color-accent-soft: rgba(36, 243, 155, 0.14);
+
+  --cc-color-danger: #ff4d6d;
+  --cc-color-warning: #ffcf3d;
+  --cc-color-success: #24f39b;
+  --cc-color-focus: #38e0ff;
+
+  /* Hard, square edges — the "grid" reads best with no rounding. */
+  --cc-radius-sm: 0;
+  --cc-radius-md: 0;
+  --cc-radius-lg: 0;
+
+  --cc-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.6);
+  --cc-shadow-md: 0 18px 42px rgba(0, 0, 0, 0.62);
+
+  /* Theme-only helpers (namespaced so they never clash with base tokens). */
+  --cc-grid-line: rgba(36, 243, 155, 0.06);
+  --cc-grid-size: 46px;
+  --cc-rail-gradient: linear-gradient(90deg, #24f39b 0%, #38e0ff 45%, #ff3db0 100%);
+  --cc-ink-on-accent: #04130c;
+  --cc-glow-accent: 0 0 0 1px rgba(36, 243, 155, 0.4),
+    0 0 16px rgba(36, 243, 155, 0.26);
+  --cc-glow-focus: 0 0 0 3px rgba(56, 224, 255, 0.32);
+}
+
+/* ==========================================================================
+   3. Page shell
+   ========================================================================== */
+
+body {
+  color: var(--cc-color-text);
+  /* Visible-but-quiet blueprint grid over corner glows and a near-black base. */
+  background:
+    linear-gradient(var(--cc-grid-line) 1px, transparent 1px) 0 0 /
+      var(--cc-grid-size) var(--cc-grid-size),
+    linear-gradient(90deg, var(--cc-grid-line) 1px, transparent 1px) 0 0 /
+      var(--cc-grid-size) var(--cc-grid-size),
+    radial-gradient(
+      1100px 560px at 12% -10%,
+      rgba(36, 243, 155, 0.08),
+      transparent 60%
+    ),
+    radial-gradient(
+      1000px 540px at 100% 0%,
+      rgba(255, 61, 176, 0.06),
+      transparent 58%
+    ),
+    var(--cc-color-bg);
+  background-attachment: fixed;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--cc-color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.site-logo {
+  color: var(--cc-color-accent);
+  font-family: var(--cc-font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  text-shadow: 0 0 14px rgba(36, 243, 155, 0.45);
+}
+
+.site-logo:hover,
+.site-logo:focus-visible {
+  color: var(--cc-color-accent-hover);
+}
+
+:focus-visible {
+  outline-color: var(--cc-color-focus);
+}
+
+code {
+  font-family: var(--cc-font-mono);
+  color: var(--cc-color-accent-hover);
+  background: var(--cc-color-bg-muted);
+}
+
+/* ==========================================================================
+   4. Header, navigation & footer
+   ========================================================================== */
+
+.site-header {
+  background: rgba(5, 8, 13, 0.9);
+  border-bottom: 1px solid var(--cc-color-border);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+}
+
+/* Thin animated mint→magenta rail across the very top of the header. */
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: var(--cc-rail-gradient);
+  background-size: 200% 100%;
+  animation: cc-grid-rail 7s linear infinite;
+}
+
+.nav-toggle {
+  background: var(--cc-color-bg-elevated);
+  border-color: var(--cc-color-border);
+  color: var(--cc-color-text);
+  font-family: var(--cc-font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.nav-toggle:hover {
+  background: var(--cc-color-bg-muted);
+  border-color: var(--cc-color-accent);
+}
+
+.site-nav__link {
+  color: var(--cc-color-text-muted);
+  font-family: var(--cc-font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.82rem;
+}
+
+.site-nav__link:hover,
+.site-nav__link:focus-visible {
+  color: var(--cc-color-accent);
+}
+
+.site-nav__link.is-active,
+.site-nav__link[aria-current="page"] {
+  color: var(--cc-color-accent);
+  border-bottom-color: var(--cc-color-accent);
+  text-shadow: 0 0 12px rgba(36, 243, 155, 0.5);
+}
+
+.site-nav__badge {
+  background: var(--cc-color-accent);
+  color: var(--cc-ink-on-accent);
+  border-radius: 0;
+  box-shadow: var(--cc-glow-accent);
+}
+
+.site-footer {
+  background: var(--cc-color-surface-dark);
+  color: var(--cc-color-text-muted);
+  border-top: 1px solid var(--cc-color-border);
+  position: relative;
+}
+
+.site-footer::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: var(--cc-rail-gradient);
+  opacity: 0.85;
+}
+
+.site-footer a {
+  color: var(--cc-color-accent);
+}
+
+.site-footer a:hover,
+.site-footer a:focus-visible {
+  color: var(--cc-color-accent-hover);
+}
+
+/* ==========================================================================
+   5. Buttons
+   Square, monospace, uppercase, with a cut top-right corner for a HUD feel.
+   ========================================================================== */
+
+.button,
+button.button {
+  background: var(--cc-color-accent);
+  color: var(--cc-ink-on-accent);
+  border: 1px solid var(--cc-color-accent);
+  border-radius: 0;
+  font-family: var(--cc-font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+}
+
+.button:hover,
+.button:focus-visible {
+  background: var(--cc-color-accent-hover);
+  color: var(--cc-ink-on-accent);
+  box-shadow: var(--cc-glow-accent), 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.button--primary {
+  background: var(--cc-color-accent);
+  color: var(--cc-ink-on-accent);
+}
+
+.button--primary:hover,
+.button--primary:focus-visible {
+  background: var(--cc-color-accent-hover);
+}
+
+.button--secondary {
+  background: transparent;
+  color: var(--cc-color-accent);
+  border-color: var(--cc-color-accent);
+}
+
+.button--secondary:hover,
+.button--secondary:focus-visible {
+  background: var(--cc-color-accent-soft);
+  color: var(--cc-color-accent-hover);
+  box-shadow: var(--cc-glow-accent);
+}
+
+.button--danger {
+  background: var(--cc-color-danger);
+  border-color: var(--cc-color-danger);
+  color: #fff;
+}
+
+.button--danger:hover,
+.button--danger:focus-visible {
+  background: #ff6f88;
+  border-color: #ff6f88;
+  color: #12040a;
+}
+
+.button--ghost {
+  background: transparent;
+  color: var(--cc-color-text-muted);
+  border-color: var(--cc-color-border);
+  clip-path: none;
+}
+
+.button--ghost:hover,
+.button--ghost:focus-visible {
+  color: var(--cc-color-danger);
+  border-color: var(--cc-color-danger);
+}
+
+/* ==========================================================================
+   6. Forms & fields
+   ========================================================================== */
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="number"],
+input[type="search"],
+input[type="url"],
+input[type="date"],
+select,
+textarea {
+  background: #070d16;
+  border-color: var(--cc-color-border);
+  border-radius: 0;
+  color: var(--cc-color-text);
+  font-family: var(--cc-font-body);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #5f7488;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  border-color: var(--cc-color-focus);
+  box-shadow: var(--cc-glow-focus);
+}
+
+fieldset {
+  background: var(--cc-color-bg-elevated);
+  border-color: var(--cc-color-border);
+}
+
+legend {
+  font-family: var(--cc-font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+label,
+.form-label {
+  font-family: var(--cc-font-mono);
+  letter-spacing: 0.04em;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+/* ==========================================================================
+   7. Surfaces: hero, sections, cards, tables
+   Square panels marked by a mint top edge, defined against the grid backdrop.
+   ========================================================================== */
+
+.content-section,
+.hero {
+  background: rgba(11, 17, 27, 0.92);
+  border: 1px solid var(--cc-color-border);
+  border-top: 2px solid var(--cc-color-accent);
+  border-radius: 0;
+  box-shadow: var(--cc-shadow-sm);
+}
+
+.hero {
+  background:
+    linear-gradient(135deg, rgba(36, 243, 155, 0.12), transparent 44%),
+    linear-gradient(300deg, rgba(255, 61, 176, 0.1), transparent 46%),
+    rgba(11, 17, 27, 0.94);
+  border-top-color: var(--cc-color-accent);
+}
+
+.card {
+  background: rgba(11, 17, 27, 0.92);
+  border: 1px solid var(--cc-color-border);
+  border-radius: 0;
+}
+
+.card:hover {
+  border-color: var(--cc-color-accent);
+  box-shadow: var(--cc-glow-accent), var(--cc-shadow-md);
+}
+
+table {
+  color: var(--cc-color-text);
+}
+
+th {
+  color: var(--cc-color-text);
+  font-family: var(--cc-font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   8. Flash messages
+   ========================================================================== */
+
+.flash {
+  background: var(--cc-color-bg-elevated);
+  border-color: var(--cc-color-border);
+  color: var(--cc-color-text);
+}
+
+.flash--success {
+  border-color: rgba(36, 243, 155, 0.5);
+  background: rgba(36, 243, 155, 0.12);
+  color: #7dffc4;
+}
+
+.flash--warning {
+  border-color: rgba(255, 207, 61, 0.5);
+  background: rgba(255, 207, 61, 0.12);
+  color: #ffe28a;
+}
+
+.flash--error {
+  border-color: rgba(255, 77, 109, 0.5);
+  background: rgba(255, 77, 109, 0.12);
+  color: #ff97a8;
+}
+
+/* ==========================================================================
+   9. Admin surfaces
+   Token-driven, so admin re-skins for free. Fix white-on-accent contrast and
+   keep the square, mint-edged panel language.
+   ========================================================================== */
+
+.admin-nav,
+.admin-alerts__item,
+.admin-card {
+  background: var(--cc-color-bg-elevated);
+  border-color: var(--cc-color-border);
+}
+
+.admin-nav__link.is-active {
+  background: var(--cc-color-accent);
+  color: var(--cc-ink-on-accent);
+  box-shadow: var(--cc-glow-accent);
+}
+
+.admin-badge--accent,
+.admin-badge--info,
+.button--success {
+  color: var(--cc-ink-on-accent);
+}
+
+/* ==========================================================================
+   10. Motion / reduced-motion
+   ========================================================================== */
+
+@keyframes cc-grid-rail {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 200% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header::before {
+    animation: none;
+  }
+}

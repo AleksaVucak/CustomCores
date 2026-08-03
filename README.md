@@ -36,6 +36,23 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 10.3 complete** — the **Cyber Grid** site theme (all three templates shipped).
+
+`assets/themes/cyber-grid.css` is the third switchable theme and a technical
+"HUD / holo-terminal" look, distinct from the other two by design: a visible
+blueprint **grid backdrop**, angular sci-fi **Orbitron** display + **Chakra
+Petch** body + **Share Tech Mono** labels, **zero-radius** square edges,
+**corner-cut** buttons, uppercase monospaced nav, and a mint-green primary with
+an animated mint→magenta accent rail. Like the others it re-declares the shared
+`--cc-*` tokens (public + admin re-skin automatically) and refines the
+hard-coded decorative spots (body, header, hero, cards, flash banners, footer);
+motion respects `prefers-reduced-motion`. No PHP changes were needed — it uses
+the `includes/theme.php` resolver + shared-header wiring from 10.1. With this
+commit the three required distinct templates (RGB Gaming, Minimal Professional,
+Cyber Grid) all exist and differ in colour, typography, borders, radius, nav,
+buttons, cards, and layout feel. Verified in-browser across public pages and
+forms.
+
 **Commit 10.2 complete** — the **Minimal Professional** site theme.
 
 `assets/themes/minimal-pro.css` is the second switchable theme and a deliberate
@@ -295,7 +312,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Commit 10.2 complete.** Next: **Commit 10.3** — the Cyber Grid theme (`assets/themes/cyber-grid.css`).
+**Commit 10.3 complete.** Next: **Commit 10.4** — the administrator theme switcher (`admin/themes.php`) writing `site_settings.active_theme_id`.
 
 ## Security notes
 
