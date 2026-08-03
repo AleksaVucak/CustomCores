@@ -37,6 +37,11 @@ return [
      * Base URL of the site with no trailing slash, if needed for absolute links.
      * Example production value: https://myweb.cs.uwindsor.ca/~yourid/customcore
      * Leave empty to use relative URLs (preferred for simple shared hosting).
+     *
+     * When set, absolute SEO URLs (canonical tags and sitemap.php / sitemap.xml)
+     * also use this value. After changing it on a live host, regenerate the
+     * static snapshot with: php sitemap.php --write
+     * (or: php sitemap.php --write --base=https://your-host/path).
      */
     'base_url' => '',
 

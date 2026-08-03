@@ -51,6 +51,20 @@ to manage the store. Non-programmers updating catalogue content should read the
 
 ## Current status
 
+**Commit 14.2 complete** — sitemap and robots configuration.
+
+Public crawler files now live at the project root: **`robots.txt`** (Allow public
+storefront; Disallow admin, APIs, uploads, internals, private customer pages, and
+action-only scripts such as logout) and **`sitemap.xml`** (public pages + Help wiki
+only). A live **`sitemap.php`** endpoint builds absolute `<loc>` URLs from
+`config/app.php → base_url` or the current request and appends active
+`product.php?id=N` entries when MySQL is available; regenerate the static snapshot
+with `php sitemap.php --write` (optional `--base=…`). The shared catalogue in
+`includes/seo.php` keeps the sitemap, robots policy, and Commit 14.1 noindex list
+aligned — private/admin routes are never listed. Verified: well-formed XML, every
+listed file exists on disk, and an exclusion audit found no private/admin locs.
+Next up: semantic HTML structure in **Commit 14.3**.
+
 **Commit 14.1 complete** — page-specific SEO metadata.
 
 Every page already sets a unique title, description, and keywords; this commit finishes the
@@ -64,8 +78,7 @@ never duplicated, and supports a `$pageCanonical` override or `false` to disable
 `noindex, nofollow` for admin and per-user private pages (cart, checkout, account, orders,
 saved builds, wishlist, histories) via a centralised `customcore_is_noindex_page()` — no
 per-page edits. Verified with `php -l`, no lint, rendered public and admin pages, and
-canonical unit tests (root, subfolder, base_url-with-subfolder, override, disabled). Next
-up: `sitemap.xml` + `robots.txt` in **Commit 14.2**.
+canonical unit tests (root, subfolder, base_url-with-subfolder, override, disabled).
 
 **Commit 13.5 complete** — monitoring troubleshooting guide.
 

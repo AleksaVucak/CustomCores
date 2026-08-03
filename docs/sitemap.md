@@ -3,7 +3,7 @@
 **Document type:** Stage 0 planning (Commit 0.4)  
 **Purpose:** Plan every customer, administrator, API, and static Help page so the project exceeds the minimum page counts with purposeful routes only.  
 **URL style:** Ordinary `.php` / `.html` paths (no rewrite rules).  
-**Related:** SEO machine sitemap (`sitemap.xml`) is added in Stage 14 and must **exclude** private customer and administrator URLs.  
+**Related:** SEO machine sitemap (`sitemap.xml` / live `sitemap.php`) and crawler rules (`robots.txt`) were added in Stage 14.2 and **exclude** private customer and administrator URLs.  
 **Layout:** Desktop/mobile wireframes for core screens are in `docs/wireframes.md` (Commit 0.5).
 
 ### Count targets
@@ -157,8 +157,11 @@ These support many routes but are **not** counted as unique pages:
 
 | File | Role |
 | ---- | ---- |
-| `sitemap.xml` | Public URL list for search engines (Stage 14) — **no** private/admin URLs |
-| `robots.txt` | Crawler rules |
+| `sitemap.xml` | Static public URL list for search engines (Commit 14.2) — **no** private/admin URLs |
+| `sitemap.php` | Live XML sitemap (absolute locs from `base_url` / request; adds active products) |
+| `robots.txt` | Crawler Allow/Disallow rules + Sitemap pointers (Commit 14.2) |
+| `includes/seo.php` | Shared public-URL catalogue used by the sitemap generator |
+| `favicon.svg`, `site.webmanifest` | Brand icon + web app manifest (Commit 14.1) |
 | `README.md`, `docs/*` | Documentation package |
 | `database/*.sql` | Schema and seeds |
 

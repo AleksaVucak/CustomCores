@@ -52,7 +52,7 @@ Edit `config/database.php` and set:
 While you are here, review the non-secret `config/app.php`:
 
 - `debug` → keep **`false`** for anything public (only turn on temporarily for local debugging).
-- `base_url` → leave empty to use relative URLs (recommended); set it only if a host needs absolute links.
+- `base_url` → leave empty to use relative URLs (recommended); set it only if a host needs absolute links. When set, absolute SEO URLs (canonical tags and `sitemap.php`) use it — regenerate the static snapshot with `php sitemap.php --write` after changing it.
 - `timezone`, `session_*` timeouts, `default_theme`, upload limits, and `store_location` can be adjusted later (see [`docs/content-update-guide.md`](content-update-guide.md)).
 
 ---
@@ -178,6 +178,7 @@ Deeper database verification queries (table counts, options per product, rules, 
 - [ ] `uploads/products/` and `uploads/consultation/` exist and are writable.
 - [ ] Store details in `config/app.php → store_location` updated if needed.
 - [ ] A backup routine is understood (see [`docs/database-import.md`](database-import.md) §5).
+- [ ] `robots.txt` and `sitemap.xml` / `sitemap.php` are present at the project root (private/admin routes are excluded).
 
 ---
 

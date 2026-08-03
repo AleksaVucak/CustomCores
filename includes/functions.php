@@ -505,10 +505,11 @@ function customcore_canonical_url($override = null, bool $includeQuery = true): 
  *   - any page under admin/ is always noindex;
  *   - a page may opt in explicitly with $pageNoindex = true;
  *   - per-user/private customer pages (cart, checkout, account, orders, saved
- *     builds, wishlist, histories) are noindex because they are useless or
- *     duplicative in a public index.
+ *     builds, wishlist, histories, consultations) are noindex because they are
+ *     useless or duplicative in a public index;
+ *   - action-only scripts such as logout.php are noindex.
  *
- * The public sitemap/robots.txt in Commit 14.2 reinforces these exclusions.
+ * The public sitemap.xml / robots.txt (Commit 14.2) reinforce these exclusions.
  */
 function customcore_is_noindex_page(): bool
 {
@@ -533,7 +534,10 @@ function customcore_is_noindex_page(): bool
         'wishlist.php',
         'saved-builds.php',
         'saved-build.php',
+        'consultation.php',
         'consultation-history.php',
+        'consultation-attachment.php',
+        'logout.php',
     ];
 
     return in_array(basename($scriptName), $private, true);

@@ -63,7 +63,7 @@ Edit `config/database.php` with the **host's** MySQL values. Then set, in `confi
 
 - `debug` → `false`
 - `environment` → `production`
-- `base_url` → leave empty for relative URLs (recommended). Only set it (e.g. `https://myweb.cs.uwindsor.ca/~yourid/customcore`) if you specifically need absolute links.
+- `base_url` → leave empty for relative URLs (recommended). Only set it (e.g. `https://myweb.cs.uwindsor.ca/~yourid/customcore`) if you specifically need absolute links. When set, regenerate absolute sitemap locs with `php sitemap.php --write` (or rely on the live `sitemap.php` endpoint).
 
 Verify connectivity from the server shell if you have CLI access:
 
@@ -123,6 +123,7 @@ CustomCore's session layer (`includes/functions.php`) automatically hardens cook
 - [ ] Admin → Themes switch restyles the public site.
 - [ ] Consultation attachment and product image uploads succeed and cannot be directory-browsed.
 - [ ] Record the live URL in the project `README.md` (rubric #11).
+- [ ] `robots.txt` Disallows `/admin/` and private customer pages; `sitemap.php` (or `sitemap.xml`) lists only public URLs.
 
 ---
 

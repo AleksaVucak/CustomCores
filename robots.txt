@@ -1,0 +1,59 @@
+# =============================================================================
+# CustomCore — robots.txt (Commit 14.2)
+#
+# Tells crawlers which public pages may be indexed and which must be avoided.
+# Reinforces the HTML <meta name="robots"> noindex policy from Commit 14.1 and
+# the public-only sitemap built by includes/seo.php / sitemap.php.
+#
+# IMPORTANT (subfolder deploys such as /~yourid/customcore/):
+#   Host-wide crawlers read /robots.txt at the domain root. This file still
+#   documents the project policy and works when the app is served from the
+#   document root. On a subfolder host, the HTML noindex tags + the live
+#   sitemap.php endpoint remain the authoritative exclusions. If your host
+#   lets you publish a root robots.txt, prefix the Disallow paths with your
+#   project folder (e.g. /~yourid/customcore/admin/).
+# =============================================================================
+
+User-agent: *
+
+# --- Allow the public storefront and Help wiki (default allow) ---------------
+Allow: /
+
+# --- Administrator area (never index) ----------------------------------------
+Disallow: /admin/
+
+# --- JSON / data APIs (not content pages) ------------------------------------
+Disallow: /api/
+
+# --- Uploaded files (not a public catalogue) ---------------------------------
+Disallow: /uploads/
+
+# --- Application internals ---------------------------------------------------
+Disallow: /config/
+Disallow: /includes/
+Disallow: /database/
+Disallow: /docs/
+
+# --- Private customer pages (login required / per-user) ----------------------
+Disallow: /cart.php
+Disallow: /checkout.php
+Disallow: /order-confirmation.php
+Disallow: /order-details.php
+Disallow: /order-history.php
+Disallow: /profile.php
+Disallow: /edit-profile.php
+Disallow: /wishlist.php
+Disallow: /saved-builds.php
+Disallow: /saved-build.php
+Disallow: /consultation.php
+Disallow: /consultation-history.php
+Disallow: /consultation-attachment.php
+
+# --- Action-only scripts (no indexable content) ------------------------------
+Disallow: /logout.php
+
+# --- Sitemaps (live generator preferred; static snapshot also published) -----
+# Relative Sitemap URLs resolve against this robots.txt location, so they work
+# whether the project lives at the domain root or in a subfolder.
+Sitemap: sitemap.php
+Sitemap: sitemap.xml
