@@ -35,6 +35,7 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 - [Content update guide (non-programmers)](docs/content-update-guide.md)
 - [Complete installation guide](docs/installation-guide.md)
 - [Deployment and troubleshooting guide](docs/deployment-troubleshooting.md)
+- [Monitoring and troubleshooting guide](docs/monitoring-troubleshooting.md)
 - [Help context-link audit](docs/help-context-links.md)
 - [Flash message usage](docs/flash-messages.md)
 - [Multimedia credits and licences](docs/media-credits.md)
@@ -49,6 +50,18 @@ to manage the store. Non-programmers updating catalogue content should read the
 **[content update guide](docs/content-update-guide.md)**.
 
 ## Current status
+
+**Commit 13.5 complete** — monitoring troubleshooting guide.
+
+[`docs/monitoring-troubleshooting.md`](docs/monitoring-troubleshooting.md) documents the
+administrator monitoring dashboard end to end: where to find it (`admin/monitoring.php`,
+admin-only, loads even when the database is offline), how to read the overall banner /
+online-warning-offline vocabulary / per-service table / live statistics panel, and a
+**symptom-driven troubleshooting reference for all seven checks** (PHP runtime, database,
+sessions, core files, upload storage, site theme, Learning Centre media) — each with the
+exact message wording, likely cause, and fix. It also explains why detail is generic in
+production (Commit 13.4 hardening), how to safely get more detail locally, and includes a
+verified CLI snippet for running the engine from the command line. This completes Stage 13.
 
 **Commit 13.4 complete** — production-safe monitoring error messages.
 

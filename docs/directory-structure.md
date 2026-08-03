@@ -49,7 +49,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `assets/media/` | ≥ 3 video/audio items + captions | 8.2 |
 | `config/` | `database.example.php`, `app.php`; real `database.php` gitignored | 1.2–1.3 |
 | `database/` | Schema, seeds, create-admin script | 2.x |
-| `docs/` | Business case, rubric, sitemap, wireframes, ER design, database import, media credits, image prompts, theme testing, Help context-link audit, and the Stage 12 guides (front-end architecture, administrator, content-update, installation, deployment/troubleshooting) | 0.x–12.x, 8.7, 10.6, 11.7, 12.1–12.6 |
+| `docs/` | Business case, rubric, sitemap, wireframes, ER design, database import, media credits, image prompts, theme testing, Help context-link audit, the Stage 12 guides (front-end architecture, administrator, content-update, installation, deployment/troubleshooting), and the Stage 13 monitoring troubleshooting guide | 0.x–13.x, 8.7, 10.6, 11.7, 12.1–12.6, 13.5 |
 | `help/` | Static Help hub (`index.html`, 11.1) + topic articles (`pc-builder.html` from 5.9; `accounts.html` 11.2; `catalogue.html` 11.3; `orders.html` 11.4; `support.html` 11.5; `training.html` 11.6) | 5.9, 11.x |
 | `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, theme, admin, admin-nav, admin-products, admin-product-form, admin-options, admin-compatibility, admin-orders, admin-users, admin-consultations, admin-reviews, admin-reports, admin-themes, compatibility, performance, monitoring | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 10.x, 13.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
@@ -79,6 +79,12 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 ---
 
 ## 5. Status
+
+**Commit 13.5 complete — monitoring troubleshooting guide.**
+`docs/monitoring-troubleshooting.md` documents the `admin/monitoring.php` dashboard: how to
+read it and a symptom-driven troubleshooting reference for all seven health checks (message
+wording, cause, fix), plus the live-statistics panel, production-safe messaging notes, and a
+verified CLI snippet. This completes Stage 13.
 
 **Commit 13.4 complete — production-safe monitoring error messages.**
 `customcore_monitoring_safe_message()` in `includes/monitoring.php` strips stack traces,
