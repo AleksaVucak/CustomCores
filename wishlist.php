@@ -291,7 +291,7 @@ require_once __DIR__ . '/includes/header.php';
         <h1 id="wishlist-heading">Wishlist</h1>
         <p class="context-help">
             Help:
-            <a href="<?php echo customcore_e(customcore_url('help/index.html')); ?>">Help centre</a>
+            <a href="<?php echo customcore_e(customcore_url('help/catalogue.html#wishlist')); ?>">Wishlist guide</a>
             — save products to buy later and move them to your cart when ready.
         </p>
     </header>

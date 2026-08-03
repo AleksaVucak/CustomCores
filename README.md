@@ -37,6 +37,19 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 11.3 complete** — Catalogue & products Help page.
+
+`help/catalogue.html` is a full catalogue guide matching the shared Help shell
+(skip link, header nav, TOC, footer). It covers browsing and tiers, searching,
+filtering and sorting, the product page, configuration options and pricing,
+comparing 2–4 systems, wishlists, and reviews — with copy and rules (four tiers,
+$50 price steps, up-to-50 search results, 2–4 compare range, options price
+deltas, review rating/title/20-char body, pending-until-approved) matched to the
+live pages. Anchors (`#browse`, `#search`, `#filters`, `#sort`, `#product`,
+`#options`, `#compare`, `#wishlist`, `#reviews`) back the hub deep-links and the
+context-help links on `catalogue.php`, `product.php`, `search.php`,
+`compare.php`, and `wishlist.php` (now pointed at `#wishlist`).
+
 **Commit 11.2 complete** — Accounts & profile Help page.
 
 `help/accounts.html` is a full account guide matching the shared Help shell
@@ -380,7 +393,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Commit 11.2 complete.** Next: **Commit 11.3** — Catalogue & products Help page (`help/catalogue.html`).
+**Commit 11.3 complete.** Next: **Commit 11.4** — Cart & orders Help page (`help/orders.html`).
 
 ## Security notes
 
