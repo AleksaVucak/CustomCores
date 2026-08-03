@@ -115,35 +115,38 @@ require_once __DIR__ . '/../includes/header.php';
         <p class="flash flash--error" role="alert"><?php echo customcore_e($reportError); ?></p>
     <?php else : ?>
 
-        <div class="admin-report-kpis" aria-label="Report summary">
-            <article class="admin-stat">
-                <h3 class="admin-stat__label">Orders</h3>
-                <p class="admin-stat__value"><?php echo customcore_e((string) $report['orders']['total']); ?></p>
-                <p class="admin-stat__meta">
-                    Revenue $<?php echo customcore_e(number_format((float) $report['orders']['revenue'], 2)); ?>
-                    (excl. cancelled)
-                </p>
-            </article>
-            <article class="admin-stat">
-                <h3 class="admin-stat__label">Active products</h3>
-                <p class="admin-stat__value"><?php echo customcore_e((string) $report['products']['active_total']); ?></p>
-                <p class="admin-stat__meta">
-                    <?php echo customcore_e((string) $report['products']['inactive_total']); ?> disabled
-                </p>
-            </article>
-            <article class="admin-stat">
-                <h3 class="admin-stat__label">Accounts</h3>
-                <p class="admin-stat__value"><?php echo customcore_e((string) $report['users']['total']); ?></p>
-                <p class="admin-stat__meta">Customers + administrators</p>
-            </article>
-            <article class="admin-stat">
-                <h3 class="admin-stat__label">Active inventory</h3>
-                <p class="admin-stat__value"><?php echo customcore_e((string) $report['inventory']['active_total']); ?></p>
-                <p class="admin-stat__meta">
-                    Low-stock threshold ≤ <?php echo customcore_e((string) $report['inventory']['threshold']); ?>
-                </p>
-            </article>
-        </div>
+        <section class="admin-report-kpis-section" aria-labelledby="admin-report-kpis-heading">
+            <h2 id="admin-report-kpis-heading">At a glance</h2>
+            <div class="admin-report-kpis">
+                <article class="admin-stat">
+                    <h3 class="admin-stat__label">Orders</h3>
+                    <p class="admin-stat__value"><?php echo customcore_e((string) $report['orders']['total']); ?></p>
+                    <p class="admin-stat__meta">
+                        Revenue $<?php echo customcore_e(number_format((float) $report['orders']['revenue'], 2)); ?>
+                        (excl. cancelled)
+                    </p>
+                </article>
+                <article class="admin-stat">
+                    <h3 class="admin-stat__label">Active products</h3>
+                    <p class="admin-stat__value"><?php echo customcore_e((string) $report['products']['active_total']); ?></p>
+                    <p class="admin-stat__meta">
+                        <?php echo customcore_e((string) $report['products']['inactive_total']); ?> disabled
+                    </p>
+                </article>
+                <article class="admin-stat">
+                    <h3 class="admin-stat__label">Accounts</h3>
+                    <p class="admin-stat__value"><?php echo customcore_e((string) $report['users']['total']); ?></p>
+                    <p class="admin-stat__meta">Customers + administrators</p>
+                </article>
+                <article class="admin-stat">
+                    <h3 class="admin-stat__label">Active inventory</h3>
+                    <p class="admin-stat__value"><?php echo customcore_e((string) $report['inventory']['active_total']); ?></p>
+                    <p class="admin-stat__meta">
+                        Low-stock threshold ≤ <?php echo customcore_e((string) $report['inventory']['threshold']); ?>
+                    </p>
+                </article>
+            </div>
+        </section>
 
         <!-- Orders by status -->
         <section class="admin-card admin-report-panel" aria-labelledby="report-orders-heading">

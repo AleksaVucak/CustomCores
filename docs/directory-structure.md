@@ -80,6 +80,12 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
+**Commit 14.3 complete — semantic HTML structure.**
+Site-wide landmarks (`header`/`nav`/`main`/`footer` + `section`/`article` with
+`aria-labelledby`) confirmed, and heading hierarchy audited across all pages. Fixed the
+lone defect in `admin/reports.php` (KPI cards skipped `h1 → h3`) by wrapping them in a
+labelled `<section>` with an `<h2>` so stat labels nest as `h3` (one `h1`, no skips).
+
 **Commit 14.2 complete — sitemap and robots configuration.**
 Root `robots.txt` Disallows admin/APIs/uploads/internals/private customer pages;
 `sitemap.xml` lists only public storefront + Help URLs; live `sitemap.php` builds

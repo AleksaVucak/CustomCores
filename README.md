@@ -51,6 +51,20 @@ to manage the store. Non-programmers updating catalogue content should read the
 
 ## Current status
 
+**Commit 14.3 complete** — semantic HTML structure.
+
+The shared shell already provides the document landmarks — `header[role=banner]`, a
+labelled `nav`, `main#main-content` (with the skip-link target), and
+`footer[role=contentinfo]` — and content pages use `section` / `article` with
+`aria-labelledby`. This commit audited heading hierarchy across every page and fixed the
+one defect: `admin/reports.php` jumped `h1 → h3` on its KPI cards, so the summary block is
+now a labelled `<section>` with an `<h2>` ("At a glance") and the stat cards nest as `h3`
+(matching the dashboard). Verified with a static audit plus a rendered check of
+`admin/reports.php` (`h1 → h2 → h3`, one `h1`, zero skipped levels); the builder, build
+summary, and order confirmation pages emit two `h1`s in source only because their
+mutually-exclusive branches each carry one (confirmed exactly one renders at runtime). Next
+up: accessibility and keyboard navigation in **Commit 14.4**.
+
 **Commit 14.2 complete** — sitemap and robots configuration.
 
 Public crawler files now live at the project root: **`robots.txt`** (Allow public

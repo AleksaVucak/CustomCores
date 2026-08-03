@@ -919,11 +919,19 @@
 /* -------------------------------------------------------------------------
  * Reports (Commit 9.9)
  * ------------------------------------------------------------------------- */
+.admin-report-kpis-section {
+  margin: 0 0 var(--cc-space-5);
+}
+
+.admin-report-kpis-section > h2 {
+  margin: 0 0 var(--cc-space-3);
+}
+
 .admin-report-kpis {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: var(--cc-space-4);
-  margin: 0 0 var(--cc-space-5);
+  margin: 0;
 }
 
 .admin-report-panel {
