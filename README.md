@@ -51,6 +51,19 @@ to manage the store. Non-programmers updating catalogue content should read the
 
 ## Current status
 
+**Commit 14.8 complete** — security audit (prepared statements & output escaping).
+
+An evidence-based audit of every SQL execution path and every dynamic output site,
+documented in [`docs/security-audit.md`](docs/security-audit.md). Every database call is
+either a static SQL literal or a bound prepared statement — dynamic pieces (`WHERE`
+builders, `IN (...)` lists, `LIMIT`/`OFFSET`, dynamic `SET`, and the single interpolated
+table name) all use bound placeholders, clamped integer casts, or identifier whitelists, so
+**no user input is concatenated into SQL**. All output is escaped: `customcore_e()`
+(`htmlspecialchars` with `ENT_QUOTES`) on the server, a textNode-based `escapeHtml()` before
+any `innerHTML` on the client, plus confirmed open-redirect/header-injection guards. Result:
+**PASS with zero vulnerabilities and no source changes required.** The audit doc includes a
+repeatable `rg` recipe. Next: CSRF protection review in **Commit 14.9**.
+
 **Commit 14.7 complete** — JavaScript and PHP documentation.
 
 The final code-comment step. Every file in `assets/js/*` now carries a file header plus

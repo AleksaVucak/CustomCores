@@ -80,6 +80,14 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
+**Commit 14.8 complete — security audit (prepared statements & output escaping).**
+New [`docs/security-audit.md`](security-audit.md) records an evidence-based review: every DB
+call is a static literal or a bound prepared statement (dynamic `WHERE`/`IN`/`LIMIT`/`SET`
+and the one interpolated table name use placeholders, clamped int casts, or whitelists — no
+user input in SQL), and all output is escaped (`customcore_e()` server-side, textNode
+`escapeHtml()` before any client `innerHTML`), with open-redirect guards confirmed. Result:
+PASS, 0 vulnerabilities, no source changes.
+
 **Commit 14.7 complete — JavaScript and PHP documentation.**
 All `assets/js/*` files now have a file header plus JSDoc (purpose + `@param`/`@returns`) on
 every named function. A token-based audit confirmed all 282 PHP functions carry docblocks
@@ -135,6 +143,11 @@ catalogue in `includes/seo.php`. Private routes are excluded from both files.
 read it and a symptom-driven troubleshooting reference for all seven health checks (message
 wording, cause, fix), plus the live-statistics panel, production-safe messaging notes, and a
 verified CLI snippet. This completes Stage 13.
+
+`docs/security-audit.md` records the Commit 14.8 audit of prepared statements and output
+escaping: methodology, per-pattern SQL findings (WHERE/IN/LIMIT/SET/whitelisted identifiers),
+server- and client-side escaping evidence, related open-redirect guards, and a repeatable `rg`
+recipe. Result: PASS with zero vulnerabilities.
 
 **Commit 13.4 complete — production-safe monitoring error messages.**
 `customcore_monitoring_safe_message()` in `includes/monitoring.php` strips stack traces,
