@@ -99,7 +99,7 @@ require_once __DIR__ . '/includes/header.php';
         <h1 id="orders-heading">Order history</h1>
         <p class="context-help">
             Help:
-            <a href="<?php echo customcore_e(customcore_url('help/index.html')); ?>">Help centre</a>
+            <a href="<?php echo customcore_e(customcore_url('help/orders.html#history')); ?>">Orders guide</a>
             — review past orders, status, and itemized receipts.
         </p>
     </header>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cart &amp; orders guide — CustomCore Help</title>
+    <meta name="description" content="Step-by-step help for the CustomCore cart and orders: adding items, updating quantities, checkout, simulated payment, order confirmation numbers, order history, and order status.">
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body class="help-body">
+    <a class="skip-link" href="#help-main">Skip to main content</a>
+
+    <header class="help-site-header" role="banner">
+        <div class="help-site-header__inner">
+            <a class="help-site-header__brand" href="../index.php">CustomCore</a>
+            <nav class="help-site-header__nav" aria-label="Help">
+                <a href="index.html">Help centre</a>
+                <a href="../cart.php">Cart</a>
+                <a href="../checkout.php">Checkout</a>
+                <a href="../order-history.php">Order history</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="help-main" class="content-section help-page">
+        <header class="help-page__header">
+            <p class="help-page__eyebrow">Help · Cart &amp; orders</p>
+            <h1>Cart &amp; orders guide</h1>
+            <p class="help-page__intro">
+                This guide explains how to add products and custom builds to your cart, adjust
+                quantities, complete the simulated checkout, read your order confirmation number,
+                and track orders in your history. Use the table of contents to jump to the step
+                you are on.
+            </p>
+        </header>
+
+        <nav class="help-toc" aria-label="On this page">
+            <h2 class="help-toc__title">On this page</h2>
+            <ol class="help-toc__list">
+                <li><a href="#overview">How ordering works</a></li>
+                <li><a href="#cart">Your cart</a></li>
+                <li><a href="#quantities">Updating quantities &amp; removing items</a></li>
+                <li><a href="#checkout">Checkout</a></li>
+                <li><a href="#payment">Payment methods</a></li>
+                <li><a href="#confirmation">Order confirmation</a></li>
+                <li><a href="#history">Order history</a></li>
+                <li><a href="#details">Order details</a></li>
+                <li><a href="#status">Order statuses</a></li>
+                <li><a href="#tips">Tips &amp; troubleshooting</a></li>
+            </ol>
+        </nav>
+
+        <article class="help-article">
+            <section id="overview" class="help-section">
+                <h2>How ordering works</h2>
+                <p>
+                    Ordering has three steps: add items to your <a href="#cart">cart</a>, complete
+                    <a href="#checkout">checkout</a> with your shipping and payment choice, and receive
+                    an <a href="#confirmation">order confirmation</a>. You can then follow the order in
+                    your <a href="#history">order history</a>.
+                </p>
+                <p class="help-note">
+                    <strong>You need an account.</strong> The cart, checkout, and order pages require
+                    you to be <a href="../login.php">logged in</a>. Your cart is saved to your account,
+                    so it is still there when you log back in.
+                </p>
+                <p class="help-note">
+                    <strong>Simulated store.</strong> CustomCore is an academic demo — checkout does
+                    <em>not</em> collect or process real payment card details.
+                </p>
+            </section>
+
+            <section id="cart" class="help-section">
+                <h2>Your cart</h2>
+                <p>
+                    Add items to your <a href="../cart.php">cart</a> in two ways:
+                </p>
+                <ul>
+                    <li><strong>Catalogue products</strong> — on a product page, choose any <a href="catalogue.html#options">configuration options</a> and a quantity, then select <strong>Add to cart</strong>.</li>
+                    <li><strong>Saved builds</strong> — from a saved build, add your custom PC to the cart (custom builds are limited to a quantity of one).</li>
+                </ul>
+                <p>The cart lists each line with its unit price, quantity, and line total, and a running <strong>subtotal</strong>. It also flags items that need attention:</p>
+                <ul>
+                    <li><strong>Unavailable</strong> — the product is no longer active or is out of stock.</li>
+                    <li><strong>Only N left</strong> — low stock (5 or fewer remaining).</li>
+                </ul>
+                <p>
+                    When you are ready, choose <strong>Proceed to checkout</strong>, or
+                    <strong>Continue shopping</strong> to keep browsing.
+                </p>
+            </section>
+
+            <section id="quantities" class="help-section">
+                <h2>Updating quantities &amp; removing items</h2>
+                <ul>
+                    <li><strong>Change a quantity</strong> — use the − / + buttons or type a number (1–99, never more than the stock on hand). The line total updates live as you type.</li>
+                    <li><strong>Update cart</strong> — saves all quantity changes at once.</li>
+                    <li><strong>Set a quantity to 0</strong> — removes that item when you update.</li>
+                    <li><strong>Remove</strong> — takes a single line out of the cart immediately.</li>
+                    <li><strong>Clear cart</strong> — empties the whole cart (with a confirmation prompt).</li>
+                </ul>
+                <p>
+                    Quantities are always re-checked on the server against current stock, so your
+                    subtotal stays accurate. If you request more than the available stock, the amount
+                    is reduced automatically and you are told.
+                </p>
+            </section>
+
+            <section id="checkout" class="help-section">
+                <h2>Checkout</h2>
+                <p>
+                    From the cart choose <strong>Proceed to checkout</strong>. Your cart must contain at
+                    least one item. The <a href="../checkout.php">checkout</a> form is pre-filled from
+                    your <a href="../profile.php">profile</a> where possible, and collects:
+                </p>
+                <ul>
+                    <li><strong>Full name</strong> — required (up to 200 characters).</li>
+                    <li><strong>Phone number</strong> — required (up to 30 characters; digits and <code>+ ( ) - . </code> and spaces).</li>
+                    <li><strong>Address line 1</strong> — required; <strong>Address line 2</strong> — optional.</li>
+                    <li><strong>City</strong>, <strong>Province / State</strong>, and <strong>Postal / ZIP code</strong> — required.</li>
+                    <li><strong>Payment method</strong> — see <a href="#payment">Payment methods</a>.</li>
+                </ul>
+                <p>
+                    The <strong>Order summary</strong> sidebar lists your items and subtotal. Choose
+                    <strong>Place order</strong> to continue. If any field needs fixing, the page
+                    reloads with a list of what to correct and your entries preserved.
+                </p>
+            </section>
+
+            <section id="payment" class="help-section">
+                <h2>Payment methods</h2>
+                <p>Checkout is simulated — pick one of the following. No card numbers or CVV are ever collected:</p>
+                <ul>
+                    <li><strong>Pay on pickup</strong></li>
+                    <li><strong>Credit card</strong> (simulated — no real data collected)</li>
+                    <li><strong>Debit card</strong> (simulated — no real data collected)</li>
+                    <li><strong>PayPal</strong> (simulated)</li>
+                </ul>
+                <p>The method you choose is stored as a label on the order so you can see how you intended to pay.</p>
+            </section>
+
+            <section id="confirmation" class="help-section">
+                <h2>Order confirmation</h2>
+                <p>
+                    When you place an order it is saved permanently and your cart is emptied. You are
+                    taken to a confirmation page that shows:
+                </p>
+                <ul>
+                    <li>A unique <strong>confirmation number</strong> in the form <code>CC-YYYYMMDD-XXXXXX</code> — keep it for your records.</li>
+                    <li>Your shipping details and chosen payment method.</li>
+                    <li>The items ordered, with quantities and a total.</li>
+                    <li>The starting order status (<a href="#status">Pending</a>).</li>
+                </ul>
+                <p>
+                    Prices are taken from a trusted server-side snapshot of your cart, not from the
+                    browser. From the confirmation you can open the <a href="#details">full order
+                    details</a>, go to your <a href="#history">order history</a>, or continue shopping.
+                </p>
+            </section>
+
+            <section id="history" class="help-section">
+                <h2>Order history</h2>
+                <p>
+                    <a href="../order-history.php">Order history</a> lists every order you have placed —
+                    and only your own orders. For each order you see its number, date, status, item
+                    count, payment method, and total, with a <strong>View</strong> link to the details.
+                </p>
+                <p>
+                    Use the status filter (<strong>All</strong>, plus each status) to narrow the list.
+                    The summary line tells you how many orders match.
+                </p>
+            </section>
+
+            <section id="details" class="help-section">
+                <h2>Order details</h2>
+                <p>
+                    The <a href="../order-history.php">order details</a> page shows one order in full:
+                </p>
+                <ul>
+                    <li>Current <a href="#status">status</a> and the date it was placed, plus the confirmation number.</li>
+                    <li>A <strong>shipping details</strong> card and a <strong>payment &amp; totals</strong> card (subtotal and total).</li>
+                    <li>An <strong>items ordered</strong> table. Product lines link back to the product and list any chosen options; custom builds show an expandable list of build components with their prices.</li>
+                </ul>
+                <p>
+                    You can only open your own orders. From here you can jump back to the confirmation,
+                    return to history, or continue shopping.
+                </p>
+            </section>
+
+            <section id="status" class="help-section">
+                <h2>Order statuses</h2>
+                <p>Every order moves through these statuses (an administrator updates them):</p>
+                <ul>
+                    <li><strong>Pending</strong> — received; awaiting processing (the status of a new order).</li>
+                    <li><strong>Processing</strong> — being prepared or assembled.</li>
+                    <li><strong>Ready for pickup</strong> — ready to collect.</li>
+                    <li><strong>Completed</strong> — fulfilled.</li>
+                    <li><strong>Cancelled</strong> — the order was cancelled.</li>
+                </ul>
+            </section>
+
+            <section id="tips" class="help-section">
+                <h2>Tips &amp; troubleshooting</h2>
+                <ul>
+                    <li><strong>“Your cart is empty” at checkout.</strong> — Add at least one item before checking out.</li>
+                    <li><strong>Quantity was reduced.</strong> — You asked for more than the stock available; the cart clamps to what is in stock.</li>
+                    <li><strong>Session expired message.</strong> — Reload the page and try again; this protects your cart and checkout against cross-site request forgery.</li>
+                    <li><strong>Can’t reach the cart or checkout.</strong> — These pages require you to <a href="../login.php">log in</a>.</li>
+                    <li><strong>Lost your confirmation number?</strong> — Open <a href="#history">order history</a> and select the order to see it again.</li>
+                    <li><strong>Item shows “Unavailable”.</strong> — It went out of stock or was withdrawn; remove it to continue to checkout.</li>
+                </ul>
+            </section>
+        </article>
+
+        <footer class="help-page__footer">
+            <p>
+                Related:
+                <a href="index.html">Help centre</a> ·
+                <a href="../cart.php">Cart</a> ·
+                <a href="../checkout.php">Checkout</a> ·
+                <a href="../order-history.php">Order history</a> ·
+                <a href="catalogue.html">Catalogue guide</a> ·
+                <a href="../contact.php">Contact</a>
+            </p>
+        </footer>
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+        <div class="site-footer__inner">
+            <p class="site-footer__brand">&copy; CustomCore</p>
+            <ul class="site-footer__links">
+                <li><a href="../about.php">About</a></li>
+                <li><a href="index.html">Help</a></li>
+                <li><a href="../privacy.php">Privacy</a></li>
+                <li><a href="../accessibility.php">Accessibility</a></li>
+                <li><a href="../contact.php">Contact</a></li>
+            </ul>
+        </div>
+    </footer>
+</body>
+</html>

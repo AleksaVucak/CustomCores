@@ -218,7 +218,7 @@ require_once __DIR__ . '/includes/header.php';
         <h1 id="checkout-heading">Checkout</h1>
         <p class="context-help">
             Help:
-            <a href="<?php echo customcore_e(customcore_url('help/index.html')); ?>">Help centre</a>
+            <a href="<?php echo customcore_e(customcore_url('help/orders.html#checkout')); ?>">Checkout guide</a>
             — fill out your shipping details and choose a payment method to complete your order.
         </p>
     </header>

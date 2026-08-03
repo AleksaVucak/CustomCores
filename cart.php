@@ -389,7 +389,7 @@ require_once __DIR__ . '/includes/header.php';
         <?php endif; ?>
         <p class="context-help">
             Help:
-            <a href="<?php echo customcore_e(customcore_url('help/index.html')); ?>">Help centre</a>
+            <a href="<?php echo customcore_e(customcore_url('help/orders.html#cart')); ?>">Cart &amp; orders guide</a>
             — cart quantities, remove, and clear controls keep your total accurate before checkout.
         </p>
     </header>

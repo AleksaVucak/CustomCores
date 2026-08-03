@@ -262,6 +262,11 @@ require_once __DIR__ . '/includes/header.php';
                 or view the
                 <a href="<?php echo customcore_e(customcore_url('order-details.php?id=' . (int) $order['id'])); ?>">full order details</a>.
             </p>
+            <p class="context-help">
+                Help:
+                <a href="<?php echo customcore_e(customcore_url('help/orders.html#confirmation')); ?>">Orders guide</a>
+                — what your confirmation number means and how to track this order.
+            </p>
         </header>
 
         <div class="order-confirm__section">

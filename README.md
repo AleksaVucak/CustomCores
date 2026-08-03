@@ -37,6 +37,20 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 11.4 complete** — Cart & orders Help page.
+
+`help/orders.html` is a full cart-and-orders guide matching the shared Help shell
+(skip link, header nav, TOC, footer). It covers the cart, updating quantities and
+removing items, checkout, the four simulated payment methods, order confirmation
+numbers (`CC-YYYYMMDD-XXXXXX`), order history with its status filter, order
+details, and the five order statuses — with copy and rules (login required,
+quantity 1–99 clamped to stock, required checkout fields and lengths, trusted
+server-side price snapshot, no real payment data) matched to the live pages.
+Anchors (`#cart`, `#quantities`, `#checkout`, `#payment`, `#confirmation`,
+`#history`, `#details`, `#status`) back the hub deep-links and the context-help
+links on `cart.php`, `checkout.php`, `order-confirmation.php`, `order-history.php`,
+and `order-details.php`.
+
 **Commit 11.3 complete** — Catalogue & products Help page.
 
 `help/catalogue.html` is a full catalogue guide matching the shared Help shell
@@ -393,7 +407,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Commit 11.3 complete.** Next: **Commit 11.4** — Cart & orders Help page (`help/orders.html`).
+**Commit 11.4 complete.** Next: **Commit 11.5** — Consultation & support Help page (`help/support.html`).
 
 ## Security notes
 

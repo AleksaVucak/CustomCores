@@ -108,7 +108,7 @@ require_once __DIR__ . '/includes/header.php';
         <h1 id="order-details-heading">Order <?php echo customcore_e($orderNumber); ?></h1>
         <p class="context-help">
             Help:
-            <a href="<?php echo customcore_e(customcore_url('help/index.html')); ?>">Help centre</a>
+            <a href="<?php echo customcore_e(customcore_url('help/orders.html#details')); ?>">Orders guide</a>
             ·
             <a href="<?php echo customcore_e(customcore_url('order-history.php')); ?>">Back to order history</a>
         </p>
