@@ -37,6 +37,19 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 
 ## Current status
 
+**Commit 11.2 complete** — Accounts & profile Help page.
+
+`help/accounts.html` is a full account guide matching the shared Help shell
+(skip link, header nav, TOC, footer). It walks through creating an account,
+logging in and out, the profile dashboard, editing details, changing your
+password, session timeouts, and disabled accounts — with copy and validation
+rules (name/email/phone/password limits, 30-minute idle / 12-hour absolute
+session timeouts, generic login errors) matched to the live pages. Anchors
+(`#register`, `#login`, `#logout`, `#profile`, `#edit-details`, `#password`,
+`#sessions`, `#disabled`) back the hub deep-links and the context-help links on
+`register.php`, `login.php`, `profile.php`, and `edit-profile.php`. A themed
+`.help-note` callout was added to `main.css`.
+
 **Commit 11.1 complete** — Help centre homepage.
 
 `help/index.html` is now a full Help hub: six guide cards (Accounts, Catalogue,
@@ -367,7 +380,7 @@ helper; homepage teaser embeds the PC Builder walkthrough).
 
 **Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
 
-**Commit 11.1 complete.** Next: **Commit 11.2** — Accounts & profile Help page (`help/accounts.html`).
+**Commit 11.2 complete.** Next: **Commit 11.3** — Catalogue & products Help page (`help/catalogue.html`).
 
 ## Security notes
 

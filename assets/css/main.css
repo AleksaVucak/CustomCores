@@ -496,6 +496,16 @@ ol {
   font-size: 1.25rem;
 }
 
+.help-note {
+  margin: var(--cc-space-3) 0 0;
+  padding: var(--cc-space-3) var(--cc-space-4);
+  border: 1px solid var(--cc-color-border);
+  border-left: 4px solid var(--cc-color-accent, var(--cc-color-primary));
+  border-radius: var(--cc-radius-md);
+  background: var(--cc-color-bg-elevated);
+  font-size: 0.95rem;
+}
+
 .help-page__footer {
   margin-top: var(--cc-space-6);
   padding-top: var(--cc-space-4);

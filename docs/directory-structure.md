@@ -21,7 +21,7 @@ customcore/
 ├── config/                # App and database configuration (Commit 1.2+)
 ├── database/              # schema.sql, seeds, admin setup (Stage 2)
 ├── docs/                  # Planning and project documentation
-├── help/                  # Static Help wiki HTML (Stage 11): hub in 11.1; articles 11.2–11.8
+├── help/                  # Static Help wiki HTML (Stage 11): hub in 11.1; accounts article 11.2; remaining articles 11.3–11.8
 ├── includes/              # Shared PHP layout and helpers (Commit 1.4+)
 ├── uploads/
 │   ├── consultation/      # Safe consultation attachments
@@ -50,7 +50,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `config/` | `database.example.php`, `app.php`; real `database.php` gitignored | 1.2–1.3 |
 | `database/` | Schema, seeds, create-admin script | 2.x |
 | `docs/` | Business case, rubric, sitemap, wireframes, ER design, media credits, image prompts, theme testing, guides | 0.x–12.x, 8.7, 10.6 |
-| `help/` | Static Help hub (`index.html`, 11.1) + training / topic articles (`pc-builder.html` from 5.9; accounts/catalogue/orders/support/training in 11.2–11.8) | 5.9, 11.x |
+| `help/` | Static Help hub (`index.html`, 11.1) + topic articles (`pc-builder.html` from 5.9; `accounts.html` in 11.2; catalogue/orders/support/training in 11.3–11.8) | 5.9, 11.x |
 | `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, theme, admin, admin-nav, admin-products, admin-product-form, admin-options, admin-compatibility, admin-orders, admin-users, admin-consultations, admin-reviews, admin-reports, admin-themes, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 10.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
 | `uploads/products/` | Product images uploaded by admin | 9.2 |
@@ -80,7 +80,15 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 ## 5. Status
 
-**Commit 11.1 complete — Help centre homepage.**  
+**Commit 11.2 complete — Accounts & profile Help page.**
+`help/accounts.html` documents registration, login/logout, the profile
+dashboard, editing details, changing a password, session timeouts, and disabled
+accounts, matching the shared Help shell and the live pages' copy and rules.
+Its anchors back the hub deep-links and the context-help links on `register.php`,
+`login.php`, `profile.php`, and `edit-profile.php`. A `.help-note` callout style
+was added to `main.css`. Remaining articles land in 11.3–11.8.
+
+**Commit 11.1 complete — Help centre homepage.**
 `help/index.html` is a searchable Help hub with six guide cards (Accounts,
 Catalogue, PC Builder, Orders, Support, Training), jump TOC, deep-links, and
 related live-site links. Filter JS in `assets/js/help-hub.js` (progressive
