@@ -14,32 +14,20 @@
 declare(strict_types=1);
 
 /**
- * Catalogue of the educational Learning Centre media items.
+ * Declared Learning Centre media catalogue (before on-disk availability filtering).
  *
- * Only items whose primary media file exists on disk are returned, so the
- * Learning Centre never advertises a broken player.
+ * The source-of-truth list of lessons the site expects to ship. It is used by
+ * customcore_media_items() (which drops any item whose primary media file is
+ * missing so the Learning Centre never advertises a broken player) and by the
+ * Stage 13 monitoring health checks (which compare this declared list against
+ * what actually resolves on disk to detect missing media). Editing lessons is
+ * documented in docs/content-update-guide.md.
  *
- * @return list<array{
- *   id:string,
- *   type:string,
- *   title:string,
- *   description:string,
- *   duration_label:string,
- *   mime:string,
- *   src:string,
- *   src_url:string,
- *   poster:?string,
- *   poster_url:?string,
- *   poster_alt:string,
- *   captions:?string,
- *   captions_url:?string,
- *   learn:list<string>,
- *   transcript:list<string>
- * }>
+ * @return list<array<string, mixed>>
  */
-function customcore_media_items(): array
+function customcore_media_catalogue(): array
 {
-    $catalogue = [
+    return [
         [
             'id' => 'how-to-use-pc-builder',
             'type' => 'video',
@@ -116,10 +104,36 @@ function customcore_media_items(): array
             ],
         ],
     ];
+}
 
+/**
+ * Catalogue of the educational Learning Centre media items, filtered to those
+ * whose primary media file exists on disk so the site never advertises a broken
+ * player.
+ *
+ * @return list<array{
+ *   id:string,
+ *   type:string,
+ *   title:string,
+ *   description:string,
+ *   duration_label:string,
+ *   mime:string,
+ *   src:string,
+ *   src_url:string,
+ *   poster:?string,
+ *   poster_url:?string,
+ *   poster_alt:string,
+ *   captions:?string,
+ *   captions_url:?string,
+ *   learn:list<string>,
+ *   transcript:list<string>
+ * }>
+ */
+function customcore_media_items(): array
+{
     $items = [];
 
-    foreach ($catalogue as $item) {
+    foreach (customcore_media_catalogue() as $item) {
         $srcUrl = customcore_media_url($item['src']);
         if ($srcUrl === null) {
             continue;

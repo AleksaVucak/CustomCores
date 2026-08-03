@@ -51,7 +51,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `database/` | Schema, seeds, create-admin script | 2.x |
 | `docs/` | Business case, rubric, sitemap, wireframes, ER design, database import, media credits, image prompts, theme testing, Help context-link audit, and the Stage 12 guides (front-end architecture, administrator, content-update, installation, deployment/troubleshooting) | 0.x–12.x, 8.7, 10.6, 11.7, 12.1–12.6 |
 | `help/` | Static Help hub (`index.html`, 11.1) + topic articles (`pc-builder.html` from 5.9; `accounts.html` 11.2; `catalogue.html` 11.3; `orders.html` 11.4; `support.html` 11.5; `training.html` 11.6) | 5.9, 11.x |
-| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, theme, admin, admin-nav, admin-products, admin-product-form, admin-options, admin-compatibility, admin-orders, admin-users, admin-consultations, admin-reviews, admin-reports, admin-themes, compatibility, performance | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 10.x, 14.x |
+| `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, theme, admin, admin-nav, admin-products, admin-product-form, admin-options, admin-compatibility, admin-orders, admin-users, admin-consultations, admin-reviews, admin-reports, admin-themes, compatibility, performance, monitoring | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 10.x, 13.x, 14.x |
 | `uploads/consultation/` | Validated consultation files | 7.4 |
 | `uploads/products/` | Product images uploaded by admin | 9.2 |
 
@@ -79,6 +79,15 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 ---
 
 ## 5. Status
+
+**Commit 13.1 complete — application health checks.**
+`includes/monitoring.php` adds the Stage 13 monitoring engine: seven self-contained
+checks (PHP runtime, database, sessions, core files, upload storage, site theme,
+Learning Centre media) each returning a controlled `online`/`warning`/`offline`
+status with production-safe messages, aggregated by `customcore_monitoring_run()`.
+`includes/media.php` now exposes `customcore_media_catalogue()` for the media check
+(no behaviour change to `customcore_media_items()`). The admin dashboard that renders
+the report lands in Commit 13.2 (`admin/monitoring.php`).
 
 **Stage 12 complete (Commits 12.1–12.6) — project documentation set finished.**
 Five new guides were added under `docs/`: front-end architecture

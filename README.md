@@ -50,6 +50,24 @@ to manage the store. Non-programmers updating catalogue content should read the
 
 ## Current status
 
+**Commit 13.1 complete** — application health checks (monitoring engine).
+
+`includes/monitoring.php` is the Stage 13 health-check engine. It runs seven
+independent, self-contained checks — **PHP runtime** (version + PDO/fileinfo/session
+extensions), **database** (PDO connect + `SELECT 1`), **sessions** (support + writable
+store), **core files** (critical includes/config/assets present), **upload storage**
+(`uploads/products` + `uploads/consultation` exist and writable), **site theme**
+(active stylesheet resolves via `includes/theme.php`), and **Learning Centre media**
+(declared catalogue vs. files on disk) — each returning a controlled
+`online` / `warning` / `offline` status with a production-safe message (database
+errors reuse `customcore_database_error_message()`; no credentials, paths, or stack
+traces are exposed). `customcore_monitoring_run()` aggregates them into an overall
+status and never throws, so one failing dependency only downgrades its own row. To
+support the media check without duplicating data, `includes/media.php` now exposes the
+declared lesson list via `customcore_media_catalogue()` (behaviour of
+`customcore_media_items()` is unchanged). The administrator dashboard that renders
+this report arrives in **Commit 13.2** (`admin/monitoring.php`).
+
 **Stage 12 complete (Commits 12.1–12.6)** — technical, administrator, and installation documentation.
 
 The project documentation set is now complete. Five new guides were added and the
