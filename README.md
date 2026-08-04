@@ -46,6 +46,7 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 - [JavaScript / console verification record](docs/js-validation.md)
 - [Desktop responsiveness record](docs/responsiveness-desktop.md)
 - [Mobile responsiveness record](docs/responsiveness-mobile.md)
+- [Customer workflow verification record](docs/customer-workflows.md)
 - [Security audit (SQL, escaping, CSRF, uploads)](docs/security-audit.md)
 
 ### Quick start
@@ -56,6 +57,10 @@ to manage the store. Non-programmers updating catalogue content should read the
 **[content update guide](docs/content-update-guide.md)**.
 
 ## Current status
+
+**Commit 15.6 complete** — verify complete customer workflows.
+
+Drove the running site over `php -S` with a cookie-jar + CSRF harness through the entire **registration → order** journey and **every core customer action** — register (incl. duplicate-email rejection), login (incl. wrong-password rejection), catalogue browse/sort/filter, search, product detail, compare, wishlist add/remove, custom PC builder (complete + compatible), save build, saved-build → cart, cart add/update (with options), checkout, order creation, order confirmation/history/details, review submission (enters moderation), consultation request + history, edit profile, password change + re-login, and logout — plus access-control checks (foreign/non-existent order rejected). **Result: 41/41 assertions Pass.** **One avoidable defect found and fixed:** ordering a **saved build** failed because `order-confirmation.php`'s snapshot query joined `component_categories` on the non-existent `c.category_id` (the `components` FK is `component_category_id`), throwing a SQL error that rolled back the whole order; corrected to the right column so a saved build can now be ordered and its snapshot is stored. A disposable `@example.test` customer was used and all test data (users, orders, builds, carts, consultations, reviews) deleted afterward — store back to the three seed customers, 0 orders, 0 builds, 0 carts. Evidence: [`docs/customer-workflows.md`](docs/customer-workflows.md).
 
 **Commit 15.5 complete** — mobile responsiveness testing.
 

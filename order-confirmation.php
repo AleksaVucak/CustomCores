@@ -55,7 +55,7 @@ function customcore_snapshot_build(PDO $pdo, int $buildId): ?string
                 cc.name AS category_name, sbi.unit_price
          FROM saved_build_items sbi
          JOIN components c ON c.id = sbi.component_id
-         JOIN component_categories cc ON cc.id = c.category_id
+         JOIN component_categories cc ON cc.id = c.component_category_id
          WHERE sbi.saved_build_id = :bid
          ORDER BY cc.sort_order ASC, c.name ASC'
     );
