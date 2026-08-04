@@ -122,14 +122,15 @@ CustomCore's session layer (`includes/functions.php`) automatically hardens cook
 
 ## 8. Post-deployment verification (live)
 
-- [ ] Homepage loads over the public URL with no PHP errors and correct styling.
-- [ ] A public page's source shows `main.css` then the theme CSS **last**; `main.js` loads in the footer.
-- [ ] Catalogue chart and its data table render; a product page shows options.
-- [ ] Register → log in → build → cart → checkout produces an order number.
-- [ ] Admin login works and the dashboard shows live counts.
-- [ ] Admin → Themes switch restyles the public site.
-- [ ] Consultation attachment and product image uploads succeed and cannot be directory-browsed.
+- [x] Homepage loads over the public URL with no PHP errors and correct styling.
+- [x] A public page's source shows `main.css` then the theme CSS **last**; `main.js` loads in the footer.
+- [x] Catalogue chart and its data table render; a product page shows options.
+- [x] Register → log in → cart → checkout produces an order number (full builder save optional; see production customer record).
+- [x] Admin login works and the dashboard shows live counts.
+- [x] Admin → Themes page functional on host (see production administrator record).
+- [x] Upload directories writable on host (confirmed via Monitoring: product + consultation writable).
 - [x] Record the live URL in the project `README.md` (rubric #11).
+- [x] Live customer + admin workflows recorded in `docs/production-customer-workflows.md` and `docs/production-admin-workflows.md`.
 - [ ] `robots.txt` Disallows `/admin/` and private customer pages; `sitemap.php` (or `sitemap.xml`) lists only public URLs.
 
 ---

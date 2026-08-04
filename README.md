@@ -269,6 +269,8 @@ The site is 50 purposeful dynamic PHP pages: 30 public and customer pages, 17 ad
   [mobile responsiveness](docs/responsiveness-mobile.md)
 - [Customer workflows](docs/customer-workflows.md) and
   [administrator workflows](docs/admin-workflows.md)
+- Live host runs: [production customer workflows (16.6)](docs/production-customer-workflows.md) and
+  [production administrator workflows (16.7)](docs/production-admin-workflows.md)
 - [Theme testing](docs/theme-testing.md) and [final defect fixes](docs/final-defect-fixes.md)
 
 ---
