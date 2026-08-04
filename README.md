@@ -1,8 +1,8 @@
 # CustomCore
 
-**Aleksa Vucak | 110139920 | COMP 3340, Final Project| August 5th, 2026
+**Aleksa Vucak | 110139920 | COMP 3340, Final Project| August 5th, 2026**
 
-Live URL:** [https://vucaka.myweb.cs.uwindsor.ca/customcore/](https://vucaka.myweb.cs.uwindsor.ca/customcore/)
+Live URL: [https://vucaka.myweb.cs.uwindsor.ca/customcore/](https://vucaka.myweb.cs.uwindsor.ca/customcore/)
 
 Deployed under the university myweb host as a project subfolder (`public_html/customcore/`). Open the link above in a modern desktop or mobile browser. No VPN or special software is required.
 
