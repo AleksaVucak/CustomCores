@@ -343,78 +343,183 @@ function customcore_redirect_local(string $path, int $statusCode = 303): void
 }
 
 /**
- * How many directory levels below the project root the current script lives in.
- *
- * Examples: index.php => 0, admin/products.php => 1.
+ * Absolute filesystem path of the project root (parent of includes/).
  */
-function customcore_script_depth(): int
+function customcore_project_fs_root(): string
 {
-    $scriptName = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
-    $dirname = dirname($scriptName);
-    $dirname = trim($dirname, '/');
+    static $root = null;
 
-    if ($dirname === '' || $dirname === '.') {
-        return 0;
+    if ($root !== null) {
+        return $root;
     }
 
-    return substr_count($dirname, '/') + 1;
+    $resolved = realpath(dirname(__DIR__));
+    $root = $resolved !== false ? $resolved : dirname(__DIR__);
+
+    return $root;
 }
 
 /**
- * Build a relative href from the current script to a project-root path.
+ * Path of the running script relative to the project root.
+ *
+ * Examples: "index.php", "admin/products.php", "api/builder-price.php".
+ * Uses the filesystem so this stays correct when the project lives under a
+ * public subfolder such as /customcore/ or /~userid/customcore/.
+ */
+function customcore_script_project_path(): string
+{
+    static $rel = null;
+
+    if ($rel !== null) {
+        return $rel;
+    }
+
+    $projectRoot = customcore_project_fs_root();
+    $scriptFile = isset($_SERVER['SCRIPT_FILENAME']) ? (string) $_SERVER['SCRIPT_FILENAME'] : '';
+    $scriptReal = $scriptFile !== '' ? realpath($scriptFile) : false;
+
+    if ($scriptReal !== false) {
+        $rootNorm = rtrim(str_replace('\\', '/', $projectRoot), '/');
+        $scriptNorm = str_replace('\\', '/', $scriptReal);
+
+        if ($scriptNorm === $rootNorm) {
+            $rel = '';
+            return $rel;
+        }
+
+        $prefix = $rootNorm . '/';
+        if (str_starts_with($scriptNorm, $prefix)) {
+            $rel = substr($scriptNorm, strlen($prefix));
+            return $rel;
+        }
+    }
+
+    // Fallback when realpath is unavailable: only the SCRIPT_NAME basename tree
+    // cannot recover a multi-segment project path safely here.
+    $scriptName = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
+    $rel = ltrim(basename($scriptName), '/');
+
+    return $rel;
+}
+
+/**
+ * How many directory levels below the project root the current script lives in.
+ *
+ * Examples: index.php => 0, admin/products.php => 1.
+ * Depth is measured inside the project, never counting the public host folder
+ * that holds the whole application (e.g. public_html/customcore/).
+ */
+function customcore_script_depth(): int
+{
+    $rel = customcore_script_project_path();
+    $dir = dirname(str_replace('\\', '/', $rel));
+
+    if ($dir === '.' || $dir === '') {
+        return 0;
+    }
+
+    return substr_count($dir, '/') + 1;
+}
+
+/**
+ * Build a browser href for a project-root path.
+ *
+ * Emits a site-root-absolute path that includes the project folder when the
+ * app is deployed under a subfolder, for example:
+ *   /customcore/assets/css/main.css
+ *   /assets/css/main.css   (when the project is the virtual-host document root)
  *
  * @param string $path Path relative to the project root (e.g. "about.php", "assets/css/main.css").
  */
 function customcore_url(string $path = ''): string
 {
     $path = ltrim(str_replace('\\', '/', $path), '/');
-    $depth = customcore_script_depth();
-    $prefix = $depth > 0 ? str_repeat('../', $depth) : '';
+    $base = customcore_app_base_path(); // '' or '/customcore'
 
     if ($path === '') {
-        return $prefix === '' ? './' : $prefix;
+        return $base === '' ? '/' : $base . '/';
     }
 
-    return $prefix . $path;
+    return ($base === '' ? '' : $base) . '/' . $path;
 }
 
 /**
  * Project-root-relative path of the current script (e.g. "admin/products.php").
- *
- * Derives the path from SCRIPT_NAME and the known script depth, so it works
- * whether the app is served from the domain root or a subfolder such as
- * "/~yourid/customcore/". Returns an empty string if it cannot be determined.
  */
 function customcore_current_project_path(): string
 {
-    $scriptName = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
-    $segments = array_values(array_filter(explode('/', $scriptName), static fn (string $s): bool => $s !== ''));
-    if ($segments === []) {
-        return '';
-    }
-
-    $take = min(customcore_script_depth() + 1, count($segments));
-
-    return implode('/', array_slice($segments, -$take));
+    return customcore_script_project_path();
 }
 
 /**
- * URL path of the project root (the part of SCRIPT_NAME before the current
- * project-relative path). Empty string when the app is served from the
- * document root. Consistent with customcore_url()'s depth model.
+ * URL path of the project root relative to the host (no trailing slash).
+ *
+ * Empty string when the project is the document root.
+ * "/customcore" when files live in public_html/customcore/.
+ * Works without filling in config base_url.
  */
 function customcore_app_base_path(): string
 {
-    $scriptName = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
-    $segments = array_values(array_filter(explode('/', $scriptName), static fn (string $s): bool => $s !== ''));
-    if ($segments === []) {
-        return '';
+    static $base = null;
+
+    if ($base !== null) {
+        return $base;
     }
 
-    $take = min(customcore_script_depth() + 1, count($segments));
-    $baseParts = array_slice($segments, 0, max(0, count($segments) - $take));
+    // 1) Most reliable on shared hosting: document root vs project filesystem path.
+    $docRoot = isset($_SERVER['DOCUMENT_ROOT']) ? realpath((string) $_SERVER['DOCUMENT_ROOT']) : false;
+    $projectRoot = customcore_project_fs_root();
 
-    return $baseParts === [] ? '' : '/' . implode('/', $baseParts);
+    if ($docRoot !== false) {
+        $docNorm = rtrim(str_replace('\\', '/', $docRoot), '/');
+        $projNorm = rtrim(str_replace('\\', '/', $projectRoot), '/');
+
+        if ($projNorm === $docNorm) {
+            $base = '';
+            return $base;
+        }
+
+        if (str_starts_with($projNorm, $docNorm . '/')) {
+            $web = substr($projNorm, strlen($docNorm));
+            $base = $web === false || $web === '' ? '' : rtrim($web, '/');
+            if ($base !== '' && !str_starts_with($base, '/')) {
+                $base = '/' . $base;
+            }
+            return $base;
+        }
+    }
+
+    // 2) Strip the project-relative script path off SCRIPT_NAME.
+    $scriptName = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
+    $projectRel = customcore_script_project_path();
+
+    if ($projectRel !== '' && $scriptName !== '') {
+        $name = str_starts_with($scriptName, '/') ? $scriptName : '/' . $scriptName;
+        $suffix = '/' . ltrim($projectRel, '/');
+
+        if (str_ends_with($name, $suffix)) {
+            $prefix = substr($name, 0, -strlen($suffix));
+            $base = ($prefix === false || $prefix === '/' || $prefix === '') ? '' : rtrim($prefix, '/');
+            return $base;
+        }
+    }
+
+    // 3) Optional configured base_url path (full absolute URLs for SEO only usually).
+    $app = customcore_app_config();
+    $configured = isset($app['base_url']) ? trim((string) $app['base_url']) : '';
+    if ($configured !== '') {
+        $urlPath = parse_url($configured, PHP_URL_PATH);
+        if (is_string($urlPath) && $urlPath !== '' && $urlPath !== '/') {
+            $base = rtrim($urlPath, '/');
+            if ($base !== '' && !str_starts_with($base, '/')) {
+                $base = '/' . $base;
+            }
+            return $base;
+        }
+    }
+
+    $base = '';
+    return $base;
 }
 
 /**
