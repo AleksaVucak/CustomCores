@@ -49,6 +49,7 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 - [Customer workflow verification record](docs/customer-workflows.md)
 - [Administrator workflow verification record](docs/admin-workflows.md)
 - [100-point rubric audit (requirement → evidence)](docs/rubric-audit.md)
+- [Final defect resolution record](docs/final-defect-fixes.md)
 - [Security audit (SQL, escaping, CSRF, uploads)](docs/security-audit.md)
 
 ### Quick start
@@ -59,6 +60,10 @@ to manage the store. Non-programmers updating catalogue content should read the
 **[content update guide](docs/content-update-guide.md)**.
 
 ## Current status
+
+**Commit 15.9 complete — Stage 15 (Testing & QA) complete.** Resolve final rubric and usability defects.
+
+Ran a four-part closing sweep — static (grep for defect markers: 0 genuine; `php -l` on all 94 files: 0 syntax errors), a runtime `E_ALL` crawl of **every** page (30 public + edge cases and 25 authenticated customer + admin pages, driven by a disposable admin over HTTP), a usability/status-code pass, and targeted fixes. The `E_ALL` error log came back **empty — 0 notices/warnings/deprecations/fatals, 0 error leakage** across the entire site, with correct status codes everywhere. **One real usability/SEO defect was found and fixed:** nonexistent products returned HTTP 200 as a "soft 404" — `product.php` now returns a proper **404** for a missing/invalid/disabled product (while keeping the friendly styled page) and 200 only for real products or transient DB errors. Verified `id=1`→200 and `?id=999999`/`abc`/`0`/none→404. Non-defects (POST-only API `405`, `303` ownership guards, the `php -S` missing-file fallback) are documented. **No known critical or rubric-blocking issue remains;** the only outstanding rubric item is #11 (live hosting), prepared and deferred to Stage 16. Evidence: [`docs/final-defect-fixes.md`](docs/final-defect-fixes.md).
 
 **Commit 15.8 complete** — complete the 100-point rubric audit.
 

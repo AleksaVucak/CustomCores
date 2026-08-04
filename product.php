@@ -46,9 +46,11 @@ $approvedReviews = [];
 $reviewAverage = null;
 $reviewCount = 0;
 $detailError = null;
+$notFound = false;
 
 if ($productId < 1) {
     $detailError = 'Invalid product ID.';
+    $notFound = true;
 } else {
     try {
         $pdo = customcore_pdo();
@@ -70,6 +72,7 @@ if ($productId < 1) {
         if ($product === false) {
             $product = null;
             $detailError = 'Product not found or no longer available.';
+            $notFound = true;
         } else {
             $optStmt = $pdo->prepare(
                 'SELECT id, option_group, option_label, price_delta, is_default, sort_order
@@ -116,6 +119,14 @@ if ($productId < 1) {
             ? $exception->getMessage()
             : 'Product data is temporarily unavailable.';
     }
+}
+
+// A genuinely invalid or missing product is a real "Not Found", so send a 404
+// status (not a 200 "soft 404") to give browsers and search engines the correct
+// signal while still rendering the friendly styled shell below. A transient DB
+// error keeps the default 200 — the resource may exist, it is not "not found".
+if ($notFound && !headers_sent()) {
+    http_response_code(404);
 }
 
 // ---------------------------------------------------------------------------
