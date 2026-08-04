@@ -271,6 +271,8 @@ The site is 50 purposeful dynamic PHP pages: 30 public and customer pages, 17 ad
   [administrator workflows](docs/admin-workflows.md)
 - Live host runs: [production customer workflows (16.6)](docs/production-customer-workflows.md) and
   [production administrator workflows (16.7)](docs/production-admin-workflows.md)
+- [Repository cleanup (17.3)](docs/repository-cleanup.md) — temp/junk removal, secret hygiene, and
+  `php database/verify-config.php` checks
 - [Theme testing](docs/theme-testing.md) and [final defect fixes](docs/final-defect-fixes.md)
 
 ---

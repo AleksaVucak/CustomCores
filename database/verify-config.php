@@ -298,7 +298,127 @@ if (!is_readable($dbPath)) {
 }
 
 // ---------------------------------------------------------------------------
-// 5. Summary (still credential-free)
+// 5. Working-tree hygiene (Stage 17.3) — no temp junk or credentials tracked
+// ---------------------------------------------------------------------------
+
+/**
+ * Return true when a relative path looks like accidental temp/debug junk.
+ */
+function cc_is_junk_path(string $relativePath): bool
+{
+    $name = basename(str_replace('\\', '/', $relativePath));
+    $lower = strtolower($name);
+
+    $exact = [
+        '.ds_store',
+        'thumbs.db',
+        'desktop.ini',
+        'phpinfo.php',
+        'error_log',
+        'chrome-err.txt',
+    ];
+    if (in_array($lower, $exact, true)) {
+        return true;
+    }
+
+    if (str_starts_with($lower, 'tmp-') || str_starts_with($lower, '__tmp')) {
+        return true;
+    }
+
+    if (str_contains($lower, 'cookies') && str_ends_with($lower, '.txt')) {
+        return true;
+    }
+
+    foreach (['.bak', '.backup', '.orig', '.rej', '.swp', '.tmp', '.temp', '.sql.gz', '.sql.dump', '.sql.bak', '.sql.local'] as $suffix) {
+        if (str_ends_with($lower, $suffix)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+// Tracked Git paths must never include secrets or temp junk.
+$gitLs = [];
+exec('git -C ' . escapeshellarg($root) . ' ls-files 2>/dev/null', $gitLs, $gitLsCode);
+if ($gitLsCode !== 0) {
+    cc_check_warn('Could not run git ls-files (skipped tracked-path hygiene checks)');
+} else {
+    $trackedJunk = [];
+    $trackedSecrets = [];
+    foreach ($gitLs as $tracked) {
+        $tracked = str_replace('\\', '/', (string) $tracked);
+        if ($tracked === 'config/database.php' || str_starts_with($tracked, 'config/') && str_ends_with($tracked, '.local.php')) {
+            $trackedSecrets[] = $tracked;
+            continue;
+        }
+        if (preg_match('/(^|\/)\.env($|\.)/', $tracked) === 1 && !str_ends_with($tracked, '.example')) {
+            $trackedSecrets[] = $tracked;
+            continue;
+        }
+        if (cc_is_junk_path($tracked)) {
+            $trackedJunk[] = $tracked;
+        }
+    }
+
+    if ($trackedSecrets === []) {
+        cc_check_ok('No credential files are tracked by Git (database.php / .env)');
+    } else {
+        cc_check_fail('Tracked secret paths must be removed: ' . implode(', ', $trackedSecrets));
+    }
+
+    if ($trackedJunk === []) {
+        cc_check_ok('No temporary or OS junk files are tracked by Git');
+    } else {
+        cc_check_fail('Tracked junk paths must be removed: ' . implode(', ', $trackedJunk));
+    }
+}
+
+// Untracked junk on disk (warn so developers delete without blocking local work).
+$onDiskJunk = [];
+$iterator = new RecursiveIteratorIterator(
+    new RecursiveDirectoryIterator($root, FilesystemIterator::SKIP_DOTS)
+);
+foreach ($iterator as $fileInfo) {
+    if (!$fileInfo instanceof SplFileInfo || !$fileInfo->isFile()) {
+        continue;
+    }
+    $absolute = $fileInfo->getPathname();
+    $relative = str_replace('\\', '/', substr($absolute, strlen($root) + 1));
+    if (str_starts_with($relative, '.git/')) {
+        continue;
+    }
+    // Real credentials file is expected locally; it is only a problem if tracked (checked above).
+    if ($relative === 'config/database.php') {
+        continue;
+    }
+    if (cc_is_junk_path($relative)) {
+        $onDiskJunk[] = $relative;
+    }
+}
+
+if ($onDiskJunk === []) {
+    cc_check_ok('Working tree has no leftover temp, backup, or OS junk files');
+} else {
+    $preview = array_slice($onDiskJunk, 0, 8);
+    $extra = count($onDiskJunk) > 8 ? ' (+' . (count($onDiskJunk) - 8) . ' more)' : '';
+    if ($productionMode) {
+        cc_check_fail(
+            'Delete leftover junk before production packaging: '
+            . implode(', ', $preview)
+            . $extra
+        );
+    } else {
+        cc_check_warn(
+            'Leftover junk on disk (delete when packaging): '
+            . implode(', ', $preview)
+            . $extra
+        );
+    }
+}
+
+// ---------------------------------------------------------------------------
+// 6. Summary (still credential-free)
 // ---------------------------------------------------------------------------
 
 echo str_repeat('-', 52) . PHP_EOL;

@@ -54,8 +54,25 @@ temp/
 *.tmp
 *.temp
 *.bak
+*.backup
+*.orig
+*.rej
 *.swp
 *~
+error_log
+
+# One-off browser/session dumps and ad-hoc temp scripts (never ship these)
+tmp-*
+/tmp-*.txt
+*cookies*.txt
+__tmp*.php
+/__tmp*/
+.php-server.pid
+
+# Headless / automation browser profiles dropped under the tree by mistake
+.chrome-profile/
+**/.chrome-profile/
+chrome-err.txt
 
 # -----------------------------------------------------------------------------
 # Operating system files
@@ -94,6 +111,9 @@ Desktop.ini
 *.sql.gz
 *.sql.bak
 *.sql.dump
+*.sql.local
 /database/local/
 /database/exports/
 /database/*.local.sql
+/database/*-dump.sql
+/database/dump*.sql

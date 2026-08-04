@@ -166,4 +166,4 @@ When those boxes are checked, continue with the file upload and SQL import steps
 
 ## 7. Status
 
-**Summary.** CustomCore ships safe configuration templates for both secrets (`database.example.php`) and non-secret production flags (`app.php` plus `app.production.example.php`), keeps real credentials out of Git via `.gitignore`, exposes configurable project-relative storage paths, and provides `database/verify-config.php` to prove the repository remains free of real database passwords.
+**Summary.** CustomCore ships safe configuration templates for both secrets (`database.example.php`) and non-secret production flags (`app.php` plus `app.production.example.php`), keeps real credentials out of Git via `.gitignore`, exposes configurable project-relative storage paths, and provides `database/verify-config.php` to prove the repository remains free of real database passwords and free of tracked temporary or credential-like junk (see also [`repository-cleanup.md`](repository-cleanup.md)).
