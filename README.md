@@ -44,6 +44,7 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 - [HTML validation record](docs/html-validation.md)
 - [CSS validation record](docs/css-validation.md)
 - [JavaScript / console verification record](docs/js-validation.md)
+- [Desktop responsiveness record](docs/responsiveness-desktop.md)
 - [Security audit (SQL, escaping, CSRF, uploads)](docs/security-audit.md)
 
 ### Quick start
@@ -54,6 +55,10 @@ to manage the store. Non-programmers updating catalogue content should read the
 **[content update guide](docs/content-update-guide.md)**.
 
 ## Current status
+
+**Commit 15.4 complete** — desktop responsiveness testing.
+
+Drove the running site in a real Chromium tab and, at **1024 / 1280 / 1440 / 1920 px**, ran an automated horizontal-overflow probe (page `scrollWidth` vs `innerWidth`, plus a per-element check that ignores intended `overflow-x` scroll wrappers) across **40 page states** — **15 public**, **11 customer**, and **14 admin**. Signed-in and admin coverage used a disposable customer (registered, added to cart, placed an order to populate order views) briefly promoted to admin via a temporary DB helper; the account, its order, and the helper files were then **deleted**, returning the store to its pre-test state. **Result: 40/40 Pass, 0 unintended horizontal overflow, 0 clipped or broken layouts, 0 defects — no CSS changes needed.** Confirmed the shell caps at **1120 px** (`--cc-width-max`) and centres on wide screens, and that wide admin tables + the four-way comparison table scroll **inside their cards** (`overflow-x:auto`), never the page. Evidence: [`docs/responsiveness-desktop.md`](docs/responsiveness-desktop.md). Next: Commit **15.5** — mobile responsiveness testing.
 
 **Commit 15.3 complete** — verify JavaScript and browser console.
 
