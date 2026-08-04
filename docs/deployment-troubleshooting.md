@@ -3,7 +3,7 @@
 **Document type:** Project documentation
 **Purpose:** Take a working local install to a live server (with `myweb.cs.uwindsor.ca`-style shared PHP/MySQL hosting as the primary target) and provide a practical troubleshooting reference for the most likely problems.
 **Audience:** Whoever deploys and maintains the live site.
-**Related:** host capability checklist in [`docs/production-requirements.md`](production-requirements.md); first-time setup in [`docs/installation-guide.md`](installation-guide.md); database import/backup in [`docs/database-import.md`](database-import.md); admin tasks in [`docs/administrator-guide.md`](administrator-guide.md).
+**Related:** host capability checklist in [`docs/production-requirements.md`](production-requirements.md); secret-free production flags and paths in [`docs/production-configuration.md`](production-configuration.md); first-time setup in [`docs/installation-guide.md`](installation-guide.md); database import/backup in [`docs/database-import.md`](database-import.md); admin tasks in [`docs/administrator-guide.md`](administrator-guide.md).
 
 ---
 
@@ -27,6 +27,8 @@ writable uploads, browser baselines, and a `myweb.cs.uwindsor.ca` match table).
 Before uploading, confirm on your local copy **and** on the host:
 
 - [ ] The host passes the pre-upload checklist in [`production-requirements.md`](production-requirements.md) section 9.
+- [ ] Production config templates are used: real secrets only in gitignored `config/database.php`; `debug` is `false` (see [`production-configuration.md`](production-configuration.md)).
+- [ ] `php database/verify-config.php --production` reports PASS on the host (or will, after `database.php` exists).
 - [ ] The site passes the section 9 smoke test in [`docs/installation-guide.md`](installation-guide.md).
 - [ ] `config/app.php → debug` is **`false`**.
 - [ ] `config/app.php → environment` is set to `production` for the live copy.

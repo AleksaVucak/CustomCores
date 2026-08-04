@@ -3,9 +3,9 @@
 **Document type:** Project documentation
 **Purpose:** Let a new developer or grader install CustomCore from a clean checkout to a fully working site — locally or on a fresh server — without relying on undocumented steps.
 **Audience:** Developers and graders with basic command-line and MySQL familiarity.
-**Related:** host capability checklist in [`docs/production-requirements.md`](production-requirements.md); database detail in [`docs/database-import.md`](database-import.md); config in [`config/README.md`](../config/README.md); production upload steps and problem-solving in [`docs/deployment-troubleshooting.md`](deployment-troubleshooting.md).
+**Related:** host capability checklist in [`production-requirements.md`](production-requirements.md); secret-free config templates in [`production-configuration.md`](production-configuration.md); database detail in [`database-import.md`](database-import.md); config folder notes in [`../config/README.md`](../config/README.md); production upload steps and problem-solving in [`deployment-troubleshooting.md`](deployment-troubleshooting.md).
 
-> Before hosting publicly, confirm the server matches the **[production server requirements](production-requirements.md)** checklist (PHP modules, MySQL engine, permissions, browsers). Live upload steps and troubleshooting live in the companion **[deployment & troubleshooting guide](deployment-troubleshooting.md)**. This document gets you running from scratch; that pair gets you online.
+> Before hosting publicly, confirm the server matches the **[production server requirements](production-requirements.md)** checklist (PHP modules, MySQL engine, permissions, browsers). Keep credentials out of Git using the **[production configuration](production-configuration.md)** templates. Live upload steps and troubleshooting live in the companion **[deployment & troubleshooting guide](deployment-troubleshooting.md)**. This document gets you running from scratch.
 
 ---
 

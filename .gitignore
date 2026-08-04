@@ -1,5 +1,5 @@
 # =============================================================================
-# CustomCore — Git ignore rules
+# CustomCore Git ignore rules
 # Keeps secrets, local environment files, uploads, and tooling junk out of Git.
 # =============================================================================
 
@@ -8,9 +8,18 @@
 # Real database credentials must never be committed. Use database.example.php.
 # -----------------------------------------------------------------------------
 /config/database.php
+/config/database.local.php
+/config/*.local.php
 .env
 .env.*
 !.env.example
+
+# Private key material if anyone drops it into the tree by mistake
+*.pem
+*.p12
+*.pfx
+id_rsa
+id_rsa.pub
 
 # -----------------------------------------------------------------------------
 # Uploaded user and admin content (directory placeholders use .gitkeep)
@@ -84,5 +93,7 @@ Desktop.ini
 # -----------------------------------------------------------------------------
 *.sql.gz
 *.sql.bak
+*.sql.dump
 /database/local/
 /database/exports/
+/database/*.local.sql

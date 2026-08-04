@@ -39,6 +39,9 @@ For production hosting (including `myweb.cs.uwindsor.ca`), permissions, enabled 
 browser support, and a pre-upload host checklist, use the full
 [production server requirements](docs/production-requirements.md) document.
 
+How to keep secrets out of Git, set production flags, and configure storage paths is in
+[production configuration](docs/production-configuration.md).
+
 ---
 
 ## Install
@@ -195,6 +198,7 @@ The site is 50 purposeful dynamic PHP pages: 30 public and customer pages, 17 ad
 **Setting Up And Running**
 
 - [Production server requirements](docs/production-requirements.md)
+- [Production configuration (secrets and paths)](docs/production-configuration.md)
 - [Installation guide](docs/installation-guide.md)
 - [Database import guide](docs/database-import.md)
 - [Deployment and troubleshooting](docs/deployment-troubleshooting.md)

@@ -5,11 +5,16 @@
  * COMP 3340, Final Project
  * August 5th, 2026
  */
-// Application configuration (non-secret).
-// Central place for site-wide settings that are safe to store in Git. Database credentials do NOT
-// belong here, use config/database.php instead.
+// Application configuration (non-secret; safe to commit).
+// Central place for site-wide settings that are NOT credentials.
+// Database username and password live only in config/database.php (gitignored).
+//
 // Usage:
-//   $app = require __DIR__. '/app.php';
+//   $app = require __DIR__ . '/app.php';
+//
+// Local development: keep environment = 'local'.
+// Production (university host): set environment = 'production' and debug = false
+// (see config/app.production.example.php for a full production copy to compare).
 
 declare(strict_types=1);
 
@@ -21,58 +26,60 @@ return [
     'tagline' => 'Custom gaming PC store and guided PC builder',
 
     /**
-     * Environment label.
-     * Use "local" while developing and "production" on the university host.
+     * Environment label shown in admin tooling awareness only.
+     * Allowed values in practice: 'local' | 'production'
+     * Use 'production' on myweb.cs.uwindsor.ca after you upload.
      */
     'environment' => 'local',
 
     /**
      * Debug mode.
-     * When true, development-only messages may be shown.
-     * Must be false on the live university server so credentials and stack
-     * traces are never exposed to visitors.
+     * When true, some helpers may show more detail to help development.
+     * MUST be false on any public host so stack traces and database clues
+     * never reach visitors. Default below is already production-safe.
      */
     'debug' => false,
 
     /**
-     * Base URL of the site with no trailing slash, if needed for absolute links.
-     * Example production value: https://myweb.cs.uwindsor.ca/~yourid/customcore
-     * Leave empty to use relative URLs (preferred for simple shared hosting).
-     *
-     * When set, absolute SEO URLs (canonical tags and sitemap.php / sitemap.xml)
-     * also use this value. After changing it on a live host, regenerate the
-     * static snapshot with: php sitemap.php --write
-     * (or: php sitemap.php --write --base=https://your-host/path).
+     * Base URL of the site with no trailing slash.
+     * Leave empty to use depth-safe relative URLs (recommended on shared hosting).
+     * Set only when absolute canonical / sitemap URLs are required, for example:
+     *   https://myweb.cs.uwindsor.ca/~yourUWinID/customcore
+     * After changing it on a live host, regenerate the static sitemap snapshot:
+     *   php sitemap.php --write
      */
     'base_url' => '',
 
     // Default timezone for PHP date/time functions
     'timezone' => 'America/Toronto',
 
-    // Custom session cookie name (helps avoid collisions on shared hosts)
+    // Custom session cookie name (avoids collisions on shared multi-app hosts)
     'session_name' => 'CUSTOMCORESESSID',
 
     /**
-     * Session security timeouts, in seconds. Set to 0 to disable.
-     * session_idle_timeout, log out after this long with no activity.
-     * session_absolute_timeout, hard cap on a single session's total life.
-     * session_regenerate_interval, rotate the session ID this often to shrink
-     * any fixation / stolen-cookie replay window.
+     * Session security timeouts, in seconds. Set a value to 0 to disable that limit.
+     * idle: log out after this long with no request activity
+     * absolute: hard cap on total session life even with activity
+     * regenerate: rotate the session id this often (limits stolen-cookie replay)
      */
     'session_idle_timeout' => 1800,          // 30 minutes
     'session_absolute_timeout' => 43200,     // 12 hours
     'session_regenerate_interval' => 900,    // 15 minutes
 
-    // Default theme slug used if the database setting is missing
+    // Default theme slug if the database setting is missing (must match a CSS file in assets/themes/)
     'default_theme' => 'rgb-gaming',
 
-    // Upload limits referenced by validation+), size in bytes
+    // Maximum upload size in bytes for product images and consultation attachments
     'upload_max_bytes' => 2 * 1024 * 1024,
 
-    // Allowed consultation attachment extensions+)
+    // Allowed consultation attachment extensions (product images use a separate image allow-list)
     'upload_allowed_extensions' => ['pdf', 'txt', 'png', 'jpg', 'jpeg', 'webp'],
 
-    // Relative paths from the project root
+    /**
+     * Project-relative paths (no leading slash). Change only if you deliberately
+     * relocate storage on disk. Paths stay under the project tree so shared hosts
+     * without special mount points still work. Never put absolute system paths here.
+     */
     'paths' => [
         'uploads_consultation' => 'uploads/consultation',
         'uploads_products' => 'uploads/products',
@@ -105,8 +112,8 @@ return [
         'image' => 'assets/images/map/storefront-exterior.jpg',
         'image_alt' => 'Modest computer service storefront with charcoal, white, and teal details.',
         'hours' => [
-            'Monday, Friday' => '10:00 a.m., 7:00 p.m.',
-            'Saturday' => '11:00 a.m., 5:00 p.m.',
+            'Monday to Friday' => '10:00 a.m. to 7:00 p.m.',
+            'Saturday' => '11:00 a.m. to 5:00 p.m.',
             'Sunday' => 'Closed',
         ],
     ],

@@ -193,6 +193,7 @@ If the host offers a **PHP version selector**, always pick 8.x. If MySQL is expo
 
 | Document | Use it for |
 | -------- | ---------- |
+| [`production-configuration.md`](production-configuration.md) | Secret-free templates, paths, and verify-config |
 | [`installation-guide.md`](installation-guide.md) | Clean checkout → working local or server install |
 | [`deployment-troubleshooting.md`](deployment-troubleshooting.md) | Upload, production `app.php` flags, permissions, live smoke list, symptom table |
 | [`database-import.md`](database-import.md) | Schema/seed order, verification queries, backup/restore |
