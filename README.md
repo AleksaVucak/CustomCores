@@ -229,7 +229,7 @@ customcore/
 └── *.php           Public and customer facing pages
 ```
 
-The site is 50 purposeful dynamic PHP pages: 30 public and customer pages, 17 administrator pages, and
+The site is 51 purposeful dynamic PHP pages: 31 public and customer pages (including privacy and the live SEO sitemap endpoint), 17 administrator pages, and
 3 API endpoints, backed by a 21 table MySQL schema. Full detail is in
 [directory-structure.md](docs/directory-structure.md).
 
@@ -241,6 +241,7 @@ The site is 50 purposeful dynamic PHP pages: 30 public and customer pages, 17 ad
 
 - [Production server requirements](docs/production-requirements.md)
 - [Production configuration (secrets and paths)](docs/production-configuration.md)
+- [Configuration folder README](config/README.md)
 - [Installation guide](docs/installation-guide.md)
 - [Database import guide](docs/database-import.md)
 - [Deployment and troubleshooting](docs/deployment-troubleshooting.md)
@@ -250,15 +251,18 @@ The site is 50 purposeful dynamic PHP pages: 30 public and customer pages, 17 ad
 - [Administrator guide](docs/administrator-guide.md)
 - [Content update guide](docs/content-update-guide.md)
 - [Monitoring troubleshooting](docs/monitoring-troubleshooting.md)
+- [Help context-link map](docs/help-context-links.md)
 
 **Design And Architecture**
 
 - [Business case](docs/business-case.md)
 - [Database design](docs/database-design.md)
+- [Directory structure](docs/directory-structure.md)
 - [Front end documentation](docs/frontend-documentation.md)
 - [Sitemap](docs/sitemap.md)
 - [Wireframes](docs/wireframes.md)
 - [Security audit](docs/security-audit.md)
+- [Media credits](docs/media-credits.md) and [image prompts](docs/image-prompts.md)
 
 **Testing And Quality Records**
 
@@ -273,7 +277,9 @@ The site is 50 purposeful dynamic PHP pages: 30 public and customer pages, 17 ad
   [production administrator workflows (16.7)](docs/production-admin-workflows.md)
 - [Repository cleanup (17.3)](docs/repository-cleanup.md) — temp/junk removal, secret hygiene, and
   `php database/verify-config.php` checks
-- [Theme testing](docs/theme-testing.md) and [final defect fixes](docs/final-defect-fixes.md)
+- [Documentation finalization (17.4)](docs/documentation-finalization.md) — README index and link audit
+- [Theme testing](docs/theme-testing.md), [final defect fixes](docs/final-defect-fixes.md), and
+  [flash message system notes](docs/flash-messages.md)
 
 ---
 
@@ -283,6 +289,7 @@ The site is 50 purposeful dynamic PHP pages: 30 public and customer pages, 17 ad
 - `config/database.php` is intentionally absent from version control. Copy
   `config/database.example.php` and add local credentials before running.
 - Sample media and imagery are credited in [media-credits.md](docs/media-credits.md).
+- The shared site footer includes Privacy and Accessibility pages (`privacy.php`, `accessibility.php`).
 - The administrator area cannot be reached without an administrator account, so create one with
   `php database/create-admin.php` before reviewing those pages (or use the host's existing admin).
 - For a time-boxed walkthrough of the public host, start at the [live URL](https://vucaka.myweb.cs.uwindsor.ca/customcore/)

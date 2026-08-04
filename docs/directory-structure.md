@@ -40,8 +40,8 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 
 | Path | Responsibility |
 | ---- | -------------- |
-| `admin/` | Protected admin UI (products, options, compatibility, orders, users, consultations, reviews, reports, themes) |
-| `api/` | Builder price, compatibility, search, chart data |
+| `admin/` | Protected admin UI (products, options, compatibility, orders, users, consultations, reviews, reports, themes, monitoring) |
+| `api/` | Builder price, compatibility check, and chart data JSON endpoints |
 | `assets/css/` | External CSS (`main.css` for the storefront, `admin.css` for the back office) |
 | `assets/themes/` | RGB Gaming (`rgb-gaming.css`), Minimal Professional (`minimal-pro.css`), Cyber Grid (`cyber-grid.css`) |
 | `assets/js/` | External JS (`main.js`, builder, cart, checkout, reviews, contact, `store-map.js`, `catalogue-chart.js`, `admin-reports.js`, `help-hub.js`, validation, charts) |
@@ -49,11 +49,13 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `assets/media/` | ≥ 3 video/audio items + captions |
 | `config/` | `app.php` (non-secret settings), `app.production.example.php` (production flags template), `database.example.php` (credential template), gitignored `database.php` (real secrets) |
 | `database/` | Schema, seeds, create-admin script, connection test, `verify-config.php` hygiene checker |
-| `docs/` | Business case, rubric checklist, sitemap, wireframes, ER design, database import, media credits, image prompts, theme testing, Help context-link audit, production server requirements, production configuration (secrets and paths), installation / administrator / content / deployment guides, monitoring troubleshooting, security audit, repository cleanup (17.3), and the QA records (HTML, CSS, JavaScript, desktop and mobile responsiveness, customer and administrator workflows, production customer/admin workflow records, rubric audit, final defect resolution) |
+| `docs/` | Business case, rubric checklist, sitemap, wireframes, ER design, database import, media credits, image prompts, theme testing, Help context-link audit, production server requirements, production configuration (secrets and paths), installation / administrator / content / deployment guides, monitoring troubleshooting, security audit, repository cleanup (17.3), documentation finalization (17.4), and the QA records (HTML, CSS, JavaScript, desktop and mobile responsiveness, customer and administrator workflows, production customer/admin workflow records, rubric audit, final defect resolution) |
 | `help/` | Static Help hub (`index.html`) plus topic articles (`pc-builder.html`, `accounts.html`, `catalogue.html`, `orders.html`, `support.html`, `training.html`) |
 | `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, theme, admin, admin-nav, admin-products, admin-product-form, admin-options, admin-compatibility, admin-orders, admin-users, admin-consultations, admin-reviews, admin-reports, admin-themes, compatibility, performance, monitoring, seo |
 | `uploads/consultation/` | Validated consultation files; `index.php` + `.htaccess` deny all direct web access (served only via download endpoints) |
 | `uploads/products/` | Product images uploaded by admin; `index.php` + `.htaccess` block script execution (images still served) |
+
+Root feature pages include the public storefront, accounts, PC builder, privacy and accessibility statements, SEO `sitemap.php`, and related customer tools. Count: **51** purposeful dynamic PHP files (31 project-root + 17 admin + 3 API).
 
 ---
 

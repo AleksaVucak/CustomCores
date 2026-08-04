@@ -49,6 +49,7 @@ function customcore_seo_public_pages(): array
         ['path' => 'media.php', 'changefreq' => 'monthly', 'priority' => '0.7'],
         ['path' => 'store-locations.php', 'changefreq' => 'monthly', 'priority' => '0.6'],
         ['path' => 'contact.php', 'changefreq' => 'yearly', 'priority' => '0.5'],
+        ['path' => 'privacy.php', 'changefreq' => 'yearly', 'priority' => '0.4'],
         ['path' => 'accessibility.php', 'changefreq' => 'yearly', 'priority' => '0.4'],
 
         // Guest account entry points (public forms)

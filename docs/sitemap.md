@@ -10,9 +10,9 @@
 
 | Category | Assignment minimum | CustomCore plan |
 | -------- | -----------------: | --------------: |
-| Dynamic PHP pages | ~20 | **48** (purposeful pages listed below) |
+| Dynamic PHP pages | ~20 | **51** (31 public/customer + 17 admin + 3 API) |
 | Static pages | 5 Help pages | **7** static Help/training HTML pages |
-| Total planned user-facing documents | >25 | **55** |
+| Total planned user-facing documents | >25 | **58** (51 dynamic + 7 Help) |
 
 Empty placeholder pages are not allowed. Every route below maps to a real feature in the roadmap.
 
@@ -75,7 +75,12 @@ Empty placeholder pages are not allowed. Every route below maps to a real featur
 | 29 | `consultation-history.php` | Customer’s requests and admin responses | Customer | `help/support.html` |
 
 **Private customer subtotal: 12 dynamic pages**
-**Customer-facing total (public + private): 29**
+**Customer-facing total (public + private): 29** (see also protected download and SEO endpoints below)
+
+| # | File | Purpose | Access | Context-sensitive Help |
+| - | ---- | ------- | ------ | ---------------------- |
+| 29a | `consultation-attachment.php` | Authenticated download of a customer’s own consultation file | Customer | `help/support.html` |
+| 29b | `sitemap.php` | Live public SEO XML sitemap (no private URLs) | Public | — |
 
 ---
 
@@ -96,12 +101,14 @@ All routes live under `admin/` and require administrator authorization.
 | 38 | `admin/users.php` | Search users; disable / re-enable | Admin |
 | 39 | `admin/user-edit.php` | Inspect / update user account admin fields | Admin |
 | 40 | `admin/consultations.php` | Review requests, respond, manage status | Admin |
-| 41 | `admin/reviews.php` | Moderate reviews (approve / hide / delete) | Admin |
-| 42 | `admin/themes.php` | Select and save active site theme | Admin |
-| 43 | `admin/reports.php` | Charts for orders, products, users, inventory | Admin |
-| 44 | `admin/monitoring.php` | Health checks: online / warning / offline | Admin |
+| 41 | `admin/consultation-details.php` | Single consultation detail and reply | Admin |
+| 42 | `admin/consultation-attachment.php` | Admin download of consultation attachments | Admin |
+| 43 | `admin/reviews.php` | Moderate reviews (approve / hide / delete) | Admin |
+| 44 | `admin/themes.php` | Select and save active site theme | Admin |
+| 45 | `admin/reports.php` | Charts for orders, products, users, inventory | Admin |
+| 46 | `admin/monitoring.php` | Health checks: online / warning / offline | Admin |
 
-**Admin subtotal: 15 dynamic pages**
+**Admin subtotal: 17 dynamic pages**
 
 ---
 
@@ -111,13 +118,12 @@ Lightweight endpoints used by JavaScript. They count toward the dynamic PHP file
 
 | # | File | Purpose | Access |
 | - | ---- | ------- | ------ |
-| 45 | `api/builder-price.php` | Trusted server-side price recalculation | Public POST with validation |
-| 46 | `api/compatibility-check.php` | Server-side compatibility result (compatible / warning / incompatible) | Public POST with validation |
-| 47 | `api/product-search.php` | JSON/HTML fragment search support for catalogue UI | Public GET |
-| 48 | `api/chart-data.php` | Data for public and admin charts | Public or admin as appropriate |
+| 47 | `api/builder-price.php` | Trusted server-side price recalculation | Public POST with validation |
+| 48 | `api/compatibility-check.php` | Server-side compatibility result (compatible / warning / incompatible) | Public POST with validation |
+| 49 | `api/chart-data.php` | Data for public and admin charts | Public or admin as appropriate |
 
-**API subtotal: 4 dynamic pages**
-**Grand total dynamic PHP: 48**
+**API subtotal: 3 dynamic pages**
+**Grand total dynamic PHP: 51** (31 project-root + 17 admin + 3 API)
 
 ---
 
@@ -230,17 +236,17 @@ Monitoring
 
 Use this before claiming rubric #10a / B3 complete:
 
-- [ ] At least **20** distinct dynamic `.php` files exist and each serves a real purpose
-- [ ] Prefer confirming **48** planned files (or an updated count if the list changes)
-- [ ] At least **5** separate static Help `.html` files exist
-- [ ] Context-sensitive Help links match Section 2–3 and Section 6
-- [ ] `sitemap.xml` (SEO) lists only public URLs
-- [ ] No duplicate “shell” pages created only to inflate counts
+- [x] At least **20** distinct dynamic `.php` files exist and each serves a real purpose
+- [x] Confirmed **51** purposeful dynamic PHP files (31 public/customer including `privacy.php` and `sitemap.php`, 17 admin, 3 API)
+- [x] At least **5** separate static Help `.html` files exist (**7** shipped)
+- [x] Context-sensitive Help links match Section 2–3 and Section 6 ([`help-context-links.md`](help-context-links.md))
+- [x] `sitemap.xml` / live `sitemap.php` list only public URLs (includes `privacy.php`)
+- [x] No duplicate “shell” pages created only to inflate counts
 
-**Acceptance:** This document plans **48 dynamic PHP pages** and **7 static Help/training pages**, which exceeds “at least 20 dynamic and five static pages.”
+**Acceptance:** This document records **51 dynamic PHP pages** and **7 static Help/training pages**, which exceeds “at least 20 dynamic and five static pages.”
 
 ---
 
 ## 13. Status
 
-**Summary.** Every route above is implemented on top of the shared layout. Update this file if a route is renamed, merged, or split, and mirror the change in `docs/rubric-checklist.md`.
+**Summary.** Every route above is implemented on top of the shared layout, including the public `privacy.php` policy page linked from the footer and Help wiki. Update this file if a route is renamed, merged, or split, and mirror the change in `docs/rubric-checklist.md`.

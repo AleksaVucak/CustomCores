@@ -34,7 +34,7 @@ Live counts (audit date):
 | Help pages | `ls help/*.html` | **7** |
 | Images | recursive image find under `assets/images/` | **33** (20 products + 13 site) |
 | Media files | `assets/media/` (excl. captions) | **3** (2× MP4 + 1× MP3) |
-| Dynamic PHP pages | `*.php` + `admin/*.php` + `api/*.php` | **50** (30 public/customer + 17 admin + 3 API) |
+| Dynamic PHP pages | `*.php` + `admin/*.php` + `api/*.php` | **51** (31 public/customer/root + 17 admin + 3 API) |
 | SEO assets | `favicon.svg`, `site.webmanifest`, `sitemap.xml`, `robots.txt` | all present, all HTTP 200 |
 
 All 19 public/SEO URLs returned **200**; all 7 Help pages returned **200**; `profile.php`/`cart.php`/`checkout.php`/`admin/index.php` returned **303 → login** (correct access control).
@@ -54,7 +54,7 @@ All 19 public/SEO URLs returned **200**; all 7 Help pages returned **200**; `pro
 | 6 | 8 | All code properly commented (HTML/CSS/JS/SQL) | (source) | `assets/css/*`, `assets/js/*`, HTML views (41 templates), SQL seeds/schema | **14.6–14.7:** numbered CSS section headers; purpose-first `<!-- -->` view comments; JS file headers + JSDoc on named functions; **15.3** static-checked 11 JS modules (0 failures) | **Complete** |
 | 7 | 10 | Help wiki ≥ 5 pages + context-sensitive links | `help/index.html` + 6 guides (all 200) | `help/{index,accounts,catalogue,pc-builder,orders,support,training}.html`; `docs/help-context-links.md` | **15.8:** 7 Help pages all HTTP 200 (exceeds 5); **11.7** context-link audit maps each feature page to its matching article + anchor | **Complete** |
 | 9 | 4 | Responsive main menu | every page (shared nav) | `includes/navigation.php`; `assets/css/main.css` + themes; `assets/js/main.js` | **15.4 + 15.5:** desktop (1024–1920) and mobile (320–768) nav usable; mobile toggle, Escape, focus trap; 40/40 page states Pass | **Complete** |
-| 10a | 4 | ~ 20 dynamic HTML/PHP pages | 47 pages + 3 API endpoints | 30 public/customer `*.php`, 17 `admin/*.php`, 3 `api/*.php`; inventory in `docs/sitemap.md` | **15.8 count:** **50** purposeful dynamic PHP files (far above ~20); public/Help all 200, private/admin correctly gated — no empty placeholders | **Complete** |
+| 10a | 4 | ~ 20 dynamic HTML/PHP pages | 51 pages | 31 public/customer/root `*.php`, 17 `admin/*.php`, 3 `api/*.php`; inventory in `docs/sitemap.md` | **Final count:** **51** purposeful dynamic PHP files (far above ~20); public privacy page and SEO sitemap included; private/admin correctly gated — no empty placeholders | **Complete** |
 | 10b | 2 | ≥ 1 external CSS file | view-source, any page | `assets/css/main.css` (+ admin/print/theme CSS) | **15.8:** `main.css` linked from `includes/header.php` (line 101); parsed clean in 15.2 (0 parse errors) | **Complete** |
 | 10c | 2 | ≥ 1 external JavaScript file | view-source, any page | `assets/js/main.js` (+ builder/cart/validation/charts/map) | **15.8:** `main.js` linked (`defer`) from `includes/footer.php` (line 49); **15.3** console sweep = 0 uncaught core errors | **Complete** |
 | 10d | 4 | ≥ 20 copyright-free images | catalogue/product/hero/media pages | `assets/images/**` (products, categories, hero, media, og, ui); credits `docs/media-credits.md` | **15.8 count:** **33** images (20 product + 13 site); every `img` has `alt` (15.1); licences/prompts documented (8.7) | **Complete** |

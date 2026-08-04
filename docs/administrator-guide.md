@@ -62,7 +62,7 @@ It shows:
 - **KPI counts** — products (active / inactive / low stock / out of stock), orders by status, users (customers / admins, active / disabled), reviews (pending / approved / hidden), consultations (open / in progress / answered / closed), and unread contact messages.
 - **Attention alerts** — an automatically prioritised to-do list: reviews awaiting moderation, consultations needing a response, orders in progress, out-of-stock and low-stock products, unread contact messages, and disabled accounts. Each alert links straight to the relevant tool.
 - **Recent activity** — the latest orders, pending reviews, open consultations, and low-stock products.
-- **Tool registry** — cards/links for every admin tool. Tools whose page does not yet exist show as "coming" and stay unlinked so the nav never 404s.
+- **Tool registry** — cards/links for every admin tool that is present in the codebase (products, options, compatibility, orders, users, consultations, reviews, reports, themes, and monitoring).
 
 "Low stock" means an **active** product with **1–5 units** remaining; "out of stock" means an active product with **0** units.
 
@@ -196,9 +196,15 @@ Switches the site-wide look. Logic lives in `includes/admin-themes.php`.
 
 ---
 
-## 13. Monitoring (`admin/monitoring.php`) — planned
+## 13. Monitoring (`admin/monitoring.php`)
 
-The tool registry lists a **Monitoring** page for service health checks (online / warning / offline). It is scheduled for a later stage; until its file exists, the dashboard shows it as unavailable and does not link to it.
+Live health checks and operational counts. Logic lives in `includes/monitoring.php`.
+
+- Opens only for administrators (`customcore_require_admin`). The page still renders if the database is offline, because access control uses the session.
+- Runs **seven independent checks** that never throw: PHP runtime/extensions, database, sessions, required files, upload folder writability, active theme stylesheet, and Learning Centre media assets.
+- Each check reports **online**, **warning**, or **offline**, with safe detail lines (no passwords). An overall banner shows the worst status and online/warning/offline counts.
+- A **live statistics** panel reuses dashboard-style MySQL totals (products, users, orders, consultations, product images, stock warnings) when the database is available.
+- Reload the page to re-run every check. Symptom-driven fixes are documented in [`docs/monitoring-troubleshooting.md`](monitoring-troubleshooting.md).
 
 ---
 
@@ -214,4 +220,4 @@ The tool registry lists a **Monitoring** page for service health checks (online 
 
 ## 15. Status
 
-**Summary.** Every shipped administrator tool (dashboard, products, options, compatibility, orders, users, consultations, reviews, reports, themes) is documented with its purpose, key actions, and safety rules, matched to the live pages and their `includes/admin-*.php` logic. Supports rubric rows **B7 / B8 (admin data + user administration)** and **B9 (admin user documentation)**.
+**Summary.** Every shipped administrator tool (dashboard, products, options, compatibility, orders, users, consultations, reviews, reports, themes, and monitoring) is documented with its purpose, key actions, and safety rules, matched to the live pages and their `includes/admin-*.php` / `includes/monitoring.php` logic. Supports rubric rows **B7 / B8 (admin data + user administration)**, **B9 (admin user documentation)**, and **B10 (backend monitoring)**.
