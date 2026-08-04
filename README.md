@@ -262,7 +262,6 @@ The site is 51 purposeful dynamic PHP pages: 31 public and customer pages (inclu
 
 **Testing And Quality Records**
 
-- [Rubric checklist](docs/rubric-checklist.md) and [rubric audit](docs/rubric-audit.md)
 - [HTML validation](docs/html-validation.md), [CSS validation](docs/css-validation.md),
  [JavaScript validation](docs/js-validation.md)
 - [Desktop responsiveness](docs/responsiveness-desktop.md) and

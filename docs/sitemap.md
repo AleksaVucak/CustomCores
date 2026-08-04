@@ -247,4 +247,4 @@ Use this before claiming rubric #10a / B3 complete:
 
 ## 13. Status
 
-**Summary.** Every route above is implemented on top of the shared layout, including the public `privacy.php` policy page linked from the footer and Help wiki. Update this file if a route is renamed, merged, or split, and mirror the change in `docs/rubric-checklist.md`.
+**Summary.** Every route above is implemented on top of the shared layout, including the public `privacy.php` policy page linked from the footer and Help wiki. Update this file if a route is renamed, merged, or split.

@@ -3,7 +3,7 @@
 **Document type:** Project documentation
 **Purpose:** Record the evidence-based audit of every SQL execution path, every dynamic output site, every state-changing request, and every file-upload path — confirming that no user input is concatenated into SQL, that all output is escaped, that every state-changing request requires a valid CSRF token, and that uploads are validated and dangerous files rejected.
 **Audience:** Developers, reviewers, and whoever maintains the live site.
-**Related:** session hardening in [`includes/functions.php`](../includes/functions.php) and the [rubric checklist](rubric-checklist.md).
+**Related:** session hardening in [`includes/functions.php`](../includes/functions.php).
 
 ---
 

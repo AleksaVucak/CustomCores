@@ -23,8 +23,7 @@
 | Link audit of `README.md` + all `docs/*.md` + `config/README.md` | **0** broken relative markdown links |
 | Help wiki `href` audit | Repaired missing target by shipping public **`privacy.php`** (footer + Help already linked it) |
 | Admin guide | Removed “monitoring planned / tools coming” language; §13 documents live monitoring |
-| Rubric checklist Section B | Marked B1, B2, B3, B12, B13 complete (and B9/B10 aligned with monitoring docs) |
-| Page-count truthfulness | **51** purposeful dynamic PHP files (31 root + 17 admin + 3 API); sitemap / README / directory / rubric counts aligned; removed obsolete `api/product-search.php` claim |
+| Page-count truthfulness | **51** purposeful dynamic PHP files (31 root + 17 admin + 3 API); sitemap / README / directory counts aligned; removed obsolete `api/product-search.php` claim |
 | SEO docs/inventory | `privacy.php` added to `customcore_seo_public_pages` and static `sitemap.xml` snapshot regenerated |
 | README Key Documentation | Expanded so install, architecture, media, Help map, production, cleanup, and this finalize record are one hop from the root |
 

@@ -105,7 +105,6 @@ Protected dashboard; product add/edit/disable, stock, price, and image managemen
 | Later document | How this business case feeds it |
 | --- | --- |
 | About page (`about.php`) | Full public business case derived from Sections 1–6 |
-| `docs/rubric-checklist.md` | Business-case row (#1) evidence points here and to About (checklist added during planning) |
 | `docs/sitemap.md` | Pages listed in Section 6 (sitemap added during planning) |
 | `docs/wireframes.md` | Layout/nav contract for core screens (added during planning) |
 | `docs/database-design.md` | Tables for catalogue, builder, accounts, and admin (ER design added during planning) |

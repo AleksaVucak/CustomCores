@@ -2,7 +2,7 @@
 
 **Document type:** Project documentation
 **Completion test:** *No known critical or rubric-blocking issue remains.*
-**Method:** A four-part final sweep of the whole project — static discovery, an `E_ALL` runtime crawl of **every** page (public + authenticated customer + admin), a usability / status-code / edge-case pass, and targeted fixes with re-verification. This builds on the earlier QA records for HTML, CSS, JavaScript and the console, desktop and mobile responsiveness, customer and administrator workflows, and the rubric audit.
+**Method:** A four-part final sweep of the whole project — static discovery, an `E_ALL` runtime crawl of **every** page (public + authenticated customer + admin), a usability / status-code / edge-case pass, and targeted fixes with re-verification. This builds on the earlier QA records for HTML, CSS, JavaScript and the console, desktop and mobile responsiveness, and customer and administrator workflows.
 
 **Outcome:1 real usability/SEO defect found and fixed** (soft-404 on nonexistent products). Everything else came back clean. No critical or rubric-blocking issue remains.
 
@@ -99,4 +99,4 @@ The 404 response still renders the complete page chrome (header, nav, footer) an
 - **Status codes:** correct across pages, guards, and edge cases.
 - **Test data:** disposable admin removed; store back to baseline.
 
-**No known critical or rubric-blocking issue remains — testing and QA is complete.** The only outstanding rubric item is #11 (live hosting), which is prepared and deferred to deployment by design (see [`rubric-audit.md`](rubric-audit.md)).
+**No known critical issue remains — testing and QA is complete.** Live hosting is documented in the project README.
