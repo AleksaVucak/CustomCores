@@ -42,6 +42,7 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 - [Stage 8 image prompt record](docs/image-prompts.md)
 - [Theme testing record](docs/theme-testing.md)
 - [HTML validation record](docs/html-validation.md)
+- [CSS validation record](docs/css-validation.md)
 - [Security audit (SQL, escaping, CSRF, uploads)](docs/security-audit.md)
 
 ### Quick start
@@ -53,6 +54,18 @@ to manage the store. Non-programmers updating catalogue content should read the
 
 ## Current status
 
+**Commit 15.2 complete** — validate CSS files.
+
+Validated all five project stylesheets (`main.css`, `admin.css`, three themes) offline:
+structural balance (braces/comments), full AST parse via css-tree (**0 parse errors**), and a
+custom-property graph of every `var(--…)` use vs declaration. **Avoidable defects fixed:**
+seven undeclared design tokens (`--cc-color-primary`, `--cc-color-muted`, `--cc-color-surface`,
+`--cc-color-success-bg`, `--cc-color-warning-bg`/`-text`, `--cc-color-link`) now live on
+`:root` as semantic aliases/soft fills; dark themes override the soft status fills; score bars
+default `--score: 0`. Re-run shows **zero undefined custom properties**. Evidence:
+[`docs/css-validation.md`](docs/css-validation.md). Next: Commit **15.3** — verify JavaScript and
+browser console.
+
 **Commit 15.1 complete** — validate rendered HTML output.
 
 Captured real server-rendered HTML for the important public, Help centre, signed-in
@@ -62,8 +75,7 @@ ids, `img[alt]`, `label[for]` targets, POST + CSRF fields, no PHP error leakage)
 (2) HTML Tidy Errors under HTML5. **Result: 48 Pass · 0 Fail; zero Tidy Errors.**
 Tidy “missing dd/dl” warnings on four pages are false positives — those use the valid
 HTML5 `<dl><div><dt>/<dd></div></dl>` grouping pattern. No markup fixes were required.
-Full page-by-page evidence: [`docs/html-validation.md`](docs/html-validation.md). Next:
-Commit **15.2** — validate CSS files.
+Full page-by-page evidence: [`docs/html-validation.md`](docs/html-validation.md).
 
 **Commit 14.10 complete** — file upload security audit. **Stage 14 complete.**
 

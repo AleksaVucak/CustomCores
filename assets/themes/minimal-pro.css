@@ -70,6 +70,11 @@
   --cc-color-success: #2b6a44;
   --cc-color-focus: #2b57d6;
 
+  /* Soft status fills kept light-editorial (Commit 15.2 token completeness). */
+  --cc-color-success-bg: #e3f2e9;
+  --cc-color-warning-bg: #faf0d8;
+  --cc-color-warning-text: #7a5610;
+
   /* Crisp, understated corners (less rounded than the base). */
   --cc-radius-sm: 0.125rem;
   --cc-radius-md: 0.25rem;

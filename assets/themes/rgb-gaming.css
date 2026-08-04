@@ -62,6 +62,11 @@
   --cc-color-success: #35d17d;
   --cc-color-focus: #22b8ff;
 
+  /* Soft status fills tuned for dark surfaces (Commit 15.2 token completeness). */
+  --cc-color-success-bg: rgba(53, 209, 125, 0.16);
+  --cc-color-warning-bg: rgba(255, 176, 32, 0.16);
+  --cc-color-warning-text: #ffc95c;
+
   /* Sharper, more "hardware" edges than the soft base radii. */
   --cc-radius-sm: 0.2rem;
   --cc-radius-md: 0.35rem;

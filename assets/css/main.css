@@ -56,6 +56,21 @@
   --cc-color-success: #1f6b3a;
   --cc-color-focus: #1d6fd0;
 
+  /*
+   * Extended semantic aliases (Commit 15.2).
+   * Some feature styles were written against long-hand token names that were
+   * never declared on :root. Declaring them here keeps every var() reference
+   * resolvable and lets themes override soft/pastel fills without edits in
+   * each ruleset. Aliases always track the core tokens above.
+   */
+  --cc-color-primary: var(--cc-color-accent);
+  --cc-color-muted: var(--cc-color-text-muted);
+  --cc-color-surface: var(--cc-color-bg-elevated);
+  --cc-color-link: var(--cc-color-accent);
+  --cc-color-success-bg: #d4edda;
+  --cc-color-warning-bg: #fef3c7;
+  --cc-color-warning-text: #92400e;
+
   --cc-radius-sm: 0.25rem;
   --cc-radius-md: 0.5rem;
   --cc-radius-lg: 0.85rem;
@@ -1605,6 +1620,8 @@ textarea[aria-invalid="true"]:focus-visible {
 }
 
 .results-estimates__bar {
+  /* Runtime-set from builder-results.php (inline style); default keeps var() valid. */
+  --score: 0;
   display: block;
   width: 6.5rem;
   height: 0.45rem;

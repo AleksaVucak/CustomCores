@@ -75,6 +75,11 @@
   --cc-color-success: #24f39b;
   --cc-color-focus: #38e0ff;
 
+  /* Soft status fills tuned for dark surfaces (Commit 15.2 token completeness). */
+  --cc-color-success-bg: rgba(36, 243, 155, 0.14);
+  --cc-color-warning-bg: rgba(255, 207, 61, 0.14);
+  --cc-color-warning-text: #ffd966;
+
   /* Hard, square edges — the "grid" reads best with no rounding. */
   --cc-radius-sm: 0;
   --cc-radius-md: 0;
