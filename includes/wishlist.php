@@ -1,21 +1,19 @@
 <?php
 /**
- * CustomCore — Wishlist helper functions (Commit 7.1).
- *
- * File responsibility:
- *   Shared wishlist operations: get or create the user's wishlist, add and
- *   remove products, list items with product detail, check membership, count
- *   items, and clear the wishlist. All mutations are scoped to the current
- *   user_id (ownership enforced) so a wishlist is private to its owner.
- *
- * Data model:
- *   - wishlists       — one row per user (UNIQUE user_id).
- *   - wishlist_items  — products on a wishlist (UNIQUE wishlist_id+product_id).
- *
- * Authentication requirements:
- *   A logged-in user is expected. Callers must call customcore_require_login()
- *   before invoking these helpers.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Wishlist helper functions.
+// Shared wishlist operations: get or create the user's wishlist, add and remove products, list
+// items with product detail, check membership, count items, and clear the wishlist. All mutations
+// are scoped to the current user_id (ownership enforced) so a wishlist is private to its owner.
+// Data model:
+//   wishlists, one row per user (UNIQUE user_id).
+//   wishlist_items, products on a wishlist (UNIQUE wishlist_id+product_id).
+// Access: A logged-in user is expected. Callers must call customcore_require_login() before
+// invoking these helpers.
 
 declare(strict_types=1);
 
@@ -48,7 +46,7 @@ function customcore_wishlist_id(PDO $pdo, int $userId): int
 
 /**
  * Add a product to the wishlist. Returns true if newly added, false if it was
- * already present (idempotent — never creates duplicate rows).
+ * already present (idempotent, never creates duplicate rows).
  */
 function customcore_wishlist_add(PDO $pdo, int $wishlistId, int $productId): bool
 {
@@ -129,9 +127,9 @@ function customcore_wishlist_contains(PDO $pdo, int $userId, int $productId): bo
  * List all wishlist items for a user with product detail for display.
  *
  * Returns rows shaped for the wishlist page:
- *   product_id:int, name:string, brand:string, base_price:float,
- *   stock_quantity:int, is_active:bool, image_path:?string,
- *   short_description:?string, category_name:?string, added_at:string
+ * product_id:int, name:string, brand:string, base_price:float
+ * stock_quantity:int, is_active:bool, image_path:?string
+ * short_description:?string, category_name:?string, added_at:string
  *
  * @return list<array<string, mixed>>
  */

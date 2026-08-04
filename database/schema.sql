@@ -1,53 +1,46 @@
--- =============================================================================
--- CustomCore — Complete MySQL Database Schema
--- =============================================================================
---
--- File responsibility:
---   Creates all tables required by the CustomCore application. Implements the
---   design documented in docs/database-design.md (Commit 0.6).
---
--- Engine:   InnoDB (transactional, foreign-key support)
--- Charset:  utf8mb4 (full Unicode including emoji)
+-- Aleksa Vucak
+-- 110139920
+-- COMP 3340, Final Project
+-- August 5th, 2026
+-- Complete MySQL Database Schema
+-- Creates all tables required by the CustomCore application. Implements the
+-- design documented in docs/database-design.md.
+-- Engine: InnoDB (transactional, foreign-key support)
+-- Charset: utf8mb4 (full Unicode including emoji)
 -- Collation: utf8mb4_unicode_ci
---
 -- Import:
---   mysql -u your_username -p your_database_name < database/schema.sql
---
+-- mysql -u your_username -p your_database_name < database/schema.sql
 -- Security:
---   - passwords column stores bcrypt hashes only (password_hash / password_verify)
---   - orders.payment_method stores a label only — never card numbers
---   - No real customer data should exist in seed or export files committed to Git
---
+-- - passwords column stores bcrypt hashes only (password_hash / password_verify)
+-- - orders.payment_method stores a label only, never card numbers
+-- - No real customer data should exist in seed or export files committed to Git
 -- Tables (21):
---   1.  users
---   2.  categories
---   3.  products
---   4.  product_options
---   5.  component_categories
---   6.  components
---   7.  compatibility_rules
---   8.  saved_builds
---   9.  saved_build_items
---   10. wishlists
---   11. wishlist_items
---   12. carts
---   13. cart_items
---   14. orders
---   15. order_items
---   16. reviews
---   17. consultation_requests
---   18. consultation_attachments
---   19. contact_messages
---   20. themes
---   21. site_settings
--- =============================================================================
+-- 1. users
+-- 2. categories
+-- 3. products
+-- 4. product_options
+-- 5. component_categories
+-- 6. components
+-- 7. compatibility_rules
+-- 8. saved_builds
+-- 9. saved_build_items
+-- 10. wishlists
+-- 11. wishlist_items
+-- 12. carts
+-- 13. cart_items
+-- 14. orders
+-- 15. order_items
+-- 16. reviews
+-- 17. consultation_requests
+-- 18. consultation_attachments
+-- 19. contact_messages
+-- 20. themes
+-- 21. site_settings
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
--- =============================================================================
--- 1. USERS — Authentication, profiles, and role-based access
--- =============================================================================
+-- 1. USERS, Authentication, profiles, and role-based access
 -- Roles: customer (default) or admin.
 -- is_active: admin can disable accounts; disabled users cannot log in.
 
@@ -75,9 +68,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- =============================================================================
--- 2. CATEGORIES — Product tier groupings
--- =============================================================================
+-- 2. CATEGORIES, Product tier groupings
 -- Four tiers: Budget, Esports, High-Performance, Creator.
 
 DROP TABLE IF EXISTS `categories`;
@@ -95,9 +86,7 @@ CREATE TABLE `categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- =============================================================================
--- 3. PRODUCTS — Prebuilt gaming PC catalogue (≥ 20 records)
--- =============================================================================
+-- 3. PRODUCTS, Prebuilt gaming PC catalogue (≥ 20 records)
 -- Each product belongs to one category. base_price is before options.
 -- spec_* columns provide quick-compare data without querying option tables.
 
@@ -134,9 +123,7 @@ CREATE TABLE `products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- =============================================================================
--- 4. PRODUCT_OPTIONS — Configurable choices per product (≥ 2 per product)
--- =============================================================================
+-- 4. PRODUCT_OPTIONS, Configurable choices per product (≥ 2 per product)
 -- Groups: RAM, Storage, Colour, Warranty, OS, Cooling, GPU upgrade, etc.
 -- price_delta is added to or subtracted from the product base_price.
 
@@ -161,9 +148,7 @@ CREATE TABLE `product_options` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- =============================================================================
--- 5. COMPONENT_CATEGORIES — Builder step categories
--- =============================================================================
+-- 5. COMPONENT_CATEGORIES, Builder step categories
 -- CPU, Motherboard, GPU, RAM, Storage, PSU, Case, Cooling, OS, Service.
 
 DROP TABLE IF EXISTS `component_categories`;
@@ -180,10 +165,8 @@ CREATE TABLE `component_categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- =============================================================================
--- 6. COMPONENTS — Individual parts for the custom builder
--- =============================================================================
--- Attribute columns power the simplified compatibility checker (Stage 5).
+-- 6. COMPONENTS, Individual parts for the custom builder
+-- Attribute columns power the simplified compatibility checker.
 -- Not every column applies to every category; NULL means not applicable.
 
 DROP TABLE IF EXISTS `components`;
@@ -220,11 +203,9 @@ CREATE TABLE `components` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- =============================================================================
--- 7. COMPATIBILITY_RULES — Simplified rule metadata
--- =============================================================================
+-- 7. COMPATIBILITY_RULES, Simplified rule metadata
 -- Each row describes one compatibility check the application performs.
--- Application logic (Stage 5) compares component attribute columns using these
+-- Application logic compares component attribute columns using these
 -- rules as guides; this table is not a full commercial parts graph.
 
 DROP TABLE IF EXISTS `compatibility_rules`;
@@ -243,9 +224,7 @@ CREATE TABLE `compatibility_rules` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- =============================================================================
--- 8. SAVED_BUILDS — Customer saved custom PC configurations
--- =============================================================================
+-- 8. SAVED_BUILDS, Customer saved custom PC configurations
 
 DROP TABLE IF EXISTS `saved_builds`;
 CREATE TABLE `saved_builds` (
@@ -265,9 +244,7 @@ CREATE TABLE `saved_builds` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- =============================================================================
--- 9. SAVED_BUILD_ITEMS — Component lines within a saved build
--- =============================================================================
+-- 9. SAVED_BUILD_ITEMS, Component lines within a saved build
 -- One component per component_category per build is the intended usage.
 
 DROP TABLE IF EXISTS `saved_build_items`;
@@ -289,9 +266,7 @@ CREATE TABLE `saved_build_items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- =============================================================================
--- 10. WISHLISTS — One wishlist per customer
--- =============================================================================
+-- 10. WISHLISTS, One wishlist per customer
 
 DROP TABLE IF EXISTS `wishlists`;
 CREATE TABLE `wishlists` (
@@ -307,9 +282,7 @@ CREATE TABLE `wishlists` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- =============================================================================
--- 11. WISHLIST_ITEMS — Products on a customer's wishlist
--- =============================================================================
+-- 11. WISHLIST_ITEMS, Products on a customer's wishlist
 
 DROP TABLE IF EXISTS `wishlist_items`;
 CREATE TABLE `wishlist_items` (
@@ -329,9 +302,7 @@ CREATE TABLE `wishlist_items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- =============================================================================
--- 12. CARTS — One persistent cart per customer account
--- =============================================================================
+-- 12. CARTS, One persistent cart per customer account
 
 DROP TABLE IF EXISTS `carts`;
 CREATE TABLE `carts` (
@@ -347,9 +318,7 @@ CREATE TABLE `carts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- =============================================================================
--- 13. CART_ITEMS — Lines in the shopping cart
--- =============================================================================
+-- 13. CART_ITEMS, Lines in the shopping cart
 -- item_type distinguishes prebuilt products from custom builds.
 -- Exactly one of product_id or saved_build_id should be set per row.
 
@@ -381,9 +350,7 @@ CREATE TABLE `cart_items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- =============================================================================
--- 14. ORDERS — Simulated checkout (no real payment credentials stored)
--- =============================================================================
+-- 14. ORDERS, Simulated checkout (no real payment credentials stored)
 -- payment_method stores a label like 'pay_on_pickup' or 'simulated_credit'.
 -- Shipping snapshot columns freeze the address at order time.
 
@@ -402,7 +369,7 @@ CREATE TABLE `orders` (
     `shipping_city`   VARCHAR(100)    NOT NULL DEFAULT '',
     `shipping_prov`   VARCHAR(100)    NOT NULL DEFAULT '',
     `shipping_postal` VARCHAR(20)     NOT NULL DEFAULT '',
-    `payment_method`  VARCHAR(50)     NOT NULL DEFAULT 'pay_on_pickup' COMMENT 'Label only — never card numbers',
+    `payment_method`  VARCHAR(50)     NOT NULL DEFAULT 'pay_on_pickup' COMMENT 'Label only, never card numbers',
     `admin_notes`     TEXT            DEFAULT NULL,
     `created_at`      DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at`      DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -416,9 +383,7 @@ CREATE TABLE `orders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- =============================================================================
--- 15. ORDER_ITEMS — Frozen line items within an order
--- =============================================================================
+-- 15. ORDER_ITEMS, Frozen line items within an order
 -- All display values are snapshots so the order history remains accurate even
 -- if the original product or build is later edited or removed.
 
@@ -451,9 +416,7 @@ CREATE TABLE `order_items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- =============================================================================
--- 16. REVIEWS — Product ratings with moderation workflow
--- =============================================================================
+-- 16. REVIEWS, Product ratings with moderation workflow
 -- Public pages show approved reviews only.
 
 DROP TABLE IF EXISTS `reviews`;
@@ -461,7 +424,7 @@ CREATE TABLE `reviews` (
     `id`          INT UNSIGNED  NOT NULL AUTO_INCREMENT,
     `product_id`  INT UNSIGNED  NOT NULL,
     `user_id`     INT UNSIGNED  NOT NULL,
-    `rating`      TINYINT UNSIGNED NOT NULL COMMENT '1–5 stars',
+    `rating`      TINYINT UNSIGNED NOT NULL COMMENT '1 to 5 stars',
     `title`       VARCHAR(200)  NOT NULL DEFAULT '',
     `body`        TEXT          NOT NULL,
     `status`      ENUM('pending','approved','hidden') NOT NULL DEFAULT 'pending',
@@ -480,9 +443,7 @@ CREATE TABLE `reviews` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- =============================================================================
--- 17. CONSULTATION_REQUESTS — PC advice requests from customers
--- =============================================================================
+-- 17. CONSULTATION_REQUESTS, PC advice requests from customers
 
 DROP TABLE IF EXISTS `consultation_requests`;
 CREATE TABLE `consultation_requests` (
@@ -507,9 +468,7 @@ CREATE TABLE `consultation_requests` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- =============================================================================
--- 18. CONSULTATION_ATTACHMENTS — Safe file uploads for consultations
--- =============================================================================
+-- 18. CONSULTATION_ATTACHMENTS, Safe file uploads for consultations
 -- stored_filename uses a generated safe name; original_filename is display only.
 
 DROP TABLE IF EXISTS `consultation_attachments`;
@@ -529,9 +488,7 @@ CREATE TABLE `consultation_attachments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- =============================================================================
--- 19. CONTACT_MESSAGES — General contact / support form
--- =============================================================================
+-- 19. CONTACT_MESSAGES, General contact / support form
 -- user_id is optional (guest visitors can submit too).
 
 DROP TABLE IF EXISTS `contact_messages`;
@@ -554,9 +511,7 @@ CREATE TABLE `contact_messages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- =============================================================================
--- 20. THEMES — Three switchable site templates
--- =============================================================================
+-- 20. THEMES, Three switchable site templates
 -- css_file stores the path relative to the project root.
 
 DROP TABLE IF EXISTS `themes`;
@@ -573,9 +528,7 @@ CREATE TABLE `themes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- =============================================================================
--- 21. SITE_SETTINGS — Key-value application settings
--- =============================================================================
+-- 21. SITE_SETTINGS, Key-value application settings
 -- Primary use: active_theme_id. Extensible for future settings.
 
 DROP TABLE IF EXISTS `site_settings`;
@@ -592,11 +545,9 @@ CREATE TABLE `site_settings` (
 
 SET FOREIGN_KEY_CHECKS = 1;
 
--- =============================================================================
 -- VERIFICATION QUERIES (run after import to confirm structure)
--- =============================================================================
 
--- Count tables — should return 21
+-- Count tables, should return 21
 -- SELECT COUNT(*) AS table_count
 -- FROM information_schema.TABLES
 -- WHERE TABLE_SCHEMA = DATABASE() AND TABLE_TYPE = 'BASE TABLE';

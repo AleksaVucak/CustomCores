@@ -1,21 +1,20 @@
 <?php
 /**
- * CustomCore — Administrator review moderation helpers (Commit 9.8).
- *
- * File responsibility:
- *   Security-first helpers for the admin review queue: search/list with status
- *   filtering and pagination, single-review fetch, ENUM-validated status
- *   transitions (approve / hide / restore to pending), and hard delete.
- *
- * Usage:
- *   require_once __DIR__ . '/admin-reviews.php';
- *
- * Security:
- *   - Every query uses PDO prepared statements.
- *   - Status writes are validated against the reviews.status ENUM allow-list.
- *   - Delete is intentional and permanent (moderation tool, not soft-disable).
- *   - Public catalogue pages still only show status = 'approved'.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator review moderation helpers.
+// Security-first helpers for the admin review queue: search/list with status filtering and
+// pagination, single-review fetch, ENUM-validated status transitions (approve / hide / restore to
+// pending), and hard delete.
+// Usage: require_once __DIR__. '/admin-reviews.php';
+// Security:
+//   Every query uses PDO prepared statements.
+//   Status writes are validated against the reviews.status ENUM allow-list.
+//   Delete is intentional and permanent (moderation tool, not soft-disable).
+//   Public catalogue pages still only show status = 'approved'.
 
 declare(strict_types=1);
 
@@ -174,7 +173,7 @@ function customcore_admin_review_set_status(PDO $pdo, int $reviewId, string $sta
 }
 
 /**
- * Permanently delete a review (moderation tool — intentional hard delete).
+ * Permanently delete a review (moderation tool, intentional hard delete).
  *
  * @return bool True when a row was removed.
  */

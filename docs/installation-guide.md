@@ -1,6 +1,6 @@
-# CustomCore — Complete Installation Guide
+# CustomCore | Complete Installation Guide
 
-**Document type:** Stage 12 documentation (Commit 12.4)
+**Document type:** Project documentation
 **Purpose:** Let a new developer or grader install CustomCore from a clean checkout to a fully working site — locally or on a fresh server — without relying on undocumented steps.
 **Audience:** Developers and graders with basic command-line and MySQL familiarity.
 **Related:** database detail in [`docs/database-import.md`](database-import.md); config in [`config/README.md`](../config/README.md); production/hosting specifics and problem-solving in [`docs/deployment-troubleshooting.md`](deployment-troubleshooting.md).
@@ -61,8 +61,8 @@ While you are here, review the non-secret `config/app.php`:
 
 ```sql
 CREATE DATABASE customcore
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
+ CHARACTER SET utf8mb4
+ COLLATE utf8mb4_unicode_ci;
 ```
 
 Grant your application user privileges on that database (host-specific). Then verify PHP can connect:
@@ -196,4 +196,4 @@ git pull
 
 ## 12. Status
 
-**Commit 12.4 complete.** A clean checkout can be installed end-to-end — requirements, code, credentials, database creation, schema + seed import, secure admin creation, writable uploads, running locally or on a server, and a verification smoke test — using only documented steps and no build tooling. Supports rubric row **#5 (well-documented setup)** and **B14 (installation documentation for another server)**.
+**Summary.** A clean checkout can be installed end-to-end — requirements, code, credentials, database creation, schema + seed import, secure admin creation, writable uploads, running locally or on a server, and a verification smoke test — using only documented steps and no build tooling. Supports rubric row **#5 (well-documented setup)** and **B14 (installation documentation for another server)**.

@@ -1,34 +1,29 @@
 <?php
 /**
- * CustomCore — PC Consultation Request (Commit 7.3).
- *
- * File responsibility:
- *   Lets a logged-in customer request a personalised PC consultation. Captures
- *   budget, games, software, performance goals, optional notes, and optional
- *   secure file attachments (Commit 7.4), then stores the request in
- *   consultation_requests (status = open) with any files in
- *   consultation_attachments. Customer history arrives in Commit 7.6.
- *
- * Flow:
- *   GET  — show the form (pre-filled on validation errors).
- *   POST — validate CSRF + fields + files, insert request + attachments in a
- *          single transaction, flash success, redirect (PRG).
- *
- * Authentication requirements:
- *   Logged-in customer (require_login). Each request is tied to the session
- *   user_id; customers never see or create requests for another account.
- *
- * Security:
- *   - CSRF token required on POST.
- *   - Server-side validation of every field (budget whitelisted).
- *   - Uploads validated by real MIME type (finfo), size, and count; on-disk
- *     names are generated (never derived from user input); files land in a
- *     directory guarded against direct browsing.
- *   - Request + attachments are written atomically; moved files are cleaned up
- *     if the transaction fails.
- *   - Ownership: user_id comes from the session, never the form.
- *   - All output escaped via customcore_e().
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// PC Consultation Request.
+// Lets a logged-in customer request a personalised PC consultation. Captures budget, games,
+// software, performance goals, optional notes, and optional secure file attachments, then stores
+// the request in consultation_requests (status = open) with any files in consultation_attachments.
+// Customer history arrives in.
+// Flow:
+//   GET, show the form (pre-filled on validation errors). POST, validate CSRF + fields + files,
+//     insert request + attachments in a single transaction, flash success, redirect (PRG).
+// Access: Logged-in customer (require_login). Each request is tied to the session user_id;
+// customers never see or create requests for another account.
+// Security:
+//   CSRF token required on POST.
+//   Server-side validation of every field (budget whitelisted).
+//   Uploads validated by real MIME type (finfo), size, and count; on-disk names are generated
+//     (never derived from user input); files land in a directory guarded against direct browsing.
+//   Request + attachments are written atomically; moved files are cleaned up if the transaction
+//     fails.
+//   Ownership: user_id comes from the session, never the form.
+//   All output escaped via customcore_e().
 
 declare(strict_types=1);
 
@@ -126,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $budgetOptions = customcore_consultation_budget_options();
 
-$pageTitle = 'Request a PC consultation — CustomCore';
+$pageTitle = 'Request PC Consultation | CustomCore';
 $pageDescription = 'Tell CustomCore about your budget, games, software, and goals and get a personalised custom PC recommendation.';
 $pageKeywords = 'CustomCore, PC consultation, custom build advice, gaming PC help';
 $currentPage = 'consultation';
@@ -231,7 +226,7 @@ require_once __DIR__ . '/includes/header.php';
                         required
                         <?php echo isset($errors['software']) ? 'aria-invalid="true" aria-describedby="err-software"' : ''; ?>
                     ><?php echo customcore_e($values['software']); ?></textarea>
-                    <p class="form-help">e.g. Blender, Premiere Pro, streaming with OBS, or "none — gaming only".</p>
+                    <p class="form-help">e.g. Blender, Premiere Pro, streaming with OBS, or "none, gaming only".</p>
                     <?php if (isset($errors['software'])) : ?>
                         <p class="form-error" id="err-software"><?php echo customcore_e($errors['software']); ?></p>
                     <?php endif; ?>
@@ -268,7 +263,7 @@ require_once __DIR__ . '/includes/header.php';
                         maxlength="2000"
                         <?php echo isset($errors['notes']) ? 'aria-invalid="true" aria-describedby="err-notes"' : ''; ?>
                     ><?php echo customcore_e($values['notes']); ?></textarea>
-                    <p class="form-help">Anything else we should know — preferred brands, aesthetics, deadlines, etc.</p>
+                    <p class="form-help">Anything else we should know, preferred brands, aesthetics, deadlines, etc.</p>
                     <?php if (isset($errors['notes'])) : ?>
                         <p class="form-error" id="err-notes"><?php echo customcore_e($errors['notes']); ?></p>
                     <?php endif; ?>
@@ -292,7 +287,7 @@ require_once __DIR__ . '/includes/header.php';
                         <?php echo isset($errors['attachments']) ? 'aria-invalid="true" aria-describedby="err-attachments"' : ''; ?>
                     >
                     <p class="form-help">
-                        Optional reference files — screenshots, part lists, or quotes.
+                        Optional reference files, screenshots, part lists, or quotes.
                         Accepted: PDF, TXT, PNG, JPG, WEBP.
                         Up to <?php echo customcore_e((string) CUSTOMCORE_CONSULTATION_MAX_FILES); ?> files,
                         max <?php echo customcore_e($maxMb); ?> MB each.

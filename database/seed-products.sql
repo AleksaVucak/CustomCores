@@ -1,35 +1,28 @@
--- =============================================================================
--- CustomCore — Catalogue Seed Data (Commit 2.2)
--- =============================================================================
---
--- File responsibility:
---   Seeds the four product tiers (categories) and twenty configurable prebuilt
---   gaming / creator PCs. Product options are added separately in Commit 2.3
---   (`database/seed-product-options.sql`).
---
+-- Aleksa Vucak
+-- 110139920
+-- COMP 3340, Final Project
+-- August 5th, 2026
+-- Catalogue Seed Data
+-- Seeds the four product tiers (categories) and twenty configurable prebuilt
+-- gaming / creator PCs. Product options are added separately in
+-- (`database/seed-product-options.sql`).
 -- Prerequisites:
---   1. Import `database/schema.sql` first.
---   2. Run this file next.
---
+-- 1. Import `database/schema.sql` first.
+-- 2. Run this file next.
 -- Import:
---   mysql -u your_username -p your_database_name < database/seed-products.sql
---
--- Acceptance (Commit 2.2):
---   SELECT COUNT(*) FROM products WHERE is_active = 1;  -- must be ≥ 20
---
+-- mysql -u your_username -p your_database_name < database/seed-products.sql
+-- Acceptance:
+-- SELECT COUNT(*) FROM products WHERE is_active = 1; -- must be ≥ 20
 -- Fixed IDs:
---   Categories use ids 1–4 and products use ids 1–20 so later option seeds and
---   documentation can reference rows reliably.
--- =============================================================================
+-- Categories use ids 1 to 4 and products use ids 1 to 20 so later option seeds and
+-- documentation can reference rows reliably.
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
--- -----------------------------------------------------------------------------
 -- Clear existing catalogue rows (safe re-import during development)
 -- Options are wiped too so a re-run of this file does not leave orphans if
--- Commit 2.3 seed was already applied.
--- -----------------------------------------------------------------------------
+-- seed was already applied.
 DELETE FROM `product_options`;
 DELETE FROM `products`;
 DELETE FROM `categories`;
@@ -40,9 +33,7 @@ ALTER TABLE `categories` AUTO_INCREMENT = 1;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
--- =============================================================================
--- CATEGORIES — Four performance tiers (5 products each)
--- =============================================================================
+-- CATEGORIES, Four performance tiers (5 products each)
 
 INSERT INTO `categories`
     (`id`, `name`, `slug`, `description`, `sort_order`, `is_active`)
@@ -80,10 +71,8 @@ VALUES
     1
 );
 
--- =============================================================================
--- PRODUCTS — Twenty configurable prebuilts (4 tiers × 5 systems)
--- =============================================================================
--- image_path values are placeholders until Stage 8 media assets are added.
+-- PRODUCTS, Twenty configurable prebuilts (4 tiers × 5 systems)
+-- image_path values are placeholders until media assets are added.
 -- Spec columns power catalogue compare cards without joining options.
 
 INSERT INTO `products` (
@@ -105,9 +94,7 @@ INSERT INTO `products` (
     `is_active`
 ) VALUES
 
--- ---------------------------------------------------------------------------
--- Budget tier (category_id = 1) — products 1–5
--- ---------------------------------------------------------------------------
+-- Budget tier (category_id = 1), products 1 to 5
 (
     1,
     1,
@@ -132,7 +119,7 @@ INSERT INTO `products` (
     'CoreStart Plus',
     'corestart-plus',
     'CustomCore',
-    'A step up from Entry with a stronger GPU for smoother 1080p medium–high settings.',
+    'A step up from Entry with a stronger GPU for smoother 1080p medium to high settings.',
     'CoreStart Plus keeps the student-friendly price point while adding a more capable discrete GPU for popular online games. Expect comfortable 1080p frame rates in titles like Fortnite, League of Legends, and Valorant at competitive settings. Fast NVMe storage and 16 GB of memory keep load times low and browser tabs under control during study sessions.',
     949.00,
     15,
@@ -199,9 +186,7 @@ INSERT INTO `products` (
     1
 ),
 
--- ---------------------------------------------------------------------------
--- Esports tier (category_id = 2) — products 6–10
--- ---------------------------------------------------------------------------
+-- Esports tier (category_id = 2), products 6 to 10
 (
     6,
     2,
@@ -293,9 +278,7 @@ INSERT INTO `products` (
     1
 ),
 
--- ---------------------------------------------------------------------------
--- High-Performance tier (category_id = 3) — products 11–15
--- ---------------------------------------------------------------------------
+-- High-Performance tier (category_id = 3), products 11 to 15
 (
     11,
     3,
@@ -387,9 +370,7 @@ INSERT INTO `products` (
     1
 ),
 
--- ---------------------------------------------------------------------------
--- Creator tier (category_id = 4) — products 16–20
--- ---------------------------------------------------------------------------
+-- Creator tier (category_id = 4), products 16 to 20
 (
     16,
     4,
@@ -481,9 +462,7 @@ INSERT INTO `products` (
     1
 );
 
--- =============================================================================
 -- VERIFICATION QUERIES (uncomment to run after import)
--- =============================================================================
 
 -- Expect 4:
 -- SELECT COUNT(*) AS category_count FROM categories WHERE is_active = 1;

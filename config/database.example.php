@@ -1,19 +1,16 @@
 <?php
 /**
- * CustomCore — Database configuration TEMPLATE.
- *
- * File responsibility:
- *   Provides a safe, non-secret example of the database settings array.
- *
- * Setup:
- *   1. Copy this file to config/database.php
- *   2. Replace the placeholder values with your real MySQL credentials
- *   3. Never commit config/database.php (it is listed in .gitignore)
- *
- * Security:
- *   This example file must not contain real passwords.
- *   Production error pages must not print these values.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Database configuration TEMPLATE.
+// Provides a safe, non-secret example of the database settings array.
+// Setup: 1. Copy this file to config/database.php 2. Replace the placeholder values with your real
+// MySQL credentials 3. Never commit config/database.php (it is listed in.gitignore)
+// Security: This example file must not contain real passwords. Production error pages must not
+// print these values.
 
 declare(strict_types=1);
 
@@ -30,14 +27,14 @@ return [
     // Database username
     'username' => 'your_database_username',
 
-    // Database password — replace in database.php only; keep secrets out of Git
+    // Database password, replace in database.php only; keep secrets out of Git
     'password' => 'your_database_password',
 
     // Character set for PDO connections
     'charset' => 'utf8mb4',
 
     /**
-     * Optional PDO attribute overrides used by the connection helper (Commit 1.3).
+     * Optional PDO attribute overrides used by the connection helper.
      * Leave as-is unless you know your host requires a change.
      */
     'options' => [

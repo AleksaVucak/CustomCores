@@ -1,15 +1,15 @@
 <?php
 /**
- * CustomCore — Administrator product list & search (Commit 9.2).
- *
- * File responsibility:
- *   Protected catalogue management index. Lists products with search and
- *   category/status filters, links to the add/edit screens, and handles the
- *   POST enable/disable (soft delete) toggle via Post/Redirect/Get.
- *
- * Authentication requirements:
- *   Administrator role (customcore_require_admin()).
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator product list & search.
+// Protected catalogue management index. Lists products with search and category/status filters,
+// links to the add/edit screens, and handles the POST enable/disable (soft delete) toggle via
+// Post/Redirect/Get.
+// Access: Administrator role (customcore_require_admin()).
 
 declare(strict_types=1);
 
@@ -119,7 +119,7 @@ try {
 $adminNavCurrent = 'products';
 $loadAdminCss = true;
 
-$pageTitle = 'Manage products — CustomCore admin';
+$pageTitle = 'Manage Products | CustomCore Admin';
 $pageDescription = 'Add, edit, price, stock, and disable CustomCore catalogue products.';
 $pageKeywords = 'CustomCore, admin, products, catalogue management';
 $currentPage = 'admin';
@@ -256,7 +256,7 @@ require_once __DIR__ . '/../includes/header.php';
                                     </span>
                                 </div>
                             </td>
-                            <td><?php echo customcore_e((string) ($product['category_name'] ?? '—')); ?></td>
+                            <td><?php echo customcore_e((string) ($product['category_name'] ?? 'Uncategorised')); ?></td>
                             <td>$<?php echo customcore_e(number_format((float) $product['base_price'], 2)); ?></td>
                             <td>
                                 <?php echo customcore_e((string) $stock); ?>

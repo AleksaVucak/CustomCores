@@ -1,20 +1,19 @@
 <?php
 /**
- * CustomCore — Administrator order management helpers (Commit 9.5).
- *
- * File responsibility:
- *   Security-first helpers for the admin order screens: search/list with
- *   status filtering and pagination, full order + line-item fetch (admin scope,
- *   any owner), status transitions, and administrator notes.
- *
- * Usage:
- *   require_once __DIR__ . '/admin-orders.php';
- *
- * Security:
- *   - Every query uses PDO prepared statements.
- *   - Status writes are validated against the orders.status ENUM allow-list.
- *   - Item rows are always scoped by order_id.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator order management helpers.
+// Security-first helpers for the admin order screens: search/list with status filtering and
+// pagination, full order + line-item fetch (admin scope, any owner), status transitions, and
+// administrator notes.
+// Usage: require_once __DIR__. '/admin-orders.php';
+// Security:
+//   Every query uses PDO prepared statements.
+//   Status writes are validated against the orders.status ENUM allow-list.
+//   Item rows are always scoped by order_id.
 
 declare(strict_types=1);
 
@@ -26,7 +25,7 @@ if (!function_exists('customcore_order_statuses')) {
  * Search / list orders for the admin table with pagination.
  *
  * @param array{search?:string, status?:string} $filters
- * @param int $page    1-based page number.
+ * @param int $page 1-based page number.
  * @param int $perPage Rows per page (clamped).
  * @return array{rows:list<array<string,mixed>>, total:int, page:int, pages:int, per_page:int}
  */
@@ -105,7 +104,7 @@ function customcore_admin_order_where(array $filters): array
 }
 
 /**
- * Fetch a single order with its customer details (admin scope — any owner).
+ * Fetch a single order with its customer details (admin scope, any owner).
  *
  * @return array<string, mixed>|null
  */

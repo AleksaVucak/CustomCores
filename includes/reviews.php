@@ -1,18 +1,17 @@
 <?php
 /**
- * CustomCore — Review helper functions (Commit 7.2).
- *
- * File responsibility:
- *   Shared review operations for customer submission: validate rating/title/body,
- *   insert new reviews with status = pending (moderation queue), and inspect a
- *   user's existing review for a product so the form can avoid duplicates.
- *   Public display of approved reviews remains in reviews.php / product.php
- *   (Commit 3.8). Administrator approve/hide UI arrives in Stage 9.
- *
- * Authentication requirements:
- *   Submission helpers expect a logged-in user. Callers must enforce login
- *   before invoking customcore_review_submit().
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Review helper functions.
+// Shared review operations for customer submission: validate rating/title/body, insert new reviews
+// with status = pending (moderation queue), and inspect a user's existing review for a product so
+// the form can avoid duplicates. Public display of approved reviews remains in reviews.php /
+// product.php. Administrator approve/hide UI arrives in.
+// Access: Submission helpers expect a logged-in user. Callers must enforce login before invoking
+// customcore_review_submit().
 
 declare(strict_types=1);
 
@@ -44,11 +43,11 @@ function customcore_review_status_label(string $status): string
  * Validate review form fields.
  *
  * @return array{
- *   ok: bool,
- *   errors: array<string, string>,
- *   rating: int,
- *   title: string,
- *   body: string
+ * ok: bool
+ * errors: array<string, string>
+ * rating: int
+ * title: string
+ * body: string
  * }
  */
 function customcore_review_validate(array $input): array

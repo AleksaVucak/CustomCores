@@ -1,15 +1,15 @@
 <?php
 /**
- * CustomCore — Administrator edit product (Commit 9.2).
- *
- * File responsibility:
- *   Protected edit screen for a single catalogue product. Updates price, stock,
- *   description, specs, feature/active flags, and the product image (replace or
- *   remove). Uses Post/Redirect/Get with flash confirmations.
- *
- * Authentication requirements:
- *   Administrator role (customcore_require_admin()).
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator edit product.
+// Protected edit screen for a single catalogue product. Updates price, stock, description, specs,
+// feature/active flags, and the product image (replace or remove). Uses Post/Redirect/Get with
+// flash confirmations.
+// Access: Administrator role (customcore_require_admin()).
 
 declare(strict_types=1);
 
@@ -130,7 +130,7 @@ $formSubmitLabel = 'Save changes';
 $adminNavCurrent = 'products';
 $loadAdminCss = true;
 
-$pageTitle = 'Edit ' . (string) $product['name'] . ' — CustomCore admin';
+$pageTitle = 'Edit ' . (string) $product['name'] . ' | CustomCore Admin';
 $pageDescription = 'Edit a CustomCore catalogue product.';
 $pageKeywords = 'CustomCore, admin, edit product';
 $currentPage = 'admin';

@@ -1,18 +1,17 @@
 <?php
 /**
- * CustomCore — Administrator reports helpers (Commit 9.9).
- *
- * File responsibility:
- *   Live MySQL aggregates and Chart.js payloads for the administrator reports
- *   page: orders by status, products by performance tier, user accounts by
- *   role/status, and inventory health. Every number comes from the database —
- *   never hard-coded decorative figures — and the same figures power both the
- *   charts and the accessible server-rendered tables.
- *
- * Usage:
- *   require_once __DIR__ . '/admin-reports.php';
- *   $report = customcore_admin_report_bundle($pdo);
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator reports helpers.
+// Live MySQL aggregates and Chart.js payloads for the administrator reports page: orders by
+// status, products by performance tier, user accounts by role/status, and inventory health. Every
+// number comes from the database, never hard-coded decorative figures, and the same figures power
+// both the charts and the accessible server-rendered tables.
+// Usage: require_once __DIR__. '/admin-reports.php';
+//   $report = customcore_admin_report_bundle($pdo);
 
 declare(strict_types=1);
 
@@ -86,10 +85,10 @@ function customcore_admin_report_chart_payload(
  * Orders grouped by fulfilment status, plus lifetime revenue totals.
  *
  * @return array{
- *   rows:list<array{status:string, label:string, count:int, fill:string, border:string}>,
- *   total:int,
- *   revenue:float,
- *   chart:array{labels:list<string>, datasets:list<array<string,mixed>>}
+ * rows:list<array{status:string, label:string, count:int, fill:string, border:string}>
+ * total:int
+ * revenue:float
+ * chart:array{labels:list<string>, datasets:list<array<string,mixed>>}
  * }
  */
 function customcore_admin_report_orders(PDO $pdo): array
@@ -154,10 +153,10 @@ function customcore_admin_report_orders(PDO $pdo): array
  * Active products grouped by performance tier (same categories as the catalogue).
  *
  * @return array{
- *   rows:list<array{name:string, slug:string, active_count:int, inactive_count:int, fill:string, border:string}>,
- *   active_total:int,
- *   inactive_total:int,
- *   chart:array{labels:list<string>, datasets:list<array<string,mixed>>}
+ * rows:list<array{name:string, slug:string, active_count:int, inactive_count:int, fill:string, border:string}>
+ * active_total:int
+ * inactive_total:int
+ * chart:array{labels:list<string>, datasets:list<array<string,mixed>>}
  * }
  */
 function customcore_admin_report_products(PDO $pdo): array
@@ -222,11 +221,11 @@ function customcore_admin_report_products(PDO $pdo): array
  * User accounts by role and by active status.
  *
  * @return array{
- *   role_rows:list<array{key:string, label:string, count:int, fill:string, border:string}>,
- *   status_rows:list<array{key:string, label:string, count:int, fill:string, border:string}>,
- *   total:int,
- *   role_chart:array{labels:list<string>, datasets:list<array<string,mixed>>},
- *   status_chart:array{labels:list<string>, datasets:list<array<string,mixed>>}
+ * role_rows:list<array{key:string, label:string, count:int, fill:string, border:string}>
+ * status_rows:list<array{key:string, label:string, count:int, fill:string, border:string}>
+ * total:int
+ * role_chart:array{labels:list<string>, datasets:list<array<string,mixed>>}
+ * status_chart:array{labels:list<string>, datasets:list<array<string,mixed>>}
  * }
  */
 function customcore_admin_report_users(PDO $pdo): array
@@ -303,10 +302,10 @@ function customcore_admin_report_users(PDO $pdo): array
  * Inventory health for catalogue products (active + disabled buckets).
  *
  * @return array{
- *   rows:list<array{key:string, label:string, count:int, fill:string, border:string}>,
- *   threshold:int,
- *   active_total:int,
- *   chart:array{labels:list<string>, datasets:list<array<string,mixed>>}
+ * rows:list<array{key:string, label:string, count:int, fill:string, border:string}>
+ * threshold:int
+ * active_total:int
+ * chart:array{labels:list<string>, datasets:list<array<string,mixed>>}
  * }
  */
 function customcore_admin_report_inventory(PDO $pdo): array
@@ -375,10 +374,10 @@ function customcore_admin_report_inventory(PDO $pdo): array
  * Bundle every report section for the admin page in one call.
  *
  * @return array{
- *   orders:array<string,mixed>,
- *   products:array<string,mixed>,
- *   users:array<string,mixed>,
- *   inventory:array<string,mixed>
+ * orders:array<string,mixed>
+ * products:array<string,mixed>
+ * users:array<string,mixed>
+ * inventory:array<string,mixed>
  * }
  */
 function customcore_admin_report_bundle(PDO $pdo): array

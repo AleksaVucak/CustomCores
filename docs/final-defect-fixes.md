@@ -1,8 +1,8 @@
-# CustomCore — Final Defect Resolution (Commit 15.9)
+# CustomCore | Final Defect Resolution
 
-**Document type:** Stage 15 closing record (Commit 15.9 — *fix: resolve final rubric and usability defects*)
+**Document type:** Project documentation
 **Completion test:** *No known critical or rubric-blocking issue remains.*
-**Method:** A four-part final sweep of the whole project — (1) static discovery, (2) an `E_ALL` runtime crawl of **every** page (public + authenticated customer + admin), (3) a usability / status-code / edge-case pass, and (4) targeted fixes with re-verification. This builds on the earlier Stage 15 gates (15.1 HTML, 15.2 CSS, 15.3 JS/console, 15.4 desktop, 15.5 mobile, 15.6 customer workflows, 15.7 admin workflows, 15.8 rubric audit).
+**Method:** A four-part final sweep of the whole project — (1) static discovery, (2) an `E_ALL` runtime crawl of **every** page (public + authenticated customer + admin), (3) a usability / status-code / edge-case pass, and (4) targeted fixes with re-verification. This builds on the earlier QA records for HTML, CSS, JavaScript and the console, desktop and mobile responsiveness, customer and administrator workflows, and the rubric audit.
 
 **Outcome:** **1 real usability/SEO defect found and fixed** (soft-404 on nonexistent products). Everything else came back clean. No critical or rubric-blocking issue remains.
 
@@ -12,7 +12,7 @@
 
 | Check | Command | Result |
 | ----- | ------- | ------ |
-| Real defect markers | grep `TODO`/`FIXME`/`XXX`/`HACK`/`BUG`/"not implemented"/"coming soon" across all `*.php` | **0** genuine markers — every hit is a legitimate `placeholder="…"` input attribute, a `customcore_is_debug()` guard, or an SQL `$placeholders` variable |
+| Real defect markers | grep `TODO`/`FIXME`/`XXX`/`HACK`/`BUG`/"not implemented"/"coming soon" across all `*.php` | **0** genuine markers — every hit is a legitimate `placeholder="…"` input attribute, a `customcore_is_debug` guard, or an SQL `$placeholders` variable |
 | PHP syntax | `php -l` on **all 94** PHP files | **0** syntax errors |
 
 ## 2. Runtime `E_ALL` crawl — clean
@@ -21,7 +21,7 @@ A throwaway PHP development server was started with the strictest possible error
 
 ```bash
 php -d display_errors=0 -d log_errors=1 -d error_reporting=E_ALL \
-    -d error_log=/tmp/cc_php_errors.log -S 127.0.0.1:8155
+ -d error_log=/tmp/cc_php_errors.log -S 127.0.0.1:8155
 ```
 
 Then every page was crawled:
@@ -52,25 +52,24 @@ The page now distinguishes *"this product does not exist"* from *"the database i
 $notFound = false;
 
 if ($productId < 1) {
-    $detailError = 'Invalid product ID.';
-    $notFound = true;
+ $detailError = 'Invalid product ID.';
+ $notFound = true;
 } else {
 ```
 
 ```php
-    } catch (Throwable $exception) {
-        $detailError = customcore_is_debug()
-            ? $exception->getMessage()
-            : 'Product data is temporarily unavailable.';
-    }
+ } catch (Throwable $exception) {
+ $detailError = customcore_is_debug
+ ? $exception->getMessage: 'Product data is temporarily unavailable.';
+ }
 }
 
 // A genuinely invalid or missing product is a real "Not Found", so send a 404
 // status (not a 200 "soft 404") to give browsers and search engines the correct
 // signal while still rendering the friendly styled shell below. A transient DB
 // error keeps the default 200 — the resource may exist, it is not "not found".
-if ($notFound && !headers_sent()) {
-    http_response_code(404);
+if ($notFound && !headers_sent) {
+ http_response_code(404);
 }
 ```
 
@@ -100,4 +99,4 @@ The 404 response still renders the complete page chrome (header, nav, footer) an
 - **Status codes:** correct across pages, guards, and edge cases.
 - **Test data:** disposable admin removed; store back to baseline.
 
-**No known critical or rubric-blocking issue remains — Stage 15 (Testing & QA) is complete.** The only outstanding rubric item is #11 (live hosting), which is prepared and deferred to Stage 16 by design (see [`rubric-audit.md`](rubric-audit.md)).
+**No known critical or rubric-blocking issue remains — testing and QA is complete.** The only outstanding rubric item is #11 (live hosting), which is prepared and deferred to deployment by design (see [`rubric-audit.md`](rubric-audit.md)).

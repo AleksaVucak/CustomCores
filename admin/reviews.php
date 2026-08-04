@@ -1,21 +1,20 @@
 <?php
 /**
- * CustomCore — Administrator review moderation (Commit 9.8).
- *
- * File responsibility:
- *   Protected review queue. Lists pending/approved/hidden reviews with search
- *   and status filters; lets an administrator approve, hide, restore to pending,
- *   or permanently delete a review via Post/Redirect/Get.
- *
- * Authentication requirements:
- *   Administrator role (customcore_require_admin()).
- *
- * Security:
- *   - Every write requires a valid CSRF token.
- *   - Status writes are validated against the reviews.status ENUM.
- *   - Delete confirms via a client-side prompt (server still verifies CSRF).
- *   - Public pages continue to show only status = 'approved' reviews.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator review moderation.
+// Protected review queue. Lists pending/approved/hidden reviews with search and status filters;
+// lets an administrator approve, hide, restore to pending, or permanently delete a review via
+// Post/Redirect/Get.
+// Access: Administrator role (customcore_require_admin()).
+// Security:
+//   Every write requires a valid CSRF token.
+//   Status writes are validated against the reviews.status ENUM.
+//   Delete confirms via a client-side prompt (server still verifies CSRF).
+//   Public pages continue to show only status = 'approved' reviews.
 
 declare(strict_types=1);
 
@@ -50,9 +49,7 @@ function customcore_admin_reviews_query(array $filters, ?int $page = null): stri
     return $params === [] ? '' : '?' . http_build_query($params);
 }
 
-// ---------------------------------------------------------------------------
-// Handle moderation actions — CSRF + PRG
-// ---------------------------------------------------------------------------
+// Handle moderation actions, CSRF + PRG
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = isset($_POST['_csrf']) && is_string($_POST['_csrf']) ? $_POST['_csrf'] : null;
 
@@ -123,9 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     customcore_redirect($returnUrl);
 }
 
-// ---------------------------------------------------------------------------
 // Read filters + load list
-// ---------------------------------------------------------------------------
 $filters = [
     'search' => isset($_GET['q']) && is_string($_GET['q']) ? trim($_GET['q']) : '',
     'status' => isset($_GET['status']) && in_array($_GET['status'] ?? '', customcore_review_statuses(), true)
@@ -151,7 +146,7 @@ $adminNavCurrent = 'reviews';
 $loadAdminCss = true;
 $currentPage = 'admin';
 
-$pageTitle = 'Reviews — CustomCore admin';
+$pageTitle = 'Reviews | CustomCore Admin';
 $pageDescription = 'Approve, hide, or delete CustomCore product reviews.';
 $pageKeywords = 'CustomCore, admin, reviews, moderation';
 

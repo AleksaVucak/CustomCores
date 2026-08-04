@@ -1,10 +1,12 @@
-/**
- * CustomCore — Help centre hub filter (Commit 11.1).
- *
- * Progressive enhancement for help/index.html:
- *   Filters guide cards by title, description, and data-help-keywords as the
- *   visitor types. Without JavaScript every card remains visible.
+/*
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Help centre hub filter.
+// Progressive enhancement for help/index.html: Filters guide cards by title, description, and
+// data-help-keywords as the visitor types. Without JavaScript every card remains visible.
 (function () {
   'use strict';
 
@@ -41,7 +43,7 @@
    * Build the searchable text for a card from its visible text plus any
    * data-help-keywords.
    *
-   * @param {Element} card A .help-hub-card element.
+   * @param {Element} card A.help-hub-card element.
    * @returns {string} Normalised searchable text.
    */
   function cardText(card) {

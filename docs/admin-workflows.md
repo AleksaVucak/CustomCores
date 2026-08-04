@@ -1,9 +1,9 @@
-# CustomCore — Administrator Workflow Verification (Commit 15.7)
+# CustomCore | Administrator Workflow Verification
 
-**Document type:** Stage 15 verification  
-**Purpose:** Prove that every core administrator action succeeds end-to-end — from creating a product all the way through the monitoring dashboard — exercising the real admin handlers, the admin access guard, CSRF, and database writes, including the account-safety protections.  
-**Acceptance:** Every core administrator action succeeds; any avoidable defect found in an administrator workflow is corrected.  
-**Related:** Customer counterpart [`customer-workflows.md`](customer-workflows.md) (Commit 15.6); prior Stage 15 records [`html-validation.md`](html-validation.md), [`css-validation.md`](css-validation.md), [`js-validation.md`](js-validation.md), [`responsiveness-desktop.md`](responsiveness-desktop.md), [`responsiveness-mobile.md`](responsiveness-mobile.md); admin tooling in [`administrator-guide.md`](administrator-guide.md).
+**Document type:** Project documentation
+**Purpose:** Prove that every core administrator action succeeds end-to-end — from creating a product all the way through the monitoring dashboard — exercising the real admin handlers, the admin access guard, CSRF, and database writes, including the account-safety protections.
+**Acceptance:** Every core administrator action succeeds; any avoidable defect found in an administrator workflow is corrected.
+**Related:** Customer counterpart [`customer-workflows.md`](customer-workflows.md); earlier test records [`html-validation.md`](html-validation.md), [`css-validation.md`](css-validation.md), [`js-validation.md`](js-validation.md), [`responsiveness-desktop.md`](responsiveness-desktop.md), [`responsiveness-mobile.md`](responsiveness-mobile.md); admin tooling in [`administrator-guide.md`](administrator-guide.md).
 
 ### Status legend
 
@@ -36,11 +36,11 @@
 
 ## 2. Method
 
-1. **Workflow map.** Every admin action was mapped to its page, handler (`includes/admin-*.php`), POST/GET fields, enum/whitelist values, access control (`customcore_require_admin()`), CSRF requirement, and success/redirect behaviour.
+1. **Workflow map.** Every admin action was mapped to its page, handler (`includes/admin-*.php`), POST/GET fields, enum/whitelist values, access control (`customcore_require_admin`), CSRF requirement, and success/redirect behaviour.
 2. **Automated end-to-end harness.** A disposable throwaway script drove the running site over the project PHP server (`php -S localhost:8000`). Because there is **no seeded admin account** (by design), the harness:
-   - registered a disposable customer **and** a disposable admin over HTTP, then promoted the latter to `admin` directly in the database;
-   - as the customer, created the artifacts an admin must manage — an **order**, a **pending review**, and a **consultation request**;
-   - then, in a separate authenticated admin session (own cookie jar, CSRF re-read from each form page), performed **every** admin action in §1.
+ - registered a disposable customer **and** a disposable admin over HTTP, then promoted the latter to `admin` directly in the database;
+ - as the customer, created the artifacts an admin must manage — an **order**, a **pending review**, and a **consultation request**;
+ - then, in a separate authenticated admin session (own cookie jar, CSRF re-read from each form page), performed **every** admin action in §1.
 3. **Result verification in the database.** Each state-changing action was confirmed not only by its `303` PRG redirect but by re-reading the affected row (product price, `is_active`, order `status`/`admin_notes`, user `role`/`is_active`, consultation `status`, review `status`, `site_settings.active_theme_id`, compatibility-rule `is_active`).
 4. **Non-destructive by construction.** Global settings touched for testing were **restored**: the toggled compatibility rule was toggled back, and the active theme was switched then restored to its original value. The `update_rule` action was submitted with the rule's current values (no data change).
 5. **Disposable data + cleanup.** After the run, the created product (+ its options and uploaded image file), both disposable users, and all their orders/reviews/consultations/carts were deleted. Post-cleanup the store was confirmed back to baseline: **20 products (all active), 0 orders, 0 consultations, reviews at the seed mix (8 approved / 1 pending / 1 hidden), only the three seed customers, 7/7 compatibility rules active, `active_theme_id = 1`, and no orphan upload files.**
@@ -91,15 +91,15 @@ Observations that confirm intended behaviour (not defects):
 php -S localhost:8000
 
 # 2. Sign in as an administrator (create one with: php database/create-admin.php),
-#    then walk product → monitoring:
-#    dashboard → products (add w/ image → edit → disable/enable) → product options
-#    → compatibility (toggle a rule) → orders (status + notes) → users
-#    (disable/enable, promote/demote) → consultations (respond) → reviews (approve/hide)
-#    → reports → monitoring → themes (switch + switch back).
+# then walk product → monitoring:
+# dashboard → products (add w/ image → edit → disable/enable) → product options
+# → compatibility (toggle a rule) → orders (status + notes) → users
+# (disable/enable, promote/demote) → consultations (respond) → reviews (approve/hide)
+# → reports → monitoring → themes (switch + switch back).
 #
-#    Expect: each state change redirects (PRG) with a success flash and the row
-#    updates in the database; the admin guard blocks guests/customers; an admin
-#    cannot change their own role.
+# Expect: each state change redirects (PRG) with a success flash and the row
+# updates in the database; the admin guard blocks guests/customers; an admin
+# cannot change their own role.
 ```
 
 Testing uses disposable `@example.test` accounts and a disposable product that are deleted afterward, returning the store to its seed state.
@@ -118,4 +118,3 @@ Testing uses disposable `@example.test` accounts and a disposable product that a
 | Test data cleaned up; store returned to baseline | **Yes** |
 | Administrator-workflow results recorded | **This document** |
 
-**Commit 15.7 complete.** Next: Commit **15.8** — complete the one-hundred-point rubric audit (requirement → evidence table).

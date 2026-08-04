@@ -1,33 +1,22 @@
 <?php
 /**
- * CustomCore — Server-Side Compatibility Checker API (Commit 5.4).
- *
- * File responsibility:
- *   Accepts a JSON payload of component IDs and returns compatibility results
- *   via the shared evaluator in includes/compatibility.php.
- *
- * Endpoint:
- *   POST api/compatibility-check.php
- *   Content-Type: application/json
- *
- * Request body:
- *   { "components": [1, 8, 15, 24, 28, 35, 40, 48, 54, 57] }
- *
- * Response (200):
- *   {
- *     "success": true,
- *     "status": "compatible" | "warning" | "incompatible",
- *     "results": [ { "rule_code", "name", "status", "severity", "message" }, ... ]
- *   }
- *
- * Authentication requirements:
- *   None (public). The builder is available to guests.
- *
- * Security:
- *   - POST only.
- *   - Input validated: array of integers, max 20.
- *   - Only active components and rules are used.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Server-Side Compatibility Checker API.
+// Accepts a JSON payload of component IDs and returns compatibility results via the shared
+// evaluator in includes/compatibility.php.
+// Endpoint: POST api/compatibility-check.php Content-Type: application/json
+// Request body: { "components": [1, 8, 15, 24, 28, 35, 40, 48, 54, 57] }
+// Response (200): { "success": true, "status": "compatible" | "warning" | "incompatible",
+// "results": [ { "rule_code", "name", "status", "severity", "message" }... ] }
+// Access: None (public). The builder is available to guests.
+// Security:
+//   POST only.
+//   Input validated: array of integers, max 20.
+//   Only active components and rules are used.
 
 declare(strict_types=1);
 

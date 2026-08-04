@@ -1,24 +1,21 @@
 <?php
 /**
- * CustomCore — Customer Order History (Commit 6.7).
- *
- * File responsibility:
- *   Lists orders placed by the logged-in customer in a table: order number,
- *   date, status, item count, payment method label, total, and a link to
- *   the itemized detail page. Optional status filter via ?status=.
- *
- * Authentication requirements:
- *   Logged-in customer (customcore_require_login). All queries scoped to
- *   session user_id — users see only their own orders.
- *
- * Completion test:
- *   Users see only their orders.
- *
- * Security:
- *   - Ownership enforced via WHERE user_id = :uid on every query.
- *   - Status filter values are whitelisted against the ENUM set.
- *   - All outputs escaped via customcore_e().
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Customer Order History.
+// Lists orders placed by the logged-in customer in a table: order number, date, status, item
+// count, payment method label, total, and a link to the itemized detail page. Optional status
+// filter via ?status=.
+// Access: Logged-in customer (customcore_require_login). All queries scoped to session user_id,
+// users see only their own orders.
+// Completion test: Users see only their orders.
+// Security:
+//   Ownership enforced via WHERE user_id =:uid on every query.
+//   Status filter values are whitelisted against the ENUM set.
+//   All outputs escaped via customcore_e().
 
 declare(strict_types=1);
 
@@ -33,14 +30,12 @@ customcore_require_login();
 $userId = customcore_current_user_id();
 $accountNavCurrent = 'orders';
 
-$pageTitle = 'Order history — CustomCore';
+$pageTitle = 'Order History | CustomCore';
 $pageDescription = 'View your past CustomCore orders and their status.';
 $pageKeywords = 'CustomCore, order history, orders, purchase history';
 $currentPage = 'orders';
 
-// ---------------------------------------------------------------------------
 // Optional status filter (whitelisted)
-// ---------------------------------------------------------------------------
 
 $statusFilter = '';
 if (isset($_GET['status']) && is_string($_GET['status'])) {
@@ -50,9 +45,7 @@ if (isset($_GET['status']) && is_string($_GET['status'])) {
     }
 }
 
-// ---------------------------------------------------------------------------
 // Load user's orders (owner-scoped)
-// ---------------------------------------------------------------------------
 
 $orders = [];
 $loadError = null;
@@ -101,7 +94,7 @@ require_once __DIR__ . '/includes/header.php';
         <p class="context-help">
             Help:
             <a href="<?php echo customcore_e(customcore_url('help/orders.html#history')); ?>">Orders guide</a>
-            — review past orders, status, and itemized receipts.
+            review past orders, status, and itemized receipts.
         </p>
     </header>
 

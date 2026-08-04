@@ -1,34 +1,29 @@
--- =============================================================================
--- CustomCore — Compatibility Rules Seed (Commit 2.5)
--- =============================================================================
---
--- File responsibility:
---   Seeds the seven simplified compatibility rules that the PC builder checker
---   uses in Stage 5. Each row describes one check, its severity, and optional
---   configuration thresholds. Application logic (PHP + JS) reads these rows,
---   then compares component attribute columns to produce compatible / warning /
---   incompatible results.
---
+-- Aleksa Vucak
+-- 110139920
+-- COMP 3340, Final Project
+-- August 5th, 2026
+-- Compatibility Rules Seed
+-- Seeds the seven simplified compatibility rules that the PC builder checker
+-- uses in. Each row describes one check, its severity, and optional
+-- configuration thresholds. Application logic (PHP + JS) reads these rows
+-- then compares component attribute columns to produce compatible / warning /
+-- incompatible results.
 -- Prerequisites:
---   1. Import `database/schema.sql`
---   2. Import `database/seed-components.sql` (attribute columns must exist)
---
+-- 1. Import `database/schema.sql`
+-- 2. Import `database/seed-components.sql` (attribute columns must exist)
 -- Import:
---   mysql -u your_username -p your_database_name < database/seed-compatibility.sql
---
--- Acceptance (Commit 2.5):
---   - 7 active rules matching docs/database-design.md section 6
---   - Compatible + incompatible cases are queryable from seeded components
---
+-- mysql -u your_username -p your_database_name < database/seed-compatibility.sql
+-- Acceptance:
+-- - 7 active rules matching docs/database-design.md section 6
+-- - Compatible + incompatible cases are queryable from seeded components
 -- Rule reference (docs/database-design.md §6):
---   1. socket_match       — CPU socket = motherboard socket
---   2. ram_type_match      — RAM type = motherboard RAM type
---   3. case_motherboard    — Motherboard form factor fits case
---   4. psu_wattage         — PSU wattage ≥ estimated build draw
---   5. gpu_clearance       — Case max GPU length ≥ GPU length
---   6. cooler_fit          — Case cooler clearance + type support
---   7. storage_interface   — Motherboard supports chosen storage interface
--- =============================================================================
+-- 1. socket_match, CPU socket = motherboard socket
+-- 2. ram_type_match, RAM type = motherboard RAM type
+-- 3. case_motherboard, Motherboard form factor fits case
+-- 4. psu_wattage, PSU wattage ≥ estimated build draw
+-- 5. gpu_clearance, Case max GPU length ≥ GPU length
+-- 6. cooler_fit, Case cooler clearance + type support
+-- 7. storage_interface, Motherboard supports chosen storage interface
 
 SET NAMES utf8mb4;
 
@@ -40,12 +35,10 @@ INSERT INTO `compatibility_rules`
     (`id`, `rule_code`, `name`, `description`, `severity`, `config`, `is_active`)
 VALUES
 
--- -----------------------------------------------------------------------------
 -- Rule 1: CPU socket must match motherboard socket
--- -----------------------------------------------------------------------------
 -- Compares: components.socket (CPU, cat 1) vs components.socket (Motherboard, cat 2)
--- Example pass:  Ryzen 7 7800X3D (AM5) + B650 TOMAHAWK (AM5)
--- Example fail:  Ryzen 5 5600 (AM4) + Z790-P WIFI (LGA1700)
+-- Example pass: Ryzen 7 7800X3D (AM5) + B650 TOMAHAWK (AM5)
+-- Example fail: Ryzen 5 5600 (AM4) + Z790-P WIFI (LGA1700)
 (
     1,
     'socket_match',
@@ -62,12 +55,10 @@ VALUES
     1
 ),
 
--- -----------------------------------------------------------------------------
 -- Rule 2: RAM type must match motherboard RAM type
--- -----------------------------------------------------------------------------
 -- Compares: components.ram_type (RAM, cat 4) vs components.ram_type (Motherboard, cat 2)
--- Example pass:  DDR5 RAM + DDR5 motherboard
--- Example fail:  DDR4 RAM + DDR5 motherboard
+-- Example pass: DDR5 RAM + DDR5 motherboard
+-- Example fail: DDR4 RAM + DDR5 motherboard
 (
     2,
     'ram_type_match',
@@ -84,15 +75,13 @@ VALUES
     1
 ),
 
--- -----------------------------------------------------------------------------
 -- Rule 3: Motherboard form factor must fit inside the case
--- -----------------------------------------------------------------------------
 -- Compares: components.form_factor (Motherboard, cat 2) fits within
---           components.form_factor (Case, cat 7)
+-- components.form_factor (Case, cat 7)
 -- Hierarchy: ATX case accepts ATX/mATX/ITX; mATX case accepts mATX/ITX;
---            ITX case accepts ITX only.
--- Example pass:  ITX motherboard + ATX case
--- Example fail:  ATX motherboard + ITX case (Cooler Master NR200P)
+-- ITX case accepts ITX only.
+-- Example pass: ITX motherboard + ATX case
+-- Example fail: ATX motherboard + ITX case (Cooler Master NR200P)
 (
     3,
     'case_motherboard',
@@ -110,15 +99,13 @@ VALUES
     1
 ),
 
--- -----------------------------------------------------------------------------
 -- Rule 4: PSU wattage must be sufficient for the build
--- -----------------------------------------------------------------------------
 -- Compares: components.psu_wattage (PSU, cat 6) vs SUM of
---           components.wattage_estimate across all selected parts.
+-- components.wattage_estimate across all selected parts.
 -- A 20% headroom margin is recommended; below headroom is a warning, below
 -- total draw is an error.
--- Example pass:  850 W PSU with 600 W total draw
--- Example fail:  450 W PSU with 700 W total draw
+-- Example pass: 850 W PSU with 600 W total draw
+-- Example fail: 450 W PSU with 700 W total draw
 (
     4,
     'psu_wattage',
@@ -136,13 +123,11 @@ VALUES
     1
 ),
 
--- -----------------------------------------------------------------------------
 -- Rule 5: Case must have enough GPU clearance
--- -----------------------------------------------------------------------------
 -- Compares: components.max_gpu_length_mm (Case, cat 7) ≥
---           components.gpu_length_mm (GPU, cat 3)
--- Example pass:  Lian Li Lancool 216 (392 mm) + RTX 4090 (336 mm)
--- Example fail:  SilverStone SG13 (266 mm) + RTX 4090 (336 mm)
+-- components.gpu_length_mm (GPU, cat 3)
+-- Example pass: Lian Li Lancool 216 (392 mm) + RTX 4090 (336 mm)
+-- Example fail: SilverStone SG13 (266 mm) + RTX 4090 (336 mm)
 (
     5,
     'gpu_clearance',
@@ -159,15 +144,13 @@ VALUES
     1
 ),
 
--- -----------------------------------------------------------------------------
 -- Rule 6: Case must support the cooler type and height
--- -----------------------------------------------------------------------------
 -- Two sub-checks:
---   a) Air coolers: Case.max_cooler_height_mm ≥ Cooler.cooler_height_mm
---   b) Liquid coolers: Case.cooler_type must include 'liquid'
--- Example pass:  Noctua NH-D15 (165 mm air) in Lian Li Lancool 216 (180 mm, air+liquid)
--- Example fail:  Noctua NH-D15 (165 mm air) in Node 202 (56 mm, air only)
--- Example fail:  Liquid AIO in Fractal Node 202 (air only, no liquid support)
+-- a) Air coolers: Case.max_cooler_height_mm ≥ Cooler.cooler_height_mm
+-- b) Liquid coolers: Case.cooler_type must include 'liquid'
+-- Example pass: Noctua NH-D15 (165 mm air) in Lian Li Lancool 216 (180 mm, air+liquid)
+-- Example fail: Noctua NH-D15 (165 mm air) in Node 202 (56 mm, air only)
+-- Example fail: Liquid AIO in Fractal Node 202 (air only, no liquid support)
 (
     6,
     'cooler_fit',
@@ -186,13 +169,11 @@ VALUES
     1
 ),
 
--- -----------------------------------------------------------------------------
 -- Rule 7: Motherboard must support the storage interface
--- -----------------------------------------------------------------------------
 -- Compares: components.storage_interface (Storage, cat 5) is contained in
---           components.supported_storage CSV (Motherboard, cat 2)
--- Example pass:  NVMe SSD + any motherboard (all support NVMe)
--- Example fail:  SATA SSD/HDD + ASRock B650I (supported_storage = 'NVMe' only)
+-- components.supported_storage CSV (Motherboard, cat 2)
+-- Example pass: NVMe SSD + any motherboard (all support NVMe)
+-- Example fail: SATA SSD/HDD + ASRock B650I (supported_storage = 'NVMe' only)
 (
     7,
     'storage_interface',
@@ -209,9 +190,7 @@ VALUES
     1
 );
 
--- =============================================================================
 -- VERIFICATION QUERIES
--- =============================================================================
 
 -- Expect 7 active rules:
 -- SELECT COUNT(*) AS rule_count FROM compatibility_rules WHERE is_active = 1;
@@ -220,34 +199,34 @@ VALUES
 -- SELECT id, rule_code, name, severity FROM compatibility_rules ORDER BY id;
 
 -- Demo: find incompatible CPU-motherboard socket pairs:
--- SELECT cpu.name AS cpu_name, cpu.socket AS cpu_socket,
---        mb.name AS mb_name, mb.socket AS mb_socket,
---        CASE WHEN cpu.socket = mb.socket THEN 'compatible' ELSE 'incompatible' END AS result
+-- SELECT cpu.name AS cpu_name, cpu.socket AS cpu_socket
+-- mb.name AS mb_name, mb.socket AS mb_socket
+-- CASE WHEN cpu.socket = mb.socket THEN 'compatible' ELSE 'incompatible' END AS result
 -- FROM components cpu
 -- CROSS JOIN components mb
 -- WHERE cpu.component_category_id = 1
---   AND mb.component_category_id = 2
---   AND cpu.socket <> mb.socket
+-- AND mb.component_category_id = 2
+-- AND cpu.socket <> mb.socket
 -- LIMIT 10;
 
 -- Demo: find GPU + case clearance failures:
--- SELECT gpu.name AS gpu_name, gpu.gpu_length_mm,
---        cs.name AS case_name, cs.max_gpu_length_mm,
---        CASE WHEN cs.max_gpu_length_mm >= gpu.gpu_length_mm
---             THEN 'fits' ELSE 'too long' END AS result
+-- SELECT gpu.name AS gpu_name, gpu.gpu_length_mm
+-- cs.name AS case_name, cs.max_gpu_length_mm
+-- CASE WHEN cs.max_gpu_length_mm >= gpu.gpu_length_mm
+-- THEN 'fits' ELSE 'too long' END AS result
 -- FROM components gpu
 -- CROSS JOIN components cs
 -- WHERE gpu.component_category_id = 3
---   AND cs.component_category_id = 7
---   AND cs.max_gpu_length_mm < gpu.gpu_length_mm;
+-- AND cs.component_category_id = 7
+-- AND cs.max_gpu_length_mm < gpu.gpu_length_mm;
 
 -- Demo: find SATA storage vs NVMe-only motherboard:
--- SELECT st.name AS storage_name, st.storage_interface,
---        mb.name AS mb_name, mb.supported_storage,
---        CASE WHEN FIND_IN_SET(st.storage_interface, mb.supported_storage)
---             THEN 'supported' ELSE 'unsupported' END AS result
+-- SELECT st.name AS storage_name, st.storage_interface
+-- mb.name AS mb_name, mb.supported_storage
+-- CASE WHEN FIND_IN_SET(st.storage_interface, mb.supported_storage)
+-- THEN 'supported' ELSE 'unsupported' END AS result
 -- FROM components st
 -- CROSS JOIN components mb
 -- WHERE st.component_category_id = 5
---   AND mb.component_category_id = 2
---   AND NOT FIND_IN_SET(st.storage_interface, mb.supported_storage);
+-- AND mb.component_category_id = 2
+-- AND NOT FIND_IN_SET(st.storage_interface, mb.supported_storage);

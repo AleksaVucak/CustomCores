@@ -1,24 +1,22 @@
 <?php
 /**
- * CustomCore — Single Saved Build Management (Commit 5.7).
- *
- * File responsibility:
- *   Displays a single saved build that belongs to the logged-in customer.
- *   Supports rename, delete, and "edit in builder" (reloads into session).
- *   Ownership is enforced: users cannot view or modify another user's build.
- *
- * Supported actions (POST):
- *   - rename: Update the build name and/or notes.
- *   - delete: Remove the build and its items (cascade).
- *   - edit:   Reload the build into the session builder and redirect.
- *
- * Authentication requirements:
- *   Logged-in customer. Ownership is verified via user_id = session user.
- *
- * Database queries:
- *   - saved_builds (owner-scoped)
- *   - saved_build_items + components + component_categories (for display)
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Single Saved Build Management.
+// Displays a single saved build that belongs to the logged-in customer. Supports rename, delete,
+// and "edit in builder" (reloads into session). Ownership is enforced: users cannot view or modify
+// another user's build.
+// Supported actions (POST):
+//   rename: Update the build name and/or notes.
+//   delete: Remove the build and its items (cascade).
+//   edit: Reload the build into the session builder and redirect.
+// Access: Logged-in customer. Ownership is verified via user_id = session user.
+// Database queries:
+//   saved_builds (owner-scoped)
+//   saved_build_items + components + component_categories (for display)
 
 declare(strict_types=1);
 
@@ -34,9 +32,7 @@ customcore_require_login();
 $userId = customcore_current_user_id();
 $accountNavCurrent = 'builds';
 
-// ---------------------------------------------------------------------------
 // Validate and load build (ownership enforced)
-// ---------------------------------------------------------------------------
 
 $buildId = 0;
 if (isset($_GET['id']) && is_string($_GET['id']) && ctype_digit($_GET['id'])) {
@@ -104,9 +100,7 @@ try {
         : 'Could not load build components.';
 }
 
-// ---------------------------------------------------------------------------
 // Handle POST actions (rename, delete, edit-in-builder)
-// ---------------------------------------------------------------------------
 
 $actionError = null;
 
@@ -201,9 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// ---------------------------------------------------------------------------
 // Page setup and render
-// ---------------------------------------------------------------------------
 
 $buildName = (string) $build['name'];
 $buildNotes = $build['notes'];
@@ -232,7 +224,7 @@ try {
     $dateUpdated = $updatedAt;
 }
 
-$pageTitle = customcore_e($buildName) . ' — Saved build — CustomCore';
+$pageTitle = customcore_e($buildName) . ' | Saved Build | CustomCore';
 $pageDescription = 'View and manage your saved build: ' . $buildName;
 $pageKeywords = 'CustomCore, saved build, manage, rename, delete';
 $currentPage = 'builder';
@@ -382,7 +374,7 @@ require_once __DIR__ . '/includes/header.php';
                                         <?php endif; ?>
                                     </td>
                                     <td class="saved-build-item__attrs">
-                                        <?php echo $attrs !== [] ? customcore_e(implode(' · ', $attrs)) : '—'; ?>
+                                        <?php echo $attrs !== [] ? customcore_e(implode(' · ', $attrs)) : 'No details'; ?>
                                     </td>
                                     <td class="data-table__num">
                                         <?php echo $unitPrice > 0
@@ -427,7 +419,7 @@ require_once __DIR__ . '/includes/header.php';
                         <input type="hidden" name="action" value="add_build">
                         <input type="hidden" name="saved_build_id" value="<?php echo customcore_e((string) $buildId); ?>">
                         <button type="submit" class="button button--primary">
-                            Add this build to cart — $<?php echo customcore_e(number_format($totalPrice, 2)); ?>
+                            Add this build to cart, $<?php echo customcore_e(number_format($totalPrice, 2)); ?>
                         </button>
                     </form>
                 </div>

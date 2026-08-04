@@ -1,24 +1,21 @@
 <?php
 /**
- * CustomCore — Administrator authorization guard (Commit 4.7).
- *
- * File responsibility:
- *   Restricts admin-only routes to authenticated users with the 'admin' role.
- *   Guests are sent to login; logged-in non-admins (customers) are redirected
- *   away with a permission error. Every file under admin/ includes this first.
- *
- * Usage (top of any admin/*.php page, before output):
- *   require_once __DIR__ . '/../includes/admin-auth.php';
- *   customcore_require_admin();
- *
- * Authentication requirements:
- *   Admin role required. Builds on the same session keys as includes/auth.php.
- *
- * Security:
- *   - Reuses customcore_require_login() so guests get the standard login flow.
- *   - Role check uses the session role, kept in sync from the database on
- *     profile load; sensitive admin actions in Stage 9 re-verify as needed.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator authorization guard.
+// Restricts admin-only routes to authenticated users with the 'admin' role. Guests are sent to
+// login; logged-in non-admins (customers) are redirected away with a permission error. Every file
+// under admin/ includes this first.
+// Usage (top of any admin/*.php page, before output): require_once __DIR__. '/../includes/admin-
+// auth.php'; customcore_require_admin();
+// Access: Admin role required. Builds on the same session keys as includes/auth.php.
+// Security:
+//   Reuses customcore_require_login() so guests get the standard login flow.
+//   Role check uses the session role, kept in sync from the database on profile load; sensitive
+//     admin actions in re-verify as needed.
 
 declare(strict_types=1);
 

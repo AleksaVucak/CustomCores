@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+<!-- Aleksa Vucak 110139920 COMP 3340, Final Project August 5th, 2026 -->
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Accounts &amp; profile guide — CustomCore Help</title>
+    <title>Accounts &amp; Profile Guide | CustomCore Help</title>
     <meta name="description" content="Step-by-step help for CustomCore accounts: registering, logging in and out, your profile dashboard, editing details, changing your password, session timeouts, and disabled accounts.">
     <link rel="stylesheet" href="../assets/css/main.css">
 </head>
@@ -63,7 +64,7 @@
                     <li><strong>Place orders</strong> at checkout and track them in your order history.</li>
                     <li><strong>Request consultations</strong> and follow the responses.</li>
                     <li><strong>Leave product reviews</strong> and keep a wishlist.</li>
-                    <li><strong>Manage your profile</strong> — name, contact details, and shipping address.</li>
+                    <li><strong>Manage your profile:</strong> name, contact details, and shipping address.</li>
                 </ul>
                 <p>
                     <a class="button button--sm" href="../register.php">Create an account</a>
@@ -75,16 +76,16 @@
                 <h2>Creating an account</h2>
                 <p>
                     Open <a href="../register.php">Create account</a> from the navigation. If you are
-                    already logged in you will be sent to your profile instead — log out first to
+                    already logged in you will be sent to your profile instead, log out first to
                     register a different account.
                 </p>
                 <p>Fill in the form:</p>
                 <ul>
-                    <li><strong>First name</strong> and <strong>Last name</strong> — required, up to 100 characters each.</li>
-                    <li><strong>Email address</strong> — required, must be a valid address, up to 255 characters, and not already registered.</li>
-                    <li><strong>Phone</strong> — optional. If provided it may contain digits and the characters <code>+ ( ) - . </code> and spaces (up to 30 characters).</li>
-                    <li><strong>Password</strong> — required, at least 8 characters (up to 200).</li>
-                    <li><strong>Confirm password</strong> — must match the password exactly.</li>
+                    <li><strong>First name</strong> and <strong>Last name:</strong> required, up to 100 characters each.</li>
+                    <li><strong>Email address:</strong> required, must be a valid address, up to 255 characters, and not already registered.</li>
+                    <li><strong>Phone:</strong> optional. If provided it may contain digits and the characters <code>+ ( ) - . </code> and spaces (up to 30 characters).</li>
+                    <li><strong>Password:</strong> required, at least 8 characters (up to 200).</li>
+                    <li><strong>Confirm password:</strong> must match the password exactly.</li>
                 </ul>
                 <p>
                     Choose <strong>Create account</strong>. When everything checks out you will see
@@ -94,13 +95,13 @@
                 </p>
                 <p>
                     If something is wrong, the form reloads with a message under each field and your
-                    entries preserved — except passwords, which are never echoed back. If the email is
+                    entries preserved, except passwords, which are never echoed back. If the email is
                     already registered you will be told, so <a href="../login.php">log in</a> instead
                     if the account is yours.
                 </p>
                 <p class="help-note">
-                    <strong>Security note:</strong> your password is stored only as a secure hash —
-                    never as plain text — and it is never shown back to you.
+                    <strong>Security note:</strong> your password is stored only as a secure hash, 
+                    never as plain text, and it is never shown back to you.
                 </p>
             </section>
 
@@ -113,7 +114,7 @@
                 <ul>
                     <li>If your details are correct you will be greeted by name and taken to your <a href="../profile.php">account dashboard</a>.</li>
                     <li>If you were sent to log in from another page (for example when saving a build or checking out), you will be returned to that page afterwards.</li>
-                    <li>If the email or password is wrong you will see a single generic message: “Invalid email or password.” This is deliberate — it avoids revealing whether an email is registered.</li>
+                    <li>If the email or password is wrong you will see a single generic message: “Invalid email or password.” This is deliberate, it avoids revealing whether an email is registered.</li>
                 </ul>
                 <p>
                     For your security a fresh session is created every time you log in, so an old
@@ -139,14 +140,14 @@
                 <h2>Your profile dashboard</h2>
                 <p>
                     <a href="../profile.php">My account</a> is your private home. It shows only your
-                    own information — data is always tied to the account you are signed in as, never to
+                    own information, data is always tied to the account you are signed in as, never to
                     an address-bar id. It includes:
                 </p>
                 <ul>
                     <li><strong>A welcome summary</strong> with your name, email, member-since date, and role.</li>
-                    <li><strong>Activity counts</strong> — orders, saved builds, wishlist items, consultations, and reviews.</li>
-                    <li><strong>Profile details</strong> — name, email, phone, and address (fields you have not filled in show as “Not set”).</li>
-                    <li><strong>Recent activity</strong> — your latest orders, saved builds, consultations, and reviews, with links where available.</li>
+                    <li><strong>Activity counts:</strong> orders, saved builds, wishlist items, consultations, and reviews.</li>
+                    <li><strong>Profile details:</strong> name, email, phone, and address (fields you have not filled in show as “Not set”).</li>
+                    <li><strong>Recent activity:</strong> your latest orders, saved builds, consultations, and reviews, with links where available.</li>
                 </ul>
                 <p>
                     Use the account navigation to reach <a href="../edit-profile.php">Edit profile</a>,
@@ -164,10 +165,10 @@
                 </p>
                 <p>You can update:</p>
                 <ul>
-                    <li><strong>First name</strong> and <strong>Last name</strong> — required, up to 100 characters each.</li>
-                    <li><strong>Email address</strong> — required and valid; it must not already be used by another account.</li>
-                    <li><strong>Phone</strong> — optional, same format as registration.</li>
-                    <li><strong>Address</strong> — optional address line 1 and 2, city, province, and postal code.</li>
+                    <li><strong>First name</strong> and <strong>Last name:</strong> required, up to 100 characters each.</li>
+                    <li><strong>Email address:</strong> required and valid; it must not already be used by another account.</li>
+                    <li><strong>Phone:</strong> optional, same format as registration.</li>
+                    <li><strong>Address:</strong> optional address line 1 and 2, city, province, and postal code.</li>
                 </ul>
                 <p>
                     Choose <strong>Save details</strong>. On success you return to your profile with
@@ -184,15 +185,15 @@
                     <strong>Change password</strong> form:
                 </p>
                 <ul>
-                    <li><strong>Current password</strong> — required. You must confirm the password you use now.</li>
-                    <li><strong>New password</strong> — required, at least 8 characters (up to 200).</li>
-                    <li><strong>Confirm new password</strong> — must match the new password.</li>
+                    <li><strong>Current password:</strong> required. You must confirm the password you use now.</li>
+                    <li><strong>New password:</strong> required, at least 8 characters (up to 200).</li>
+                    <li><strong>Confirm new password:</strong> must match the new password.</li>
                 </ul>
                 <p>
                     Choose <strong>Change password</strong>. If your current password is wrong you will
                     be told and nothing changes. On success you return to your profile with “Your
                     password was changed,” the new password is stored only as a secure hash, and your
-                    session is refreshed for safety — you stay logged in.
+                    session is refreshed for safety, you stay logged in.
                 </p>
             </section>
 
@@ -203,14 +204,14 @@
                     last forever. For your protection they end automatically when:
                 </p>
                 <ul>
-                    <li><strong>You are idle too long</strong> — after about 30 minutes without activity.</li>
-                    <li><strong>The session gets old</strong> — a single session lasts at most about 12 hours, even while active.</li>
+                    <li><strong>You are idle too long:</strong> after about 30 minutes without activity.</li>
+                    <li><strong>The session gets old:</strong> a single session lasts at most about 12 hours, even while active.</li>
                 </ul>
                 <p>
                     When a session ends this way you become a guest again. The next time you open a
                     private page you will be asked to log in, and after signing in you are returned to
                     where you were heading. Behind the scenes the session identifier is also rotated
-                    periodically to reduce the risk of session hijacking — you do not need to do
+                    periodically to reduce the risk of session hijacking, you do not need to do
                     anything for this.
                 </p>
             </section>
@@ -244,12 +245,12 @@
             <section id="tips" class="help-section">
                 <h2>Tips &amp; troubleshooting</h2>
                 <ul>
-                    <li><strong>“Invalid email or password.”</strong> — Check the email spelling and that Caps Lock is off. Passwords are case-sensitive.</li>
-                    <li><strong>“An account with that email already exists.”</strong> — The email is registered; <a href="../login.php">log in</a> instead of registering.</li>
-                    <li><strong>Passwords do not match.</strong> — Retype both the password and confirmation fields carefully.</li>
-                    <li><strong>Signed out unexpectedly?</strong> — Your session likely timed out (see <a href="#sessions">session timeouts</a>). Just log in again.</li>
-                    <li><strong>Session expired message on a form.</strong> — Reload the page and submit again; this protects forms against cross-site request forgery.</li>
-                    <li><strong>Can’t change your email.</strong> — Another account may already use that address. Pick a different one or contact support.</li>
+                    <li><strong>“Invalid email or password.”:</strong> Check the email spelling and that Caps Lock is off. Passwords are case-sensitive.</li>
+                    <li><strong>“An account with that email already exists.”:</strong> The email is registered; <a href="../login.php">log in</a> instead of registering.</li>
+                    <li><strong>Passwords do not match.:</strong> Retype both the password and confirmation fields carefully.</li>
+                    <li><strong>Signed out unexpectedly?:</strong> Your session likely timed out (see <a href="#sessions">session timeouts</a>). Just log in again.</li>
+                    <li><strong>Session expired message on a form.:</strong> Reload the page and submit again; this protects forms against cross-site request forgery.</li>
+                    <li><strong>Can’t change your email.:</strong> Another account may already use that address. Pick a different one or contact support.</li>
                     <li>Always <a href="#logout">log out</a> on shared computers.</li>
                 </ul>
             </section>

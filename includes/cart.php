@@ -1,18 +1,17 @@
 <?php
 /**
- * CustomCore — Cart helper functions (Commits 6.1–6.3).
- *
- * File responsibility:
- *   Shared cart operations: get or create the user's DB cart, add items,
- *   update/remove/clear lines (Commit 6.2), list items with product/build
- *   details, count items for the nav badge, and manage a session-cached
- *   count for lightweight badge display without per-page DB queries (6.3).
- *   All mutations are scoped to the current user_id (ownership enforced).
- *
- * Authentication requirements:
- *   A logged-in user is expected. Callers must call customcore_require_login()
- *   before invoking these helpers.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Cart helper functions.
+// Shared cart operations: get or create the user's DB cart, add items, update/remove/clear lines,
+// list items with product/build details, count items for the nav badge, and manage a session-
+// cached count for lightweight badge display without per-page DB queries. All mutations are scoped
+// to the current user_id (ownership enforced).
+// Access: A logged-in user is expected. Callers must call customcore_require_login() before
+// invoking these helpers.
 
 declare(strict_types=1);
 
@@ -129,9 +128,9 @@ function customcore_cart_add_build(PDO $pdo, int $cartId, int $savedBuildId, flo
 /**
  * Load all cart items with product/build detail.
  *
- * @return array<int, array{id:int, item_type:string, product_id:?int, saved_build_id:?int,
- *   quantity:int, unit_price:float, options_json:?string,
- *   name:string, brand:string, line_total:float}>
+ * @return array<int, array{id:int, item_type:string, product_id:?int, saved_build_id:?int
+ * quantity:int, unit_price:float, options_json:?string
+ * name:string, brand:string, line_total:float}>
  */
 function customcore_cart_items(PDO $pdo, int $cartId): array
 {
@@ -233,12 +232,12 @@ function customcore_cart_owned_item(PDO $pdo, int $userId, int $itemId): ?array
 }
 
 /**
- * Clamp a requested quantity for a cart line (Commit 6.2).
+ * Clamp a requested quantity for a cart line.
  *
  * Rules:
- *   - Saved builds are always quantity 1.
- *   - Products are clamped to 1–99 and never above available stock.
- *   - Quantity 0 means "remove" (caller should delete).
+ * - Saved builds are always quantity 1.
+ * - Products are clamped to 1 to 99 and never above available stock.
+ * - Quantity 0 means "remove" (caller should delete).
  *
  * @return array{quantity:int, remove:bool, warning:?string}
  */
@@ -368,7 +367,7 @@ function customcore_cart_update_quantity(PDO $pdo, int $userId, int $itemId, int
 }
 
 /**
- * Bulk-update quantities from a map of item_id => quantity (Commit 6.2).
+ * Bulk-update quantities from a map of item_id => quantity.
  *
  * @param array<int|string, int|string> $quantities
  * @return array{ok:bool, updated:int, removed:int, messages:list<string>}
@@ -460,9 +459,7 @@ function customcore_cart_clear(PDO $pdo, int $userId): int
     return $stmt->rowCount();
 }
 
-// =============================================================================
-// Session-cached cart count (Commit 6.3)
-// =============================================================================
+// Session-cached cart count
 
 /**
  * Refresh the session-cached cart item count from the database.
@@ -486,7 +483,7 @@ function customcore_cart_refresh_count(PDO $pdo, int $userId): int
 }
 
 /**
- * Get the cart item count — session-cached for cheap nav badge display.
+ * Get the cart item count, session-cached for cheap nav badge display.
  *
  * If the cache is stale or missing, this queries the DB and re-caches.
  * Navigation calls this; cart mutations call customcore_cart_refresh_count().
@@ -503,7 +500,7 @@ function customcore_cart_count_cached(?PDO $pdo = null, ?int $userId = null): in
         return (int) $_SESSION['_cc_cart_count'];
     }
 
-    // No cached value — query DB if we have the info.
+    // No cached value, query DB if we have the info.
     if ($userId === null) {
         $userId = isset($_SESSION['user_id']) ? (int) $_SESSION['user_id'] : 0;
     }

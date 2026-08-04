@@ -1,27 +1,23 @@
 <?php
 /**
- * CustomCore — Customer Order Details (Commit 6.8).
- *
- * File responsibility:
- *   Displays a single itemized order that belongs to the logged-in customer.
- *   Shows shipping snapshot, payment-method label, status, and every line
- *   item with frozen prices. Product options and custom-build component
- *   snapshots are expanded from JSON stored at checkout time.
- *
- * Authentication requirements:
- *   Logged-in customer. Ownership verified via user_id = session user.
- *
- * Completion test:
- *   Direct URL access to another user's order ID is denied.
- *
- * Security:
- *   - Order loaded with customcore_order_fetch_owned() (id AND user_id).
- *   - Line items loaded with customcore_order_fetch_items() which JOINs
- *     orders so foreign order_ids cannot leak item rows.
- *   - Missing / foreign order → identical flash + redirect (no existence leak).
- *   - All outputs escaped via customcore_e().
- *   - Payment method is a label only — never card data.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Customer Order Details.
+// Displays a single itemized order that belongs to the logged-in customer. Shows shipping
+// snapshot, payment-method label, status, and every line item with frozen prices. Product options
+// and custom-build component snapshots are expanded from JSON stored at checkout time.
+// Access: Logged-in customer. Ownership verified via user_id = session user.
+// Completion test: Direct URL access to another user's order ID is denied.
+// Security:
+//   Order loaded with customcore_order_fetch_owned() (id AND user_id).
+//   Line items loaded with customcore_order_fetch_items() which JOINs orders so foreign order_ids
+//     cannot leak item rows.
+//   Missing / foreign order → identical flash + redirect (no existence leak).
+//   All outputs escaped via customcore_e().
+//   Payment method is a label only, never card data.
 
 declare(strict_types=1);
 
@@ -36,9 +32,7 @@ customcore_require_login();
 $userId = customcore_current_user_id();
 $accountNavCurrent = 'orders';
 
-// ---------------------------------------------------------------------------
 // Validate order id from query string
-// ---------------------------------------------------------------------------
 
 $orderId = 0;
 if (isset($_GET['id']) && is_string($_GET['id']) && ctype_digit($_GET['id'])) {
@@ -50,9 +44,7 @@ if ($orderId <= 0) {
     customcore_redirect('order-history.php');
 }
 
-// ---------------------------------------------------------------------------
-// Load order + items — ownership enforced on both queries
-// ---------------------------------------------------------------------------
+// Load order + items, ownership enforced on both queries
 
 $order = null;
 $items = [];
@@ -95,7 +87,7 @@ foreach ($items as $line) {
 }
 $linesSubtotal = round($linesSubtotal, 2);
 
-$pageTitle = 'Order ' . $orderNumber . ' — CustomCore';
+$pageTitle = 'Order ' . $orderNumber . ' | CustomCore';
 $pageDescription = 'Itemized details for order ' . $orderNumber . '.';
 $pageKeywords = 'CustomCore, order details, receipt';
 $currentPage = 'orders';
@@ -181,7 +173,7 @@ require_once __DIR__ . '/includes/header.php';
                         <dd class="order-details__total">$<?php echo customcore_e(number_format($total, 2)); ?></dd>
                     </dl>
                     <p class="order-details__payment-note">
-                        Simulated checkout — no real payment card data was collected.
+                        Simulated checkout, no real payment card data was collected.
                     </p>
                 </section>
             </div>

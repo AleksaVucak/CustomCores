@@ -1,18 +1,16 @@
-/**
- * CustomCore — Public catalogue visualization (Commit 8.5).
- * ----------------------------------------------------------------------------
- * File responsibility:
- *   Renders a Chart.js bar chart of active products per performance tier. The
- *   data is produced server-side from MySQL and embedded in the
- *   data-catalogue-chart attribute, so the graph always uses real application
- *   data. An accessible data table is rendered server-side beside the canvas
- *   and remains the source of truth if Chart.js fails to load.
- *
- * Expected markup:
- *   .catalogue-chart[data-catalogue-chart='{"labels":[...],"datasets":[...]}']
- *     canvas#tier-product-chart
- * ----------------------------------------------------------------------------
+/*
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Public catalogue visualization.
+// Renders a Chart.js bar chart of active products per performance tier. The data is produced
+// server-side from MySQL and embedded in the data-catalogue-chart attribute, so the graph always
+// uses real application data. An accessible data table is rendered server-side beside the canvas
+// and remains the source of truth if Chart.js fails to load.
+// Expected markup: .catalogue-chart[data-catalogue-chart='{"labels":[...],"datasets":[...]}']
+// canvas#tier-product-chart
 
 (function (window, document) {
   'use strict';
@@ -20,7 +18,7 @@
   /**
    * Read the server-embedded JSON payload and render the tier bar chart into the
    * canvas. Silently returns when the container, canvas, Chart.js, or a valid
-   * payload is missing — the server-rendered data table remains the fallback.
+   * payload is missing, the server-rendered data table remains the fallback.
    *
    * @returns {void}
    */
@@ -32,7 +30,7 @@
 
     var canvas = root.querySelector('#tier-product-chart');
     if (!canvas || typeof window.Chart === 'undefined') {
-      // No Chart.js — the server-rendered table already communicates the data.
+      // No Chart.js, the server-rendered table already communicates the data.
       return;
     }
 

@@ -1,23 +1,20 @@
 <?php
 /**
- * CustomCore — Administrator monitoring dashboard (Commits 13.2–13.3).
- *
- * File responsibility:
- *   Protected back-office page that renders the Stage 13 health-check report as
- *   an online / warning / offline status table, plus live monitoring statistics
- *   (products, users, orders, consultation requests, images, and stock). Health
- *   checks come from customcore_monitoring_run(); statistics from
- *   customcore_monitoring_stats(). Both are isolated so a database failure never
- *   blanks the status table — filesystem image/media counts still appear.
- *
- * Authentication requirements:
- *   Administrator role (customcore_require_admin()). This guard uses session
- *   state only, so the page still renders when the database is offline.
- *
- * Security:
- *   All output is escaped. The monitoring engine returns production-safe
- *   summaries only (no credentials, absolute paths, or stack traces).
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator monitoring dashboard.
+// Protected back-office page that renders the health-check report as an online / warning / offline
+// status table, plus live monitoring statistics (products, users, orders, consultation requests,
+// images, and stock). Health checks come from customcore_monitoring_run(); statistics from
+// customcore_monitoring_stats(). Both are isolated so a database failure never blanks the status
+// table, filesystem image/media counts still appear.
+// Access: Administrator role (customcore_require_admin()). This guard uses session state only, so
+// the page still renders when the database is offline.
+// Security: All output is escaped. The monitoring engine returns production-safe summaries only
+// (no credentials, absolute paths, or stack traces).
 
 declare(strict_types=1);
 
@@ -33,7 +30,7 @@ $adminName = customcore_current_user_name();
 $adminNavCurrent = 'monitoring';
 $loadAdminCss = true;
 
-$pageTitle = 'Service monitoring — CustomCore admin';
+$pageTitle = 'Service Monitoring | CustomCore Admin';
 $pageDescription = 'CustomCore administrator monitoring dashboard: live online, warning, and offline health checks plus catalogue, order, and stock statistics.';
 $pageKeywords = 'CustomCore, admin, monitoring, health, status, statistics';
 $currentPage = 'admin';
@@ -46,7 +43,7 @@ try {
     $report = customcore_monitoring_run();
 } catch (Throwable $exception) {
     // Production shows a generic line; debug shows a sanitized detail that still
-    // never exposes passwords, absolute paths, or a stack trace (Commit 13.4).
+    // never exposes passwords, absolute paths, or a stack trace.
     $monitorError = customcore_is_debug()
         ? customcore_monitoring_safe_message(
             $exception->getMessage(),
@@ -85,7 +82,7 @@ require_once __DIR__ . '/../includes/header.php';
         <p class="admin-page__intro">
             Live health checks for CustomCore's core services, plus live counts for
             products, users, orders, consultation requests, images, and stock.
-            Every figure is read from the running application or MySQL — never hard-coded.
+            Every figure is read from the running application or MySQL, never hard-coded.
         </p>
         <p class="context-help">
             <a href="<?php echo customcore_e(customcore_url('index.php')); ?>">Back to store</a>

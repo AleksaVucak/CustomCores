@@ -1,19 +1,17 @@
 <?php
 /**
- * CustomCore — Customer Profile Dashboard (Commit 4.5).
- *
- * File responsibility:
- *   Private account home for the logged-in customer. Shows their own profile
- *   summary, activity counts (orders, builds, wishlist, consultations, reviews),
- *   and recent activity. Guests are redirected to login via require_login().
- *
- * Authentication requirements:
- *   Logged-in customer or admin. Data is always scoped to session user_id —
- *   never to a query-string id.
- *
- * Completion test:
- *   Logged-in user sees only their own information.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Customer Profile Dashboard.
+// Private account home for the logged-in customer. Shows their own profile summary, activity
+// counts (orders, builds, wishlist, consultations, reviews), and recent activity. Guests are
+// redirected to login via require_login().
+// Access: Logged-in customer or admin. Data is always scoped to session user_id, never to a query-
+// string id.
+// Completion test: Logged-in user sees only their own information.
 
 declare(strict_types=1);
 
@@ -42,7 +40,7 @@ $activity = [];
 try {
     $pdo = customcore_pdo();
 
-    // Own record only — never accept a user id from the request.
+    // Own record only, never accept a user id from the request.
     $stmt = $pdo->prepare(
         'SELECT id, email, first_name, last_name, phone,
                 address_line1, address_line2, city, province, postal_code,
@@ -55,7 +53,7 @@ try {
     $user = $stmt->fetch();
 
     if ($user === false || (int) ($user['is_active'] ?? 0) !== 1) {
-        // Session points at a missing/disabled account — force logout.
+        // Session points at a missing/disabled account, force logout.
         customcore_logout();
         customcore_session_start();
         customcore_flash_error('Your account is no longer available. Please contact support.');
@@ -187,7 +185,7 @@ $memberSince = ($user !== null && !empty($user['created_at']))
     ? customcore_format_date((string) $user['created_at'])
     : '';
 
-$pageTitle = 'My account — CustomCore';
+$pageTitle = 'My Account | CustomCore';
 $pageDescription = 'Your CustomCore account dashboard: profile summary and activity.';
 $pageKeywords = 'CustomCore, profile, my account, dashboard';
 $currentPage = 'profile';
@@ -285,7 +283,7 @@ require_once __DIR__ . '/includes/header.php';
                     <dl class="profile-details__list">
                         <div>
                             <dt>Name</dt>
-                            <dd><?php echo customcore_e($fullName !== '' ? $fullName : '—'); ?></dd>
+                            <dd><?php echo customcore_e($fullName !== '' ? $fullName : 'No name'); ?></dd>
                         </div>
                         <div>
                             <dt>Email</dt>

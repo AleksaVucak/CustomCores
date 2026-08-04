@@ -1,40 +1,45 @@
 /*
- * CustomCore — Base responsive stylesheet
- * ----------------------------------------------------------------------------
- * File responsibility:
- *   Sitewide foundation styles for layout, navigation, forms, cards, and
- *   desktop/mobile breakpoints. Theme files in assets/themes/ (Stage 10) will
- *   override CSS custom properties for distinct visual systems.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
+ */
+/*
+ * Base responsive stylesheet
+ * Sitewide foundation styles for layout, navigation, forms, cards, and
+ * desktop/mobile breakpoints. Theme files in assets/themes/ will
+ * override CSS custom properties for distinct visual systems.
  *
  * Sections:
- *   1. Fonts
- *   2. Variables
- *   3. Base / reset
- *   4. Skip link & focus
- *   5. Layout shell
- *   6. Header & navigation
- *   7. Typography & content
- *   8. Buttons
- *   9. Forms
- *   10. Cards & grids
- *   11. Tables
- *   12. Flash placeholders
- *   13. Footer
- *   14. Responsive rules
- * ----------------------------------------------------------------------------
+ * 1. Fonts
+ * 2. Variables
+ * 3. Base / reset
+ * 4. Skip link & focus
+ * 5. Layout shell
+ * 6. Header & navigation
+ * 7. Typography & content
+ * 8. Buttons
+ * 9. Forms
+ * 10. Cards & grids
+ * 11. Tables
+ * 12. Flash placeholders
+ * 13. Footer
+ * 14. Responsive rules
  */
 
-/* ==========================================================================
+/*
    1. Fonts
    Distinctive pair (not Inter/Roboto/Arial). Falls back if the CDN is blocked.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Grotesk:wght@500;700&display=swap");
 
-/* ==========================================================================
+/*
    2. Variables
-   Base “studio steel” foundation — themes swap these values later.
-   ========================================================================== */
+   Base “studio steel” foundation, themes swap these values later.
+   * ==========================================================================
+   */
 
 :root {
   --cc-font-display: "Space Grotesk", "Trebuchet MS", sans-serif;
@@ -57,9 +62,9 @@
   --cc-color-focus: #1d6fd0;
 
   /*
-   * Extended semantic aliases (Commit 15.2).
+   * Extended semantic aliases.
    * Some feature styles were written against long-hand token names that were
-   * never declared on :root. Declaring them here keeps every var() reference
+   * never declared on:root. Declaring them here keeps every var() reference
    * resolvable and lets themes override soft/pastel fills without edits in
    * each ruleset. Aliases always track the core tokens above.
    */
@@ -94,9 +99,10 @@
   --cc-transition: 220ms ease;
 }
 
-/* ==========================================================================
+/*
    3. Base / reset
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 *,
 *::before,
@@ -146,9 +152,10 @@ code {
   border-radius: var(--cc-radius-sm);
 }
 
-/* ==========================================================================
+/*
    4. Skip link & focus
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .skip-link {
   position: absolute;
@@ -175,9 +182,10 @@ code {
   outline: none;
 }
 
-/* ==========================================================================
+/*
    5. Layout shell
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .site-header__inner,
 .site-main,
@@ -191,9 +199,10 @@ code {
   min-height: 55vh;
 }
 
-/* ==========================================================================
+/*
    6. Header & navigation
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .site-header {
   position: sticky;
@@ -345,9 +354,10 @@ code {
   vertical-align: middle;
 }
 
-/* ==========================================================================
+/*
    7. Typography & content
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 h1,
 h2,
@@ -421,7 +431,7 @@ ol {
   color: var(--cc-color-text-muted);
 }
 
-/* Static Help wiki pages (Commit 5.9+) */
+/* Static Help wiki pages */
 
 .help-body {
   margin: 0;
@@ -622,9 +632,10 @@ ol {
 }
 
 
-/* ==========================================================================
+/*
    8. Buttons
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .button,
 button.button {
@@ -707,10 +718,11 @@ button.button {
   font-size: 0.85rem;
 }
 
-/* ==========================================================================
+/*
    9. Forms
    Ready for registration, checkout, builder, and contact pages.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .form-stack {
   display: grid;
@@ -818,7 +830,7 @@ textarea[aria-invalid="true"]:focus-visible {
   box-shadow: 0 0 0 3px rgba(163, 59, 45, 0.2);
 }
 
-/* ---- Auth pages (register / login) -------------------------------------- */
+/* Auth pages (register / login) */
 
 .auth-page {
   display: flex;
@@ -854,7 +866,7 @@ textarea[aria-invalid="true"]:focus-visible {
   color: var(--cc-color-text-muted);
 }
 
-/* ---- Account / profile dashboard (Commit 4.5) --------------------------- */
+/* Account / profile dashboard */
 
 .layout-split--account {
   gap: var(--cc-space-5);
@@ -997,7 +1009,8 @@ textarea[aria-invalid="true"]:focus-visible {
   /* Break long unbreakable values (e.g. an email address with no spaces) so they
      wrap instead of widening the details card. `anywhere` (not `break-word`) is
      required here because it also shrinks the value's intrinsic min-content, so
-     the grid column can narrow below the email's length on small phones. */
+     * the grid column can narrow below the email's length on small phones.
+     */
   overflow-wrap: anywhere;
 }
 
@@ -1047,7 +1060,7 @@ textarea[aria-invalid="true"]:focus-visible {
   margin-top: 0;
 }
 
-/* ---- Admin area (Commit 4.7 landing; expanded in Stage 9) ---------------- */
+/* Admin arealanding; expanded in */
 
 .admin-page__header {
   margin-bottom: var(--cc-space-4);
@@ -1071,7 +1084,7 @@ textarea[aria-invalid="true"]:focus-visible {
   font-size: 0.95rem;
 }
 
-/* ---- PC Builder (Stage 5) ------------------------------------------------ */
+/* PC Builder */
 
 .builder-page__header {
   margin-bottom: var(--cc-space-4);
@@ -1391,7 +1404,7 @@ textarea[aria-invalid="true"]:focus-visible {
   color: var(--cc-color-warning, #856404);
 }
 
-/* Compatibility status (Commit 5.4) */
+/* Compatibility status */
 
 .builder-compat {
   margin-top: var(--cc-space-3);
@@ -1460,7 +1473,7 @@ textarea[aria-invalid="true"]:focus-visible {
   color: #721c24;
 }
 
-/* Build summary / results page (Commit 5.5) */
+/* Build summary / results page */
 
 .results-page__header {
   margin-bottom: var(--cc-space-5);
@@ -1659,7 +1672,7 @@ textarea[aria-invalid="true"]:focus-visible {
   text-align: center;
 }
 
-/* Save build form (Commit 5.6) */
+/* Save build form */
 
 .results-save-form {
   display: flex;
@@ -1709,7 +1722,7 @@ textarea[aria-invalid="true"]:focus-visible {
   justify-content: center;
 }
 
-/* Saved builds (Commit 5.7) */
+/* Saved builds */
 
 .saved-builds-empty {
   text-align: center;
@@ -1951,7 +1964,7 @@ textarea[aria-invalid="true"]:focus-visible {
   color: var(--cc-color-accent-hover);
 }
 
-/* Performance chart (Commit 5.8) */
+/* Performance chart */
 
 .perf-chart {
   margin-top: var(--cc-space-3);
@@ -1993,7 +2006,8 @@ textarea[aria-invalid="true"]:focus-visible {
    falls back to its 300px intrinsic width, which leaks into the layout's
    min-content and forces horizontal overflow on narrow phones. Forcing the
    display size to the (relatively positioned, fixed-height) wrapper lets it
-   shrink freely — mirrors the catalogue chart canvas rule. */
+   * shrink freely, mirrors the catalogue chart canvas rule.
+   */
 .perf-chart__canvas-wrap > canvas {
   display: block;
   width: 100% !important;
@@ -2043,9 +2057,10 @@ textarea[aria-invalid="true"]:focus-visible {
   height: 11rem;
 }
 
-/* ==========================================================================
+/*
    10. Cards & grids
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .card-grid {
   display: grid;
@@ -2092,9 +2107,10 @@ textarea[aria-invalid="true"]:focus-visible {
   font-size: 1.15rem;
 }
 
-/* ==========================================================================
-   10b. Homepage sections (Commit 3.1)
-   ========================================================================== */
+/*
+   10b. Homepage sections
+   * ==========================================================================
+   */
 
 .hero--home {
   position: relative;
@@ -2333,10 +2349,11 @@ textarea[aria-invalid="true"]:focus-visible {
   margin-top: 0;
 }
 
-/* ==========================================================================
-   Learning Centre (Commit 8.2)
+/*
+   Learning Centre
    Native HTML5 video/audio players for educational media.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .learning-centre__header {
   margin-bottom: var(--cc-space-5);
@@ -2655,10 +2672,11 @@ textarea[aria-invalid="true"]:focus-visible {
   }
 }
 
-/* ==========================================================================
-   Public catalogue visualization (Commit 8.5)
+/*
+   Public catalogue visualization
    Chart.js bar chart from live MySQL data + accessible data table.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .catalogue-insights {
   margin-bottom: var(--cc-space-5);
@@ -2674,7 +2692,8 @@ textarea[aria-invalid="true"]:focus-visible {
   gap: var(--cc-space-5);
   /* Single column by default. minmax(0, 1fr) (not the implicit `auto`) lets the
      track shrink below the Chart.js canvas's content size, so the chart never
-     balloons the grid wider than its container on narrow phones. */
+     * balloons the grid wider than its container on narrow phones.
+     */
   grid-template-columns: minmax(0, 1fr);
 }
 
@@ -2698,7 +2717,8 @@ textarea[aria-invalid="true"]:focus-visible {
 
 /* Contains the stats table so its intrinsic min-content cannot widen the page
    on very narrow phones; the table scrolls locally instead (matches the wide
-   admin/compare table pattern). No effect once the column is wide enough. */
+   * admin/compare table pattern). No effect once the column is wide enough.
+   */
 .catalogue-chart__table-wrap {
   overflow-x: auto;
 }
@@ -2750,10 +2770,11 @@ textarea[aria-invalid="true"]:focus-visible {
   }
 }
 
-/* ==========================================================================
-   Store & service location (Commit 8.4)
+/*
+   Store & service location
    Interactive Leaflet map + always-visible text address fallback.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .location-page__header {
   margin-bottom: var(--cc-space-5);
@@ -2869,9 +2890,10 @@ textarea[aria-invalid="true"]:focus-visible {
   }
 }
 
-/* ==========================================================================
-   10c. About / business case page (Commit 3.2)
-   ========================================================================== */
+/*
+   10c. About / business case page
+   * ==========================================================================
+   */
 
 .about-page__header {
   margin-bottom: var(--cc-space-5);
@@ -2938,9 +2960,10 @@ textarea[aria-invalid="true"]:focus-visible {
   color: var(--cc-color-text-muted);
 }
 
-/* ==========================================================================
-   10d. Catalogue listing (Commit 3.3)
-   ========================================================================== */
+/*
+   10d. Catalogue listing
+   * ==========================================================================
+   */
 
 .visually-hidden {
   position: absolute;
@@ -3059,9 +3082,10 @@ textarea[aria-invalid="true"]:focus-visible {
   color: var(--cc-color-danger);
 }
 
-/* ==========================================================================
-   10e. Product detail (Commit 3.4)
-   ========================================================================== */
+/*
+   10e. Product detail
+   * ==========================================================================
+   */
 
 .product-detail__breadcrumb {
   display: flex;
@@ -3262,9 +3286,10 @@ textarea[aria-invalid="true"]:focus-visible {
   border-top: 1px solid var(--cc-color-border);
 }
 
-/* ==========================================================================
-   10f. Catalogue search (Commit 3.5)
-   ========================================================================== */
+/*
+   10f. Catalogue search
+   * ==========================================================================
+   */
 
 .search-page__header {
   margin-bottom: var(--cc-space-4);
@@ -3318,9 +3343,10 @@ textarea[aria-invalid="true"]:focus-visible {
   border-color: var(--cc-color-accent);
 }
 
-/* ==========================================================================
-   10g. Catalogue filters (Commit 3.6)
-   ========================================================================== */
+/*
+   10g. Catalogue filters
+   * ==========================================================================
+   */
 
 .layout-split--catalogue {
   gap: var(--cc-space-4);
@@ -3449,9 +3475,10 @@ textarea[aria-invalid="true"]:focus-visible {
   accent-color: var(--cc-color-accent);
 }
 
-/* ==========================================================================
-   10h. Product comparison (Commit 3.7)
-   ========================================================================== */
+/*
+   10h. Product comparison
+   * ==========================================================================
+   */
 
 .compare-page__header {
   margin-bottom: var(--cc-space-4);
@@ -3611,9 +3638,10 @@ textarea[aria-invalid="true"]:focus-visible {
   border-bottom: none;
 }
 
-/* ==========================================================================
-   10i. Product reviews (Commit 3.8)
-   ========================================================================== */
+/*
+   10i. Product reviews
+   * ==========================================================================
+   */
 
 .reviews-page__header {
   margin-bottom: var(--cc-space-4);
@@ -3723,14 +3751,16 @@ textarea[aria-invalid="true"]:focus-visible {
   /* minmax(0, 1fr) rather than a bare 1fr: a plain 1fr track keeps an implicit
      `auto` (min-content) minimum, so a wide child (e.g. a min-width data table)
      can stretch the single mobile column past the viewport. The 0 minimum lets
-     the column shrink and the child scroll/wrap within it instead. */
+     * the column shrink and the child scroll/wrap within it instead.
+     */
   grid-template-columns: minmax(0, 1fr);
   gap: var(--cc-space-5);
 }
 
-/* ==========================================================================
+/*
    11. Tables
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .table-wrap {
   width: 100%;
@@ -3764,9 +3794,10 @@ table.data-table {
   border-bottom: none;
 }
 
-/* ==========================================================================
-   12. Flash placeholders (filled functionally in Commit 1.8)
-   ========================================================================== */
+/*
+   12. Flash placeholders (filled functionally in
+   * ==========================================================================
+   */
 
 .flash {
   width: min(100% - 2rem, var(--cc-width-max));
@@ -3807,9 +3838,10 @@ table.data-table {
   color: var(--cc-color-danger);
 }
 
-/* ==========================================================================
+/*
    13. Footer
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .site-footer {
   margin-top: auto;
@@ -3839,10 +3871,11 @@ table.data-table {
   margin: 0;
 }
 
-/* ==========================================================================
+/*
    14. Responsive rules
    Breakpoint matches docs/wireframes.md (~900px).
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 @media (min-width: 900px) {
   .layout-split {
@@ -3890,7 +3923,7 @@ table.data-table {
     align-items: flex-start;
   }
 
-  /* Toggle is wired in Commit 1.7; CSS shows it on small screens now. */
+  /* Toggle is wired in; CSS shows it on small screens now. */
   .nav-toggle {
     display: inline-flex;
   }
@@ -3898,7 +3931,7 @@ table.data-table {
   /*
    * Progressive enhancement:
    * Without JS, keep links visible in a stacked panel.
-   * When body.nav-enhanced is present (main.js Commit 1.7), collapse until opened.
+   * When body.nav-enhanced is present (main.js, collapse until opened.
    */
   .site-nav {
     flex-basis: 100%;
@@ -3919,8 +3952,9 @@ table.data-table {
     border-radius: var(--cc-radius-md);
     background: var(--cc-color-bg-elevated);
     box-shadow: var(--cc-shadow-sm);
-    /* Reveal animation (Commit 14.5) — display cannot transition, so the open
-       panel fades/slides in via a keyframe. Reduced-motion neutralises it. */
+    /* Reveal animation, display cannot transition, so the open
+       * panel fades/slides in via a keyframe. Reduced-motion neutralises it.
+       */
     transform-origin: top center;
     animation: cc-nav-reveal var(--cc-transition) ease both;
   }
@@ -3968,15 +4002,16 @@ table.data-table {
   }
 }
 
-/* ==========================================================================
-   Advanced CSS interactions (Commit 14.5)
+/*
+   Advanced CSS interactions
    Cards, menus, transitions, and form states that layer visible, advanced
    affordances on top of the base components. Everything here is additive and
    uses the shared --cc-* tokens so the three themes inherit it automatically;
    the reduced-motion blocks below cancel the timing for users who opt out.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
-/* Mobile navigation reveal keyframe (paired with .site-nav.is-open above). */
+/* Mobile navigation reveal keyframe (paired with.site-nav.is-open above). */
 @keyframes cc-nav-reveal {
   from {
     opacity: 0;
@@ -3990,7 +4025,8 @@ table.data-table {
 }
 
 /* Keyboard parity: a card lifts when any descendant receives focus, mirroring
-   the pointer :hover affordance so keyboard users get the same feedback. */
+   * the pointer:hover affordance so keyboard users get the same feedback.
+   */
 .card:focus-within {
   transform: translateY(-2px);
   box-shadow: var(--cc-shadow-md);
@@ -3998,7 +4034,8 @@ table.data-table {
 }
 
 /* Form-state cue: highlight a field's label while that field is focused, tying
-   the label to the active control for a clearer editing state. */
+   * the label to the active control for a clearer editing state.
+   */
 .form-label {
   transition: color var(--cc-transition-fast);
 }
@@ -4031,9 +4068,10 @@ table.data-table {
   }
 }
 
-/* ==========================================================================
-   CART PAGE (Commits 6.1–6.2)
-   ========================================================================== */
+/*
+   CART PAGE
+   * ==========================================================================
+   */
 
 .cart-page__header {
   margin-bottom: var(--cc-space-4);
@@ -4263,7 +4301,7 @@ a.cart-item__name:hover {
   margin-bottom: var(--cc-space-3);
 }
 
-/* Cart responsive — stacked cards on small screens (wireframe 5B) */
+/* Cart responsive, stacked cards on small screens (wireframe 5B) */
 
 @media (max-width: 640px) {
   .cart-table thead {
@@ -4288,9 +4326,10 @@ a.cart-item__name:hover {
     width: 100%;
   }
 
-  /* Drop the .data-table 36rem min-width in the stacked card view so each row is
-     a genuinely fluid card — otherwise the table stays 576px wide and forces a
-     horizontal scroll (or widens its column) on phones. */
+  /* Drop the.data-table 36rem min-width in the stacked card view so each row is
+     a genuinely fluid card, otherwise the table stays 576px wide and forces a
+     * horizontal scroll (or widens its column) on phones.
+     */
   .cart-table {
     min-width: 0;
   }
@@ -4378,9 +4417,10 @@ a.cart-item__name:hover {
   }
 }
 
-/* ==========================================================================
-   CHECKOUT PAGE (Commit 6.4)
-   ========================================================================== */
+/*
+   CHECKOUT PAGE
+   * ==========================================================================
+   */
 
 .checkout-page__header {
   margin-bottom: var(--cc-space-4);
@@ -4583,9 +4623,10 @@ a.cart-item__name:hover {
   }
 }
 
-/* ==========================================================================
-   ORDER CONFIRMATION PAGE (Commit 6.5)
-   ========================================================================== */
+/*
+   ORDER CONFIRMATION PAGE
+   * ==========================================================================
+   */
 
 .order-confirm__header {
   text-align: center;
@@ -4675,7 +4716,8 @@ a.cart-item__name:hover {
 
 /* Show the 4-column total row by default; the 3-column (narrow) variant only
    appears once the unit-price column is hidden on phones (see the max-width
-   media query below). */
+   * media query below).
+   */
 .order-confirm__total-row--narrow {
   display: none;
 }
@@ -4750,9 +4792,10 @@ a.cart-item__name:hover {
   }
 }
 
-/* ==========================================================================
-   ORDER HISTORY & DETAILS (Commit 6.6)
-   ========================================================================== */
+/*
+   ORDER HISTORY & DETAILS
+   * ==========================================================================
+   */
 
 .order-history-empty {
   text-align: center;
@@ -5079,10 +5122,11 @@ a.cart-item__name:hover {
   }
 }
 
-/* ==========================================================================
-   Wishlist (Commit 7.1)
+/*
+   Wishlist
    Product-detail save control + wishlist page grid.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .product-detail__wishlist {
   margin-top: var(--cc-space-4);
@@ -5260,10 +5304,11 @@ a.cart-item__name:hover {
   }
 }
 
-/* ==========================================================================
-   Review submission (Commit 7.2)
+/*
+   Review submission
    Form on reviews.php and product.php; pending status badges.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .review-submit {
   margin-top: var(--cc-space-7);
@@ -5402,10 +5447,11 @@ a.cart-item__name:hover {
   }
 }
 
-/* ==========================================================================
-   Consultations (Commit 7.3)
+/*
+   Consultations
    Request form + status badges (badges reused by history/admin later).
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .consultation-page__intro {
   color: var(--cc-color-text-muted);
@@ -5469,10 +5515,11 @@ a.cart-item__name:hover {
   white-space: nowrap;
 }
 
-/* ==========================================================================
-   Contact form (Commit 7.5)
-   Public support message form — guests and logged-in customers.
-   ========================================================================== */
+/*
+   Contact form
+   Public support message form, guests and logged-in customers.
+   * ==========================================================================
+   */
 
 .contact-page {
   max-width: 44rem;
@@ -5504,10 +5551,11 @@ a.cart-item__name:hover {
   display: none !important;
 }
 
-/* ==========================================================================
-   Consultation history (Commit 7.6)
+/*
+   Consultation history
    Owner-scoped list of requests with status, details, and admin responses.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .consultation-history-actions {
   margin: 0 0 var(--cc-space-4);
@@ -5641,9 +5689,10 @@ a.cart-item__name:hover {
   color: var(--cc-color-text-muted);
 }
 
-/* ==========================================================================
-   Accessibility statement & multimedia fallbacks (Commit 8.6)
-   ========================================================================== */
+/*
+   Accessibility statement & multimedia fallbacks
+   * ==========================================================================
+   */
 
 .accessibility-page__lead {
   max-width: 60ch;
@@ -5692,10 +5741,11 @@ a.cart-item__name:hover {
   color: var(--cc-color-text-muted);
 }
 
-/* ==========================================================================
-   Reduced-motion preference (Commit 8.6)
+/*
+   Reduced-motion preference
    Honour users who ask their OS to minimise animation. Kept last so it wins.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -5708,11 +5758,12 @@ a.cart-item__name:hover {
   }
 }
 
-/* ==========================================================================
-   Increased-contrast preference (Commit 14.4)
+/*
+   Increased-contrast preference
    Strengthen the keyboard focus ring for users who ask their OS for more
    contrast. Outline-only changes avoid any layout shift.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 @media (prefers-contrast: more) {
   :focus-visible {

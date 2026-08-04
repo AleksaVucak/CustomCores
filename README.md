@@ -1,767 +1,232 @@
 # CustomCore
 
-CustomCore is a database-driven custom gaming PC store and PC-building website.
-Customers can browse configurable prebuilt systems, use a guided custom builder
-with compatibility feedback, manage accounts and saved builds, and complete a
-simulated checkout. Administrators manage catalogue data, orders, reviews,
-consultations, themes, reports, and site monitoring.
+**Aleksa Vucak | 110139920**
+**COMP 3340, Final Project**
+**August 5th, 2026**
 
-This repository is a university web-development project intended for deployment
-on standard shared PHP/MySQL hosting (for example `myweb.cs.uwindsor.ca`).
+**Live URL:** TBD
 
-## Technology stack
-
-- HTML5
-- External CSS (including three switchable site themes)
-- Vanilla JavaScript
-- PHP with sessions
-- MySQL via PDO prepared statements
-- Git / GitHub
-
-No React, Vue, Angular, Node.js, Laravel, Docker, Composer, or URL rewriting is
-required. The application uses ordinary `.php` URLs for hosting compatibility.
-
-## Documentation
-
-- [Business case and project objectives](docs/business-case.md)
-- [Rubric compliance checklist](docs/rubric-checklist.md)
-- [Application sitemap](docs/sitemap.md)
-- [Desktop and mobile wireframes](docs/wireframes.md)
-- [Database entity-relationship design](docs/database-design.md)
-- [Database import, verification, and backup](docs/database-import.md)
-- [Application directory structure](docs/directory-structure.md)
-- [Front-end architecture documentation](docs/frontend-documentation.md)
-- [Administrator user guide](docs/administrator-guide.md)
-- [Content update guide (non-programmers)](docs/content-update-guide.md)
-- [Complete installation guide](docs/installation-guide.md)
-- [Deployment and troubleshooting guide](docs/deployment-troubleshooting.md)
-- [Monitoring and troubleshooting guide](docs/monitoring-troubleshooting.md)
-- [Help context-link audit](docs/help-context-links.md)
-- [Flash message usage](docs/flash-messages.md)
-- [Multimedia credits and licences](docs/media-credits.md)
-- [Stage 8 image prompt record](docs/image-prompts.md)
-- [Theme testing record](docs/theme-testing.md)
-- [HTML validation record](docs/html-validation.md)
-- [CSS validation record](docs/css-validation.md)
-- [JavaScript / console verification record](docs/js-validation.md)
-- [Desktop responsiveness record](docs/responsiveness-desktop.md)
-- [Mobile responsiveness record](docs/responsiveness-mobile.md)
-- [Customer workflow verification record](docs/customer-workflows.md)
-- [Administrator workflow verification record](docs/admin-workflows.md)
-- [100-point rubric audit (requirement → evidence)](docs/rubric-audit.md)
-- [Final defect resolution record](docs/final-defect-fixes.md)
-- [Security audit (SQL, escaping, CSRF, uploads)](docs/security-audit.md)
-
-### Quick start
-
-New to the project? Start with the **[installation guide](docs/installation-guide.md)** to get
-running from a clean checkout, then the **[administrator guide](docs/administrator-guide.md)**
-to manage the store. Non-programmers updating catalogue content should read the
-**[content update guide](docs/content-update-guide.md)**.
-
-## Current status
-
-**Commit 15.9 complete — Stage 15 (Testing & QA) complete.** Resolve final rubric and usability defects.
-
-Ran a four-part closing sweep — static (grep for defect markers: 0 genuine; `php -l` on all 94 files: 0 syntax errors), a runtime `E_ALL` crawl of **every** page (30 public + edge cases and 25 authenticated customer + admin pages, driven by a disposable admin over HTTP), a usability/status-code pass, and targeted fixes. The `E_ALL` error log came back **empty — 0 notices/warnings/deprecations/fatals, 0 error leakage** across the entire site, with correct status codes everywhere. **One real usability/SEO defect was found and fixed:** nonexistent products returned HTTP 200 as a "soft 404" — `product.php` now returns a proper **404** for a missing/invalid/disabled product (while keeping the friendly styled page) and 200 only for real products or transient DB errors. Verified `id=1`→200 and `?id=999999`/`abc`/`0`/none→404. Non-defects (POST-only API `405`, `303` ownership guards, the `php -S` missing-file fallback) are documented. **No known critical or rubric-blocking issue remains;** the only outstanding rubric item is #11 (live hosting), prepared and deferred to Stage 16. Evidence: [`docs/final-defect-fixes.md`](docs/final-defect-fixes.md).
-
-**Commit 15.8 complete** — complete the 100-point rubric audit.
-
-Produced [`docs/rubric-audit.md`](docs/rubric-audit.md): a **requirement → page + file + test** evidence table for every Section A point, re-verified against the running project and the working tree. Live counts were taken directly from the database and filesystem — **20** active products with **0** having fewer than 2 options (323 options), **3** theme CSS files (+ 3 DB rows), **7** Help pages, **33** images (20 product + 13 site), **3** media files (2× MP4 + 1× MP3), **50** purposeful dynamic PHP files (30 public/customer + 17 admin + 3 API), and all four SEO assets present — and an HTTP smoke test returned **200** for 19/19 public + SEO URLs and 7/7 Help pages while `profile`/`cart`/`checkout`/`admin` correctly redirected (303) to login. Behavioural points cite the earlier Stage 15 records (15.1–15.7). **#10a was promoted to Complete** (page count settled at 50). **Result: 98/100 points fully evidenced and tested; the remaining 2 (#11 live hosting) have their README slot and deployment docs ready but the live-load test is Blocked until hosting (Stage 16)** — the only item whose completion test cannot pass locally. Every one of the 100 points now maps to a real page and a real file.
-
-**Commit 15.7 complete** — verify complete administrator workflows.
-
-Drove the running site over `php -S` with a cookie-jar + CSRF harness through the entire **product → monitoring** admin journey and **every core administrator action**, verifying each not just by its PRG redirect but by re-reading the affected database row: access guard (guest → login, customer → profile, admin → allowed), dashboard, products (list/search/filter, add **with image upload**, edit, disable/enable), product options (create/set-default/toggle/delete), compatibility rules (toggle + restore, update), orders (status change + admin notes), users (disable/enable, promote → admin, demote → customer), consultations (respond → auto-*answered*, status change), reviews (approve/hide), reports, monitoring, and themes (switch + restore) — plus the **self-lockout** safety guard (an admin cannot change their own role). Because there is no seeded admin (by design), the harness registered a disposable customer + admin (promoted in DB) and had the customer create an order, a pending review, and a consultation for the admin to manage. **Result: 51/51 assertions Pass, 0 defects.** All test data (product + image, both users, order/review/consultation) was deleted and global settings (theme, toggled rule) restored — store verified back to baseline (20 products, 0 orders, seed review mix, `active_theme_id=1`). Evidence: [`docs/admin-workflows.md`](docs/admin-workflows.md).
-
-**Commit 15.6 complete** — verify complete customer workflows.
-
-Drove the running site over `php -S` with a cookie-jar + CSRF harness through the entire **registration → order** journey and **every core customer action** — register (incl. duplicate-email rejection), login (incl. wrong-password rejection), catalogue browse/sort/filter, search, product detail, compare, wishlist add/remove, custom PC builder (complete + compatible), save build, saved-build → cart, cart add/update (with options), checkout, order creation, order confirmation/history/details, review submission (enters moderation), consultation request + history, edit profile, password change + re-login, and logout — plus access-control checks (foreign/non-existent order rejected). **Result: 41/41 assertions Pass.** **One avoidable defect found and fixed:** ordering a **saved build** failed because `order-confirmation.php`'s snapshot query joined `component_categories` on the non-existent `c.category_id` (the `components` FK is `component_category_id`), throwing a SQL error that rolled back the whole order; corrected to the right column so a saved build can now be ordered and its snapshot is stored. A disposable `@example.test` customer was used and all test data (users, orders, builds, carts, consultations, reviews) deleted afterward — store back to the three seed customers, 0 orders, 0 builds, 0 carts. Evidence: [`docs/customer-workflows.md`](docs/customer-workflows.md).
-
-**Commit 15.5 complete** — mobile responsiveness testing.
-
-Drove the running site in a real Chromium tab and, using a cache-busted fixed-width iframe harness at **320 / 360 / 390 / 414 / 700 / 768 px**, ran an ancestor-aware horizontal-overflow probe (page `scrollWidth` vs `innerWidth`, plus a per-leaf check that ignores intended `overflow-x` scroll wrappers and `overflow:hidden` clips such as the Leaflet map) across **40 page states** — **15 public**, **11 customer**, and **14 admin**. Signed-in and admin coverage used a disposable customer briefly promoted to admin via a temporary DB helper; the account, its order, its cart, and the helper file were then **deleted**, returning the store to its pre-test state (three seed customers, 0 orders, 0 carts). **Result after fixes: 40/40 Pass at every width; 9 avoidable overflow defects found and fixed** — a fluid builder chart canvas, a scroll-wrapped catalogue stats table, `minmax(0,1fr)` single columns for the cart/account splits and admin grids, `overflow-wrap:anywhere` for long emails (profile + admin detail lists), a responsive order-confirmation totals footer, scroll-wrapped admin dashboard/monitoring tables, and shrinkable reports charts. Two ~13 px `scrollWidth` readings (profile, admin order-details at 320 px) were confirmed to be the **iframe vertical-scrollbar artifact** (0 real offenders), not overflow. Evidence: [`docs/responsiveness-mobile.md`](docs/responsiveness-mobile.md).
-
-**Commit 15.4 complete** — desktop responsiveness testing.
-
-Drove the running site in a real Chromium tab and, at **1024 / 1280 / 1440 / 1920 px**, ran an automated horizontal-overflow probe (page `scrollWidth` vs `innerWidth`, plus a per-element check that ignores intended `overflow-x` scroll wrappers) across **40 page states** — **15 public**, **11 customer**, and **14 admin**. Signed-in and admin coverage used a disposable customer (registered, added to cart, placed an order to populate order views) briefly promoted to admin via a temporary DB helper; the account, its order, and the helper files were then **deleted**, returning the store to its pre-test state. **Result: 40/40 Pass, 0 unintended horizontal overflow, 0 clipped or broken layouts, 0 defects — no CSS changes needed.** Confirmed the shell caps at **1120 px** (`--cc-width-max`) and centres on wide screens, and that wide admin tables + the four-way comparison table scroll **inside their cards** (`overflow-x:auto`), never the page. Evidence: [`docs/responsiveness-desktop.md`](docs/responsiveness-desktop.md).
-
-**Commit 15.3 complete** — verify JavaScript and browser console.
-
-Static-checked all **11** project modules under `assets/js/` (`node --check`, 0 failures). Exercised public, Help, signed-in customer (cart/checkout/reviews forms), and admin (including reports charts) pages in Chromium with console + uncaught-error capture: **0 application uncaught errors**. Core interactions verified (builder live price/compat/chart, contact “Other” subject, help hub filter, cart qty steppers, checkout validation, review form validation, Leaflet map). **One avoidable defect fixed:** Leaflet 1.9.4 CSS Subresource Integrity hash in `includes/header.php` was wrong and blocked the stylesheet (console integrity error); updated to the real CDN digest and set `crossorigin="anonymous"` on Leaflet CSS/JS. Evidence: [`docs/js-validation.md`](docs/js-validation.md). Next: Commit **15.4** — desktop responsiveness testing.
-
-**Commit 15.2 complete** — validate CSS files.
-
-Validated all five project stylesheets (`main.css`, `admin.css`, three themes) offline:
-structural balance (braces/comments), full AST parse via css-tree (**0 parse errors**), and a
-custom-property graph of every `var(--…)` use vs declaration. **Avoidable defects fixed:**
-seven undeclared design tokens (`--cc-color-primary`, `--cc-color-muted`, `--cc-color-surface`,
-`--cc-color-success-bg`, `--cc-color-warning-bg`/`-text`, `--cc-color-link`) now live on
-`:root` as semantic aliases/soft fills; dark themes override the soft status fills; score bars
-default `--score: 0`. Re-run shows **zero undefined custom properties**. Evidence:
-[`docs/css-validation.md`](docs/css-validation.md).
-
-**Commit 15.1 complete** — validate rendered HTML output.
-
-Captured real server-rendered HTML for the important public, Help centre, signed-in
-customer, and administrator pages and ran two automated suites: (1) core structural
-rules (DOCTYPE, `lang`, title/charset/viewport, header/main/footer, single `h1`, unique
-ids, `img[alt]`, `label[for]` targets, POST + CSRF fields, no PHP error leakage) and
-(2) HTML Tidy Errors under HTML5. **Result: 48 Pass · 0 Fail; zero Tidy Errors.**
-Tidy “missing dd/dl” warnings on four pages are false positives — those use the valid
-HTML5 `<dl><div><dt>/<dd></div></dl>` grouping pattern. No markup fixes were required.
-Full page-by-page evidence: [`docs/html-validation.md`](docs/html-validation.md).
-
-**Commit 14.10 complete** — file upload security audit. **Stage 14 complete.**
-
-Audited both upload surfaces — admin product images (`includes/admin-products.php`) and
-customer consultation attachments (`includes/consultations.php`). Both detect the real file
-type with `finfo` and match a MIME **allowlist** (SVG deliberately excluded), derive the
-stored extension from the detected type, cap size (2 MB) and count (5 for consultations),
-store under a random `random_bytes` filename via `is_uploaded_file`/`move_uploaded_file`, and
-serve attachments only through hardened endpoints (ownership/admin check, generic 404,
-`realpath` confinement, `Content-Disposition: attachment`, `nosniff`, RFC 5987 filename). A
-content-based rejection demo confirmed a PHP webshell — even renamed `.jpg` — and an
-SVG-with-script are rejected. Added defense-in-depth `.htaccess` execution guards to
-`uploads/products/` (deny scripts) and `uploads/consultation/` (deny all direct access).
-Full write-up in [`docs/security-audit.md`](docs/security-audit.md) §6. This completes the
-Stage 14 security pass (prepared statements · output escaped · CSRF · uploads).
-
-**Commit 14.9 complete** — CSRF protection on all state-changing requests.
-
-Audited every state-changing request against the per-session token system
-(`includes/csrf.php`: `random_bytes(32)` token, `hash_equals()` verification). Confirmed
-that **every** `<form method="post">` renders `customcore_csrf_field()` and **every** POST
-handler verifies the token and rejects missing/invalid submissions (with a "session expired"
-flash or a blocking error). The read-only `api/` endpoints perform no writes, so they are not
-state-changing. The audit found and fixed one gap: **logout** was reachable via a GET link
-(a logout-CSRF vector) and is now a token-verified POST form in both nav includes, with
-`logout.php` refusing to clear the session on a GET or a missing/invalid token. Verified via
-an HTTP test and the guard truth table. Details in
-[`docs/security-audit.md`](docs/security-audit.md) §5. Next: file-upload security audit in
-**Commit 14.10**.
-
-**Commit 14.8 complete** — security audit (prepared statements & output escaping).
-
-An evidence-based audit of every SQL execution path and every dynamic output site,
-documented in [`docs/security-audit.md`](docs/security-audit.md). Every database call is
-either a static SQL literal or a bound prepared statement — dynamic pieces (`WHERE`
-builders, `IN (...)` lists, `LIMIT`/`OFFSET`, dynamic `SET`, and the single interpolated
-table name) all use bound placeholders, clamped integer casts, or identifier whitelists, so
-**no user input is concatenated into SQL**. All output is escaped: `customcore_e()`
-(`htmlspecialchars` with `ENT_QUOTES`) on the server, a textNode-based `escapeHtml()` before
-any `innerHTML` on the client, plus confirmed open-redirect/header-injection guards. Result:
-**PASS with zero vulnerabilities and no source changes required.** The audit doc includes a
-repeatable `rg` recipe. Next: CSRF protection review in **Commit 14.9**.
-
-**Commit 14.7 complete** — JavaScript and PHP documentation.
-
-The final code-comment step. Every file in `assets/js/*` now carries a file header plus
-JSDoc (purpose and `@param`/`@returns`) on all named functions — the remaining gaps in
-`contact.js`, `catalogue-chart.js`, `store-map.js`, `admin-reports.js`, `help-hub.js`, and a
-few helpers in `cart.js`/`builder.js`/`charts.js` were filled. On the PHP side, a
-token-based audit of the whole tree confirmed that all 282 named functions have docblocks
-and every PHP file has a file-responsibility header; the only three gaps found
-(`catalogue_filter_url()` and two flash helpers) were documented. Verified with
-`node --check` on all JS and `php -l` on the changed PHP. This completes the Stage 14 comment
-pass (rubric #5 and #6).
-
-**Commit 14.6 complete** — HTML and CSS comments.
-
-The stylesheets were already fully documented (numbered section headers and dividers in
-`assets/css/main.css` and `assets/css/admin.css`, plus rich file headers and 120–150 section
-dividers in each of the three themes). This commit completes the markup side by adding
-structured, purpose-first `<!-- section -->` comments to the HTML template portion of every
-view — 25 public/customer pages and 16 admin pages (41 files in total). The comments mark
-major landmarks (hero, filters, results grids, data tables, forms and fieldsets, KPI cards,
-chart panels, and flash/empty-state branches) and explain intent rather than restating
-tags. The change is additions-only (verified with `git diff --numstat` — zero deletions)
-and every file passes `php -l`. JavaScript and PHP function/section documentation is the
-final step in **Commit 14.7**.
-
-**Commit 14.5 complete** — advanced CSS interactions.
-
-A dedicated "Advanced CSS interactions" section in `assets/css/main.css` layers a tasteful
-polish pass on top of the existing advanced foundation (auto-fit responsive grids,
-`aspect-ratio` media, `clamp()` type, tokenised transitions, three themes). Cards now lift
-on `:focus-within` (keyboard parity with `:hover`, using the themed focus token); the mobile
-navigation panel animates open via a `@keyframes` reveal (since `display` can't transition);
-form rows highlight the active field's `<label>`; and a deeper card-lift is gated behind
-`@media (hover: hover) and (pointer: fine)` so touch devices never get a stuck hover. Every
-effect uses `--cc-*` tokens (so all three themes inherit it) and is neutralised by the
-reduced-motion blocks.
-
-**Commit 14.4 complete** — accessibility and keyboard navigation.
-
-The site's core flows now work end to end without a mouse. On top of the existing
-foundation — a skip link to `main#main-content`, a global `:focus-visible` ring, every
-control paired with a `<label>` (plus labelled search/filter regions), `aria-invalid` +
-`aria-describedby` on errored fields, and flash messages announced through `aria-live`
-with `role="alert"` / `role="status"` — this commit adds **error-focus management**: after
-a failed submit, `assets/js/main.js` moves keyboard/screen-reader focus to the first
-invalid field (or, on POST-form pages, the form-level error alert) and scrolls it into
-view, so the problem is announced and reachable immediately. It respects intentional
-in-page anchors and complements the pre-submit validation in `checkout.js` / `reviews.js` /
-`contact.js`. A `@media (prefers-contrast: more)` rule also strengthens the focus ring
-(outline-only, no layout shift), alongside the existing reduced-motion handling. This
-completes **Stage 14**.
-
-**Commit 14.3 complete** — semantic HTML structure.
-
-The shared shell already provides the document landmarks — `header[role=banner]`, a
-labelled `nav`, `main#main-content` (with the skip-link target), and
-`footer[role=contentinfo]` — and content pages use `section` / `article` with
-`aria-labelledby`. This commit audited heading hierarchy across every page and fixed the
-one defect: `admin/reports.php` jumped `h1 → h3` on its KPI cards, so the summary block is
-now a labelled `<section>` with an `<h2>` ("At a glance") and the stat cards nest as `h3`
-(matching the dashboard). Verified with a static audit plus a rendered check of
-`admin/reports.php` (`h1 → h2 → h3`, one `h1`, zero skipped levels); the builder, build
-summary, and order confirmation pages emit two `h1`s in source only because their
-mutually-exclusive branches each carry one (confirmed exactly one renders at runtime). Next
-up: accessibility and keyboard navigation in **Commit 14.4**.
-
-**Commit 14.2 complete** — sitemap and robots configuration.
-
-Public crawler files now live at the project root: **`robots.txt`** (Allow public
-storefront; Disallow admin, APIs, uploads, internals, private customer pages, and
-action-only scripts such as logout) and **`sitemap.xml`** (public pages + Help wiki
-only). A live **`sitemap.php`** endpoint builds absolute `<loc>` URLs from
-`config/app.php → base_url` or the current request and appends active
-`product.php?id=N` entries when MySQL is available; regenerate the static snapshot
-with `php sitemap.php --write` (optional `--base=…`). The shared catalogue in
-`includes/seo.php` keeps the sitemap, robots policy, and Commit 14.1 noindex list
-aligned — private/admin routes are never listed. Verified: well-formed XML, every
-listed file exists on disk, and an exclusion audit found no private/admin locs.
-Next up: semantic HTML structure in **Commit 14.3**.
-
-**Commit 14.1 complete** — page-specific SEO metadata.
-
-Every page already sets a unique title, description, and keywords; this commit finishes the
-SEO head in `includes/header.php`. It adds a scalable brand **`favicon.svg`**, a
-**`site.webmanifest`**, and a `theme-color`; a self-referencing absolute
-**`<link rel="canonical">`** plus matching `og:url` via a new `customcore_canonical_url()`
-helper (uses the exact `SCRIPT_NAME` so it is correct whether the app runs at the domain
-root or in a `~user/subfolder`, strips a configured `base_url` path so the subfolder is
-never duplicated, and supports a `$pageCanonical` override or `false` to disable); and a
-**`<meta name="robots">`** directive that is `index, follow` for public content but
-`noindex, nofollow` for admin and per-user private pages (cart, checkout, account, orders,
-saved builds, wishlist, histories) via a centralised `customcore_is_noindex_page()` — no
-per-page edits. Verified with `php -l`, no lint, rendered public and admin pages, and
-canonical unit tests (root, subfolder, base_url-with-subfolder, override, disabled).
-
-**Commit 13.5 complete** — monitoring troubleshooting guide.
-
-[`docs/monitoring-troubleshooting.md`](docs/monitoring-troubleshooting.md) documents the
-administrator monitoring dashboard end to end: where to find it (`admin/monitoring.php`,
-admin-only, loads even when the database is offline), how to read the overall banner /
-online-warning-offline vocabulary / per-service table / live statistics panel, and a
-**symptom-driven troubleshooting reference for all seven checks** (PHP runtime, database,
-sessions, core files, upload storage, site theme, Learning Centre media) — each with the
-exact message wording, likely cause, and fix. It also explains why detail is generic in
-production (Commit 13.4 hardening), how to safely get more detail locally, and includes a
-verified CLI snippet for running the engine from the command line. This completes Stage 13.
-
-**Commit 13.4 complete** — production-safe monitoring error messages.
-
-A new `customcore_monitoring_safe_message()` sanitizer in `includes/monitoring.php`
-guarantees the monitoring page can never disclose sensitive internals. It cuts stack
-traces, reduces absolute filesystem paths to `[path]`, redacts credential fragments
-(`password=`/`pwd=`/`pass=`), collapses whitespace, and truncates long strings, falling
-back to a generic line when nothing safe remains. It is applied to **every dynamic error
-string** the page shows — the database health check, `customcore_monitoring_stats()`, and
-`admin/monitoring.php`'s report fallback — so production shows generic messages and even
-debug detail is scrubbed. Verified with `php -l`, a sanitizer unit test, and a full page
-render with MySQL offline: the output contained no absolute path, no stack trace, and no
-password fragment. Next up: a monitoring troubleshooting guide in **Commit 13.5**.
-
-**Commit 13.3 complete** — monitoring statistics.
-
-`customcore_monitoring_stats()` in `includes/monitoring.php` adds live counts for
-**products, users, orders, consultation requests, images, and stock** to the monitoring
-dashboard. Database totals **reuse `customcore_admin_dashboard_stats()`** so they never
-diverge from the admin home screen (verified: products 20/20, users, orders, consultations,
-low stock 4, pending reviews — all match). Product and site image counts are read from
-disk (`assets/images/products`, `uploads/products`, other image folders) so they remain
-available even when MySQL is offline; Learning Centre media availability is included as
-supporting context. The stats panel on `admin/monitoring.php` is loaded **separately**
-from the health-check table: a DB failure shows a safe warning flash and still displays
-filesystem image/media counts without blanking the online/warning/offline status table.
-
-**Commit 13.2 complete** — administrator monitoring dashboard.
-
-`admin/monitoring.php` renders the Stage 13 health-check report (from
-`customcore_monitoring_run()`) as an **online / warning / offline** status table behind
-`customcore_require_admin()`. It shows an overall status banner with per-status counts
-and a check timestamp, a per-service table (service · status badge · summary + safe
-details), and a legend explaining each status. Because the engine runs each check in
-isolation and never throws — and the admin guard uses session state only — the page
-**loads and displays every other service even when one check fails** (verified with the
-database offline: the DB row shows Offline while all other rows still render). Status
-badges reuse the shared `.admin-badge--ok/--warn/--danger` styles via
-`customcore_monitoring_status_badge_class()`; scoped `.monitor-*` styles were added to
-`admin.css`. The admin nav and dashboard tool card now light up the Monitoring link
-automatically (the tool registry detects the page file). Live statistics land in
-**Commit 13.3**.
-
-**Commit 13.1 complete** — application health checks (monitoring engine).
-
-`includes/monitoring.php` is the Stage 13 health-check engine. It runs seven
-independent, self-contained checks — **PHP runtime** (version + PDO/fileinfo/session
-extensions), **database** (PDO connect + `SELECT 1`), **sessions** (support + writable
-store), **core files** (critical includes/config/assets present), **upload storage**
-(`uploads/products` + `uploads/consultation` exist and writable), **site theme**
-(active stylesheet resolves via `includes/theme.php`), and **Learning Centre media**
-(declared catalogue vs. files on disk) — each returning a controlled
-`online` / `warning` / `offline` status with a production-safe message (database
-errors reuse `customcore_database_error_message()`; no credentials, paths, or stack
-traces are exposed). `customcore_monitoring_run()` aggregates them into an overall
-status and never throws, so one failing dependency only downgrades its own row. To
-support the media check without duplicating data, `includes/media.php` now exposes the
-declared lesson list via `customcore_media_catalogue()` (behaviour of
-`customcore_media_items()` is unchanged). The administrator dashboard that renders
-this report arrives in **Commit 13.2** (`admin/monitoring.php`).
-
-**Stage 12 complete (Commits 12.1–12.6)** — technical, administrator, and installation documentation.
-
-The project documentation set is now complete. Five new guides were added and the
-README/structure/rubric docs updated:
-
-- [`docs/frontend-documentation.md`](docs/frontend-documentation.md) (12.1) — the shared
-  HTML shell (`header`/`navigation`/`footer`), the `--cc-*` token/theme system
-  (`main.css` / `admin.css` / `assets/themes/*`), the vanilla-JS modules (builder, cart,
-  checkout, map, charts, help-hub), the 900px responsive nav toggle, and how the active
-  theme resolves (`includes/theme.php`).
-- [`docs/administrator-guide.md`](docs/administrator-guide.md) (12.2) — task-oriented guide
-  to every admin tool (dashboard, products, options, compatibility, orders, users,
-  consultations, reviews, reports, themes) with its safety rules.
-- [`docs/content-update-guide.md`](docs/content-update-guide.md) (12.3) — non-programmer
-  instructions for products, images, options, store details, and adding Learning Centre
-  media (rubric #10f).
-- [`docs/installation-guide.md`](docs/installation-guide.md) (12.4) — clean-checkout install
-  (requirements → code → config → database → admin → uploads → run → verify).
-- [`docs/deployment-troubleshooting.md`](docs/deployment-troubleshooting.md) (12.5) —
-  shared-hosting deployment, HTTPS/session behaviour, a troubleshooting table, and
-  backup/rollback.
-
-All five guides point at real files and describe the single, actual architecture. Next:
-**Stage 13** — backend monitoring page.
-
-**Commit 11.7 complete** — context-sensitive Help links audited and polished.
-
-Every customer feature page now opens the **matching** Help article (with a
-section anchor where useful), not only the Help hub. Auth pages deep-link into
-`accounts.html`; catalogue/search/compare/product/wishlist into `catalogue.html`;
-builder/results/saved builds into `pc-builder.html`; cart/checkout/orders into
-`orders.html`; consultation/reviews/contact/store-locations into `support.html`.
-Homepage, About, and Learning Centre keep the hub as an entry point and also
-link the training walkthrough. Main nav and footer still open the hub. Audit
-map and completion evidence live in `docs/help-context-links.md`.
-
-**Commit 11.6 complete** — End-user training walkthrough.
-
-`help/training.html` is a numbered, beginner-friendly walkthrough matching the
-shared Help shell (skip link, header nav, TOC, footer). It guides a new user from
-creating an account, through shopping the catalogue or building a custom PC, to
-placing an order and reviewing the first purchase — each step links into the live
-site and to the matching detailed guide. Anchors (`#start`, `#account`, `#shop`,
-`#build`, `#order`, `#review`, `#help`) back the hub deep-links, and `about.php`
-now links directly to the walkthrough. This completes the six-guide Help wiki
-(accounts, catalogue, PC Builder, orders, support, training) plus the hub, so
-rubric #7 is satisfied.
-
-**Commit 11.5 complete** — Consultation & support Help page.
-
-`help/support.html` is a full consultation-and-support guide matching the shared
-Help shell (skip link, header nav, TOC, footer). It covers requesting a PC
-consultation, attaching files, tracking requests and responses, the four
-consultation statuses, writing product reviews, and the contact form — with copy
-and rules (login-gated consultations/reviews, required fields and length limits,
-PDF/TXT/PNG/JPG/WEBP attachments up to 5 files at ~2 MB each with real-MIME
-validation, guest-friendly contact, reviews pending-until-approved) matched to
-the live pages. Anchors (`#consultation`, `#attachments`, `#history`,
-`#responses`, `#reviews`, `#contact`) back the hub deep-links and the
-context-help links on `consultation.php`, `consultation-history.php`,
-`reviews.php`, and `contact.php`.
-
-**Commit 11.4 complete** — Cart & orders Help page.
-
-`help/orders.html` is a full cart-and-orders guide matching the shared Help shell
-(skip link, header nav, TOC, footer). It covers the cart, updating quantities and
-removing items, checkout, the four simulated payment methods, order confirmation
-numbers (`CC-YYYYMMDD-XXXXXX`), order history with its status filter, order
-details, and the five order statuses — with copy and rules (login required,
-quantity 1–99 clamped to stock, required checkout fields and lengths, trusted
-server-side price snapshot, no real payment data) matched to the live pages.
-Anchors (`#cart`, `#quantities`, `#checkout`, `#payment`, `#confirmation`,
-`#history`, `#details`, `#status`) back the hub deep-links and the context-help
-links on `cart.php`, `checkout.php`, `order-confirmation.php`, `order-history.php`,
-and `order-details.php`.
-
-**Commit 11.3 complete** — Catalogue & products Help page.
-
-`help/catalogue.html` is a full catalogue guide matching the shared Help shell
-(skip link, header nav, TOC, footer). It covers browsing and tiers, searching,
-filtering and sorting, the product page, configuration options and pricing,
-comparing 2–4 systems, wishlists, and reviews — with copy and rules (four tiers,
-$50 price steps, up-to-50 search results, 2–4 compare range, options price
-deltas, review rating/title/20-char body, pending-until-approved) matched to the
-live pages. Anchors (`#browse`, `#search`, `#filters`, `#sort`, `#product`,
-`#options`, `#compare`, `#wishlist`, `#reviews`) back the hub deep-links and the
-context-help links on `catalogue.php`, `product.php`, `search.php`,
-`compare.php`, and `wishlist.php` (now pointed at `#wishlist`).
-
-**Commit 11.2 complete** — Accounts & profile Help page.
-
-`help/accounts.html` is a full account guide matching the shared Help shell
-(skip link, header nav, TOC, footer). It walks through creating an account,
-logging in and out, the profile dashboard, editing details, changing your
-password, session timeouts, and disabled accounts — with copy and validation
-rules (name/email/phone/password limits, 30-minute idle / 12-hour absolute
-session timeouts, generic login errors) matched to the live pages. Anchors
-(`#register`, `#login`, `#logout`, `#profile`, `#edit-details`, `#password`,
-`#sessions`, `#disabled`) back the hub deep-links and the context-help links on
-`register.php`, `login.php`, `profile.php`, and `edit-profile.php`. A themed
-`.help-note` callout was added to `main.css`.
-
-**Commit 11.1 complete** — Help centre homepage.
-
-`help/index.html` is now a full Help hub: six guide cards (Accounts, Catalogue,
-PC Builder, Cart & orders, Consultation & support, End-user training) with jump
-TOC anchors, section deep-links, and related live-site links. A progressive
-search filter (`assets/js/help-hub.js`) narrows cards by title, body, and
-keywords without hiding content when JavaScript is off. Shared Help chrome
-matches `pc-builder.html` (skip link, header nav, footer). Hub styles in
-`main.css` add the search panel and a two-column card grid on wider viewports.
-The existing PC Builder guide remains linked and live; remaining article files
-arrive in Commits 11.2–11.6 and 11.8.
-
-**Commit 10.6 complete** — cross-theme verification (Stage 10 finished).
-
-Key public, account, and admin pages were walked under all three themes
-(RGB Gaming, Minimal Professional, Cyber Grid). Every check asserted HTTP 200,
-correct stylesheet order (`main.css` → optional `admin.css` → theme), structural
-chrome (header/nav/footer/forms/tables/cards), and no PHP error leaks.
-**78 / 78 checks passed**; themes remain distinct in background, accent,
-display font, and radius. No theme-only layout bugs turned up. Results are
-recorded in `docs/theme-testing.md`. Active theme restored to RGB Gaming.
-
-**Commit 10.5 complete** — safe theme fallback hardening.
-
-`includes/theme.php` now resolves the active stylesheet through a five-step,
-defence-in-depth chain: (1) `site_settings.active_theme_id → themes.css_file`,
-(2) `themes.is_active_default = 1`, (3) `config/app.php → default_theme`,
-(4) a hard-coded canonical `rgb-gaming` slug (independent of DB and config), and
-(5) a last-resort scan of `assets/themes/*.css`. Every candidate — from any
-source — is validated by `customcore_theme_normalise_path()` (only
-`^assets/themes/<slug>.css` is accepted, blocking `../` traversal, absolute
-paths, subdirectories, query strings, and non-CSS files) and must exist on disk
-before it is linked, so a missing/renamed/corrupt value transparently falls
-through. Database access stays wrapped in try/catch, and because `main.css` is
-always linked first the site is never left unstyled. Verified with 33 automated
-assertions (path traversal rejection, missing/invalid ids, corrupt paths, empty
-tables, corrupt config → canonical) plus HTTP checks confirming a bad
-`active_theme_id` still yields RGB Gaming and a traversal `css_file` never leaks
-`config/app.php`.
-
-**Commit 10.4 complete** — administrator theme switching.
-
-`admin/themes.php` lists the three seeded site themes (RGB Gaming, Minimal
-Professional, Cyber Grid) and lets an administrator activate one sitewide.
-Selection is written to `site_settings.active_theme_id` with CSRF protection and
-Post/Redirect/Get. Helpers in `includes/admin-themes.php` validate the chosen
-`themes.id`, confirm the stylesheet path is safe and present on disk, then
-insert/update the setting. The shared header already resolves that value via
-`includes/theme.php` (10.1), so public and admin pages load the new CSS
-immediately. Themes with a missing CSS file cannot be activated. Guests are
-blocked by `customcore_require_admin()`. Verified over HTTP: login → activate
-Minimal Professional / Cyber Grid / RGB Gaming → homepage stylesheet updates;
-bad CSRF and invalid theme ids rejected; setting restored to RGB Gaming.
-
-**Commit 10.3 complete** — the **Cyber Grid** site theme (all three templates shipped).
-
-`assets/themes/cyber-grid.css` is the third switchable theme and a technical
-"HUD / holo-terminal" look, distinct from the other two by design: a visible
-blueprint **grid backdrop**, angular sci-fi **Orbitron** display + **Chakra
-Petch** body + **Share Tech Mono** labels, **zero-radius** square edges,
-**corner-cut** buttons, uppercase monospaced nav, and a mint-green primary with
-an animated mint→magenta accent rail. Like the others it re-declares the shared
-`--cc-*` tokens (public + admin re-skin automatically) and refines the
-hard-coded decorative spots (body, header, hero, cards, flash banners, footer);
-motion respects `prefers-reduced-motion`. No PHP changes were needed — it uses
-the `includes/theme.php` resolver + shared-header wiring from 10.1. With this
-commit the three required distinct templates (RGB Gaming, Minimal Professional,
-Cyber Grid) all exist and differ in colour, typography, borders, radius, nav,
-buttons, cards, and layout feel. Verified in-browser across public pages and
-forms.
-
-**Commit 10.2 complete** — the **Minimal Professional** site theme.
-
-`assets/themes/minimal-pro.css` is the second switchable theme and a deliberate
-counterpoint to RGB Gaming: a calm, editorial, light "ink-on-paper" look. It
-re-declares the shared `--cc-*` tokens (so public and admin components re-skin
-automatically) and differs from the base and RGB themes in more than colour —
-an editorial **Fraunces** serif display paired with the humanist **Manrope**
-sans, hairline borders, crisper corners, flatter surfaces (elevation from thin
-borders rather than heavy shadow), a single professional blue accent, and a
-letter-spaced uppercase masthead nav. Solid ink-blue buttons and clean outline
-variants replace RGB's neon gradients. It plugs into the same
-`includes/theme.php` resolver and shared-header wiring from 10.1, so no PHP
-changes were needed. Verified over HTTP + in-browser across public pages and
-forms; the stylesheet loads last so it overrides `main.css`/`admin.css`.
-
-**Commit 10.1 complete** — the **RGB Gaming** site theme.
-
-`assets/themes/rgb-gaming.css` is a bold, dark "battlestation" theme layered on
-top of `assets/css/main.css`. It re-declares the shared design tokens (the
-`--cc-*` CSS custom properties) so every token-driven component re-skins
-automatically, then targets the few places `main.css`/`admin.css` use
-hard-coded light colours (body/header backdrops, hero, flash banners, footer,
-and white-on-accent text). The palette is a high-contrast near-black surface
-with a cyan primary accent, an electric-blue focus ring, and a multi-hue RGB
-gradient reserved for expressive flourishes (gradient wordmark, animated header
-rail, active-nav glow). The active theme is resolved by `includes/theme.php`,
-which reads `site_settings.active_theme_id → themes.css_file` from MySQL and
-falls back safely to the seeded default theme and then to the
-`config/app.php` → `default_theme` slug when the database is unavailable; every
-candidate is path-validated and must exist on disk before it is linked. The
-shared header links the theme **last** so it overrides both public and admin
-surfaces, and all motion respects `prefers-reduced-motion`. Verified over HTTP
-that public and admin pages render with the correct stylesheet order
-(`main.css` → `admin.css` → theme).
-
-**Commit 9.9 complete** — administrator reports (Stage 9 finished).
-
-`admin/reports.php` charts live MySQL aggregates for **orders by status**, **active
-products by performance tier**, **user accounts by role and by status**, and
-**inventory health** (healthy / low / out of stock / disabled). Each chart embeds a
-Chart.js payload in a `data-admin-report-chart` attribute and is drawn by
-`assets/js/admin-reports.js` (Chart.js 4.4.1 loads only on this page via
-`$loadAdminReports`). A server-rendered accessible data table sits beside every
-canvas and remains the source of truth if JavaScript fails. Logic lives in
-`includes/admin-reports.php` — prepared/parameterless PDO queries only; verified
-that product-tier and inventory bucket totals match the live catalogue. KPI summary
-cards sit at the top. Non-admins are blocked from the page.
-
-**Commit 9.8 complete** — administrator review moderation.
-
-`admin/reviews.php` is the moderation queue for every product review. Search by
-title, body, product, or customer; filter by pending / approved / hidden (with live
-counts); pending reviews sort to the top. Per-review cards show the full body and
-offer CSRF-protected Approve, Hide, Mark pending, and Delete actions via
-Post/Redirect/Get. Logic lives in `includes/admin-reviews.php` (prepared statements;
-ENUM-validated status writes; intentional hard delete for moderation). Public
-catalogue and product pages continue to show only `status = 'approved'` — verified
-over HTTP that approving makes a review appear on `product.php` and hiding removes
-it again. Non-admins are blocked; CSRF-less deletes are rejected. Dashboard pending
-reviews now deep-link into the queue.
-
-**Commit 9.7 complete** — administrator consultation management.
-
-`admin/consultations.php` is a searchable, status-filterable, paginated queue of
-every PC advice request (search by customer name, email, or budget; live per-status
-counts) that surfaces open and in-progress requests first.
-`admin/consultation-details.php` shows the full request — customer + account status,
-budget, games/software/performance goals/notes, and every attachment — and lets an
-admin change the status and write or clear a response. Saving a non-empty response
-timestamps it and auto-advances an open/in-progress request to “Answered” (visible to
-the customer in their consultation history). `admin/consultation-attachment.php`
-streams any customer's uploads to staff, reusing the customer endpoint's hardening
-(admin-only, basename-guarded stored name, path confined to the upload directory,
-`nosniff`, sanitized RFC 5987 filename). Logic lives in
-`includes/admin-consultations.php` (prepared statements throughout; ENUM-validated
-status writes), and both detail writes are behind CSRF + Post/Redirect/Get. Verified
-against live MySQL and over HTTP end-to-end (list, search, status filter/empty-state,
-detail, attachment download byte-for-byte, response auto-advance, status change,
-CSRF-less POST rejected, and non-admins blocked from both the queue and downloads).
-
-**Commit 9.6 complete** — administrator user management.
-
-`admin/users.php` is a searchable, role- and status-filterable, paginated account
-index (search by name or email; live role/status counts) with a one-click
-enable/disable toggle. `admin/user-edit.php` shows a full account — profile,
-activity summary (orders, lifetime spend, reviews, consultations, wishlist), and
-recent orders — and lets an admin enable/disable the login and change the role
-(Customer ↔ Administrator). Logic lives in `includes/admin-users.php`: prepared
-statements throughout, the password hash is never loaded into an admin view, role
-writes are validated against the `users.role` ENUM, and `customcore_admin_user_guard()`
-enforces two critical invariants — **an admin can never disable or demote their own
-account** (no self-lockout) and **the last active administrator can never be disabled
-or demoted**. Every write is behind CSRF + Post/Redirect/Get with flash
-confirmations. Verified against live MySQL and over HTTP end-to-end (list, search,
-role filter, disable/enable, promote, and rejection of self-disable, self-demote, and
-CSRF-less POSTs), with all accounts restored afterwards.
-
-**Commit 9.5 complete** — administrator order management.
-
-`admin/orders.php` is a searchable, status-filterable, paginated index of every
-customer order: search by order number, customer name, or email; filter by status
-(with live per-status counts); and page through results 25 at a time.
-`admin/order-details.php` shows the full order — customer, account status, shipping
-snapshot, payment-method label, and every frozen line item (with decoded product
-options and custom-build components) plus totals — and lets an admin change the
-fulfilment status and record internal administrator notes (never shown to the
-customer, stored `NULL` when blank). Logic lives in `includes/admin-orders.php`:
-prepared-statement search/list with pagination, admin-scope fetch of any order and
-its items, status writes validated against the `orders.status` ENUM allow-list, and
-notes writes. Both writes are behind CSRF + Post/Redirect/Get with flash
-confirmations. Verified end-to-end against live MySQL and over HTTP (admin login →
-list → search → empty-state → detail → status change persists with success flash →
-notes save → a CSRF-less status POST is rejected and leaves the order unchanged),
-with the seeded data restored afterwards.
-
-**Commit 9.4 complete** — administrator compatibility metadata management.
-
-`admin/compatibility.php` lets an admin edit the simplified compatibility metadata
-the PC&nbsp;Builder relies on, in two panels. **Component attributes**: each builder
-part is edited through a form that shows only the fields relevant to its category
-(e.g. CPU → socket/power/scores, Case → form factor/GPU & cooler clearance/supported
-cooling), with per-type validation and an enable/disable toggle that controls
-whether the part appears in the builder. **Compatibility rules**: the seven seeded
-checks can be renamed, re-described, switched between error/warning severity, and
-enabled/disabled; each rule's JSON wiring is shown read-only so the evaluator stays
-intact. Logic lives in `includes/admin-compatibility.php`, which writes only a fixed
-allow-list of columns (user input never names a column) via prepared statements, all
-behind CSRF + Post/Redirect/Get. Verified end-to-end against live MySQL that edits
-persist, non-edited columns (name/price) are untouched, and the builder's checker
-correctly reports a socket mismatch as incompatible afterward.
-
-> Setup note: this database's `compatibility_rules` table was empty, so the builder
-> was running zero checks. The canonical seven rules from
-> `database/seed-compatibility.sql` (idempotent; touches only that table) have been
-> (re)imported so the builder and this admin page work as intended.
-
-**Commit 9.3 complete** — administrator product options management.
-
-`admin/product-options.php` lets an admin manage the configurable choices buyers
-pick on the product and PC&nbsp;Builder pages (RAM, Storage, Colour, Warranty, …).
-Pick a product (or arrive via the new "Options" link on the product list), then add,
-edit, reorder, price (positive **or** negative delta), enable/disable, set the
-default, and delete options — grouped by option group. Logic lives in
-`includes/admin-options.php`, which validates input and enforces the key invariant
-that each group keeps **exactly one active default** (auto-promoting a replacement
-when a default is disabled, deleted, or moved to another group) so the storefront
-and builder always price a valid configuration. Every action uses CSRF + the
-Post/Redirect/Get pattern with flash confirmations, and an advisory banner warns
-when a product drops below two active options or a group loses its default.
-Verified end-to-end against live MySQL (create, set-default, edit with a negative
-delta, disable-with-auto-promotion, and delete) with all test rows rolled back.
-
-**Commit 9.2 complete** — administrator product management (catalogue CRUD).
-
-Admins can now add, edit, price, stock, image, feature, and disable catalogue
-products from three protected screens — `admin/products.php` (searchable, filterable
-list with an enable/disable toggle), `admin/product-add.php`, and
-`admin/product-edit.php` — all behind `customcore_require_admin()`. Shared logic
-lives in `includes/admin-products.php`: input validation, automatic unique-slug
-generation, list/search queries, prepared-statement create/update, soft
-enable/disable (never a hard delete, so order and review history stay intact), and
-secure image uploads. Uploads never trust the browser: the real MIME type is
-detected with `finfo`, matched to a JPG/PNG/WEBP/GIF allowlist, capped at 2 MB, and
-saved under `uploads/products/` with a randomly generated filename; replaced or
-removed images are cleaned off disk. A shared form partial
-(`includes/admin-product-form.php`) keeps the add and edit screens identical, and
-`customcore_product_image_url()` lets uploaded images render across the catalogue,
-product, search, wishlist, and homepage pages alongside seeded assets. Every write
-uses CSRF protection and the Post/Redirect/Get pattern with flash confirmations.
-Verified end-to-end against live MySQL: login → create with image upload → edit
-(price/stock/category/image replace + remove) → disable, with the seeded catalogue
-count restored afterwards.
-
-**Commit 9.1 complete** — administrator dashboard from live MySQL.
-
-`admin/index.php` is now a real operations dashboard (still behind
-`customcore_require_admin()`). Counts for products, orders, users, reviews,
-consultations, contact inbox, and stock warnings are computed by
-`includes/admin.php` from the database — never hard-coded. Attention alerts,
-recent activity tables (orders, pending reviews, open consultations, low stock),
-and a Stage 9–13 tool registry are included. Unavailable tools stay unlinked
-(“Coming in commit …”) so the nav never 404s; later commits light up
-automatically when their PHP files land. Shared chrome: `includes/admin-nav.php`
-and `assets/css/admin.css` (loaded via `$loadAdminCss`). Verified: guests are
-redirected to login; an administrator session renders live counts (e.g. pending
-reviews and low-stock products from seed data).
-
-**Commit 8.7 complete** — multimedia credits (Stage 8 finished).
-
-`docs/media-credits.md` records the origin, licence, and creation date for every
-Stage 8 asset: all 33 images (20 product + 13 site extras), both educational
-MP4s, the MP3 audio guide, three WebVTT caption tracks, Chart.js 4.4.1 (MIT),
-and Leaflet 1.9.4 + OpenStreetMap tiles. Full AI image prompts are retained in
-`docs/image-prompts.md`. Credits are linked from the README, the Learning Centre,
-the accessibility statement, and the store-locations map note. Rubric #10d and
-#10e licence documentation is now complete.
-
-**Commit 8.6 complete** — accessible multimedia fallbacks.
-
-Every piece of Stage 8 multimedia now has a documented text equivalent, so no
-information is locked inside media. A new public `accessibility.php` statement
-(linked from the footer) explains each fallback and links to it: descriptive
-`alt` text with graceful placeholders for images; native controls + English
-captions + expandable transcripts + download links for the video/audio guides;
-the live-data table beside the catalogue chart (8.5); the text score summary
-beside the builder performance chart (5.8); and the always-visible address,
-hours, and `<noscript>` message for the store map (8.4). The homepage video
-teaser now links straight to the guide's transcript/captions, and the stylesheet
-honours `prefers-reduced-motion`. Verified in a browser: the statement page lists
-all six multimedia types with working links and the teaser transcript link
-resolves to the correct Learning Centre lesson.
-
-**Commit 8.5 complete** — public catalogue data visualization from live MySQL.
-
-`catalogue.php` opens with a "Catalogue at a glance" section that charts the
-number of active products in each performance tier. Counts and price ranges are
-computed server-side from the database by `customcore_catalogue_tier_stats()`
-(in `includes/catalogue-stats.php`) — never hard-coded — so the graph always
-reflects real seeded/administered data. The payload is JSON-encoded into a
-`data-catalogue-chart` attribute and drawn by `assets/js/catalogue-chart.js`
-using Chart.js (loaded from CDN only on this page via `$loadCatalogueChart`). An
-accessible data table listing each tier's count and price range is rendered
-server-side beside the canvas and remains the source of truth if Chart.js fails
-to load. A separate `try/catch` keeps a stats failure from blanking the product
-grid. Verified in a real browser: four bars (Budget/Esports/High-Performance/
-Creator, 5 each) render and the table mirrors the same figures.
-
-**Commit 8.4 complete** — interactive store & service map with text fallback.
-
-`store-locations.php` shows the fictional CustomCore Campus Service Desk. An
-always-visible `<address>` block (name, street, city/region/postal, `tel:` and
-`mailto:` links), an hours list, and a storefront photo remain fully usable even
-if JavaScript, Leaflet, or the map tiles fail. The interactive map is a
-progressive enhancement: `assets/js/store-map.js` initialises Leaflet +
-OpenStreetMap from `data-*` attributes on the map container (no inline script,
-popup built from DOM text nodes), with scroll-wheel zoom enabled only while the
-map is focused so keyboard users are never trapped. Location data is centralised
-in `config/app.php` (`store_location`) for easy, non-programmer edits. Leaflet's
-CSS/JS load only on this page via the shared header/footer. Verified in a real
-browser: map tiles + marker render and the text address stays visible.
-
-**Commit 8.3 complete** — multimedia Learning Centre showcase.
-
-`media.php` is now an organized, responsive Learning Centre. A lesson directory
-at the top summarises the mix ("3 short lessons — 2 videos and 1 audio guide")
-and offers poster-thumbnail cards with type/duration badges that jump to each
-full player below. Each lesson plays with native `<video controls>` /
-`<audio controls>`, English caption tracks, learning outcomes, and an expandable
-transcript. Accessibility refinements: the standalone audio poster now carries a
-descriptive `alt`, video posters are treated as decorative, jumped-to lessons get
-a visible `:target` highlight and focus handling, and heading levels nest
-correctly (h1 → directory/lesson h2/h3 → outcomes h4).
-
-**Commit 8.2 complete** — three educational media items play with native controls
-(2× MP4, 1× MP3 under `assets/media/` with WebVTT captions; `customcore_media_url()`
-helper; homepage teaser embeds the PC Builder walkthrough).
-
-**Commit 8.1 complete** — copyright-safe imagery integrated site-wide.
-
-**Stage 12 complete (Commits 12.1–12.6).** Front-end, administrator, content-update, installation, and deployment/troubleshooting documentation shipped, and the README/structure/rubric docs updated. Next: **Stage 13** — backend monitoring page (`admin/monitoring.php`).
-
-## Security notes
-
-- Never commit real database credentials.
-- The live config file `config/database.php` is ignored by Git.
-- Use [`config/database.example.php`](config/database.example.php) as the template
-  (see [`config/README.md`](config/README.md)).
-- Never commit plain-text passwords or private customer data.
-
-## Licence
-
-See [LICENSE](LICENSE) for terms.
+---
+
+## What This Project Is
+
+CustomCore is a custom gaming PC store built as a database driven PHP website. Visitors can browse a
+catalogue of prebuilt systems, compare them, read and write reviews, and design a machine from
+individual parts in a step by step PC Builder that checks part compatibility and prices the build as
+it is assembled. Customers can register, save builds, keep a wishlist, request a consultation, and
+place a simulated order. Staff get a separate protected back office for managing the catalogue,
+orders, users, consultations, reviews, reports, themes, and service health.
+
+Everything runs on plain PHP, MySQL, HTML, CSS, and vanilla JavaScript. There is no Composer, no
+Node, no framework, and no build step, so the project can be copied onto a standard PHP host and run
+as is. Chart.js and Leaflet are loaded from a CDN only on the pages that need a chart or a map.
+
+Checkout is simulated for coursework. The order record stores a payment method label only and never
+touches real card data.
+
+---
+
+## Requirements
+
+| Component | Minimum | Notes |
+| --------- | ------- | ----- |
+| PHP | 8.0 or newer | Uses `declare(strict_types=1)` throughout. The PDO and `finfo` extensions are required. |
+| MySQL or MariaDB | InnoDB with `utf8mb4` | Foreign keys and `utf8mb4_unicode_ci` are used. |
+| Web server | Apache, Nginx, or the PHP built in server | Plain `.php` URLs, so no rewrite rules are needed. |
+| Command line | `php` and `mysql` on the PATH | Needed for the database import and admin creation. |
+
+---
+
+## Install
+
+**1. Get the code and enter the folder.**
+
+```bash
+git clone <your-repository-url> customcore
+cd customcore
+```
+
+**2. Create the database credentials file.** The real file is gitignored and never committed, so copy
+the template and fill in your own values.
+
+```bash
+cp config/database.example.php config/database.php
+```
+
+**3. Create an empty database** using `utf8mb4` and the `utf8mb4_unicode_ci` collation.
+
+**4. Import the schema, then the seed data.** Order matters, because the seeds depend on the tables
+and on each other.
+
+```bash
+mysql -u your_username -p your_database_name < database/schema.sql
+mysql -u your_username -p your_database_name < database/seed-products.sql
+mysql -u your_username -p your_database_name < database/seed-product-options.sql
+mysql -u your_username -p your_database_name < database/seed-components.sql
+mysql -u your_username -p your_database_name < database/seed-compatibility.sql
+mysql -u your_username -p your_database_name < database/seed-themes.sql
+mysql -u your_username -p your_database_name < database/seed-reviews.sql
+```
+
+**5. Confirm the connection works.**
+
+```bash
+php database/test-connection.php
+```
+
+**6. Make the upload folders writable** so admin product images and consultation attachments can be
+saved.
+
+```bash
+chmod 755 uploads uploads/products uploads/consultation
+```
+
+**7. Run the site.** For local work the built in server is quickest.
+
+```bash
+php -S localhost:8000
+```
+
+Then open `http://localhost:8000/`. On Apache or Nginx, point the document root at the project folder
+instead. Step by step detail, verification queries, and fixes for common problems live in the
+[installation guide](docs/installation-guide.md) and the
+[deployment and troubleshooting guide](docs/deployment-troubleshooting.md).
+
+---
+
+## Create An Administrator
+
+The back office is closed to normal accounts, so the first administrator is created from the command
+line rather than through the website.
+
+```bash
+php database/create-admin.php
+```
+
+Answer the prompts for email, name, and a password of at least 8 characters. The password is stored
+as a bcrypt hash and is never written in plain text. Sign in at `login.php` and the administrator
+navigation appears, starting at `admin/index.php`. Once one administrator exists, that account can
+promote others from `admin/users.php`.
+
+---
+
+## Feature Overview
+
+**Storefront**
+
+- Catalogue of 20 configurable prebuilt systems across four tiers, with filters, sorting, search, and
+  a side by side comparison view.
+- Product pages with option groups, price adjustments, stock awareness, and approved customer
+  reviews.
+- A Learning Centre with playable video and audio lessons plus captions, and an interactive store and
+  service map.
+- A catalogue data visualisation and a builder performance chart, each with an accessible text or
+  table fallback.
+
+**PC Builder**
+
+- Step by step selection across component categories, one step per category, with optional steps that
+  can be skipped.
+- Live subtotal and running total, plus server checked compatibility covering socket, memory type,
+  form factor, power supply headroom, cooler and card clearance, and storage.
+- A build summary page that can be saved to an account and later added to the cart.
+
+**Accounts And Orders**
+
+- Registration, login, profile editing, and a private account area.
+- Cart supporting both catalogue products and saved custom builds, with stock aware quantities.
+- Simulated checkout, an order confirmation with a full build snapshot, order history, and order
+  detail pages.
+- Wishlist, review submission, consultation requests with file attachments, and consultation history.
+
+**Administration**
+
+- Dashboard with live counts, attention alerts, and recent activity.
+- Product create and edit with image upload, plus option group management and compatibility rule
+  management.
+- Order status and note management, user administration with self lockout and last administrator
+  protection, consultation replies, and review moderation.
+- Reports with charts backed by MySQL, a sitewide theme switcher offering three complete themes, and a
+  service monitoring page reporting online, warning, or offline per check.
+
+**Across The Site**
+
+- Session hardening, CSRF protection on every state changing form, prepared statements everywhere,
+  and content checked file uploads served through guarded endpoints.
+- A seven page Help wiki with context sensitive links from the matching feature pages.
+- Responsive layouts verified on desktop and mobile widths, an accessibility statement, and reduced
+  motion and increased contrast support.
+
+---
+
+## Layout Overview
+
+```
+customcore/
+├── admin/          Protected administrator pages
+├── api/            Small JSON endpoints for builder price, compatibility, and chart data
+├── assets/
+│   ├── css/        main.css for the storefront, admin.css for the back office
+│   ├── themes/     The three switchable site themes
+│   ├── js/         Vanilla JavaScript modules, one per feature
+│   ├── images/     Catalogue, component, and page imagery
+│   └── media/      Learning Centre video and audio plus captions
+├── config/         app.php settings and the gitignored database.php credentials
+├── database/       schema.sql, seed files, and the create-admin script
+├── docs/           Project documentation and QA records
+├── help/           Static Help wiki, one HTML page per topic
+├── includes/       Shared layout, helpers, auth, and per feature logic
+├── uploads/        User supplied files, blocked from direct web access
+└── *.php           Public and customer facing pages
+```
+
+The site is 50 purposeful dynamic PHP pages: 30 public and customer pages, 17 administrator pages, and
+3 API endpoints, backed by a 21 table MySQL schema. Full detail is in
+[directory-structure.md](docs/directory-structure.md).
+
+---
+
+## Key Documentation
+
+**Setting Up And Running**
+
+- [Installation guide](docs/installation-guide.md)
+- [Database import guide](docs/database-import.md)
+- [Deployment and troubleshooting](docs/deployment-troubleshooting.md)
+
+**Using And Maintaining The Site**
+
+- [Administrator guide](docs/administrator-guide.md)
+- [Content update guide](docs/content-update-guide.md)
+- [Monitoring troubleshooting](docs/monitoring-troubleshooting.md)
+
+**Design And Architecture**
+
+- [Business case](docs/business-case.md)
+- [Database design](docs/database-design.md)
+- [Front end documentation](docs/frontend-documentation.md)
+- [Sitemap](docs/sitemap.md)
+- [Wireframes](docs/wireframes.md)
+- [Security audit](docs/security-audit.md)
+
+**Testing And Quality Records**
+
+- [Rubric checklist](docs/rubric-checklist.md) and [rubric audit](docs/rubric-audit.md)
+- [HTML validation](docs/html-validation.md), [CSS validation](docs/css-validation.md),
+  [JavaScript validation](docs/js-validation.md)
+- [Desktop responsiveness](docs/responsiveness-desktop.md) and
+  [mobile responsiveness](docs/responsiveness-mobile.md)
+- [Customer workflows](docs/customer-workflows.md) and
+  [administrator workflows](docs/admin-workflows.md)
+- [Theme testing](docs/theme-testing.md) and [final defect fixes](docs/final-defect-fixes.md)
+
+---
+
+## Notes For Graders
+
+- Checkout is simulated. No payment gateway is contacted and no card data is stored.
+- `config/database.php` is intentionally absent from version control. Copy
+  `config/database.example.php` and add local credentials before running.
+- Sample media and imagery are credited in [media-credits.md](docs/media-credits.md).
+- The administrator area cannot be reached without an administrator account, so create one with
+  `php database/create-admin.php` before reviewing those pages.

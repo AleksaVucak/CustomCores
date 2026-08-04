@@ -1,6 +1,6 @@
-# CustomCore — Administrator User Guide
+# CustomCore | Administrator User Guide
 
-**Document type:** Stage 12 documentation (Commit 12.2)
+**Document type:** Project documentation
 **Purpose:** Give a CustomCore administrator a complete, task-oriented guide to every back-office tool: how to sign in, read the dashboard, and manage products, options, compatibility metadata, orders, users, consultations, reviews, reports, and themes.
 **Audience:** Store administrators (staff). No programming knowledge is assumed. For editing catalogue **content** specifically (adding a product, swapping an image, adding a video), see [`docs/content-update-guide.md`](content-update-guide.md).
 **Related:** [`docs/database-import.md`](database-import.md), [`docs/installation-guide.md`](installation-guide.md), [`docs/frontend-documentation.md`](frontend-documentation.md).
@@ -12,11 +12,11 @@
 Everything under `admin/` is a protected back office. Each admin page begins with:
 
 ```php
-require_once __DIR__ . '/../includes/admin-auth.php';
-customcore_require_admin();
+require_once __DIR__. '/../includes/admin-auth.php';
+customcore_require_admin;
 ```
 
-`customcore_require_admin()` enforces three outcomes:
+`customcore_require_admin` enforces three outcomes:
 
 - **Guests** are sent to the login page (with a return-to link back).
 - **Logged-in customers** (non-admins) are redirected to their own profile with a "You do not have permission" message.
@@ -36,7 +36,7 @@ The first admin is created with a secure CLI script so no plain-text password ev
 php database/create-admin.php
 ```
 
-You will be prompted for email, first/last name, and a password (minimum 8 characters; hidden on macOS/Linux terminals). The password is stored as a bcrypt hash via `password_hash()`. If the email already exists as a customer, the script offers to **promote** it to admin instead of creating a duplicate.
+You will be prompted for email, first/last name, and a password (minimum 8 characters; hidden on macOS/Linux terminals). The password is stored as a bcrypt hash via `password_hash`. If the email already exists as a customer, the script offers to **promote** it to admin instead of creating a duplicate.
 
 ### 2.2 Promote or demote later (from the web UI)
 
@@ -55,7 +55,7 @@ Sessions time out for security: **30 minutes** of inactivity, a **12-hour** abso
 
 ## 3. The dashboard (`admin/index.php`)
 
-The dashboard is a live operations overview. **Every number is computed from the database** (`includes/admin.php` → `customcore_admin_dashboard_stats()`), never hard-coded.
+The dashboard is a live operations overview. **Every number is computed from the database** (`includes/admin.php` → `customcore_admin_dashboard_stats`), never hard-coded.
 
 It shows:
 
@@ -214,4 +214,4 @@ The tool registry lists a **Monitoring** page for service health checks (online 
 
 ## 15. Status
 
-**Commit 12.2 complete.** Every shipped administrator tool (dashboard, products, options, compatibility, orders, users, consultations, reviews, reports, themes) is documented with its purpose, key actions, and safety rules, matched to the live pages and their `includes/admin-*.php` logic. Supports rubric rows **B7 / B8 (admin data + user administration)** and **B9 (admin user documentation)**.
+**Summary.** Every shipped administrator tool (dashboard, products, options, compatibility, orders, users, consultations, reviews, reports, themes) is documented with its purpose, key actions, and safety rules, matched to the live pages and their `includes/admin-*.php` logic. Supports rubric rows **B7 / B8 (admin data + user administration)** and **B9 (admin user documentation)**.

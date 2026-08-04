@@ -1,20 +1,19 @@
 <?php
 /**
- * CustomCore — Build performance scoring (Commit 5.8).
- *
- * File responsibility:
- *   Computes gaming, productivity, and upgrade-ceiling scores from selected
- *   components. Used by api/chart-data.php and server-rendered pages so the
- *   chart and text fallback stay in sync.
- *
- * Scoring model (1–100):
- *   Gaming        — weighted: GPU 50%, CPU 30%, RAM 10%, Storage 10%
- *   Productivity  — weighted: CPU 40%, RAM 25%, Storage 20%, GPU 15%
- *   Upgrade max   — same weights applied to the best active catalogue scores
- *                   in each category (catalogue ceiling for upgrade comparison)
- *
- * Only categories present in the build contribute; weights are re-normalized.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Build performance scoring.
+// Computes gaming, productivity, and upgrade-ceiling scores from selected components. Used by
+// api/chart-data.php and server-rendered pages so the chart and text fallback stay in sync.
+// Scoring model (1 to 100):
+//   Gaming, weighted: GPU 50%, CPU 30%, RAM 10%, Storage 10%
+//   Productivity, weighted: CPU 40%, RAM 25%, Storage 20%, GPU 15% Upgrade max, same weights
+//     applied to the best active catalogue scores in each category (catalogue ceiling for upgrade
+//     comparison)
+// Only categories present in the build contribute; weights are re-normalized.
 
 declare(strict_types=1);
 
@@ -34,11 +33,11 @@ function customcore_performance_weights(): array
 }
 
 /**
- * Weighted score from a map of category slug → score (1–100).
+ * Weighted score from a map of category slug → score (1 to 100).
  *
- * @param array<string, int>                         $scoresBySlug
+ * @param array<string, int> $scoresBySlug
  * @param array<string, array{gaming:float, productivity:float}> $weights
- * @param string                                     $axis 'gaming' or 'productivity'
+ * @param string $axis 'gaming' or 'productivity'
  */
 function customcore_performance_weighted_score(array $scoresBySlug, array $weights, string $axis): int
 {
@@ -67,16 +66,16 @@ function customcore_performance_weighted_score(array $scoresBySlug, array $weigh
 /**
  * Build performance report for selected component rows.
  *
- * @param PDO                    $pdo
- * @param array<int, array>      $componentRows Rows with category_slug, performance_gaming, performance_productivity
+ * @param PDO $pdo
+ * @param array<int, array> $componentRows Rows with category_slug, performance_gaming, performance_productivity
  * @return array{
- *   gaming:int,
- *   productivity:int,
- *   upgrade_gaming:int,
- *   upgrade_productivity:int,
- *   upgrade_headroom:int,
- *   by_category:array<int, array{slug:string, name:string, gaming:int|null, productivity:int|null}>,
- *   labels:array{gaming:string, productivity:string, upgrade:string}
+ * gaming:int
+ * productivity:int
+ * upgrade_gaming:int
+ * upgrade_productivity:int
+ * upgrade_headroom:int
+ * by_category:array<int, array{slug:string, name:string, gaming:int|null, productivity:int|null}>
+ * labels:array{gaming:string, productivity:string, upgrade:string}
  * }
  */
 function customcore_performance_report(PDO $pdo, array $componentRows): array

@@ -1,17 +1,16 @@
 <?php
 /**
- * CustomCore — Administrator product options management (Commit 9.3).
- *
- * File responsibility:
- *   Protected screen for managing a single product's configurable options
- *   (RAM, Storage, Colour, Warranty, …). Lets an administrator add, edit,
- *   reorder, price (positive or negative delta), enable/disable, set the
- *   default choice, and delete options. Keeps exactly one active default per
- *   group so the storefront and PC Builder always price a valid configuration.
- *
- * Authentication requirements:
- *   Administrator role (customcore_require_admin()).
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator product options management.
+// Protected screen for managing a single product's configurable options (RAM, Storage, Colour,
+// Warranty, …). Lets an administrator add, edit, reorder, price (positive or negative delta),
+// enable/disable, set the default choice, and delete options. Keeps exactly one active default per
+// group so the storefront and PC Builder always price a valid configuration.
+// Access: Administrator role (customcore_require_admin()).
 
 declare(strict_types=1);
 
@@ -56,9 +55,7 @@ $formValues = [
 $formErrors = [];
 $editId = 0;
 
-// ---------------------------------------------------------------------------
 // POST actions (all require a valid product and CSRF token).
-// ---------------------------------------------------------------------------
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $product !== null) {
     $token = isset($_POST['_csrf']) && is_string($_POST['_csrf']) ? $_POST['_csrf'] : null;
     $action = isset($_POST['action']) && is_string($_POST['action']) ? $_POST['action'] : '';
@@ -113,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $product !== null) {
         }
         // Fall through: re-render with $formErrors / $formValues populated.
     } else {
-        // delete / toggle / set_default — each is a single confirmed action.
+        // delete / toggle / set_default, each is a single confirmed action.
         try {
             $pdo->beginTransaction();
             $group = (string) $targetOption['option_group'];
@@ -150,9 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $product !== null) {
     }
 }
 
-// ---------------------------------------------------------------------------
 // Edit request (GET ?edit=ID): preload the form for that option.
-// ---------------------------------------------------------------------------
 if ($product !== null && $_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
     $editCandidate = (int) $_GET['edit'];
     $editRow = customcore_admin_option_fetch($pdo, $editCandidate);
@@ -169,9 +164,7 @@ if ($product !== null && $_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['ed
     }
 }
 
-// ---------------------------------------------------------------------------
 // Load data for rendering.
-// ---------------------------------------------------------------------------
 $productPickerList = [];
 $options = [];
 $groupedOptions = [];
@@ -193,8 +186,8 @@ try {
 }
 
 $pageTitle = $product !== null
-    ? 'Options — ' . (string) $product['name'] . ' — CustomCore admin'
-    : 'Product options — CustomCore admin';
+    ? 'Options: ' . (string) $product['name'] . ' | CustomCore Admin'
+    : 'Product Options | CustomCore Admin';
 $pageDescription = 'Manage configurable product options and price adjustments.';
 $pageKeywords = 'CustomCore, admin, product options';
 
@@ -439,7 +432,7 @@ require_once __DIR__ . '/../includes/header.php';
                                                     <button type="submit" class="admin-actions__link admin-actions__link--button">Make default</button>
                                                 </form>
                                             <?php else : ?>
-                                                <span class="admin-table__sub">—</span>
+                                                <span class="admin-table__sub">None</span>
                                             <?php endif; ?>
                                         </td>
                                         <td>

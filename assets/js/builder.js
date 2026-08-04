@@ -1,30 +1,22 @@
-/**
- * CustomCore — Live PC Builder price calculator + compatibility (Commits 5.2–5.4)
- * ----------------------------------------------------------------------------
- * File responsibility:
- *   1. Updates the builder summary subtotal and running total immediately when
- *      the user changes a component radio selection (Commit 5.2).
- *   2. After each change, calls api/builder-price.php to verify the total from
- *      the database — ensuring tampered data-price attributes cannot trick the
- *      displayed total (Commit 5.3). The server response overwrites the client
- *      total and shows a verification badge.
- *   3. After each change, calls api/compatibility-check.php to evaluate the
- *      build against all active compatibility rules and displays the results
- *      (compatible/warning/incompatible badge + per-rule messages) (Commit 5.4).
- *
- * Expected markup on builder.php:
- *   form#builder-form[data-builder-live][data-other-total][data-category-id]
- *     [data-price-api][data-compat-api][data-build-ids]
- *   input.builder-option__radio[data-price][data-name]
- *   #builder-live-subtotal, #builder-live-total
- *   [data-live-category-row] with [data-live-part], [data-live-price],
- *   optional [data-live-empty]
- *   #builder-price-hint (server verification badge)
- *   #builder-compat-status (compatibility results container)
- *
- * Loaded deferred from includes/footer.php when $currentPage === 'builder'.
- * ----------------------------------------------------------------------------
+/*
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Live PC Builder price calculator + compatibility.
+// 1. Updates the builder summary subtotal and running total immediately when the user changes a
+// component radio selection. 2. After each change, calls api/builder-price.php to verify the total
+// from the database, ensuring tampered data-price attributes cannot trick the displayed total. The
+// server response overwrites the client total and shows a verification badge. 3. After each
+// change, calls api/compatibility-check.php to evaluate the build against all active compatibility
+// rules and displays the results (compatible/warning/incompatible badge + per-rule messages).
+// Expected markup on builder.php: form#builder-form[data-builder-live][data-other-total][data-
+// category-id] [data-price-api][data-compat-api][data-build-ids] input.builder-option__radio[data-
+// price][data-name] #builder-live-subtotal, #builder-live-total [data-live-category-row] with
+// [data-live-part], [data-live-price], optional [data-live-empty] #builder-price-hint (server
+// verification badge) #builder-compat-status (compatibility results container)
+// Loaded deferred from includes/footer.php when $currentPage === 'builder'.
 
 (function (window, document) {
   "use strict";
@@ -97,7 +89,7 @@
     var totalEl = document.getElementById("builder-live-total");
 
     if (subtotalEl) {
-      subtotalEl.textContent = selected ? formatMoney(stepPrice) : "—";
+      subtotalEl.textContent = selected ? formatMoney(stepPrice) : "Not selected";
     }
 
     if (totalEl) {
@@ -216,9 +208,7 @@
     document.body.setAttribute("data-cc-builder-live", "ready");
   }
 
-  // ---------------------------------------------------------------------------
-  // Server-side price verification (Commit 5.3)
-  // ---------------------------------------------------------------------------
+  // Server-side price verification
 
   var verifyTimer = null;
 
@@ -329,7 +319,7 @@
       hint.classList.add("builder-summary__hint--ok");
       hint.classList.remove("builder-summary__hint--err");
     } else {
-      hint.textContent = "Server verification unavailable — total is estimated.";
+      hint.textContent = "Server verification unavailable, total is estimated.";
       hint.classList.add("builder-summary__hint--err");
       hint.classList.remove("builder-summary__hint--ok");
     }
@@ -352,9 +342,7 @@
     boot();
   }
 
-  // ---------------------------------------------------------------------------
-  // Compatibility checking (Commit 5.4)
-  // ---------------------------------------------------------------------------
+  // Compatibility checking
 
   var compatTimer = null;
 

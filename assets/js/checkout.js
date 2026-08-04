@@ -1,13 +1,13 @@
-/**
- * CustomCore — Checkout form client-side validation (Commit 6.4)
- * ----------------------------------------------------------------------------
- * File responsibility:
- *   Enhances the checkout form with immediate field validation feedback.
- *   Server validation remains authoritative; this is progressive enhancement.
- *
- * Loaded from includes/footer.php when $currentPage === 'checkout'.
- * ----------------------------------------------------------------------------
+/*
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Checkout form client-side validation.
+// Enhances the checkout form with immediate field validation feedback. Server validation remains
+// authoritative; this is progressive enhancement.
+// Loaded from includes/footer.php when $currentPage === 'checkout'.
 
 (function (window, document) {
   "use strict";

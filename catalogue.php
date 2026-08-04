@@ -1,24 +1,18 @@
 <?php
 /**
- * CustomCore — Catalogue with Filters, Sorting & Compare entry (Commits 3.3–3.7).
- *
- * File responsibility:
- *   Displays active products with category, price range, brand, and in-stock
- *   filters plus sort controls. Product cards include checkboxes that submit
- *   selected IDs to compare.php (Commit 3.7). All filters work individually
- *   and combined via PDO prepared statements.
- *
- * Filters (GET parameters):
- *   ?category=slug        — tier filter
- *   ?brand=CustomCore      — brand filter
- *   ?price_min=500         — minimum price
- *   ?price_max=2000        — maximum price
- *   ?in_stock=1            — only products with stock > 0
- *   ?sort=price_asc        — sort order
- *
- * Authentication requirements:
- *   None (public).
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Catalogue with Filters, Sorting & Compare entry.
+// Displays active products with category, price range, brand, and in-stock filters plus sort
+// controls. Product cards include checkboxes that submit selected IDs to compare.php. All filters
+// work individually and combined via PDO prepared statements.
+// Filters (GET parameters): ?category=slug, tier filter ?brand=CustomCore, brand filter
+// ?price_min=500, minimum price ?price_max=2000, maximum price ?in_stock=1, only products with
+// stock > 0 ?sort=price_asc, sort order
+// Access: None (public).
 
 declare(strict_types=1);
 
@@ -26,14 +20,12 @@ require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/database.php';
 require_once __DIR__ . '/includes/catalogue-stats.php';
 
-$pageTitle = 'Catalogue — CustomCore Gaming PCs';
+$pageTitle = 'Catalogue | CustomCore Gaming PCs';
 $pageDescription = 'Browse all CustomCore configurable prebuilt gaming and creator PCs with filters and sorting.';
 $pageKeywords = 'CustomCore, catalogue, gaming PC, prebuilt, Budget, Esports, High-Performance, Creator';
 $currentPage = 'catalogue';
 
-// ---------------------------------------------------------------------------
 // Collect and sanitize filter inputs
-// ---------------------------------------------------------------------------
 
 $filterCategory = '';
 if (isset($_GET['category']) && is_string($_GET['category'])) {
@@ -86,9 +78,7 @@ if (isset($_GET['sort']) && is_string($_GET['sort']) && isset($allowedSorts[$_GE
 $hasActiveFilters = ($filterCategory !== '' || $filterBrand !== ''
     || $filterPriceMin !== '' || $filterPriceMax !== '' || $filterInStock);
 
-// ---------------------------------------------------------------------------
 // Query data
-// ---------------------------------------------------------------------------
 
 $products = [];
 $categories = [];
@@ -175,11 +165,9 @@ try {
 
 $productCount = count($products);
 
-// ---------------------------------------------------------------------------
-// Public catalogue visualization (Commit 8.5)
+// Public catalogue visualization
 // Active products per performance tier, computed live from MySQL. A separate
 // try/catch keeps a stats failure from blanking the product grid.
-// ---------------------------------------------------------------------------
 
 $tierStats = [];
 $totalActiveProducts = 0;
@@ -209,9 +197,7 @@ try {
 $showCatalogueChart = $chartJson !== '' && $totalActiveProducts > 0;
 $loadCatalogueChart = $showCatalogueChart;
 
-// ---------------------------------------------------------------------------
 // Helper: build a filter URL preserving current state
-// ---------------------------------------------------------------------------
 
 /**
  * Build a catalogue URL that preserves the current filter/sort state, applying
@@ -327,7 +313,7 @@ require_once __DIR__ . '/includes/header.php';
                                 if ($tier['active_count'] > 0 && $tier['min_price'] !== null) {
                                     if ($tier['max_price'] !== null && $tier['max_price'] > $tier['min_price']) {
                                         $priceRange = '$' . number_format((float) $tier['min_price'], 0)
-                                            . ' – $' . number_format((float) $tier['max_price'], 0);
+                                            . ', $' . number_format((float) $tier['max_price'], 0);
                                     } else {
                                         $priceRange = 'From $' . number_format((float) $tier['min_price'], 0);
                                     }
@@ -511,7 +497,7 @@ require_once __DIR__ . '/includes/header.php';
                     <?php if ($filterPriceMin !== '' || $filterPriceMax !== '') : ?>
                         (<?php
                         if ($filterPriceMin !== '' && $filterPriceMax !== '') {
-                            echo '$' . customcore_e($filterPriceMin) . ' – $' . customcore_e($filterPriceMax);
+                            echo '$' . customcore_e($filterPriceMin) . ', $' . customcore_e($filterPriceMax);
                         } elseif ($filterPriceMin !== '') {
                             echo 'from $' . customcore_e($filterPriceMin);
                         } else {
@@ -548,7 +534,7 @@ require_once __DIR__ . '/includes/header.php';
                 >
                     <div class="catalogue-compare-bar">
                         <p class="catalogue-compare-bar__text">
-                            Tick 2–4 systems, then compare them side by side.
+                            Tick 2 to 4 systems, then compare them side by side.
                         </p>
                         <button type="submit" class="button">Compare selected</button>
                     </div>
@@ -640,7 +626,7 @@ require_once __DIR__ . '/includes/header.php';
 
                     <div class="catalogue-compare-bar catalogue-compare-bar--footer">
                         <p class="catalogue-compare-bar__text">
-                            Ready to compare? Submit 2–4 selected systems.
+                            Ready to compare? Submit 2 to 4 selected systems.
                         </p>
                         <button type="submit" class="button">Compare selected</button>
                     </div>

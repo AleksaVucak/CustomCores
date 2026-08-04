@@ -1,25 +1,22 @@
 <?php
 /**
- * CustomCore — Secure consultation attachment download (Commit 7.6).
- *
- * File responsibility:
- *   Streams a consultation attachment to its owner. The uploads directory is
- *   guarded against direct browsing (uploads/consultation/index.php returns
- *   403); this endpoint is the only way a customer reaches their own files.
- *
- * URL format:
- *   consultation-attachment.php?id=N
- *
- * Authentication requirements:
- *   Logged-in customer. The attachment must belong to a consultation request
- *   owned by the session user, or the response is 404 (no enumeration).
- *
- * Security:
- *   - Ownership enforced via JOIN to consultation_requests.user_id.
- *   - On-disk name is the generated stored_filename (basename-guarded).
- *   - Sent as an attachment with X-Content-Type-Options: nosniff.
- *   - Filename header is sanitized (RFC 5987) to prevent header injection.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Secure consultation attachment download.
+// Streams a consultation attachment to its owner. The uploads directory is guarded against direct
+// browsing (uploads/consultation/index.php returns 403); this endpoint is the only way a customer
+// reaches their own files.
+// URL: consultation-attachment.php?id=N
+// Access: Logged-in customer. The attachment must belong to a consultation request owned by the
+// session user, or the response is 404 (no enumeration).
+// Security:
+//   Ownership enforced via JOIN to consultation_requests.user_id.
+//   On-disk name is the generated stored_filename (basename-guarded).
+//   Sent as an attachment with X-Content-Type-Options: nosniff.
+//   Filename header is sanitized (RFC 5987) to prevent header injection.
 
 declare(strict_types=1);
 

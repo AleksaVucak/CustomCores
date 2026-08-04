@@ -1,16 +1,15 @@
 <?php
 /**
- * CustomCore — Primary customer navigation.
- *
- * File responsibility:
- *   Renders the main menu used across public and private customer pages.
- *   Desktop layout is styled in Commit 1.5. Mobile toggle behaviour is
- *   completed in Commit 1.7 (`assets/js/main.js` + `.is-open` / `nav-enhanced`).
- *   Cart badge count loaded from session cache (Commit 6.3).
- *
- * Included from:
- *   includes/header.php
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Primary customer navigation.
+// Renders the main menu used across public and private customer pages. Desktop layout is styled
+// in. Mobile toggle behaviour is completed in(`assets/js/main.js` + `.is-open` / `nav-enhanced`).
+// Cart badge count loaded from session cache.
+// Included from: includes/header.php
 
 declare(strict_types=1);
 

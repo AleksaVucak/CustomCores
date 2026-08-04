@@ -1,15 +1,15 @@
 <?php
 /**
- * CustomCore — Contact form helpers (Commit 7.5).
- *
- * File responsibility:
- *   Shared validation and storage for the public contact / support form.
- *   Guests and logged-in customers can submit; user_id is optional and is set
- *   only from the server session when the visitor is authenticated.
- *
- * Authentication requirements:
- *   None. Callers may optionally pass a user_id when the visitor is logged in.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Contact form helpers.
+// Shared validation and storage for the public contact / support form. Guests and logged-in
+// customers can submit; user_id is optional and is set only from the server session when the
+// visitor is authenticated.
+// Access: None. Callers may optionally pass a user_id when the visitor is logged in.
 
 declare(strict_types=1);
 
@@ -37,9 +37,9 @@ function customcore_contact_subject_options(): array
  *
  * @param array<string, mixed> $input Raw form values.
  * @return array{
- *   ok: bool,
- *   errors: array<string, string>,
- *   values: array{name: string, email: string, subject: string, message: string}
+ * ok: bool
+ * errors: array<string, string>
+ * values: array{name: string, email: string, subject: string, message: string}
  * }
  */
 function customcore_contact_validate(array $input): array

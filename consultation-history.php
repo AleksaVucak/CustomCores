@@ -1,26 +1,22 @@
 <?php
 /**
- * CustomCore — Consultation Request History (Commit 7.6).
- *
- * File responsibility:
- *   Lists the logged-in customer's PC consultation requests with their status,
- *   the details they submitted, any administrator response, and links to
- *   securely download their own attachments. Ownership is enforced on every
- *   query — customers see only their own requests.
- *
- * Authentication requirements:
- *   Logged-in customer (customcore_require_login). All queries scoped to the
- *   session user_id.
- *
- * Completion test:
- *   Customers see only their requests; foreign IDs are never exposed.
- *
- * Security:
- *   - Ownership enforced via WHERE user_id = :uid on every query.
- *   - Optional status filter whitelisted against the ENUM set.
- *   - Attachment downloads go through consultation-attachment.php (owner-checked).
- *   - All output escaped via customcore_e().
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Consultation Request History.
+// Lists the logged-in customer's PC consultation requests with their status, the details they
+// submitted, any administrator response, and links to securely download their own attachments.
+// Ownership is enforced on every query, customers see only their own requests.
+// Access: Logged-in customer (customcore_require_login). All queries scoped to the session
+// user_id.
+// Completion test: Customers see only their requests; foreign IDs are never exposed.
+// Security:
+//   Ownership enforced via WHERE user_id =:uid on every query.
+//   Optional status filter whitelisted against the ENUM set.
+//   Attachment downloads go through consultation-attachment.php (owner-checked).
+//   All output escaped via customcore_e().
 
 declare(strict_types=1);
 
@@ -35,14 +31,12 @@ customcore_require_login();
 $userId = customcore_current_user_id();
 $accountNavCurrent = 'consultations';
 
-$pageTitle = 'Consultation history — CustomCore';
+$pageTitle = 'Consultation History | CustomCore';
 $pageDescription = 'Track your CustomCore PC consultation requests and our responses.';
 $pageKeywords = 'CustomCore, consultation history, PC advice, support requests';
 $currentPage = 'consultations';
 
-// ---------------------------------------------------------------------------
 // Optional status filter (whitelisted)
-// ---------------------------------------------------------------------------
 
 $statusFilter = '';
 if (isset($_GET['status']) && is_string($_GET['status'])) {
@@ -52,9 +46,7 @@ if (isset($_GET['status']) && is_string($_GET['status'])) {
     }
 }
 
-// ---------------------------------------------------------------------------
 // Load the user's consultation requests (owner-scoped)
-// ---------------------------------------------------------------------------
 
 $requests = [];
 $attachmentsByRequest = [];
@@ -99,7 +91,7 @@ require_once __DIR__ . '/includes/header.php';
         <p class="context-help">
             Help:
             <a href="<?php echo customcore_e(customcore_url('help/support.html#history')); ?>">Consultation &amp; support guide</a>
-            — track your requests and our responses.
+            track your requests and our responses.
         </p>
     </header>
 

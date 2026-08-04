@@ -1,29 +1,26 @@
 <?php
 /**
- * CustomCore — Validated Checkout Form (Commit 6.4).
- *
- * File responsibility:
- *   Displays a checkout form with shipping address, contact information, and
- *   simulated payment method selection. Validates all fields on the server
- *   (and client via checkout.js). On valid submission, stores the validated
- *   data in the session so Commit 6.5 can convert the cart into an order.
- *
- * Flow:
- *   GET  — verify cart is not empty; show form pre-filled with profile data.
- *   POST — CSRF + field validation; on success store in session and redirect
- *          to order creation (Commit 6.5 will handle the actual insert).
- *
- * Authentication requirements:
- *   Logged-in customer (customcore_require_login).
- *
- * Security:
- *   - CSRF token required.
- *   - No real payment data collected (card numbers, CVV, etc.) — only a
- *     payment-method label like "pay_on_pickup" or "simulated_credit".
- *   - All outputs escaped via customcore_e().
- *   - Cart contents verified server-side before allowing checkout.
- *   - Shipping fields validated to reasonable lengths matching schema.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Validated Checkout Form.
+// Displays a checkout form with shipping address, contact information, and simulated payment
+// method selection. Validates all fields on the server (and client via checkout.js). On valid
+// submission, stores the validated data in the session socan convert the cart into an order.
+// Flow:
+//   GET, verify cart is not empty; show form pre-filled with profile data. POST, CSRF + field
+//     validation; on success store in session and redirect to order creationwill handle the actual
+//     insert).
+// Access: Logged-in customer (customcore_require_login).
+// Security:
+//   CSRF token required.
+//   No real payment data collected (card numbers, CVV, etc.), only a payment-method label like
+//     "pay_on_pickup" or "simulated_credit".
+//   All outputs escaped via customcore_e().
+//   Cart contents verified server-side before allowing checkout.
+//   Shipping fields validated to reasonable lengths matching schema.
 
 declare(strict_types=1);
 
@@ -39,9 +36,7 @@ customcore_require_login();
 $userId = customcore_current_user_id();
 $accountNavCurrent = 'cart';
 
-// ---------------------------------------------------------------------------
 // Load cart and verify it is not empty
-// ---------------------------------------------------------------------------
 
 $cartItems = [];
 $subtotal = 0.00;
@@ -63,9 +58,7 @@ if ($cartItems === [] && $cartError === null) {
     customcore_redirect('cart.php');
 }
 
-// ---------------------------------------------------------------------------
 // Pre-fill form values from user profile
-// ---------------------------------------------------------------------------
 
 $values = [
     'shipping_name' => '',
@@ -100,23 +93,19 @@ try {
         $values['shipping_postal'] = (string) ($profile['postal_code'] ?? '');
     }
 } catch (Throwable $e) {
-    // Non-critical — form can be filled manually.
+    // Non-critical, form can be filled manually.
 }
 
-// ---------------------------------------------------------------------------
-// Supported payment methods (labels only — no real payment processing)
-// ---------------------------------------------------------------------------
+// Supported payment methods (labels only, no real payment processing)
 
 $paymentMethods = [
     'pay_on_pickup' => 'Pay on pickup',
-    'simulated_credit' => 'Credit card (simulated — no real data collected)',
-    'simulated_debit' => 'Debit card (simulated — no real data collected)',
+    'simulated_credit' => 'Credit card (simulated, no real data collected)',
+    'simulated_debit' => 'Debit card (simulated, no real data collected)',
     'simulated_paypal' => 'PayPal (simulated)',
 ];
 
-// ---------------------------------------------------------------------------
-// Handle POST — validate and store checkout data
-// ---------------------------------------------------------------------------
+// Handle POST, validate and store checkout data
 
 /** @var array<string, string> */
 $errors = [];
@@ -201,11 +190,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// ---------------------------------------------------------------------------
 // Page metadata
-// ---------------------------------------------------------------------------
 
-$pageTitle = 'Checkout — CustomCore';
+$pageTitle = 'Checkout | CustomCore';
 $pageDescription = 'Complete your order with shipping and payment details.';
 $pageKeywords = 'CustomCore, checkout, shipping, payment, order';
 $currentPage = 'checkout';
@@ -219,7 +206,7 @@ require_once __DIR__ . '/includes/header.php';
         <p class="context-help">
             Help:
             <a href="<?php echo customcore_e(customcore_url('help/orders.html#checkout')); ?>">Checkout guide</a>
-            — fill out your shipping details and choose a payment method to complete your order.
+            fill out your shipping details and choose a payment method to complete your order.
         </p>
     </header>
 
@@ -387,7 +374,7 @@ require_once __DIR__ . '/includes/header.php';
                 <fieldset class="checkout-fieldset">
                     <legend class="checkout-fieldset__legend">Payment method</legend>
                     <p class="checkout-fieldset__note">
-                        This is a simulated checkout — no real payment information is collected or processed.
+                        This is a simulated checkout, no real payment information is collected or processed.
                     </p>
 
                     <div class="checkout-payment-options">
@@ -415,7 +402,7 @@ require_once __DIR__ . '/includes/header.php';
                 <!-- Submit -->
                 <div class="checkout-submit">
                     <button type="submit" class="button button--primary checkout-submit__btn">
-                        Place order — $<?php echo customcore_e(number_format($subtotal, 2)); ?>
+                        Place order, $<?php echo customcore_e(number_format($subtotal, 2)); ?>
                     </button>
                     <a class="button button--secondary" href="<?php echo customcore_e(customcore_url('cart.php')); ?>">
                         &larr; Return to cart

@@ -1,42 +1,46 @@
 /*
- * CustomCore — Theme: RGB Gaming (Stage 10.1)
- * ----------------------------------------------------------------------------
- * File responsibility:
- *   A bold, dark "battlestation" theme layered on top of assets/css/main.css.
- *   It re-declares the shared design tokens (:root custom properties) so every
- *   component that already uses those tokens re-skins automatically, then adds
- *   a handful of targeted overrides for the few places main.css / admin.css use
- *   hard-coded light colours (body/header backgrounds, hero, flashes, footer,
- *   and white-on-accent text).
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
+ */
+/*
+ * Theme: RGB Gaming
+ * A bold, dark "battlestation" theme layered on top of assets/css/main.css.
+ * It re-declares the shared design tokens (:root custom properties) so every
+ * component that already uses those tokens re-skins automatically, then adds
+ * a handful of targeted overrides for the few places main.css / admin.css use
+ * hard-coded light colours (body/header backgrounds, hero, flashes, footer
+ * and white-on-accent text).
  *
  * Loading model:
- *   main.css loads first (foundation), admin.css second on admin pages, and
- *   this theme file LAST from includes/header.php. Because it is loaded last it
- *   wins for equal-specificity rules and overrides both the public and admin
- *   surfaces through the shared tokens.
+ * main.css loads first (foundation), admin.css second on admin pages, and
+ * this theme file LAST from includes/header.php. Because it is loaded last it
+ * wins for equal-specificity rules and overrides both the public and admin
+ * surfaces through the shared tokens.
  *
  * Accessibility:
- *   Palette keeps text/background contrast high on the dark surfaces, and every
- *   animated flourish is disabled under prefers-reduced-motion.
+ * Palette keeps text/background contrast high on the dark surfaces, and every
+ * animated flourish is disabled under prefers-reduced-motion.
  *
  * Sections:
- *   1. Tokens (colour, type, radius, shadow) + RGB accent gradient
- *   2. Page shell (body backdrop, headings, links)
- *   3. Header, navigation & footer
- *   4. Buttons
- *   5. Forms & fields
- *   6. Surfaces: hero, sections, cards, tables
- *   7. Flash messages
- *   8. Admin surfaces
- *   9. Motion / reduced-motion
- * ----------------------------------------------------------------------------
+ * 1. Tokens (colour, type, radius, shadow) + RGB accent gradient
+ * 2. Page shell (body backdrop, headings, links)
+ * 3. Header, navigation & footer
+ * 4. Buttons
+ * 5. Forms & fields
+ * 6. Surfaces: hero, sections, cards, tables
+ * 7. Flash messages
+ * 8. Admin surfaces
+ * 9. Motion / reduced-motion
  */
 
-/* ==========================================================================
+/*
    1. Tokens
    Dark "RGB" palette. Cyan is the primary accent with an electric-blue focus
    ring; the multi-hue gradient is reserved for expressive flourishes only.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 :root {
   /* Expressive display face already ships in main.css; keep it, tighten body. */
@@ -62,7 +66,7 @@
   --cc-color-success: #35d17d;
   --cc-color-focus: #22b8ff;
 
-  /* Soft status fills tuned for dark surfaces (Commit 15.2 token completeness). */
+  /* Soft status fills tuned for dark surfacestoken completeness). */
   --cc-color-success-bg: rgba(53, 209, 125, 0.16);
   --cc-color-warning-bg: rgba(255, 176, 32, 0.16);
   --cc-color-warning-text: #ffc95c;
@@ -90,13 +94,14 @@
   --cc-glow-focus: 0 0 0 3px rgba(34, 184, 255, 0.35);
 }
 
-/* ==========================================================================
+/*
    2. Page shell
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 body {
   color: var(--cc-color-text);
-  /* Subtle corner glows over a near-black base — not a flat gradient wash. */
+  /* Subtle corner glows over a near-black base, not a flat gradient wash. */
   background:
     radial-gradient(
       1200px 620px at 12% -8%,
@@ -118,7 +123,8 @@ body {
 }
 
 /* Headings and the logo use surface-dark in main.css (a dark colour); flip them
-   to light so they stay legible on the dark backdrop. */
+   * to light so they stay legible on the dark backdrop.
+   */
 h1,
 h2,
 h3,
@@ -152,9 +158,10 @@ code {
   color: var(--cc-color-accent-hover);
 }
 
-/* ==========================================================================
+/*
    3. Header, navigation & footer
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .site-header {
   position: sticky;
@@ -235,10 +242,11 @@ code {
   color: var(--cc-color-accent-hover);
 }
 
-/* ==========================================================================
+/*
    4. Buttons
    Bright accent fills need dark ink (not white) to keep AA contrast.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .button,
 button.button {
@@ -303,9 +311,10 @@ button.button {
   border-color: var(--cc-color-danger);
 }
 
-/* ==========================================================================
+/*
    5. Forms & fields
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 input[type="text"],
 input[type="email"],
@@ -344,9 +353,10 @@ fieldset {
   color-scheme: dark;
 }
 
-/* ==========================================================================
+/*
    6. Surfaces: hero, sections, cards, tables
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .content-section,
 .hero {
@@ -381,10 +391,11 @@ th {
   color: var(--cc-color-text);
 }
 
-/* ==========================================================================
+/*
    7. Flash messages
    main.css uses light pastel fills; recolour for the dark surface.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .flash {
   background: var(--cc-color-bg-elevated);
@@ -410,11 +421,12 @@ th {
   color: #ff9aa6;
 }
 
-/* ==========================================================================
+/*
    8. Admin surfaces
    admin.css is token-driven, so most of it re-skins for free. These overrides
    fix the few white-on-accent spots and add a little neon polish.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .admin-nav__link.is-active {
   background: var(--cc-color-accent);
@@ -436,9 +448,10 @@ th {
   color: var(--cc-ink-on-accent);
 }
 
-/* ==========================================================================
+/*
    9. Motion / reduced-motion
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 @keyframes cc-rgb-slide {
   from {

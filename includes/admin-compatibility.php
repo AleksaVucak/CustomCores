@@ -1,26 +1,23 @@
 <?php
 /**
- * CustomCore — Administrator compatibility metadata helpers (Commit 9.4).
- *
- * File responsibility:
- *   Security-first helpers for editing the simplified compatibility metadata the
- *   PC Builder relies on:
- *     1. Component attribute columns (socket, ram_type, form_factor, clearances,
- *        wattage, cooler type, storage interface, PSU wattage, performance
- *        scores) — only the fields relevant to each builder category are exposed.
- *     2. Compatibility rules (name, description, severity, active flag). The raw
- *        JSON `config` that wires a rule to component columns is shown read-only
- *        so admins can tune wording/severity without breaking the evaluator.
- *
- * Usage:
- *   require_once __DIR__ . '/admin-compatibility.php';
- *
- * Security:
- *   - Every write uses PDO prepared statements.
- *   - Editable component columns come from a fixed allow-list keyed by category
- *     slug (customcore_admin_compat_fields()); user input never names a column.
- *   - Values are validated/normalised per field type before persistence.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator compatibility metadata helpers.
+// Security-first helpers for editing the simplified compatibility metadata the
+// PC Builder relies on: 1. Component attribute columns (socket, ram_type, form_factor, clearances,
+// wattage, cooler type, storage interface, PSU wattage, performance scores), only the fields
+// relevant to each builder category are exposed. 2. Compatibility rules (name, description,
+// severity, active flag). The raw JSON `config` that wires a rule to component columns is shown
+// read-only so admins can tune wording/severity without breaking the evaluator.
+// Usage: require_once __DIR__. '/admin-compatibility.php';
+// Security:
+//   Every write uses PDO prepared statements.
+//   Editable component columns come from a fixed allow-list keyed by category slug
+//     (customcore_admin_compat_fields()); user input never names a column.
+//   Values are validated/normalised per field type before persistence.
 
 declare(strict_types=1);
 
@@ -33,7 +30,7 @@ if (!function_exists('customcore_app_config')) {
  *
  * Only fields listed for a category are rendered and updatable for its
  * components, so the editor stays focused on metadata that actually applies.
- * Each descriptor: ['col'=>string, 'label'=>string, 'type'=>'int|text|enum',
+ * Each descriptor: ['col'=>string, 'label'=>string, 'type'=>'int|text|enum'
  * 'hint'=>?string, 'options'=>?list<string>, 'max'=>?int, 'maxlen'=>?int].
  *
  * @return array<string, list<array<string, mixed>>>
@@ -46,8 +43,8 @@ function customcore_admin_compat_fields(): array
         'cpu' => [
             ['col' => 'socket', 'label' => 'Socket', 'type' => 'text', 'maxlen' => 50, 'hint' => 'e.g. AM5, LGA1700'],
             ['col' => 'wattage_estimate', 'label' => 'Power draw (W)', 'type' => 'int', 'max' => 2000, 'hint' => 'TDP estimate used for the PSU check'],
-            ['col' => 'performance_gaming', 'label' => 'Gaming score', 'type' => 'int', 'max' => 100, 'hint' => '0–100'],
-            ['col' => 'performance_productivity', 'label' => 'Productivity score', 'type' => 'int', 'max' => 100, 'hint' => '0–100'],
+            ['col' => 'performance_gaming', 'label' => 'Gaming score', 'type' => 'int', 'max' => 100, 'hint' => '0 to 100'],
+            ['col' => 'performance_productivity', 'label' => 'Productivity score', 'type' => 'int', 'max' => 100, 'hint' => '0 to 100'],
         ],
         'motherboard' => [
             ['col' => 'socket', 'label' => 'Socket', 'type' => 'text', 'maxlen' => 50, 'hint' => 'Must match CPU socket, e.g. AM5'],
@@ -203,9 +200,9 @@ function customcore_admin_compat_component_fetch(PDO $pdo, int $componentId): ?a
  * @param array<string, mixed> $input Raw $_POST.
  * @param string $slug Category slug (selects the field allow-list).
  * @return array{
- *   errors: array<string, string>,
- *   values: array<string, int|string|null>,
- *   is_active: int
+ * errors: array<string, string>
+ * values: array<string, int|string|null>
+ * is_active: int
  * }
  */
 function customcore_admin_compat_validate_component(array $input, string $slug): array
@@ -424,11 +421,11 @@ function customcore_admin_compat_set_rule_active(PDO $pdo, int $ruleId, bool $ac
 }
 
 /**
- * Human-readable display for a stored attribute value (— when null/empty).
+ * Human-readable display for a stored attribute value, or "Not set" when empty.
  */
 function customcore_admin_compat_display(?string $value): string
 {
     $value = $value === null ? '' : trim($value);
 
-    return $value === '' ? '—' : $value;
+    return $value === '' ? 'Not set' : $value;
 }

@@ -1,24 +1,22 @@
 <?php
 /**
- * CustomCore — Product search (Commit 3.5).
- *
- * File responsibility:
- *   Searches active catalogue products by name, category, brand, and description.
- *   Handles valid hits and empty results. Uses PDO prepared statements only.
- *
- * URL format:
- *   search.php?q=rtx
- *
- * Authentication requirements:
- *   None (public).
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Product search.
+// Searches active catalogue products by name, category, brand, and description. Handles valid hits
+// and empty results. Uses PDO prepared statements only.
+// URL: search.php?q=rtx
+// Access: None (public).
 
 declare(strict_types=1);
 
 require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/database.php';
 
-$pageTitle = 'Search — CustomCore';
+$pageTitle = 'Search | CustomCore';
 $pageDescription = 'Search CustomCore gaming PCs by name, category, brand, or description.';
 $pageKeywords = 'CustomCore, search, gaming PC, catalogue';
 $currentPage = 'catalogue';

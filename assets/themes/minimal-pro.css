@@ -1,51 +1,56 @@
 /*
- * CustomCore — Theme: Minimal Professional (Stage 10.2)
- * ----------------------------------------------------------------------------
- * File responsibility:
- *   A calm, editorial, light theme layered on top of assets/css/main.css. Where
- *   RGB Gaming is dark and expressive, this theme is deliberately restrained:
- *   an ink-on-paper palette, a refined serif/sans type pairing, hairline
- *   borders, crisp corners, and flat surfaces with only the faintest shadow.
- *   It differs from the base and RGB themes in colour, TYPOGRAPHY, borders,
- *   radius, navigation, buttons, cards, and spacing rhythm — not colour alone.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
+ */
+/*
+ * Theme: Minimal Professional
+ * A calm, editorial, light theme layered on top of assets/css/main.css. Where
+ * RGB Gaming is dark and expressive, this theme is deliberately restrained:
+ * an ink-on-paper palette, a refined serif/sans type pairing, hairline
+ * borders, crisp corners, and flat surfaces with only the faintest shadow.
+ * It differs from the base and RGB themes in colour, TYPOGRAPHY, borders
+ * radius, navigation, buttons, cards, and spacing rhythm, not colour alone.
  *
  * Loading model:
- *   main.css loads first (foundation), admin.css second on admin pages, and
- *   this theme file LAST from includes/header.php. Because it re-declares the
- *   shared design tokens (:root custom properties) every token-driven public
- *   and admin component re-skins automatically; a few targeted rules refine the
- *   places main.css hard-codes decorative values (body, header, hero, nav,
- *   buttons, cards, footer).
+ * main.css loads first (foundation), admin.css second on admin pages, and
+ * this theme file LAST from includes/header.php. Because it re-declares the
+ * shared design tokens (:root custom properties) every token-driven public
+ * and admin component re-skins automatically; a few targeted rules refine the
+ * places main.css hard-codes decorative values (body, header, hero, nav
+ * buttons, cards, footer).
  *
  * Accessibility:
- *   Ink text on near-white keeps contrast high; the single blue accent meets AA
- *   for links, focus rings, and button fills. No motion is introduced.
+ * Ink text on near-white keeps contrast high; the single blue accent meets AA
+ * for links, focus rings, and button fills. No motion is introduced.
  *
  * Sections:
- *   1. Fonts
- *   2. Tokens (colour, type, radius, shadow)
- *   3. Page shell (body, headings, links)
- *   4. Header, navigation & footer
- *   5. Buttons
- *   6. Forms & fields
- *   7. Surfaces: hero, sections, cards, tables
- *   8. Admin surfaces
- * ----------------------------------------------------------------------------
+ * 1. Fonts
+ * 2. Tokens (colour, type, radius, shadow)
+ * 3. Page shell (body, headings, links)
+ * 4. Header, navigation & footer
+ * 5. Buttons
+ * 6. Forms & fields
+ * 7. Surfaces: hero, sections, cards, tables
+ * 8. Admin surfaces
  */
 
-/* ==========================================================================
+/*
    1. Fonts
    Editorial serif display + humanist sans body. Distinct from the base
    (Space Grotesk / DM Sans) and RGB Gaming. Falls back gracefully if the CDN
    is blocked.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 @import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap");
 
-/* ==========================================================================
+/*
    2. Tokens
    Ink-on-paper palette with one professional blue accent.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 :root {
   --cc-font-display: "Fraunces", "Iowan Old Style", Georgia, "Times New Roman", serif;
@@ -70,7 +75,7 @@
   --cc-color-success: #2b6a44;
   --cc-color-focus: #2b57d6;
 
-  /* Soft status fills kept light-editorial (Commit 15.2 token completeness). */
+  /* Soft status fills kept light-editorialtoken completeness). */
   --cc-color-success-bg: #e3f2e9;
   --cc-color-warning-bg: #faf0d8;
   --cc-color-warning-text: #7a5610;
@@ -80,7 +85,7 @@
   --cc-radius-md: 0.25rem;
   --cc-radius-lg: 0.4rem;
 
-  /* Barely-there elevation — this theme leans on hairline borders, not shadow. */
+  /* Barely-there elevation, this theme leans on hairline borders, not shadow. */
   --cc-shadow-sm: 0 1px 1px rgba(27, 36, 48, 0.04);
   --cc-shadow-md: 0 12px 34px rgba(27, 36, 48, 0.07);
 
@@ -88,13 +93,14 @@
   --cc-width-max: 72rem;
 }
 
-/* ==========================================================================
+/*
    3. Page shell
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 body {
   color: var(--cc-color-text);
-  /* Flat paper background — no gradient wash. */
+  /* Flat paper background, no gradient wash. */
   background: var(--cc-color-bg);
   font-weight: 400;
 }
@@ -130,9 +136,10 @@ a {
   outline-color: var(--cc-color-focus);
 }
 
-/* ==========================================================================
+/*
    4. Header, navigation & footer
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .site-header {
   background: rgba(255, 255, 255, 0.94);
@@ -192,10 +199,11 @@ a {
   color: #ffffff;
 }
 
-/* ==========================================================================
+/*
    5. Buttons
-   Solid ink-blue primaries and clean outline variants — no gradients.
-   ========================================================================== */
+   Solid ink-blue primaries and clean outline variants, no gradients.
+   * ==========================================================================
+   */
 
 .button,
 button.button {
@@ -264,9 +272,10 @@ button.button {
   background: transparent;
 }
 
-/* ==========================================================================
+/*
    6. Forms & fields
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 input[type="text"],
 input[type="email"],
@@ -302,10 +311,11 @@ legend {
   letter-spacing: 0.01em;
 }
 
-/* ==========================================================================
+/*
    7. Surfaces: hero, sections, cards, tables
    Flat panels defined by hairline borders rather than heavy shadow.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .content-section,
 .hero {
@@ -341,11 +351,12 @@ table {
   color: var(--cc-color-text);
 }
 
-/* ==========================================================================
+/*
    8. Admin surfaces
    admin.css is token-driven, so it re-skins automatically. These small rules
    keep the professional flat look consistent in the admin shell.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .admin-nav,
 .admin-alerts__item,

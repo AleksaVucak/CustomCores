@@ -1,25 +1,22 @@
 <?php
 /**
- * CustomCore — Administrator consultation attachment download (Commit 9.7).
- *
- * File responsibility:
- *   Streams a consultation attachment to an administrator. Mirrors the customer
- *   endpoint's hardening but scopes access to the admin role rather than the
- *   file's owner, so support staff can review any customer's uploads.
- *
- * URL format:
- *   admin/consultation-attachment.php?id=N
- *
- * Authentication requirements:
- *   Administrator role (customcore_require_admin()).
- *
- * Security:
- *   - Admin-only (customcore_require_admin()).
- *   - On-disk name is the generated stored_filename (basename-guarded), and the
- *     resolved path is confirmed to stay inside the upload directory.
- *   - Sent as an attachment with X-Content-Type-Options: nosniff and a
- *     sanitized (RFC 5987) filename header to prevent header injection.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator consultation attachment download.
+// Streams a consultation attachment to an administrator. Mirrors the customer endpoint's hardening
+// but scopes access to the admin role rather than the file's owner, so support staff can review
+// any customer's uploads.
+// URL: admin/consultation-attachment.php?id=N
+// Access: Administrator role (customcore_require_admin()).
+// Security:
+//   Admin-only (customcore_require_admin()).
+//   On-disk name is the generated stored_filename (basename-guarded), and the resolved path is
+//     confirmed to stay inside the upload directory.
+//   Sent as an attachment with X-Content-Type-Options: nosniff and a sanitized (RFC 5987) filename
+//     header to prevent header injection.
 
 declare(strict_types=1);
 

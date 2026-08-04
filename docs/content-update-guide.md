@@ -1,6 +1,6 @@
-# CustomCore — Content Update Guide (for Non-Programmers)
+# CustomCore | Content Update Guide (for Non-Programmers)
 
-**Document type:** Stage 12 documentation (Commit 12.3)
+**Document type:** Project documentation
 **Purpose:** Show a non-programmer how to keep CustomCore's content current — products, product images, the store location, site name, and the Learning Centre videos/audio — **without editing application logic**. This is the guide referenced by rubric item **#10f**.
 **Audience:** Store staff and content editors. You need a CustomCore administrator account (see [`docs/administrator-guide.md`](administrator-guide.md) §2) and, for media only, the ability to copy a file into a folder on the server.
 
@@ -28,13 +28,13 @@ Everything about the catalogue is managed at **Admin → Products** (`admin/prod
 
 1. Go to **Admin → Products** and click **Add product**.
 2. Fill in:
-   - **Name** — the product's display name. A web-friendly link (slug) is created for you automatically.
-   - **Category / tier** — Budget, Esports, High-Performance, or Creator.
-   - **Base price** — the starting price before options.
-   - **Stock quantity** — how many are available.
-   - **Short description** and **full description**.
-   - **Featured** — tick to highlight it on the homepage.
-   - **Active** — leave ticked so it appears on the site.
+ - **Name** — the product's display name. A web-friendly link (slug) is created for you automatically.
+ - **Category / tier** — Budget, Esports, High-Performance, or Creator.
+ - **Base price** — the starting price before options.
+ - **Stock quantity** — how many are available.
+ - **Short description** and **full description**.
+ - **Featured** — tick to highlight it on the homepage.
+ - **Active** — leave ticked so it appears on the site.
 3. (Optional) **Upload an image** — see §3.
 4. Click **Save**. You'll return to the product list with a confirmation.
 
@@ -110,23 +110,23 @@ Find this block and edit the text between the quotes:
 
 ```php
 'store_location' => [
-    'name' => 'CustomCore Campus Service Desk',
-    'street' => '1000 Innovation Drive',
-    'city' => 'Windsor',
-    'region' => 'Ontario',
-    'postal_code' => 'N9C 4E6',
-    'country' => 'Canada',
-    'phone_display' => '519-555-0148',
-    'phone_href' => '+15195550148',   // digits only, with country code
-    'email' => 'support@customcore.example',
-    'latitude' => 42.3049,            // map pin (decimal degrees)
-    'longitude' => -83.0662,
-    'map_zoom' => 14,
-    'hours' => [
-        'Monday–Friday' => '10:00 a.m.–7:00 p.m.',
-        'Saturday' => '11:00 a.m.–5:00 p.m.',
-        'Sunday' => 'Closed',
-    ],
+ 'name' => 'CustomCore Campus Service Desk',
+ 'street' => '1000 Innovation Drive',
+ 'city' => 'Windsor',
+ 'region' => 'Ontario',
+ 'postal_code' => 'N9C 4E6',
+ 'country' => 'Canada',
+ 'phone_display' => '519-555-0148',
+ 'phone_href' => '+15195550148', // digits only, with country code
+ 'email' => 'support@customcore.example',
+ 'latitude' => 42.3049, // map pin (decimal degrees)
+ 'longitude' => -83.0662,
+ 'map_zoom' => 14,
+ 'hours' => [
+ 'Monday–Friday' => '10:00 a.m.–7:00 p.m.',
+ 'Saturday' => '11:00 a.m.–5:00 p.m.',
+ 'Sunday' => 'Closed',
+ ],
 ],
 ```
 
@@ -152,28 +152,28 @@ Put your files in these folders (create matching names):
 
 ### 7.2 Step 2 — add one entry to the lesson list
 
-Open `includes/media.php` and find the `$catalogue = [ ... ];` list near the top. Copy an existing entry and paste it as a new block, then change the values. Use this template:
+Open `includes/media.php` and find the `$catalogue = [... ];` list near the top. Copy an existing entry and paste it as a new block, then change the values. Use this template:
 
 ```php
 [
-    'id' => 'my-new-lesson',                 // unique, lowercase, dashes
-    'type' => 'video',                        // 'video' or 'audio'
-    'title' => 'My New Lesson Title',
-    'description' => 'One or two sentences describing the lesson.',
-    'duration_label' => 'About 2 minutes',
-    'mime' => 'video/mp4',                     // match the file type
-    'src' => 'assets/media/my-new-lesson.mp4',
-    'poster' => 'assets/images/media/my-new-lesson-poster.jpg',
-    'poster_alt' => 'Short description of the poster image.',
-    'captions' => 'assets/media/captions/my-new-lesson.vtt',
-    'learn' => [
-        'First thing viewers will learn',
-        'Second thing viewers will learn',
-    ],
-    'transcript' => [
-        'First paragraph of the spoken words.',
-        'Second paragraph of the spoken words.',
-    ],
+ 'id' => 'my-new-lesson', // unique, lowercase, dashes
+ 'type' => 'video', // 'video' or 'audio'
+ 'title' => 'My New Lesson Title',
+ 'description' => 'One or two sentences describing the lesson.',
+ 'duration_label' => 'About 2 minutes',
+ 'mime' => 'video/mp4', // match the file type
+ 'src' => 'assets/media/my-new-lesson.mp4',
+ 'poster' => 'assets/images/media/my-new-lesson-poster.jpg',
+ 'poster_alt' => 'Short description of the poster image.',
+ 'captions' => 'assets/media/captions/my-new-lesson.vtt',
+ 'learn' => [
+ 'First thing viewers will learn',
+ 'Second thing viewers will learn',
+ ],
+ 'transcript' => [
+ 'First paragraph of the spoken words.',
+ 'Second paragraph of the spoken words.',
+ ],
 ],
 ```
 
@@ -222,4 +222,4 @@ If in doubt, make the change through the **admin website** first; it validates y
 
 ## 10. Status
 
-**Commit 12.3 complete.** A non-programmer can add and update products, prices, stock, images, and options entirely through the admin website; moderate reviews and consultations; change store/contact details and branding via labelled values in `config/app.php`; and add a new Learning Centre video or audio lesson by copying files and pasting one clearly-marked block. Satisfies rubric item **#10f**.
+**Summary.** A non-programmer can add and update products, prices, stock, images, and options entirely through the admin website; moderate reviews and consultations; change store/contact details and branding via labelled values in `config/app.php`; and add a new Learning Centre video or audio lesson by copying files and pasting one clearly-marked block. Satisfies rubric item **#10f**.

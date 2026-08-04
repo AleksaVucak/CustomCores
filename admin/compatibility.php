@@ -1,17 +1,16 @@
 <?php
 /**
- * CustomCore — Administrator compatibility metadata (Commit 9.4).
- *
- * File responsibility:
- *   Protected editor for the simplified compatibility metadata used by the PC
- *   Builder: (1) component attribute columns (only the fields relevant to each
- *   builder category) and (2) compatibility rules (name, description, severity,
- *   active flag; the JSON config wiring is shown read-only). Toggling a
- *   component or rule active status is a one-click POST action.
- *
- * Authentication requirements:
- *   Administrator role (customcore_require_admin()).
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator compatibility metadata.
+// Protected editor for the simplified compatibility metadata used by the PC Builder: (1) component
+// attribute columns (only the fields relevant to each builder category) and (2) compatibility
+// rules (name, description, severity, active flag; the JSON config wiring is shown read-only).
+// Toggling a component or rule active status is a one-click POST action.
+// Access: Administrator role (customcore_require_admin()).
 
 declare(strict_types=1);
 
@@ -62,9 +61,7 @@ $editRule = null;
 $ruleErrors = [];
 $ruleValues = [];
 
-// ---------------------------------------------------------------------------
 // POST actions
-// ---------------------------------------------------------------------------
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = isset($_POST['_csrf']) && is_string($_POST['_csrf']) ? $_POST['_csrf'] : null;
     $action = isset($_POST['action']) && is_string($_POST['action']) ? $_POST['action'] : '';
@@ -159,9 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// ---------------------------------------------------------------------------
 // GET edit requests
-// ---------------------------------------------------------------------------
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['component_id'])) {
     $editComponent = customcore_admin_compat_component_fetch($pdo, (int) $_GET['component_id']);
     if ($editComponent === null) {
@@ -177,9 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['rule_id'])) {
     }
 }
 
-// ---------------------------------------------------------------------------
 // Load lists for rendering
-// ---------------------------------------------------------------------------
 $categories = [];
 $components = [];
 $rules = [];
@@ -215,7 +208,7 @@ $ruleFieldValue = static function (string $key) use ($ruleValues, $editRule) {
     return '';
 };
 
-$pageTitle = 'Compatibility metadata — CustomCore admin';
+$pageTitle = 'Compatibility Metadata | CustomCore Admin';
 $pageDescription = 'Edit the simplified compatibility metadata used by the CustomCore PC Builder.';
 $pageKeywords = 'CustomCore, admin, compatibility, PC builder';
 
@@ -286,7 +279,7 @@ require_once __DIR__ . '/../includes/header.php';
                                         <?php foreach (($field['options'] ?? ['']) as $opt) : ?>
                                             <option value="<?php echo customcore_e((string) $opt); ?>"
                                                 <?php echo strcasecmp((string) $opt, $val) === 0 ? 'selected' : ''; ?>>
-                                                <?php echo $opt === '' ? '— none —' : customcore_e((string) $opt); ?>
+                                                <?php echo $opt === '' ? ', none, ' : customcore_e((string) $opt); ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>

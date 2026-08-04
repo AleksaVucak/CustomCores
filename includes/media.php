@@ -1,15 +1,15 @@
 <?php
 /**
- * CustomCore — Educational media catalogue helpers (Commit 8.2).
- *
- * File responsibility:
- *   Describes the Learning Centre video/audio items stored under assets/media/
- *   so pages can render native HTML5 players without hard-coding paths in views.
- *
- * Usage:
- *   require_once __DIR__ . '/media.php';
- *   $items = customcore_media_items();
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Educational media catalogue helpers.
+// Describes the Learning Centre video/audio items stored under assets/media/ so pages can render
+// native HTML5 players without hard-coding paths in views.
+// Usage: require_once __DIR__. '/media.php';
+//   $items = customcore_media_items();
 
 declare(strict_types=1);
 
@@ -19,7 +19,7 @@ declare(strict_types=1);
  * The source-of-truth list of lessons the site expects to ship. It is used by
  * customcore_media_items() (which drops any item whose primary media file is
  * missing so the Learning Centre never advertises a broken player) and by the
- * Stage 13 monitoring health checks (which compare this declared list against
+ * monitoring health checks (which compare this declared list against
  * what actually resolves on disk to detect missing media). Editing lessons is
  * documented in docs/content-update-guide.md.
  *
@@ -112,21 +112,21 @@ function customcore_media_catalogue(): array
  * player.
  *
  * @return list<array{
- *   id:string,
- *   type:string,
- *   title:string,
- *   description:string,
- *   duration_label:string,
- *   mime:string,
- *   src:string,
- *   src_url:string,
- *   poster:?string,
- *   poster_url:?string,
- *   poster_alt:string,
- *   captions:?string,
- *   captions_url:?string,
- *   learn:list<string>,
- *   transcript:list<string>
+ * id:string
+ * type:string
+ * title:string
+ * description:string
+ * duration_label:string
+ * mime:string
+ * src:string
+ * src_url:string
+ * poster:?string
+ * poster_url:?string
+ * poster_alt:string
+ * captions:?string
+ * captions_url:?string
+ * learn:list<string>
+ * transcript:list<string>
  * }>
  */
 function customcore_media_items(): array
@@ -168,21 +168,21 @@ function customcore_media_items(): array
  * Fetch a single Learning Centre media item by id.
  *
  * @return ?array{
- *   id:string,
- *   type:string,
- *   title:string,
- *   description:string,
- *   duration_label:string,
- *   mime:string,
- *   src:string,
- *   src_url:string,
- *   poster:?string,
- *   poster_url:?string,
- *   poster_alt:string,
- *   captions:?string,
- *   captions_url:?string,
- *   learn:list<string>,
- *   transcript:list<string>
+ * id:string
+ * type:string
+ * title:string
+ * description:string
+ * duration_label:string
+ * mime:string
+ * src:string
+ * src_url:string
+ * poster:?string
+ * poster_url:?string
+ * poster_alt:string
+ * captions:?string
+ * captions_url:?string
+ * learn:list<string>
+ * transcript:list<string>
  * }
  */
 function customcore_media_item(string $id): ?array

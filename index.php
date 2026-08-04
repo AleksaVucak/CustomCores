@@ -1,19 +1,17 @@
 <?php
 /**
- * CustomCore — Homepage (Commit 3.1).
- *
- * File responsibility:
- *   Public landing page with hero, featured products and category tiers loaded
- *   from MySQL, a learning-centre teaser with a playable educational video
- *   (Commit 8.2), and primary calls to action.
- *
- * Authentication requirements:
- *   None (public).
- *
- * Data sources:
- *   - products (is_featured = 1, is_active = 1)
- *   - categories (is_active = 1)
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Homepage.
+// Public landing page with hero, featured products and category tiers loaded from MySQL, a
+// learning-centre teaser with a playable educational video, and primary calls to action.
+// Access: None (public).
+// Data:
+//   products (is_featured = 1, is_active = 1)
+//   categories (is_active = 1)
 
 declare(strict_types=1);
 
@@ -21,7 +19,7 @@ require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/database.php';
 require_once __DIR__ . '/includes/media.php';
 
-$pageTitle = 'CustomCore — Custom Gaming PC Store & Builder';
+$pageTitle = 'CustomCore | Custom Gaming PC Store & Builder';
 $pageDescription = 'Browse configurable gaming PCs and build a compatible custom system with CustomCore.';
 $pageKeywords = 'CustomCore, gaming PC, custom PC builder, prebuilt gaming computer';
 $currentPage = 'home';
@@ -290,7 +288,7 @@ require_once __DIR__ . '/includes/header.php';
                     <a href="<?php echo customcore_e(customcore_url('media.php#' . rawurlencode((string) $homeMedia['id']))); ?>">
                         Open the full transcript and captions
                     </a>
-                    in the Learning Centre — every guide works without playing the video.
+                    in the Learning Centre, every guide works without playing the video.
                 </p>
             <?php else : ?>
                 <p>

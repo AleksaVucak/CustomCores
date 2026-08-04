@@ -1,18 +1,17 @@
 <?php
 /**
- * CustomCore — Administrator secondary navigation (Commit 9.1).
- *
- * File responsibility:
- *   Renders the Stage 9 tool nav inside the admin area. Only tools whose PHP
- *   files already exist are linked; later commits light up automatically when
- *   their pages are added.
- *
- * Expects:
- *   $adminNavCurrent (string) — key matching customcore_admin_tools() entries,
- *   or "dashboard" for admin/index.php.
- *
- * Included from admin pages after customcore_require_admin().
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator secondary navigation.
+// Renders the tool nav inside the admin area. Only tools whose PHP files already exist are linked;
+// later commits light up automatically when their pages are added.
+// Expects:
+//   $adminNavCurrent (string), key matching customcore_admin_tools() entries, or "dashboard" for
+//     admin/index.php.
+// Included from admin pages after customcore_require_admin().
 
 declare(strict_types=1);
 

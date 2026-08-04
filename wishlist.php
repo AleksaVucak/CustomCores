@@ -1,29 +1,26 @@
 <?php
 /**
- * CustomCore — Customer Wishlist (Commit 7.1).
- *
- * File responsibility:
- *   Displays the logged-in customer's wishlist and processes add, remove,
- *   move-to-cart, and clear actions via POST. The wishlist holds catalogue
- *   products only; each product appears at most once.
- *
- * Supported POST actions:
- *   - add:           Add a product to the wishlist (from product/catalogue).
- *   - remove:        Remove a single product from the wishlist.
- *   - move_to_cart:  Add the product to the cart (default configuration) and
- *                    remove it from the wishlist.
- *   - clear:         Remove all products from the wishlist.
- *
- * Authentication requirements:
- *   Logged-in customer. Wishlist is per-user (private) — every query is scoped
- *   to the session user_id.
- *
- * Security:
- *   - CSRF verification on all POST actions.
- *   - Ownership enforced (wishlist belongs to the session user).
- *   - Move-to-cart re-fetches the product and recomputes the trusted price
- *     from the database (default options); client values are never trusted.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Customer Wishlist.
+// Displays the logged-in customer's wishlist and processes add, remove, move-to-cart, and clear
+// actions via POST. The wishlist holds catalogue products only; each product appears at most once.
+// POST actions:
+//   add: Add a product to the wishlist (from product/catalogue).
+//   remove: Remove a single product from the wishlist.
+//   move_to_cart: Add the product to the cart (default configuration) and remove it from the
+//     wishlist.
+//   clear: Remove all products from the wishlist.
+// Access: Logged-in customer. Wishlist is per-user (private), every query is scoped to the session
+// user_id.
+// Security:
+//   CSRF verification on all POST actions.
+//   Ownership enforced (wishlist belongs to the session user).
+//   Move-to-cart re-fetches the product and recomputes the trusted price from the database
+//     (default options); client values are never trusted.
 
 declare(strict_types=1);
 
@@ -98,9 +95,7 @@ function customcore_wishlist_default_config(PDO $pdo, int $productId, float $bas
     ];
 }
 
-// ---------------------------------------------------------------------------
 // Handle POST actions
-// ---------------------------------------------------------------------------
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $csrfOk = customcore_csrf_verify(
@@ -129,9 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo = customcore_pdo();
 
         switch ($action) {
-            // -----------------------------------------------------------------
             // Add a product to the wishlist
-            // -----------------------------------------------------------------
             case 'add':
                 if ($productId < 1) {
                     customcore_flash_error('Invalid product.');
@@ -160,9 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 customcore_redirect($returnTo);
                 break;
 
-            // -----------------------------------------------------------------
             // Remove a single product
-            // -----------------------------------------------------------------
             case 'remove':
                 if ($productId < 1) {
                     customcore_flash_error('Invalid product.');
@@ -178,9 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 customcore_redirect('wishlist.php');
                 break;
 
-            // -----------------------------------------------------------------
             // Move a product to the cart (default configuration) + remove
-            // -----------------------------------------------------------------
             case 'move_to_cart':
                 if ($productId < 1) {
                     customcore_flash_error('Invalid product.');
@@ -234,9 +223,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 customcore_redirect('wishlist.php');
                 break;
 
-            // -----------------------------------------------------------------
             // Clear the whole wishlist
-            // -----------------------------------------------------------------
             case 'clear':
                 $cleared = customcore_wishlist_clear($pdo, $userId);
                 if ($cleared > 0) {
@@ -262,9 +249,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// ---------------------------------------------------------------------------
 // Load wishlist for display
-// ---------------------------------------------------------------------------
 
 $items = [];
 $loadError = null;
@@ -278,7 +263,7 @@ try {
         : 'We could not load your wishlist right now. Please try again later.';
 }
 
-$pageTitle = 'Wishlist — CustomCore';
+$pageTitle = 'Wishlist | CustomCore';
 $pageDescription = 'Products you have saved to buy later on CustomCore.';
 $pageKeywords = 'CustomCore, wishlist, saved products, gaming PC';
 $currentPage = 'wishlist';
@@ -293,7 +278,7 @@ require_once __DIR__ . '/includes/header.php';
         <p class="context-help">
             Help:
             <a href="<?php echo customcore_e(customcore_url('help/catalogue.html#wishlist')); ?>">Wishlist guide</a>
-            — save products to buy later and move them to your cart when ready.
+            save products to buy later and move them to your cart when ready.
         </p>
     </header>
 

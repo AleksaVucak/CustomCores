@@ -1,28 +1,26 @@
 <?php
 /**
- * CustomCore — Secure Customer Login (Commit 4.2).
- *
- * File responsibility:
- *   Renders the login form and authenticates customers and admins.
- *   Verifies the password hash, blocks disabled accounts, regenerates the
- *   session ID on success, and stores the authenticated identity in the session.
- *
- * Flow:
- *   GET  — show the form (email is sticky; password is never echoed).
- *   POST — verify CSRF, look up user, verify password, check is_active,
- *          create session, flash success, redirect to the profile dashboard.
- *
- * Authentication requirements:
- *   Guests only. Logged-in users are redirected to their profile.
- *
- * Security:
- *   - CSRF token required on POST.
- *   - password_verify() against the stored bcrypt hash.
- *   - Generic "invalid email or password" message avoids user enumeration.
- *   - Dummy hash verification keeps timing similar for unknown emails.
- *   - session_regenerate_id(true) on success prevents session fixation.
- *   - Disabled accounts (is_active = 0) cannot log in.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Secure Customer Login.
+// Renders the login form and authenticates customers and admins. Verifies the password hash,
+// blocks disabled accounts, regenerates the session ID on success, and stores the authenticated
+// identity in the session.
+// Flow:
+//   GET, show the form (email is sticky; password is never echoed). POST, verify CSRF, look up
+//     user, verify password, check is_active, create session, flash success, redirect to the profile
+//     dashboard.
+// Access: Guests only. Logged-in users are redirected to their profile.
+// Security:
+//   CSRF token required on POST.
+//   password_verify() against the stored bcrypt hash.
+//   Generic "invalid email or password" message avoids user enumeration.
+//   Dummy hash verification keeps timing similar for unknown emails.
+//   session_regenerate_id(true) on success prevents session fixation.
+//   Disabled accounts (is_active = 0) cannot log in.
 
 declare(strict_types=1);
 
@@ -37,7 +35,7 @@ customcore_session_start();
 // Already authenticated users skip the login form.
 customcore_require_guest();
 
-$pageTitle = 'Log in — CustomCore';
+$pageTitle = 'Log In | CustomCore';
 $pageDescription = 'Log in to your CustomCore account to manage builds, orders, and your profile.';
 $pageKeywords = 'CustomCore, login, sign in, account';
 $currentPage = 'login';
@@ -93,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['user_name'] = (string) $user['first_name'];
                 $_SESSION['user_email'] = (string) $user['email'];
 
-                // Seed session-security markers (Commit 4.8) so the idle/absolute
+                // Seed session-security markers so the idle/absolute
                 // timeouts, user-agent binding, and ID rotation start from now.
                 $now = time();
                 $_SESSION['_cc_created'] = $now;
@@ -101,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['_cc_last_regen'] = $now;
                 $_SESSION['_cc_fp'] = hash('sha256', (string) ($_SERVER['HTTP_USER_AGENT'] ?? ''));
 
-                // Pre-load cart count into session for the nav badge (Commit 6.3).
+                // Pre-load cart count into session for the nav badge.
                 require_once __DIR__ . '/includes/cart.php';
                 customcore_cart_refresh_count($pdo, (int) $user['id']);
 
@@ -113,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     customcore_redirect_local($returnTo);
                 }
 
-                // Otherwise the profile dashboard (Commit 4.5), or home until then.
+                // Otherwise the profile dashboard, or home until then.
                 $destination = is_file(__DIR__ . '/profile.php') ? 'profile.php' : 'index.php';
                 customcore_redirect($destination);
             }

@@ -1,16 +1,15 @@
 <?php
 /**
- * CustomCore — Administrator Dashboard (Commit 9.1).
- *
- * File responsibility:
- *   Protected administrator home screen. Displays live MySQL counts for the
- *   catalogue, orders, users, reviews, consultations, and contact inbox;
- *   attention alerts; recent activity tables; and the Stage 9 tool registry.
- *   Access control remains customcore_require_admin() (Commit 4.7).
- *
- * Authentication requirements:
- *   Administrator role.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator Dashboard.
+// Protected administrator home screen. Displays live MySQL counts for the catalogue, orders,
+// users, reviews, consultations, and contact inbox; attention alerts; recent activity tables; and
+// the tool registry. Access control remains customcore_require_admin().
+// Access: Administrator role.
 
 declare(strict_types=1);
 
@@ -29,7 +28,7 @@ $adminName = customcore_current_user_name();
 $adminNavCurrent = 'dashboard';
 $loadAdminCss = true;
 
-$pageTitle = 'Admin dashboard — CustomCore';
+$pageTitle = 'Admin Dashboard | CustomCore';
 $pageDescription = 'CustomCore administrator dashboard with live catalogue, order, and moderation summaries.';
 $pageKeywords = 'CustomCore, admin, dashboard, management';
 $currentPage = 'admin';
@@ -108,7 +107,7 @@ require_once __DIR__ . '/../includes/header.php';
             </section>
         <?php else : ?>
             <p class="flash flash--success" role="status">
-                No urgent alerts — the queue looks clear right now.
+                No urgent alerts, the queue looks clear right now.
             </p>
         <?php endif; ?>
 
@@ -341,12 +340,12 @@ require_once __DIR__ . '/../includes/header.php';
 
     <?php endif; ?>
 
-    <!-- Management tools: registry of Stage 9–13 admin pages -->
+    <!-- Management tools: registry of admin pages -->
     <section class="admin-tools" aria-labelledby="admin-tools-heading">
         <h2 id="admin-tools-heading">Management tools</h2>
         <p class="admin-tools__intro">
-            Tools light up as each Stage 9–13 page is added. Access control for every
-            route remains enforced by <code>customcore_require_admin()</code>.
+            Every management tool is listed below, and access control for each route is
+            enforced by <code>customcore_require_admin()</code>.
         </p>
         <div class="admin-tools__grid">
             <?php foreach ($adminTools as $tool) : ?>

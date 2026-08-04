@@ -1,23 +1,22 @@
 <?php
 /**
- * CustomCore — Administrator user management helpers (Commit 9.6).
- *
- * File responsibility:
- *   Security-first helpers for the admin user screens: search/list with role +
- *   status filtering and pagination, single-account fetch (never the password
- *   hash), per-account activity counts, enable/disable, and role changes — with
- *   the invariants that protect the site from being locked out of its own admin.
- *
- * Usage:
- *   require_once __DIR__ . '/admin-users.php';
- *
- * Security:
- *   - Every query uses PDO prepared statements.
- *   - Role writes are validated against the users.role ENUM allow-list.
- *   - password_hash is never selected into admin views.
- *   - Callers must apply customcore_admin_user_guard() before a status/role
- *     write so an admin cannot disable/demote themselves or the last active admin.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator user management helpers.
+// Security-first helpers for the admin user screens: search/list with role + status filtering and
+// pagination, single-account fetch (never the password hash), per-account activity counts,
+// enable/disable, and role changes, with the invariants that protect the site from being locked
+// out of its own admin.
+// Usage: require_once __DIR__. '/admin-users.php';
+// Security:
+//   Every query uses PDO prepared statements.
+//   Role writes are validated against the users.role ENUM allow-list.
+//   password_hash is never selected into admin views.
+//   Callers must apply customcore_admin_user_guard() before a status/role write so an admin cannot
+//     disable/demote themselves or the last active admin.
 
 declare(strict_types=1);
 
@@ -169,7 +168,7 @@ function customcore_admin_user_activity(PDO $pdo, int $userId): array
     $activity['orders'] = (int) $orderRow['c'];
     $activity['orders_total'] = (float) $orderRow['t'];
 
-    // Optional tables — guarded so a lean install still renders.
+    // Optional tables, guarded so a lean install still renders.
     $activity['reviews'] = customcore_admin_user_count_table($pdo, 'reviews', $userId);
     $activity['consultations'] = customcore_admin_user_count_table($pdo, 'consultation_requests', $userId);
 
@@ -195,7 +194,7 @@ function customcore_admin_user_activity(PDO $pdo, int $userId): array
  */
 function customcore_admin_user_count_table(PDO $pdo, string $table, int $userId): int
 {
-    // Table name is a fixed internal literal — never user input.
+    // Table name is a fixed internal literal, never user input.
     if (!preg_match('/^[a-z_]+$/', $table)) {
         return 0;
     }
@@ -276,10 +275,10 @@ function customcore_admin_user_counts(PDO $pdo): array
  * Decide whether a proposed status/role change is allowed.
  *
  * Invariants protected here:
- *   - An admin can never change their OWN status or role (no self-lockout).
- *   - The LAST active administrator can never be disabled or demoted.
+ * - An admin can never change their OWN status or role (no self-lockout).
+ * - The LAST active administrator can never be disabled or demoted.
  *
- * @param string $change  'deactivate' | 'demote'
+ * @param string $change 'deactivate' | 'demote'
  * @return array{0:bool, 1:string} [allowed, reason-if-blocked]
  */
 function customcore_admin_user_guard(PDO $pdo, array $target, int $currentAdminId, string $change): array
@@ -293,7 +292,7 @@ function customcore_admin_user_guard(PDO $pdo, array $target, int $currentAdminI
     $targetIsActiveAdmin = ((string) ($target['role'] ?? '') === 'admin') && ((int) ($target['is_active'] ?? 0) === 1);
     if ($targetIsActiveAdmin && in_array($change, ['deactivate', 'demote'], true)) {
         if (customcore_admin_active_admin_count($pdo) <= 1) {
-            return [false, 'This is the last active administrator — promote or enable another admin first.'];
+            return [false, 'This is the last active administrator, promote or enable another admin first.'];
         }
     }
 

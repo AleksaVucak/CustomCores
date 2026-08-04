@@ -1,17 +1,16 @@
 <?php
 /**
- * CustomCore — Customer account side navigation.
- *
- * File responsibility:
- *   Renders the private-area account nav used on profile, edit-profile, and
- *   later customer pages (builds, wishlist, orders, consultations).
- *
- * Expected before include:
- *   $accountNavCurrent — string key of the active item (e.g. 'profile').
- *
- * Authentication requirements:
- *   Pages that include this must already call customcore_require_login().
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Customer account side navigation.
+// Renders the private-area account nav used on profile, edit-profile, and later customer pages
+// (builds, wishlist, orders, consultations).
+// Expected before include:
+//   $accountNavCurrent, string key of the active item (e.g. 'profile').
+// Access: Pages that include this must already call customcore_require_login().
 
 declare(strict_types=1);
 

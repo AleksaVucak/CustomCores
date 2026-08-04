@@ -1,27 +1,24 @@
 <?php
 /**
- * CustomCore — Multimedia Learning Centre (Commit 8.3).
- *
- * File responsibility:
- *   Public showcase for the educational media. Presents an organized, responsive
- *   directory of lessons that jump to full players, each playing with native
- *   HTML5 controls, posters, caption tracks, learning outcomes, and readable
- *   transcripts. Media catalogue and playable items come from includes/media.php
- *   (Commit 8.2); this page focuses on presentation and context.
- *
- * Authentication requirements:
- *   None (public).
- *
- * Data sources:
- *   includes/media.php catalogue pointing at assets/media/ files on disk.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Multimedia Learning Centre.
+// Public showcase for the educational media. Presents an organized, responsive directory of
+// lessons that jump to full players, each playing with native HTML5 controls, posters, caption
+// tracks, learning outcomes, and readable transcripts. Media catalogue and playable items come
+// from includes/media.php; this page focuses on presentation and context.
+// Access: None (public).
+// Data: includes/media.php catalogue pointing at assets/media/ files on disk.
 
 declare(strict_types=1);
 
 require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/media.php';
 
-$pageTitle = 'Learning Centre — CustomCore';
+$pageTitle = 'Learning Centre | CustomCore';
 $pageDescription = 'Learn how to use the CustomCore PC Builder, understand component compatibility, and choose the right gaming PC tier.';
 $pageKeywords = 'CustomCore learning centre, PC builder tutorial, PC compatibility basics, first gaming PC, gaming PC guide';
 $currentPage = 'media';
@@ -93,7 +90,7 @@ require_once __DIR__ . '/includes/header.php';
                 <?php if ($mediaSummary !== '') : ?>
                     <p class="media-directory__summary">
                         <?php echo customcore_e(count($mediaItems) . ' short ' . (count($mediaItems) === 1 ? 'lesson' : 'lessons')); ?>
-                        — <?php echo customcore_e($mediaSummary); ?>. Select a lesson to jump to its player.
+                        <?php echo customcore_e($mediaSummary); ?>. Select a lesson to jump to its player.
                     </p>
                 <?php endif; ?>
             </div>

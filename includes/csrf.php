@@ -1,27 +1,22 @@
 <?php
 /**
- * CustomCore — CSRF protection helpers.
- *
- * File responsibility:
- *   Generates a per-session CSRF token and verifies it on state-changing POST
- *   requests (registration, login, profile edits, cart, checkout, etc.).
- *
- * Authentication requirements:
- *   None. Any page that renders a form or handles a POST may use these helpers.
- *
- * Usage (form page):
- *   require_once __DIR__ . '/includes/csrf.php';
- *   echo customcore_csrf_field();            // inside <form>
- *
- * Usage (POST handler):
- *   if (!customcore_csrf_verify($_POST['_csrf'] ?? null)) { reject; }
- *
- * Security:
- *   - Token is 32 random bytes (hex) from random_bytes().
- *   - Verification uses hash_equals() to avoid timing attacks.
- *   - Token lives in the session; login session regeneration (Stage 4.8)
- *     keeps the token because session data is preserved across regeneration.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// CSRF protection helpers.
+// Generates a per-session CSRF token and verifies it on state-changing POST requests
+// (registration, login, profile edits, cart, checkout, etc.).
+// Access: None. Any page that renders a form or handles a POST may use these helpers.
+// Usage (form page): require_once __DIR__. '/includes/csrf.php'; echo customcore_csrf_field(); //
+// inside <form>
+// Usage (POST handler): if (!customcore_csrf_verify($_POST['_csrf'] ?? null)) { reject; }
+// Security:
+//   Token is 32 random bytes (hex) from random_bytes().
+//   Verification uses hash_equals() to avoid timing attacks.
+//   Token lives in the session; login session regeneration keeps the token because session data is
+//     preserved across regeneration.
 
 declare(strict_types=1);
 

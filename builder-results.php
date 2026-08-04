@@ -1,27 +1,24 @@
 <?php
 /**
- * CustomCore — PC Build Summary + Save (Commits 5.5 / 5.6).
- *
- * File responsibility:
- *   GET  — Renders the completed (or in-progress) build from the session:
- *          every selected component with trusted database prices, a server-side
- *          compatibility report, and power / performance estimates.
- *   POST — Saves the build to the database (saved_builds + saved_build_items).
- *          Requires login, a complete build, and a valid CSRF token.
- *
- * Authentication requirements:
- *   GET is public. POST requires an authenticated customer.
- *
- * Database queries:
- *   - component_categories (ordered)
- *   - components (selected IDs, active only)
- *   - compatibility_rules (via includes/compatibility.php)
- *   - saved_builds / saved_build_items (insert on POST)
- *
- * Session:
- *   $_SESSION['_cc_build'] — category ID → component ID (from builder.php).
- *   Cleared on successful save.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// PC Build Summary + Save/ 5.6).
+//   GET, Renders the completed (or in-progress) build from the session: every selected component
+//     with trusted database prices, a server-side compatibility report, and power / performance
+//     estimates. POST, Saves the build to the database (saved_builds + saved_build_items). Requires
+//     login, a complete build, and a valid CSRF token.
+// Access: GET is public. POST requires an authenticated customer.
+// Database queries:
+//   component_categories (ordered)
+//   components (selected IDs, active only)
+//   compatibility_rules (via includes/compatibility.php)
+//   saved_builds / saved_build_items (insert on POST)
+// Session:
+//   $_SESSION['_cc_build'], category ID → component ID (from builder.php). Cleared on successful
+//     save.
 
 declare(strict_types=1);
 
@@ -35,14 +32,12 @@ require_once __DIR__ . '/includes/performance.php';
 
 customcore_session_start();
 
-$pageTitle = 'Build summary — CustomCore';
+$pageTitle = 'Build Summary | CustomCore';
 $pageDescription = 'Review your custom PC build: components, trusted prices, compatibility, and estimates.';
 $pageKeywords = 'CustomCore, PC builder, build summary, compatibility, custom gaming PC';
 $currentPage = 'builder';
 
-// ---------------------------------------------------------------------------
-// Guest "log in to save" — stash a safe return path, then send to login
-// ---------------------------------------------------------------------------
+// Guest "log in to save", stash a safe return path, then send to login
 
 if (isset($_GET['intent']) && $_GET['intent'] === 'login' && !customcore_is_logged_in()) {
     $returnPath = isset($_SERVER['SCRIPT_NAME']) && is_string($_SERVER['SCRIPT_NAME'])
@@ -57,9 +52,7 @@ if (isset($_GET['intent']) && $_GET['intent'] === 'login' && !customcore_is_logg
     customcore_redirect('login.php');
 }
 
-// ---------------------------------------------------------------------------
 // Read build from session
-// ---------------------------------------------------------------------------
 
 $build = [];
 if (isset($_SESSION['_cc_build']) && is_array($_SESSION['_cc_build'])) {
@@ -133,9 +126,7 @@ if ($build === []) {
     }
 }
 
-// ---------------------------------------------------------------------------
 // Load categories and selected components (trusted DB prices)
-// ---------------------------------------------------------------------------
 
 $categories = [];
 $selectedByCategory = [];
@@ -237,9 +228,7 @@ if ($selectedByCategory === []) {
     customcore_redirect('builder.php');
 }
 
-// ---------------------------------------------------------------------------
 // Compatibility + estimates
-// ---------------------------------------------------------------------------
 
 $compatReport = [
     'status' => 'compatible',
@@ -268,7 +257,7 @@ $compatResults = $compatReport['results'];
 
 $recommendedPsu = $estimatedDraw > 0 ? (int) ceil($estimatedDraw * 1.2) : 0;
 
-// Weighted performance report (Commit 5.8) — replaces simple averages for the chart.
+// Weighted performance report, replaces simple averages for the chart.
 $perfReport = [
     'gaming' => 0,
     'productivity' => 0,
@@ -304,9 +293,7 @@ if ($compatStatus === 'warning') {
     $compatBadgeClass = 'compat-badge--incompatible';
 }
 
-// ---------------------------------------------------------------------------
-// Handle POST — save build to database (Commit 5.6)
-// ---------------------------------------------------------------------------
+// Handle POST, save build to database
 
 $saveError = null;
 $justSaved = false;
@@ -395,9 +382,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// ---------------------------------------------------------------------------
 // Determine if we are viewing a just-saved build
-// ---------------------------------------------------------------------------
 
 $viewingSavedBuild = false;
 
@@ -520,7 +505,7 @@ require_once __DIR__ . '/includes/header.php';
                                     echo customcore_e(implode(' · ', $attrs));
                                     ?>
                                 <?php else: ?>
-                                    —
+                                    
                                 <?php endif; ?>
                             </td>
                             <td class="results-table__price">
@@ -532,7 +517,7 @@ require_once __DIR__ . '/includes/header.php';
                                         : 'Included';
                                     ?>
                                 <?php else: ?>
-                                    —
+                                    
                                 <?php endif; ?>
                             </td>
                             <td>
@@ -554,7 +539,7 @@ require_once __DIR__ . '/includes/header.php';
                 </tfoot>
             </table>
             <p class="results-table__note">
-                Prices are loaded from the database for your selected component IDs — client-side figures are not trusted.
+                Prices are loaded from the database for your selected component IDs, client-side figures are not trusted.
             </p>
         </div>
 
@@ -603,15 +588,15 @@ require_once __DIR__ . '/includes/header.php';
                 <dl class="results-estimates">
                     <div class="results-estimates__row">
                         <dt>Estimated power draw</dt>
-                        <dd><?php echo $estimatedDraw > 0 ? customcore_e((string) $estimatedDraw) . ' W' : '—'; ?></dd>
+                        <dd><?php echo $estimatedDraw > 0 ? customcore_e((string) $estimatedDraw) . ' W' : 'Not available'; ?></dd>
                     </div>
                     <div class="results-estimates__row">
                         <dt>PSU capacity</dt>
-                        <dd><?php echo $psuWattage > 0 ? customcore_e((string) $psuWattage) . ' W' : '—'; ?></dd>
+                        <dd><?php echo $psuWattage > 0 ? customcore_e((string) $psuWattage) . ' W' : 'Not available'; ?></dd>
                     </div>
                     <div class="results-estimates__row">
                         <dt>Recommended PSU (20% headroom)</dt>
-                        <dd><?php echo $recommendedPsu > 0 ? customcore_e((string) $recommendedPsu) . ' W+' : '—'; ?></dd>
+                        <dd><?php echo $recommendedPsu > 0 ? customcore_e((string) $recommendedPsu) . ' W+' : 'Not available'; ?></dd>
                     </div>
                     <div class="results-estimates__row">
                         <dt>Gaming performance estimate</dt>
@@ -622,7 +607,7 @@ require_once __DIR__ . '/includes/header.php';
                                     <?php echo $avgGaming; ?> / 100
                                 </span>
                             <?php else: ?>
-                                —
+                                
                             <?php endif; ?>
                         </dd>
                     </div>
@@ -635,7 +620,7 @@ require_once __DIR__ . '/includes/header.php';
                                     <?php echo $avgProductivity; ?> / 100
                                 </span>
                             <?php else: ?>
-                                —
+                                
                             <?php endif; ?>
                         </dd>
                     </div>
@@ -646,7 +631,7 @@ require_once __DIR__ . '/includes/header.php';
                             $headroom = (int) ($perfReport['upgrade_headroom'] ?? 0);
                             echo $avgGaming > 0 || $avgProductivity > 0
                                 ? customcore_e((string) $headroom) . ' pts'
-                                : '—';
+                                : 'Not available';
                             ?>
                         </dd>
                     </div>

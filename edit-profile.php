@@ -1,25 +1,22 @@
 <?php
 /**
- * CustomCore — Edit Profile (Commit 4.6).
- *
- * File responsibility:
- *   Lets the logged-in customer update their own name, email, phone, and
- *   address, and change their password. Two independent forms share the page:
- *   "details" and "password". All updates are scoped to the session user id.
- *
- * Authentication requirements:
- *   Logged-in customer or admin (require_login). Never edits another user.
- *
- * Security:
- *   - CSRF token required on both forms.
- *   - Email uniqueness enforced (excluding self) + users.email UNIQUE index.
- *   - Password change requires the current password (password_verify).
- *   - New password hashed with password_hash(); session ID regenerated.
- *   - All output escaped via customcore_e().
- *
- * Completion test:
- *   Updates validate and persist correctly.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Edit Profile.
+// Lets the logged-in customer update their own name, email, phone, and address, and change their
+// password. Two independent forms share the page: "details" and "password". All updates are scoped
+// to the session user id.
+// Access: Logged-in customer or admin (require_login). Never edits another user.
+// Security:
+//   CSRF token required on both forms.
+//   Email uniqueness enforced (excluding self) + users.email UNIQUE index.
+//   Password change requires the current password (password_verify).
+//   New password hashed with password_hash(); session ID regenerated.
+//   All output escaped via customcore_e().
+// Completion test: Updates validate and persist correctly.
 
 declare(strict_types=1);
 
@@ -51,9 +48,7 @@ $detailErrors = [];
 $passwordErrors = [];
 $pageError = null;
 
-// ---------------------------------------------------------------------------
 // Load the current user (own record only)
-// ---------------------------------------------------------------------------
 
 $user = null;
 
@@ -88,9 +83,7 @@ try {
         : 'Your profile is temporarily unavailable. Please try again later.';
 }
 
-// ---------------------------------------------------------------------------
 // Handle POST
-// ---------------------------------------------------------------------------
 
 $formAction = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $user !== null && $pageError === null) {
@@ -277,7 +270,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $user !== null && $pageError === nu
     }
 }
 
-$pageTitle = 'Edit profile — CustomCore';
+$pageTitle = 'Edit Profile | CustomCore';
 $pageDescription = 'Update your CustomCore account details and password.';
 $pageKeywords = 'CustomCore, edit profile, account settings, change password';
 $currentPage = 'profile';

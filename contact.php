@@ -1,23 +1,21 @@
 <?php
 /**
- * CustomCore — Contact / Support Form (Commit 7.5).
- *
- * File responsibility:
- *   Public contact form for general support messages. Guests and logged-in
- *   customers can submit. Valid messages are stored in contact_messages with
- *   is_read = 0. When the visitor is logged in, user_id is set from the
- *   session (never from the form) and name/email are pre-filled from the
- *   profile. Success uses Post/Redirect/Get with a flash confirmation.
- *
- * Authentication requirements:
- *   None (public). Login is optional.
- *
- * Security:
- *   - CSRF token required on POST.
- *   - Server-side validation of name, email, subject, and message.
- *   - user_id taken only from the authenticated session.
- *   - All output escaped via customcore_e().
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Contact / Support Form.
+// Public contact form for general support messages. Guests and logged-in customers can submit.
+// Valid messages are stored in contact_messages with is_read = 0. When the visitor is logged in,
+// user_id is set from the session (never from the form) and name/email are pre-filled from the
+// profile. Success uses Post/Redirect/Get with a flash confirmation.
+// Access: None (public). Login is optional.
+// Security:
+//   CSRF token required on POST.
+//   Server-side validation of name, email, subject, and message.
+//   user_id taken only from the authenticated session.
+//   All output escaped via customcore_e().
 
 declare(strict_types=1);
 
@@ -156,7 +154,7 @@ if (!isset($values['subject_choice'])) {
 
 $subjectOptions = customcore_contact_subject_options();
 
-$pageTitle = 'Contact us — CustomCore';
+$pageTitle = 'Contact Us | CustomCore';
 $pageDescription = 'Send a support message to the CustomCore team about orders, products, the PC builder, or general questions.';
 $pageKeywords = 'CustomCore, contact, support, help, message';
 $currentPage = 'contact';
@@ -181,7 +179,7 @@ require_once __DIR__ . '/includes/header.php';
             </p>
             <?php if ($isLoggedIn) : ?>
                 <p class="contact-page__note">
-                    You are signed in — your name and email are filled from your account.
+                    You are signed in, your name and email are filled from your account.
                     Prefer a PC build recommendation?
                     <a href="<?php echo customcore_e(customcore_url('consultation.php')); ?>">Request a consultation</a>.
                 </p>

@@ -1,57 +1,35 @@
 <?php
 /**
- * CustomCore — Trusted Server-Side Price Recalculation (Commit 5.3).
- *
- * File responsibility:
- *   Accepts a JSON payload of component IDs (representing a build), looks up
- *   real prices from the database, and returns the authoritative per-component
- *   and total prices. Client-sent price values are completely ignored — only
- *   database prices are used. This prevents a manipulated browser (DevTools,
- *   tampered data-price attributes) from affecting actual pricing.
- *
- * Endpoint:
- *   POST api/builder-price.php
- *   Content-Type: application/json
- *
- * Request body:
- *   {
- *     "components": [1, 8, 15, 24, 28, 35, 40, 48, 54, 57]
- *   }
- *   Array of component IDs (int). Invalid/inactive IDs are excluded from totals.
- *
- * Response (200):
- *   {
- *     "success": true,
- *     "items": [
- *       { "id": 1, "category_id": 1, "name": "AMD Ryzen 5 7600", "price": 229.00 },
- *       ...
- *     ],
- *     "total": 1245.00,
- *     "count": 10
- *   }
- *
- * Error responses (400/500):
- *   { "success": false, "error": "..." }
- *
- * Authentication requirements:
- *   None (public). The builder is available to guests. Pricing is not secret.
- *
- * Security:
- *   - Rejects non-POST requests.
- *   - Validates that the payload is well-formed JSON with an array of integers.
- *   - Caps the number of component IDs to prevent abuse (max 20).
- *   - Only returns prices for active components, preventing probing of disabled items.
- *   - No client-sent prices are ever trusted or returned.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Trusted Server-Side Price Recalculation.
+// Accepts a JSON payload of component IDs (representing a build), looks up real prices from the
+// database, and returns the authoritative per-component and total prices. Client-sent price values
+// are completely ignored, only database prices are used. This prevents a manipulated browser
+// (DevTools, tampered data-price attributes) from affecting actual pricing.
+// Endpoint: POST api/builder-price.php Content-Type: application/json
+// Request body: { "components": [1, 8, 15, 24, 28, 35, 40, 48, 54, 57] } Array of component IDs
+// (int). Invalid/inactive IDs are excluded from totals.
+// Response (200): { "success": true, "items": [ { "id": 1, "category_id": 1, "name": "AMD Ryzen 5
+// 7600", "price": 229.00 }... ], "total": 1245.00, "count": 10 }
+// Error responses (400/500): { "success": false, "error": "..." }
+// Access: None (public). The builder is available to guests. Pricing is not secret.
+// Security:
+//   Rejects non-POST requests.
+//   Validates that the payload is well-formed JSON with an array of integers.
+//   Caps the number of component IDs to prevent abuse (max 20).
+//   Only returns prices for active components, preventing probing of disabled items.
+//   No client-sent prices are ever trusted or returned.
 
 declare(strict_types=1);
 
 require_once __DIR__ . '/../includes/functions.php';
 require_once __DIR__ . '/../includes/database.php';
 
-// ---------------------------------------------------------------------------
 // Only accept POST
-// ---------------------------------------------------------------------------
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -63,9 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 header('Content-Type: application/json; charset=utf-8');
 
-// ---------------------------------------------------------------------------
 // Parse and validate the JSON request body
-// ---------------------------------------------------------------------------
 
 $rawBody = file_get_contents('php://input');
 
@@ -124,9 +100,7 @@ if (count($cleanIds) > $maxComponents) {
     exit;
 }
 
-// ---------------------------------------------------------------------------
 // Query the database for trusted prices
-// ---------------------------------------------------------------------------
 
 try {
     $pdo = customcore_pdo();

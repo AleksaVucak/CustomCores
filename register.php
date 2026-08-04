@@ -1,25 +1,23 @@
 <?php
 /**
- * CustomCore — Customer Registration (Commit 4.1).
- *
- * File responsibility:
- *   Renders the registration form and processes new customer sign-ups.
- *   Validates all input server-side, hashes the password with password_hash(),
- *   rejects duplicate emails, and creates an active customer account.
- *
- * Flow:
- *   GET  — show the form (pre-filled on validation errors, never with passwords).
- *   POST — validate CSRF + fields, insert user, flash success, redirect to login.
- *
- * Authentication requirements:
- *   Guests only. Logged-in users are redirected to their profile.
- *
- * Security:
- *   - CSRF token required on POST.
- *   - Passwords hashed with PASSWORD_DEFAULT (bcrypt); never stored/echoed raw.
- *   - Email uniqueness enforced by pre-check AND the users.email UNIQUE index.
- *   - All output escaped via customcore_e().
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Customer Registration.
+// Renders the registration form and processes new customer sign-ups. Validates all input server-
+// side, hashes the password with password_hash(), rejects duplicate emails, and creates an active
+// customer account.
+// Flow:
+//   GET, show the form (pre-filled on validation errors, never with passwords). POST, validate
+//     CSRF + fields, insert user, flash success, redirect to login.
+// Access: Guests only. Logged-in users are redirected to their profile.
+// Security:
+//   CSRF token required on POST.
+//   Passwords hashed with PASSWORD_DEFAULT (bcrypt); never stored/echoed raw.
+//   Email uniqueness enforced by pre-check AND the users.email UNIQUE index.
+//   All output escaped via customcore_e().
 
 declare(strict_types=1);
 
@@ -34,7 +32,7 @@ customcore_session_start();
 // Already authenticated users have no reason to register again.
 customcore_require_guest();
 
-$pageTitle = 'Create account — CustomCore';
+$pageTitle = 'Create Account | CustomCore';
 $pageDescription = 'Create a CustomCore account to save builds, track orders, and manage your profile.';
 $pageKeywords = 'CustomCore, register, create account, sign up';
 $currentPage = 'register';

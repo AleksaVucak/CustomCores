@@ -1,17 +1,16 @@
-/**
- * CustomCore — Administrator reports charts (Commit 9.9).
- * ----------------------------------------------------------------------------
- * File responsibility:
- *   Renders Chart.js doughnut/bar charts for the admin reports page. Each chart
- *   reads its payload from a data-admin-report-chart attribute produced
- *   server-side from live MySQL aggregates. Server-rendered tables beside each
- *   canvas remain the accessible source of truth if Chart.js fails to load.
- *
- * Expected markup:
- *   .admin-report-chart[data-admin-report-chart='{...}'][data-chart-type='bar|doughnut']
- *     canvas
- * ----------------------------------------------------------------------------
+/*
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator reports charts.
+// Renders Chart.js doughnut/bar charts for the admin reports page. Each chart reads its payload
+// from a data-admin-report-chart attribute produced server-side from live MySQL aggregates.
+// Server-rendered tables beside each canvas remain the accessible source of truth if Chart.js
+// fails to load.
+// Expected markup: .admin-report-chart[data-admin-report-chart='{...}'][data-chart-
+// type='bar|doughnut'] canvas
 
 (function (window, document) {
   'use strict';
@@ -74,7 +73,7 @@
    * Render a single report chart from one container's data-* attributes. No-op if
    * the canvas, Chart.js, or a valid JSON payload is missing.
    *
-   * @param {Element} root The .admin-report-chart container element.
+   * @param {Element} root The.admin-report-chart container element.
    * @returns {void}
    */
   function initOne(root) {

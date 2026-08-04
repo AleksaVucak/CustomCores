@@ -1,9 +1,9 @@
-# CustomCore — Mobile Responsiveness Verification (Commit 15.5)
+# CustomCore | Mobile Responsiveness Verification
 
-**Document type:** Stage 15 verification  
-**Purpose:** Prove that every core page renders correctly on mobile-class viewports — no unintended horizontal scrolling, no clipped or overlapping content, no broken grids, and usable tap targets — down to a 320 px small-phone width.  
-**Acceptance:** Core public, customer, and administrator pages are usable at representative mobile widths; any avoidable layout defects found are corrected.  
-**Related:** Desktop counterpart [`responsiveness-desktop.md`](responsiveness-desktop.md) (Commit 15.4); layout contract in [`wireframes.md`](wireframes.md); token/breakpoint system in [`frontend-documentation.md`](frontend-documentation.md) §3; base rules in [`assets/css/main.css`](../assets/css/main.css) + [`assets/css/admin.css`](../assets/css/admin.css); prior Stage 15 records [`html-validation.md`](html-validation.md), [`css-validation.md`](css-validation.md), and [`js-validation.md`](js-validation.md).
+**Document type:** Project documentation
+**Purpose:** Prove that every core page renders correctly on mobile-class viewports — no unintended horizontal scrolling, no clipped or overlapping content, no broken grids, and usable tap targets — down to a 320 px small-phone width.
+**Acceptance:** Core public, customer, and administrator pages are usable at representative mobile widths; any avoidable layout defects found are corrected.
+**Related:** Desktop counterpart [`responsiveness-desktop.md`](responsiveness-desktop.md); layout contract in [`wireframes.md`](wireframes.md); token/breakpoint system in [`frontend-documentation.md`](frontend-documentation.md) §3; base rules in [`assets/css/main.css`](../assets/css/main.css) + [`assets/css/admin.css`](../assets/css/admin.css); earlier test records [`html-validation.md`](html-validation.md), [`css-validation.md`](css-validation.md), and [`js-validation.md`](js-validation.md).
 
 ### Status legend
 
@@ -52,9 +52,9 @@
 
 1. **Layout audit** — reviewed the container, breakpoint, single-column-shrink, and scroll-wrapper rules above in `main.css` / `admin.css` to establish the intended mobile behaviour and which horizontal scroll wrappers are deliberate.
 2. **Automated overflow probe** — the project PHP built-in server (`http://localhost:8000`) was driven in a real Chromium tab. Each page was loaded in an isolated fixed-width iframe (320 / 360 / 390 / 414 / 700 / 768 px) with a cache-busted stylesheet so the correct media queries applied, then a script measured:
-   - `documentElement.scrollWidth` vs `innerWidth` (page-level horizontal overflow), and
-   - every **leaf** element whose bounding box extends past the viewport **whose ancestors are not** an `overflow-x: auto/scroll` or `overflow: hidden` container — i.e. **real** offenders, filtering out intended scroll wrappers and clipped map tiles.
-   - Suspected offenders were then re-measured with a `min-content` clone probe to identify the specific child forcing the width (canvas, table, or unbreakable string) before choosing a fix.
+ - `documentElement.scrollWidth` vs `innerWidth` (page-level horizontal overflow), and
+ - every **leaf** element whose bounding box extends past the viewport **whose ancestors are not** an `overflow-x: auto/scroll` or `overflow: hidden` container — i.e. **real** offenders, filtering out intended scroll wrappers and clipped map tiles.
+ - Suspected offenders were then re-measured with a `min-content` clone probe to identify the specific child forcing the width (canvas, table, or unbreakable string) before choosing a fix.
 3. **Breakpoint-band coverage** — 320 px exercises every `max-width` mobile rule; 700 px covers the band where tables exit card-view; 768 px activates the tablet multi-column grids. The 360 / 390 / 414 px widths fall inside the same `≤600`/`≤640` single-column regime as 320 px.
 4. **Signed-in + admin coverage** — a disposable customer was registered and used to exercise cart, wishlist, saved builds, consultation, order history/details/confirmation, and edit-profile. The same account was briefly promoted to administrator via a temporary DB helper to reach every admin route, then the account, its order, its cart, and the helper file were **deleted** afterward (store returned to its pre-test state: the three original seed customers, zero orders, zero carts).
 
@@ -145,7 +145,7 @@ Each defect below caused **unintended horizontal overflow at a mobile width** an
 | 6 | `admin/index.php`, `admin/product-edit.php` @390 | Activity/product tables and long email sub-text overflowed | `admin.css`: `.admin-table__sub { overflow-wrap: anywhere }` and `.admin-activity__grid { grid-template-columns: minmax(0,1fr) }`; `admin/index.php`: wrapped all four dashboard tables in `.admin-table-wrap` |
 | 7 | `admin/order-details.php` @390 | `.admin-dl` detail lists with long customer emails overflowed | `admin.css`: `.admin-dl { grid-template-columns: minmax(0,max-content) minmax(0,1fr) }` and `.admin-dl dd { overflow-wrap: anywhere }` |
 | 8 | `admin/monitoring.php` @390 | Monitor checks table overflowed | `admin/monitoring.php`: wrapped `.admin-table--monitor` in `.admin-table-wrap` |
-| 9 | `admin/reports.php` @320 | Chart column used a hard `minmax(280px,1fr)` that could not fit at 320 px | `admin.css`: `@media (max-width:800px) .admin-report-chart { grid-template-columns: minmax(0,1fr) }` and `.admin-report-users { grid-template-columns: repeat(auto-fit, minmax(min(280px,100%),1fr)) }` |
+| 9 | `admin/reports.php` @320 | Chart column used a hard `minmax(280px,1fr)` that could not fit at 320 px | `admin.css`: `@media (max-width:800px).admin-report-chart { grid-template-columns: minmax(0,1fr) }` and `.admin-report-users { grid-template-columns: repeat(auto-fit, minmax(min(280px,100%),1fr)) }` |
 
 After these fixes, the automated 320 px sweep reports **OK (0 real offenders)** for every public, customer, and admin page, and the 360 / 390 / 414 / 700 / 768 px sweeps are clean.
 
@@ -168,13 +168,13 @@ After these fixes, the automated 320 px sweep reports **OK (0 real offenders)** 
 php -S localhost:8000
 
 # 2. On a phone-sized viewport (DevTools device toolbar or a real phone) at
-#    320 / 360 / 390 / 414 / 768 px, open each page in §4 and confirm there is
-#    NO horizontal scrollbar on the page itself and no clipped/overlapping
-#    content. Wide tables (admin, cart, catalogue stats, comparison) may scroll
-#    INSIDE their card — that is expected.
+# 320 / 360 / 390 / 414 / 768 px, open each page in §4 and confirm there is
+# NO horizontal scrollbar on the page itself and no clipped/overlapping
+# content. Wide tables (admin, cart, catalogue stats, comparison) may scroll
+# INSIDE their card — that is expected.
 
 # 3. Quick overflow check in the browser console on any page:
-#    (document.documentElement.scrollWidth <= window.innerWidth)  // expect true
+# (document.documentElement.scrollWidth <= window.innerWidth) // expect true
 ```
 
 Signed-in and admin pages require a logged-in customer / administrator account; the audit used a disposable account that was deleted afterward.
@@ -191,4 +191,4 @@ Signed-in and admin pages require a logged-in customer / administrator account; 
 | Avoidable mobile layout defects corrected | **9 found, 9 fixed** |
 | Mobile responsiveness results recorded | **This document** |
 
-**Commit 15.5 complete.** Desktop (15.4) and mobile (15.5) responsiveness are now both verified, satisfying rubric criterion **B15**.
+**Summary.** Desktop (15.4) and mobile (15.5) responsiveness are now both verified, satisfying rubric criterion **B15**.

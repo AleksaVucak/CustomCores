@@ -1,23 +1,21 @@
 <?php
 /**
- * CustomCore — Administrator theme switching helpers (Commit 10.4).
- *
- * File responsibility:
- *   Lists the seeded site themes, reads the currently selected
- *   site_settings.active_theme_id, and persists a new selection after the
- *   administrator confirms it on admin/themes.php. Selection is validated
- *   against a real themes.id and an on-disk CSS file before writing.
- *
- * Authentication requirements:
- *   Callers must already have run customcore_require_admin().
- *
- * Security:
- *   - Theme IDs are cast to integers and looked up with prepared statements.
- *   - css_file values are path-validated via customcore_theme_normalise_path()
- *     and must exist on disk before activation (blocks traversal / dead links).
- *   - Only the active_theme_id setting is mutated; is_active_default is left
- *     alone as the permanent fallback marker used by includes/theme.php.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator theme switching helpers.
+// Lists the seeded site themes, reads the currently selected site_settings.active_theme_id, and
+// persists a new selection after the administrator confirms it on admin/themes.php. Selection is
+// validated against a real themes.id and an on-disk CSS file before writing.
+// Access: Callers must already have run customcore_require_admin().
+// Security:
+//   Theme IDs are cast to integers and looked up with prepared statements.
+//   css_file values are path-validated via customcore_theme_normalise_path() and must exist on
+//     disk before activation (blocks traversal / dead links).
+//   Only the active_theme_id setting is mutated; is_active_default is left alone as the permanent
+//     fallback marker used by includes/theme.php.
 
 declare(strict_types=1);
 
@@ -60,13 +58,13 @@ function customcore_admin_theme_blurb(string $slug): string
  * Fetch every theme row ordered for the switcher UI.
  *
  * @return list<array{
- *   id:int,
- *   name:string,
- *   slug:string,
- *   css_file:string,
- *   is_active_default:int,
- *   css_exists:bool,
- *   blurb:string
+ * id:int
+ * name:string
+ * slug:string
+ * css_file:string
+ * is_active_default:int
+ * css_exists:bool
+ * blurb:string
  * }>
  */
 function customcore_admin_theme_list(PDO $pdo): array
@@ -132,11 +130,11 @@ function customcore_admin_theme_active_id(PDO $pdo): ?int
  * Fetch one theme by primary key, or null when missing.
  *
  * @return array{
- *   id:int,
- *   name:string,
- *   slug:string,
- *   css_file:string,
- *   is_active_default:int
+ * id:int
+ * name:string
+ * slug:string
+ * css_file:string
+ * is_active_default:int
  * }|null
  */
 function customcore_admin_theme_fetch(PDO $pdo, int $themeId): ?array

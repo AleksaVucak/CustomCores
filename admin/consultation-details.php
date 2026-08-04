@@ -1,20 +1,19 @@
 <?php
 /**
- * CustomCore — Administrator consultation detail (Commit 9.7).
- *
- * File responsibility:
- *   Protected per-request screen. Shows the customer, the full advice request,
- *   any attachments (with secure admin download links), and lets an admin change
- *   the status and write/clear a response via Post/Redirect/Get.
- *
- * Authentication requirements:
- *   Administrator role (customcore_require_admin()).
- *
- * Security:
- *   - Both write actions require a valid CSRF token.
- *   - Status is validated against the consultation_requests.status ENUM.
- *   - All output escaped via customcore_e(); customer text is never trusted.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator consultation detail.
+// Protected per-request screen. Shows the customer, the full advice request, any attachments (with
+// secure admin download links), and lets an admin change the status and write/clear a response via
+// Post/Redirect/Get.
+// Access: Administrator role (customcore_require_admin()).
+// Security:
+//   Both write actions require a valid CSRF token.
+//   Status is validated against the consultation_requests.status ENUM.
+//   All output escaped via customcore_e(); customer text is never trusted.
 
 declare(strict_types=1);
 
@@ -32,9 +31,7 @@ customcore_require_admin();
 
 $pdo = customcore_pdo();
 
-// ---------------------------------------------------------------------------
 // Resolve the request id (GET on view, POST on write)
-// ---------------------------------------------------------------------------
 $requestId = 0;
 $rawId = $_SERVER['REQUEST_METHOD'] === 'POST' ? ($_POST['request_id'] ?? null) : ($_GET['id'] ?? null);
 if (is_string($rawId) && ctype_digit($rawId)) {
@@ -48,9 +45,7 @@ if ($requestId <= 0) {
 
 $detailUrl = 'admin/consultation-details.php?id=' . $requestId;
 
-// ---------------------------------------------------------------------------
-// Handle write actions (status / response) — CSRF + PRG
-// ---------------------------------------------------------------------------
+// Handle write actions (status / response), CSRF + PRG
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = isset($_POST['_csrf']) && is_string($_POST['_csrf']) ? $_POST['_csrf'] : null;
     if (!customcore_csrf_verify($token)) {
@@ -98,9 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     customcore_redirect($detailUrl);
 }
 
-// ---------------------------------------------------------------------------
 // Load request + attachments for display
-// ---------------------------------------------------------------------------
 $request = customcore_admin_consultation_fetch($pdo, $requestId);
 if ($request === null) {
     customcore_flash_error('That consultation request could not be found.');
@@ -115,7 +108,7 @@ $adminNavCurrent = 'consultations';
 $loadAdminCss = true;
 $currentPage = 'admin';
 
-$pageTitle = 'Consultation #' . $requestId . ' — CustomCore admin';
+$pageTitle = 'Consultation #' . $requestId . ' | CustomCore Admin';
 $pageDescription = 'Administrator view of a CustomCore consultation request.';
 $pageKeywords = 'CustomCore, admin, consultation';
 
@@ -145,7 +138,7 @@ require_once __DIR__ . '/../includes/header.php';
             <h2 id="customer-heading" class="admin-card__title">Customer</h2>
             <dl class="admin-dl">
                 <dt>Name</dt>
-                <dd><?php echo customcore_e($customerName !== '' ? $customerName : '—'); ?></dd>
+                <dd><?php echo customcore_e($customerName !== '' ? $customerName : 'No name'); ?></dd>
                 <dt>Email</dt>
                 <dd><a href="mailto:<?php echo customcore_e((string) $request['email']); ?>"><?php echo customcore_e((string) $request['email']); ?></a></dd>
                 <dt>Account</dt>
@@ -158,7 +151,7 @@ require_once __DIR__ . '/../includes/header.php';
                     <a class="admin-table__sub" href="<?php echo customcore_e(customcore_url('admin/user-edit.php?id=' . (int) $request['user_id'])); ?>">Manage account</a>
                 </dd>
                 <dt>Budget</dt>
-                <dd><?php echo customcore_e((string) $request['budget'] !== '' ? (string) $request['budget'] : '—'); ?></dd>
+                <dd><?php echo customcore_e((string) $request['budget'] !== '' ? (string) $request['budget'] : 'Not given'); ?></dd>
             </dl>
         </section>
 
@@ -198,7 +191,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <?php if ((string) ($request['notes'] ?? '') !== '') : ?>
                     <?php echo nl2br(customcore_e((string) $request['notes'])); ?>
                 <?php else : ?>
-                    —
+                    
                 <?php endif; ?>
             </dd>
         </dl>

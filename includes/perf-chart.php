@@ -1,16 +1,18 @@
 <?php
 /**
- * CustomCore — Performance chart markup partial (Commit 5.8).
- *
- * Expected before include:
- *   $perfChartApi   — URL to api/chart-data.php
- *   $perfChartIds   — int[] component IDs for static pages (optional)
- *   $perfChartForm  — CSS selector for live builder form (optional)
- *   $perfReport     — optional precomputed report for SSR fallback
- *   $perfChartTitle — optional heading override
- *
- * Always renders a text fallback. Chart.js enhances the canvas when available.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Performance chart markup partial.
+// Expected before include:
+//   $perfChartApi, URL to api/chart-data.php
+//   $perfChartIds, int[] component IDs for static pages (optional)
+//   $perfChartForm, CSS selector for live builder form (optional)
+//   $perfReport, optional precomputed report for SSR fallback
+//   $perfChartTitle, optional heading override
+// Always renders a text fallback. Chart.js enhances the canvas when available.
 
 declare(strict_types=1);
 
@@ -77,7 +79,7 @@ if (isset($perfReport) && is_array($perfReport)) {
         <?php endif; ?>
     </div>
     <p class="perf-chart__note">
-        Scores are weighted from CPU, GPU, RAM, and storage (1–100). Upgrade headroom
+        Scores are weighted from CPU, GPU, RAM, and storage (1 to 100). Upgrade headroom
         compares this build to the best active catalogue parts. Text values above remain
         available if the chart does not load.
     </p>

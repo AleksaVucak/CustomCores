@@ -1,41 +1,24 @@
 <?php
 /**
- * CustomCore — Build Performance Chart Data API (Commit 5.8).
- *
- * File responsibility:
- *   Accepts selected component IDs and returns gaming, productivity, and
- *   upgrade-ceiling scores for the builder performance chart. Scores are
- *   computed server-side from database attributes only.
- *
- * Endpoint:
- *   POST api/chart-data.php
- *   Content-Type: application/json
- *
- * Request body:
- *   { "components": [1, 8, 15, 24, 28] }
- *
- * Response (200):
- *   {
- *     "success": true,
- *     "chart": {
- *       "labels": ["Gaming", "Productivity", "Upgrade headroom"],
- *       "datasets": [
- *         { "label": "This build", "data": [82, 74, 18] },
- *         { "label": "Catalogue ceiling", "data": [100, 96, 0] }
- *       ]
- *     },
- *     "scores": { "gaming": 82, "productivity": 74, ... },
- *     "fallback": [ { "label": "...", "value": "..." }, ... ]
- *   }
- *
- * Authentication requirements:
- *   None (public). Used by the guest-accessible builder.
- *
- * Security:
- *   - POST only.
- *   - Integer ID validation, max 20 components.
- *   - Only active components contribute.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Build Performance Chart Data API.
+// Accepts selected component IDs and returns gaming, productivity, and upgrade-ceiling scores for
+// the builder performance chart. Scores are computed server-side from database attributes only.
+// Endpoint: POST api/chart-data.php Content-Type: application/json
+// Request body: { "components": [1, 8, 15, 24, 28] }
+// Response (200): { "success": true, "chart": { "labels": ["Gaming", "Productivity", "Upgrade
+// headroom"], "datasets": [ { "label": "This build", "data": [82, 74, 18] }, { "label": "Catalogue
+// ceiling", "data": [100, 96, 0] } ] }, "scores": { "gaming": 82, "productivity": 74... },
+// "fallback": [ { "label": "...", "value": "..." }... ] }
+// Access: None (public). Used by the guest-accessible builder.
+// Security:
+//   POST only.
+//   Integer ID validation, max 20 components.
+//   Only active components contribute.
 
 declare(strict_types=1);
 

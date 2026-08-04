@@ -1,28 +1,25 @@
 <?php
 /**
- * CustomCore — Shared compatibility evaluation (Commit 5.4 / 5.5).
- *
- * File responsibility:
- *   Loads active rules and selected component attributes, evaluates the seven
- *   seeded compatibility checks, and returns an overall status plus per-rule
- *   results. Used by api/compatibility-check.php (live JS) and
- *   builder-results.php (server-rendered summary) so both surfaces stay in sync.
- *
- * Authentication requirements:
- *   None. Callers decide access control.
- *
- * Usage:
- *   require_once __DIR__ . '/compatibility.php';
- *   $report = customcore_compatibility_check($pdo, [1, 8, 15]);
- *   // $report = ['status' => 'compatible'|'warning'|'incompatible', 'results' => [...]]
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Shared compatibility evaluation/ 5.5).
+// Loads active rules and selected component attributes, evaluates the seven seeded compatibility
+// checks, and returns an overall status plus per-rule results. Used by api/compatibility-check.php
+// (live JS) and builder-results.php (server-rendered summary) so both surfaces stay in sync.
+// Access: None. Callers decide access control.
+// Usage: require_once __DIR__. '/compatibility.php';
+//   $report = customcore_compatibility_check($pdo, [1, 8, 15]); // $report = ['status' =>
+//     'compatible'|'warning'|'incompatible', 'results' => [...]]
 
 declare(strict_types=1);
 
 /**
  * Run all active compatibility rules against a list of component IDs.
  *
- * @param PDO   $pdo          Active PDO connection.
+ * @param PDO $pdo Active PDO connection.
  * @param int[] $componentIds Positive component primary keys.
  * @return array{status:string, results:array<int, array{rule_code:string, name:string, status:string, severity:string, message:string}>}
  */
@@ -115,7 +112,7 @@ function customcore_compatibility_check(PDO $pdo, array $componentIds): array
  * Evaluate a single compatibility rule.
  *
  * @param array<string, array> $byCategory
- * @param array<int, array>    $allRows
+ * @param array<int, array> $allRows
  * @return array{status:string, message:string, effective_severity?:string}
  */
 function customcore_compat_evaluate_rule(
@@ -236,7 +233,7 @@ function customcore_compat_rule_form_factor(array $config, array $byCategory): a
  * Rule: PSU wattage must cover total estimated draw (+ headroom).
  *
  * @param array<string, array> $byCategory
- * @param array<int, array>    $allRows
+ * @param array<int, array> $allRows
  * @return array{status:string, message:string, effective_severity?:string}
  */
 function customcore_compat_rule_psu(array $config, array $byCategory, array $allRows): array

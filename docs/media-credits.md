@@ -2,7 +2,7 @@
 
 - **Project:** CustomCore — Custom gaming PC store and guided PC builder
 - **Prepared:** 1 August 2026
-- **Integrated:** Commit 8.7
+- **Integrated:** yes
 - **Purpose:** University web-development project multimedia documentation (rubric #10d, #10e, B2)
 
 This document records the origin and licence status of every image, video, audio,
@@ -86,7 +86,7 @@ retained in [`docs/image-prompts.md`](image-prompts.md).
 ## Video
 
 Both educational videos are **original CustomCore academic productions** created
-for this project (scripts, captions, and packaged binaries from the Stage 8 media
+for this project (scripts, captions, and packaged binaries from the project media
 package). They are not third-party commercial advertisements. No separate stock
 B-roll was retained as a final source dependency.
 
@@ -120,8 +120,8 @@ B-roll was retained as a final source dependency.
 
 ## Chart libraries
 
-Used for the public catalogue visualization (`catalogue.php`, Commit 8.5) and the
-PC Builder performance chart (`api/chart-data.php` + `assets/js/charts.js`, Commit 5.8).
+Used for the public catalogue visualization (`catalogue.php`) and the
+PC Builder performance chart (`api/chart-data.php` + `assets/js/charts.js`).
 
 | Library | Version in project | CDN | Licence | Project use |
 | ------- | ------------------ | --- | ------- | ----------- |
@@ -134,7 +134,7 @@ CustomCore MySQL database — not hard-coded decorative numbers.
 
 ## Map libraries and tiles
 
-Used on `store-locations.php` (Commit 8.4).
+Used on `store-locations.php`.
 
 | Resource | Version / source | Licence | Attribution in the UI |
 | -------- | ---------------- | ------- | --------------------- |

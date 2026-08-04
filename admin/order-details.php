@@ -1,20 +1,19 @@
 <?php
 /**
- * CustomCore — Administrator order detail (Commit 9.5).
- *
- * File responsibility:
- *   Protected per-order screen. Shows customer, shipping snapshot, payment
- *   label, frozen line items, and totals. Lets an administrator change the
- *   fulfilment status and record internal notes via Post/Redirect/Get.
- *
- * Authentication requirements:
- *   Administrator role (customcore_require_admin()).
- *
- * Security:
- *   - Both write actions require a valid CSRF token.
- *   - Status is validated against the orders.status ENUM allow-list.
- *   - All output escaped via customcore_e(); payment is a label only.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator order detail.
+// Protected per-order screen. Shows customer, shipping snapshot, payment label, frozen line items,
+// and totals. Lets an administrator change the fulfilment status and record internal notes via
+// Post/Redirect/Get.
+// Access: Administrator role (customcore_require_admin()).
+// Security:
+//   Both write actions require a valid CSRF token.
+//   Status is validated against the orders.status ENUM allow-list.
+//   All output escaped via customcore_e(); payment is a label only.
 
 declare(strict_types=1);
 
@@ -32,9 +31,7 @@ customcore_require_admin();
 
 $pdo = customcore_pdo();
 
-// ---------------------------------------------------------------------------
 // Resolve the order id (GET on view, POST on write)
-// ---------------------------------------------------------------------------
 $orderId = 0;
 $rawId = $_SERVER['REQUEST_METHOD'] === 'POST' ? ($_POST['order_id'] ?? null) : ($_GET['id'] ?? null);
 if (is_string($rawId) && ctype_digit($rawId)) {
@@ -48,9 +45,7 @@ if ($orderId <= 0) {
 
 $detailUrl = 'admin/order-details.php?id=' . $orderId;
 
-// ---------------------------------------------------------------------------
-// Handle write actions (status change / notes) — CSRF + PRG
-// ---------------------------------------------------------------------------
+// Handle write actions (status change / notes), CSRF + PRG
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = isset($_POST['_csrf']) && is_string($_POST['_csrf']) ? $_POST['_csrf'] : null;
     if (!customcore_csrf_verify($token)) {
@@ -86,9 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     customcore_redirect($detailUrl);
 }
 
-// ---------------------------------------------------------------------------
 // Load order + items for display
-// ---------------------------------------------------------------------------
 $order = customcore_admin_order_fetch($pdo, $orderId);
 if ($order === null) {
     customcore_flash_error('That order could not be found.');
@@ -104,7 +97,7 @@ $adminNavCurrent = 'orders';
 $loadAdminCss = true;
 $currentPage = 'admin';
 
-$pageTitle = 'Order ' . $order['order_number'] . ' — CustomCore admin';
+$pageTitle = 'Order ' . $order['order_number'] . ' | CustomCore Admin';
 $pageDescription = 'Administrator view of a CustomCore customer order.';
 $pageKeywords = 'CustomCore, admin, order';
 
@@ -135,7 +128,7 @@ require_once __DIR__ . '/../includes/header.php';
             <h2 id="customer-heading" class="admin-card__title">Customer</h2>
             <dl class="admin-dl">
                 <dt>Name</dt>
-                <dd><?php echo customcore_e($customerName !== '' ? $customerName : '—'); ?></dd>
+                <dd><?php echo customcore_e($customerName !== '' ? $customerName : 'No name'); ?></dd>
                 <dt>Email</dt>
                 <dd><a href="mailto:<?php echo customcore_e((string) $order['email']); ?>"><?php echo customcore_e((string) $order['email']); ?></a></dd>
                 <dt>Account</dt>
@@ -180,7 +173,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <dt>Total</dt>
                 <dd class="admin-order-detail__total">$<?php echo customcore_e(number_format($total, 2)); ?></dd>
             </dl>
-            <p class="admin-order-detail__note">Simulated checkout — no real card data was collected.</p>
+            <p class="admin-order-detail__note">Simulated checkout, no real card data was collected.</p>
         </section>
     </div>
 
@@ -280,7 +273,7 @@ require_once __DIR__ . '/../includes/header.php';
                                                             <span class="admin-order-detail__part-cat"><?php echo customcore_e($part['category']); ?>:</span>
                                                         <?php endif; ?>
                                                         <?php echo customcore_e($part['component']); ?>
-                                                        — $<?php echo customcore_e(number_format($part['price'], 2)); ?>
+                                                        $<?php echo customcore_e(number_format($part['price'], 2)); ?>
                                                     </li>
                                                 <?php endforeach; ?>
                                             </ul>

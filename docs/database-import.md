@@ -1,7 +1,7 @@
-# CustomCore — Database Import and Backup Guide
+# CustomCore | Database Import and Backup Guide
 
-**Document type:** Stage 2 documentation (Commit 2.8)  
-**Purpose:** Enable a new developer or grader to create the database from scratch, load all seed data, create an admin account, verify the catalogue, and back up/restore safely.  
+**Document type:** Project documentation
+**Purpose:** Enable a new developer or grader to create the database from scratch, load all seed data, create an admin account, verify the catalogue, and back up/restore safely.
 **Related:** Entity-relationship design in [`docs/database-design.md`](database-design.md); config setup in [`config/README.md`](../config/README.md).
 
 ---
@@ -19,8 +19,8 @@
 
 ```sql
 CREATE DATABASE customcore
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
+ CHARACTER SET utf8mb4
+ COLLATE utf8mb4_unicode_ci;
 ```
 
 Grant your application user access to that database (host-specific). Then:
@@ -63,7 +63,7 @@ mysql -u your_username -p your_database_name < database/seed-compatibility.sql
 # 6. Themes + site settings
 mysql -u your_username -p your_database_name < database/seed-themes.sql
 
-# 7. Demo approved reviews (Commit 3.8 — optional but recommended for catalogue UI)
+# 7. Demo approved reviews
 mysql -u your_username -p your_database_name < database/seed-reviews.sql
 
 # 8. Admin account (interactive; hashed password — not a SQL seed)
@@ -97,8 +97,8 @@ Run these after a full import. Expected results are noted in comments.
 -- Expect 21
 SELECT COUNT(*) AS table_count
 FROM information_schema.TABLES
-WHERE TABLE_SCHEMA = DATABASE()
-  AND TABLE_TYPE = 'BASE TABLE';
+WHERE TABLE_SCHEMA = DATABASE
+ AND TABLE_TYPE = 'BASE TABLE';
 ```
 
 ### Catalogue (rubric #2 / B11)
@@ -113,7 +113,7 @@ WHERE is_active = 1;
 SELECT p.id, p.name, COUNT(po.id) AS option_count
 FROM products p
 LEFT JOIN product_options po
-  ON po.product_id = p.id AND po.is_active = 1
+ ON po.product_id = p.id AND po.is_active = 1
 WHERE p.is_active = 1
 GROUP BY p.id, p.name
 HAVING COUNT(po.id) < 2;
@@ -126,7 +126,7 @@ HAVING COUNT(po.id) < 2;
 SELECT cc.id, cc.name, COUNT(c.id) AS part_count
 FROM component_categories cc
 LEFT JOIN components c
-  ON c.component_category_id = cc.id AND c.is_active = 1
+ ON c.component_category_id = cc.id AND c.is_active = 1
 GROUP BY cc.id, cc.name
 HAVING COUNT(c.id) < 1;
 
@@ -146,7 +146,7 @@ INNER JOIN themes t ON t.id = CAST(s.setting_value AS UNSIGNED)
 WHERE s.setting_key = 'active_theme_id';
 ```
 
-### Reviews (Commit 3.8 — after seed-reviews.sql)
+### Reviews
 
 ```sql
 -- Expect ≥ 8 approved (public pages use this filter only)
@@ -160,7 +160,7 @@ FROM reviews
 GROUP BY status;
 
 -- Public pages must never surface these:
---   SELECT ... FROM reviews WHERE status = 'approved'
+-- SELECT... FROM reviews WHERE status = 'approved'
 ```
 
 ### Admin account
@@ -198,10 +198,10 @@ If the ER document and `schema.sql` ever diverge, treat **`schema.sql` as the ex
 
 ```bash
 mysqldump -u your_username -p \
-  --single-transaction \
-  --routines \
-  --triggers \
-  your_database_name > backups/customcore-backup.sql
+ --single-transaction \
+ --routines \
+ --triggers \
+ your_database_name > backups/customcore-backup.sql
 ```
 
 Create a local `backups/` folder if needed. **Do not commit dumps that contain real customer data or production credentials.** The project `.gitignore` already ignores local dump patterns where configured; keep backups outside Git when they hold private data.
@@ -222,10 +222,10 @@ To wipe catalogue/builder/theme seed data and reload from the repo seeds, re-run
 
 ## 6. Security reminders
 
-1. Never commit `config/database.php` or real passwords.  
-2. Never commit plain-text admin passwords or live customer dumps.  
-3. Prefer `create-admin.php` over hand-written `INSERT` with plaintext passwords.  
-4. On shared hosting, keep PHP debug mode off (`config/app.php` → `debug` => `false`).  
+1. Never commit `config/database.php` or real passwords.
+2. Never commit plain-text admin passwords or live customer dumps.
+3. Prefer `create-admin.php` over hand-written `INSERT` with plaintext passwords.
+4. On shared hosting, keep PHP debug mode off (`config/app.php` → `debug` => `false`).
 5. Seed data uses fictional catalogue content only — safe for Git.
 
 ---
@@ -245,4 +245,4 @@ To wipe catalogue/builder/theme seed data and reload from the repo seeds, re-run
 
 ## 8. Status
 
-**Commit 2.8 complete.** A new developer can import CustomCore’s database from scratch, verify Stage 2 acceptance criteria, create an admin account securely, and back up/restore without relying on undocumented steps.
+**Summary.** A new developer can import CustomCore’s database from scratch, verify the acceptance criteria, create an admin account securely, and back up/restore without relying on undocumented steps.

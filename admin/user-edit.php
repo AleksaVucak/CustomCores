@@ -1,21 +1,19 @@
 <?php
 /**
- * CustomCore — Administrator user detail & management (Commit 9.6).
- *
- * File responsibility:
- *   Protected per-account screen. Shows profile, activity summary, and recent
- *   orders, and lets an administrator enable/disable the login and change the
- *   role via Post/Redirect/Get.
- *
- * Authentication requirements:
- *   Administrator role (customcore_require_admin()).
- *
- * Security:
- *   - Both write actions require a valid CSRF token.
- *   - Role is validated against the users.role ENUM allow-list.
- *   - Self-lockout and last-active-admin invariants are enforced before writes.
- *   - The password hash is never loaded or displayed.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator user detail & management.
+// Protected per-account screen. Shows profile, activity summary, and recent orders, and lets an
+// administrator enable/disable the login and change the role via Post/Redirect/Get.
+// Access: Administrator role (customcore_require_admin()).
+// Security:
+//   Both write actions require a valid CSRF token.
+//   Role is validated against the users.role ENUM allow-list.
+//   Self-lockout and last-active-admin invariants are enforced before writes.
+//   The password hash is never loaded or displayed.
 
 declare(strict_types=1);
 
@@ -34,9 +32,7 @@ customcore_require_admin();
 $pdo = customcore_pdo();
 $currentAdminId = customcore_current_user_id();
 
-// ---------------------------------------------------------------------------
 // Resolve the account id (GET on view, POST on write)
-// ---------------------------------------------------------------------------
 $userId = 0;
 $rawId = $_SERVER['REQUEST_METHOD'] === 'POST' ? ($_POST['user_id'] ?? null) : ($_GET['id'] ?? null);
 if (is_string($rawId) && ctype_digit($rawId)) {
@@ -50,9 +46,7 @@ if ($userId <= 0) {
 
 $editUrl = 'admin/user-edit.php?id=' . $userId;
 
-// ---------------------------------------------------------------------------
-// Handle write actions (status / role) — CSRF + guards + PRG
-// ---------------------------------------------------------------------------
+// Handle write actions (status / role), CSRF + guards + PRG
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = isset($_POST['_csrf']) && is_string($_POST['_csrf']) ? $_POST['_csrf'] : null;
     if (!customcore_csrf_verify($token)) {
@@ -110,9 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     customcore_redirect($editUrl);
 }
 
-// ---------------------------------------------------------------------------
 // Load account for display
-// ---------------------------------------------------------------------------
 $user = customcore_admin_user_fetch($pdo, $userId);
 if ($user === null) {
     customcore_flash_error('That account could not be found.');
@@ -130,7 +122,7 @@ $adminNavCurrent = 'users';
 $loadAdminCss = true;
 $currentPage = 'admin';
 
-$pageTitle = 'Manage account — CustomCore admin';
+$pageTitle = 'Manage Account | CustomCore Admin';
 $pageDescription = 'Administrator view of a CustomCore account.';
 $pageKeywords = 'CustomCore, admin, account';
 
@@ -169,11 +161,11 @@ require_once __DIR__ . '/../includes/header.php';
             <h2 id="profile-heading" class="admin-card__title">Profile</h2>
             <dl class="admin-dl">
                 <dt>Name</dt>
-                <dd><?php echo customcore_e($fullName !== '' ? $fullName : '—'); ?></dd>
+                <dd><?php echo customcore_e($fullName !== '' ? $fullName : 'No name'); ?></dd>
                 <dt>Email</dt>
                 <dd><a href="mailto:<?php echo customcore_e((string) $user['email']); ?>"><?php echo customcore_e((string) $user['email']); ?></a></dd>
                 <dt>Phone</dt>
-                <dd><?php echo customcore_e((string) $user['phone'] !== '' ? (string) $user['phone'] : '—'); ?></dd>
+                <dd><?php echo customcore_e((string) $user['phone'] !== '' ? (string) $user['phone'] : 'Not given'); ?></dd>
                 <dt>Address</dt>
                 <dd>
                     <?php if ($hasAddress) : ?>
@@ -184,7 +176,7 @@ require_once __DIR__ . '/../includes/header.php';
                         <br>
                         <?php echo customcore_e(trim((string) $user['city'] . ', ' . (string) $user['province'] . ' ' . (string) $user['postal_code'])); ?>
                     <?php else : ?>
-                        —
+                        
                     <?php endif; ?>
                 </dd>
                 <dt>Joined</dt>

@@ -1,31 +1,25 @@
-/**
- * CustomCore — Shared JavaScript utilities and responsive navigation
- * ----------------------------------------------------------------------------
- * File responsibility:
- *   Provides common browser helpers and the mobile/desktop navigation toggle.
- *   Loaded deferred from includes/footer.php so it does not block first paint.
- *
- * Inputs / outputs:
- *   Exposes window.CustomCore with utility functions. Navigation enhancement
- *   requires #nav-toggle and #primary-navigation; pages without them are safe.
- *
- * Navigation behaviour (Commit 1.7):
- *   - Adds body.nav-enhanced so CSS can collapse the menu under 900px
- *   - Toggle opens/closes .site-nav.is-open
- *   - Escape closes the menu and returns focus to the toggle
- *   - Focus is kept within the header while the mobile menu is open
- *   - Resizing to desktop width closes the mobile menu state
- *
- * Accessibility (Commit 14.4):
- *   - After a failed form submit, keyboard/screen-reader focus is moved to the
- *     first invalid field (or the form-level error alert) so the problem is
- *     announced and reachable without a mouse.
- *
- * Later stages:
- *   cart, validation, charts, and map scripts.
- *   Builder live pricing lives in assets/js/builder.js (Commit 5.2).
- * ----------------------------------------------------------------------------
+/*
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Shared JavaScript utilities and responsive navigation.
+// Provides common browser helpers and the mobile/desktop navigation toggle. Loaded deferred from
+// includes/footer.php so it does not block first paint.
+// Inputs and outputs: Exposes window.CustomCore with utility functions. Navigation enhancement
+// requires #nav-toggle and #primary-navigation; pages without them are safe.
+// Navigation behaviour:
+//   Adds body.nav-enhanced so CSS can collapse the menu under 900px
+//   Toggle opens/closes.site-nav.is-open
+//   Escape closes the menu and returns focus to the toggle
+//   Focus is kept within the header while the mobile menu is open
+//   Resizing to desktop width closes the mobile menu state
+// Accessibility:
+//   After a failed form submit, keyboard/screen-reader focus is moved to the first invalid field
+//     (or the form-level error alert) so the problem is announced and reachable without a mouse.
+// Later stages: cart, validation, charts, and map scripts. Builder live pricing lives in
+// assets/js/builder.js.
 
 (function (window, document) {
   "use strict";
@@ -371,9 +365,9 @@
    * and screen-reader users are taken straight to what needs fixing.
    *
    * Priority:
-   *   1. The first field marked aria-invalid="true".
-   *   2. Otherwise, a form-level error alert on a page that posts a form
-   *      (e.g. an expired CSRF token), ignoring read-only status banners.
+   * 1. The first field marked aria-invalid="true".
+   * 2. Otherwise, a form-level error alert on a page that posts a form
+   * (e.g. an expired CSRF token), ignoring read-only status banners.
    *
    * @returns {void}
    */
@@ -386,7 +380,7 @@
           return;
         }
       } catch (error) {
-        // Malformed hash — fall through to normal error handling.
+        // Malformed hash, fall through to normal error handling.
       }
     }
 

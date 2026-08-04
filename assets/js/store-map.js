@@ -1,12 +1,14 @@
-/**
- * CustomCore — Store & service map (Commit 8.4).
- *
- * Enhances store-locations.php with an interactive Leaflet/OpenStreetMap map.
- * Progressive enhancement: if JavaScript, Leaflet, the container, or the tiles
- * are unavailable, the always-visible text address beside the map remains fully
- * usable. Location data is read from data-* attributes on #customcore-map so no
- * inline script or server HTML injection is needed.
+/*
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Store & service map.
+// Enhances store-locations.php with an interactive Leaflet/OpenStreetMap map. Progressive
+// enhancement: if JavaScript, Leaflet, the container, or the tiles are unavailable, the always-
+// visible text address beside the map remains fully usable. Location data is read from data-*
+// attributes on #customcore-map so no inline script or server HTML injection is needed.
 
 (function () {
   'use strict';
@@ -15,8 +17,8 @@
    * Build the marker popup from location fields using DOM nodes (values are set
    * via textContent so they are treated as text, never HTML).
    *
-   * @param {{name?: string, street?: string, locality?: string, phone?: string,
-   *   phoneHref?: string, email?: string}} data Location details from data-* attrs.
+   * @param {{name?: string, street?: string, locality?: string, phone?: string
+   * phoneHref?: string, email?: string}} data Location details from data-* attrs.
    * @returns {HTMLDivElement} The popup content element.
    */
   function buildPopup(data) {

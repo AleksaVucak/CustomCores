@@ -1,32 +1,26 @@
--- =============================================================================
--- CustomCore — Themes and Site Settings Seed (Commit 2.6)
--- =============================================================================
---
--- File responsibility:
---   Seeds the three switchable site themes and the default site_settings row
---   that selects the active theme. CSS theme files themselves are created in
---   Stage 10; this commit only stores the database records the theme switcher
---   and shared header will read later.
---
+-- Aleksa Vucak
+-- 110139920
+-- COMP 3340, Final Project
+-- August 5th, 2026
+-- Themes and Site Settings Seed
+-- Seeds the three switchable site themes and the default site_settings row
+-- that selects the active theme. CSS theme files themselves are created in
+-- this commit only stores the database records the theme switcher
+-- and shared header will read later.
 -- Prerequisites:
---   1. Import `database/schema.sql`
---
+-- 1. Import `database/schema.sql`
 -- Import:
---   mysql -u your_username -p your_database_name < database/seed-themes.sql
---
--- Acceptance (Commit 2.6):
---   - Exactly 3 theme rows exist
---   - One theme is marked is_active_default = 1 (fallback)
---   - site_settings.active_theme_id points at a valid themes.id
---   - Active theme is readable with a simple JOIN query
---
+-- mysql -u your_username -p your_database_name < database/seed-themes.sql
+-- Acceptance:
+-- - Exactly 3 theme rows exist
+-- - One theme is marked is_active_default = 1 (fallback)
+-- - site_settings.active_theme_id points at a valid themes.id
+-- - Active theme is readable with a simple JOIN query
 -- Theme filenames match the rubric checklist (#3a):
---   assets/themes/rgb-gaming.css
---   assets/themes/minimal-pro.css
---   assets/themes/cyber-grid.css
---
+-- assets/themes/rgb-gaming.css
+-- assets/themes/minimal-pro.css
+-- assets/themes/cyber-grid.css
 -- Default theme slug matches config/app.php → default_theme = 'rgb-gaming'
--- =============================================================================
 
 SET NAMES utf8mb4;
 
@@ -37,9 +31,7 @@ DELETE FROM `themes`;
 ALTER TABLE `site_settings` AUTO_INCREMENT = 1;
 ALTER TABLE `themes` AUTO_INCREMENT = 1;
 
--- =============================================================================
--- THEMES — Three distinct site-wide CSS templates
--- =============================================================================
+-- THEMES, Three distinct site-wide CSS templates
 -- is_active_default marks the fallback if site_settings is missing/corrupt.
 -- Only one row should have is_active_default = 1.
 
@@ -68,11 +60,9 @@ VALUES
     0
 );
 
--- =============================================================================
--- SITE_SETTINGS — Active theme and extensible key-value settings
--- =============================================================================
+-- SITE_SETTINGS, Active theme and extensible key-value settings
 -- active_theme_id stores the themes.id of the currently selected template.
--- Administrators change this value from admin/themes.php in Stage 10.
+-- Administrators change this value from admin/themes.php in.
 
 INSERT INTO `site_settings`
     (`id`, `setting_key`, `setting_value`)
@@ -93,9 +83,7 @@ VALUES
     '0'
 );
 
--- =============================================================================
 -- VERIFICATION QUERIES
--- =============================================================================
 
 -- Expect 3 themes:
 -- SELECT COUNT(*) AS theme_count FROM themes;
@@ -103,7 +91,7 @@ VALUES
 -- Expect exactly one default fallback theme:
 -- SELECT COUNT(*) AS default_count FROM themes WHERE is_active_default = 1;
 
--- Active theme readable from MySQL (JOIN — expect one row: RGB Gaming):
+-- Active theme readable from MySQL (JOIN, expect one row: RGB Gaming):
 -- SELECT t.id, t.name, t.slug, t.css_file
 -- FROM site_settings s
 -- INNER JOIN themes t ON t.id = CAST(s.setting_value AS UNSIGNED)

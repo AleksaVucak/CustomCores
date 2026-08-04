@@ -1,36 +1,31 @@
 <?php
 /**
- * CustomCore — Product Comparison (Commit 3.7).
- *
- * File responsibility:
- *   Side-by-side comparison of 2–4 selected catalogue products. Fields are
- *   consistent across columns (price, stock, brand, category, spec_*).
- *   Selection is URL-based so comparisons are shareable and work without JS.
- *
- * URL formats:
- *   compare.php?ids=1,2,3
- *   compare.php?ids[]=1&ids[]=2&ids[]=3
- *
- * Authentication requirements:
- *   None (public).
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Product Comparison.
+// Side-by-side comparison of 2 to 4 selected catalogue products. Fields are consistent across
+// columns (price, stock, brand, category, spec_*). Selection is URL-based so comparisons are
+// shareable and work without JS.
+// URL formats: compare.php?ids=1,2,3 compare.php?ids[]=1&ids[]=2&ids[]=3
+// Access: None (public).
 
 declare(strict_types=1);
 
 require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/database.php';
 
-$pageTitle = 'Compare systems — CustomCore';
-$pageDescription = 'Compare CustomCore gaming and creator PCs side by side — price, specs, stock, and tier.';
+$pageTitle = 'Compare Systems | CustomCore';
+$pageDescription = 'Compare CustomCore gaming and creator PCs side by side, price, specs, stock, and tier.';
 $pageKeywords = 'CustomCore, compare, gaming PC, specs, side by side';
 $currentPage = 'catalogue';
 
 const COMPARE_MIN = 2;
 const COMPARE_MAX = 4;
 
-// ---------------------------------------------------------------------------
 // Parse selected IDs from GET (array or comma-separated string)
-// ---------------------------------------------------------------------------
 
 $requestedIds = [];
 
@@ -64,9 +59,7 @@ foreach ($requestedIds as $raw) {
     }
 }
 
-// ---------------------------------------------------------------------------
 // Load products
-// ---------------------------------------------------------------------------
 
 $comparedProducts = [];
 $allProducts = [];
@@ -201,9 +194,9 @@ require_once __DIR__ . '/includes/header.php';
             <a href="<?php echo customcore_e(customcore_url('help/catalogue.html#compare')); ?>">Catalogue guide</a>
         </p>
         <p class="compare-page__intro">
-            Select <?php echo customcore_e((string) COMPARE_MIN); ?>–
+            Select <?php echo customcore_e((string) COMPARE_MIN); ?>, 
             <?php echo customcore_e((string) COMPARE_MAX); ?> CustomCore systems
-            and review the same fields side by side — price, stock, tier, and default specs.
+            and review the same fields side by side, price, stock, tier, and default specs.
         </p>
     </header>
 
@@ -348,7 +341,7 @@ require_once __DIR__ . '/includes/header.php';
                                         break;
                                 }
                                 if ($cell === '') {
-                                    $cell = '—';
+                                    $cell = 'Not listed';
                                 }
                                 $extraClass = '';
                                 if ($rowKey === 'stock' && $stock <= 0) {

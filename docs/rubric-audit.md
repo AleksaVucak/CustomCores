@@ -1,9 +1,9 @@
-# CustomCore — 100-Point Rubric Audit (Requirement → Evidence)
+# CustomCore | 100-Point Rubric Audit (Requirement → Evidence)
 
-**Document type:** Stage 15 verification record (Commit 15.8)
-**Purpose:** Prove that every point of the official 100-point grading scheme maps to a concrete **page**, a concrete **file**, and a **test/result** — the Stage 15.8 completion criterion: *"Every point has a page, a file, and a test."*
-**Method:** Each row below was re-verified against the running project (served with `php -S localhost:8000`) and the working tree on the audit date. Counts were taken directly from the live database and filesystem; HTTP status codes were captured with `curl`; behavioural claims cite the earlier Stage 15 test records (15.1 HTML, 15.2 CSS, 15.3 JS/console, 15.4 desktop, 15.5 mobile, 15.6 customer workflows, 15.7 administrator workflows).
-**Result:** **98 / 100 points fully evidenced and tested.** The remaining **2 points (#11, live hosting)** have their page slot and deployment files ready, but the live-load test is **Blocked until hosting** (Stage 16) — it is the only rubric item whose completion test cannot pass in a local environment.
+**Document type:** Project documentation
+**Purpose:** Prove that every point of the official 100-point grading scheme maps to a concrete **page**, a concrete **file**, and a **test/result** — the completion criterion: *"Every point has a page, a file, and a test."*
+**Method:** Each row below was re-verified against the running project (served with `php -S localhost:8000`) and the working tree on the audit date. Counts were taken directly from the live database and filesystem; HTTP status codes were captured with `curl`; behavioural claims cite the earlier test records (15.1 HTML, 15.2 CSS, 15.3 JS/console, 15.4 desktop, 15.5 mobile, 15.6 customer workflows, 15.7 administrator workflows).
+**Result:** **98 / 100 points fully evidenced and tested.** The remaining **2 points (#11, live hosting)** have their page slot and deployment files ready, but the live-load test is **Blocked until hosting** — it is the only rubric item whose completion test cannot pass in a local environment.
 
 ---
 
@@ -15,10 +15,10 @@ Served locally and probed:
 php -S localhost:8000
 # Public + Help pages → HTTP 200; auth-gated pages → 303 to login (expected)
 for p in index.php about.php catalogue.php "product.php?id=1" builder.php \
-         compare.php "search.php?q=pc" store-locations.php media.php \
-         accessibility.php reviews.php contact.php login.php register.php \
-         sitemap.php sitemap.xml robots.txt favicon.svg site.webmanifest; do
-  curl -s -o /dev/null -w "%{http_code}  $p\n" "http://localhost:8000/$p"
+ compare.php "search.php?q=pc" store-locations.php media.php \
+ accessibility.php reviews.php contact.php login.php register.php \
+ sitemap.php sitemap.xml robots.txt favicon.svg site.webmanifest; do
+ curl -s -o /dev/null -w "%{http_code} $p\n" "http://localhost:8000/$p"
 done
 ```
 
@@ -60,7 +60,7 @@ All 19 public/SEO URLs returned **200**; all 7 Help pages returned **200**; `pro
 | 10d | 4 | ≥ 20 copyright-free images | catalogue/product/hero/media pages | `assets/images/**` (products, categories, hero, media, og, ui); credits `docs/media-credits.md` | **15.8 count:** **33** images (20 product + 13 site); every `img` has `alt` (15.1); licences/prompts documented (8.7) | **Complete** |
 | 10e | 4 | ≥ 3 video or audio files | `media.php` | `assets/media/` (2× MP4 + 1× MP3) + `captions/` WebVTT | **15.8 count:** 3 media items; native controls + captions + transcripts verified (8.2–8.3) | **Complete** |
 | 10f | 2 | Non-programmer content-update instructions | (docs) | `docs/content-update-guide.md`; referenced from admin guide + README | **12.3:** step-by-step for products/prices/stock/images/options via the admin site (no code) + media copy-paste block + "what NOT to edit" | **Complete** |
-| 11 | 2 | Website available online live | production URL (README slot) | README production-URL row; `docs/deployment-troubleshooting.md`, `docs/installation-guide.md` | **Blocked:** page slot + deploy/rollback docs ready; **live-load test pending hosting (Stage 16)** — the only item without a passing live test | **Blocked** |
+| 11 | 2 | Website available online live | production URL (README slot) | README production-URL row; `docs/deployment-troubleshooting.md`, `docs/installation-guide.md` | **Blocked:** page slot + deploy/rollback docs ready; **live-load test pending hosting** — the only item without a passing live test | **Blocked** |
 | 12 | 4 | Advanced appropriate CSS | all pages across 3 themes | `assets/css/main.css` + 3 themes | **14.5 + 10.6 + 15.4/15.5:** typography, nav, cards, transitions (`:focus-within` lift, animated menu reveal, focus-driven labels, hover-gated lift), grids, form states; cross-theme + responsive verified | **Complete** |
 | 13 | 4 | SEO-friendly meta (icon/title/description/keywords) | all public pages | `includes/header.php` + `includes/seo.php`; `favicon.svg`, `site.webmanifest`, `sitemap.xml`, `robots.txt` | **15.8:** all four SEO assets HTTP 200; per-page unique title/description/keywords + canonical/OG (14.1); public-only sitemap excludes admin/APIs/private (14.2); semantic landmarks + heading hierarchy (14.3); titles/descriptions present in 15.1 | **Complete** |
 
@@ -73,7 +73,7 @@ All 19 public/SEO URLs returned **200**; all 7 Help pages returned **200**; `pro
 | Bucket | Points | Notes |
 | ------ | -----: | ----- |
 | Complete — page + file + passing test | **98** | Items 1, 2, 3a, 3b, 4, 5, 6, 7, 9, 10a, 10b, 10c, 10d, 10e, 10f, 12, 13 |
-| Blocked — page + file ready, live test pending hosting | **2** | Item 11 (goes live in Stage 16) |
+| Blocked — page + file ready, live test pending hosting | **2** | Item 11 (goes live at deployment) |
 | **Total accounted for** | **100** | Every point has a page and a file; 98/100 also have a passing test today |
 
 ---
@@ -84,9 +84,9 @@ Item 11 ("website available online live, preferably `myweb.cs.uwindsor.ca`") is 
 
 - **Page:** the README carries a labelled production-URL slot ready to fill in.
 - **File:** `docs/deployment-troubleshooting.md` (shared-hosting deployment, pre-deploy checklist, per-environment credentials, permissions, host DB import, HTTPS/session hardening, live verification, symptom→cause→fix table, backup/rollback) and `docs/installation-guide.md` (clean checkout → working site).
-- **Design readiness:** links use depth-safe `customcore_url()` and plain `.php` URLs (no build step), so the same code runs on shared hosting unchanged.
+- **Design readiness:** links use depth-safe `customcore_url` and plain `.php` URLs (no build step), so the same code runs on shared hosting unchanged.
 
-The **live-load test** is deferred to **Stage 16 (deployment)**. This is a hosting dependency, not a code defect.
+The **live-load test** is deferred to **deployment**. This is a hosting dependency, not a code defect.
 
 ---
 
@@ -97,4 +97,4 @@ The **live-load test** is deferred to **Stage 16 (deployment)**. This is a hosti
 - Customer workflows: [`customer-workflows.md`](customer-workflows.md) · Administrator workflows: [`admin-workflows.md`](admin-workflows.md)
 - Full requirement map + roadmap: [`rubric-checklist.md`](rubric-checklist.md) · Page inventory: [`sitemap.md`](sitemap.md)
 
-**Conclusion:** Every one of the 100 graded points maps to a real page and a real file. 98 points additionally carry a passing test as of this audit; the remaining 2 (live hosting) are fully prepared and gated only on Stage 16 deployment.
+**Conclusion:** Every one of the 100 graded points maps to a real page and a real file. 98 points additionally carry a passing test as of this audit; the remaining 2 (live hosting) are fully prepared and gated only on deployment.

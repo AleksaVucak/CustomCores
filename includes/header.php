@@ -1,27 +1,24 @@
 <?php
 /**
- * CustomCore — Shared site header (document start through opening main).
- *
- * File responsibility:
- *   Outputs the HTML head, skip link, site header chrome, and opens <main>.
- *   Expects pages to set $pageTitle and optionally $pageDescription, $pageKeywords,
- *   and $currentPage before including this file.
- *
- * Optional SEO overrides (Commit 14.1):
- *   $pageCanonical — project-relative canonical target, or false to omit the
- *                    <link rel="canonical">. Defaults to a self-referencing URL.
- *   $pageNoindex   — set true to force <meta name="robots"> noindex. Admin and
- *                    per-user private pages are noindexed automatically.
- *
- * Authentication requirements:
- *   None for the include itself. Private pages add auth checks before this include.
- *
- * Required setup on each page:
- *   require_once __DIR__ . '/includes/functions.php';
- *   $pageTitle = '...';
- *   $currentPage = 'home'; // optional, for active nav state
- *   require_once __DIR__ . '/includes/header.php';
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Shared site header (document start through opening main).
+// Outputs the HTML head, skip link, site header chrome, and opens <main>. Expects pages to set
+// $pageTitle and optionally $pageDescription, $pageKeywords, and $currentPage before including
+// this file.
+// Optional SEO overrides:
+//   $pageCanonical, project-relative canonical target, or false to omit the <link
+//     rel="canonical">. Defaults to a self-referencing URL.
+//   $pageNoindex, set true to force <meta name="robots"> noindex. Admin and per-user private pages
+//     are noindexed automatically.
+// Access: None for the include itself. Private pages add auth checks before this include.
+// Required setup on each page: require_once __DIR__. '/includes/functions.php';
+//   $pageTitle = '...';
+//   $currentPage = 'home'; // optional, for active nav state require_once __DIR__.
+//     '/includes/header.php';
 
 declare(strict_types=1);
 
@@ -62,14 +59,14 @@ if (!isset($currentPage) || !is_string($currentPage)) {
     <title><?php echo customcore_e($pageTitle); ?></title>
 
     <?php
-    // Search-engine indexing policy (Commit 14.1). Public content pages are
+    // Search-engine indexing policy. Public content pages are
     // indexable; admin and per-user private pages are excluded.
     $robotsDirective = customcore_is_noindex_page() ? 'noindex, nofollow' : 'index, follow';
     ?>
     <meta name="robots" content="<?php echo customcore_e($robotsDirective); ?>">
 
     <?php
-    // Canonical URL (Commit 14.1). A page may set $pageCanonical to a
+    // Canonical URL. A page may set $pageCanonical to a
     // project-relative target, or to false to suppress the tag entirely.
     $canonicalUrl = customcore_canonical_url($pageCanonical ?? null);
     ?>
@@ -91,7 +88,7 @@ if (!isset($currentPage) || !is_string($currentPage)) {
         <meta name="twitter:image" content="<?php echo customcore_e($ogImage); ?>">
     <?php endif; ?>
 
-    <!-- Favicon, theme colour, and web app manifest (Commit 14.1) -->
+    <!-- Favicon, theme colour, and web app manifest -->
     <link rel="icon" type="image/svg+xml" href="<?php echo customcore_e(customcore_url('favicon.svg')); ?>">
     <link rel="icon" href="<?php echo customcore_e(customcore_url('favicon.svg')); ?>" sizes="any">
     <link rel="apple-touch-icon" href="<?php echo customcore_e(customcore_url('favicon.svg')); ?>">
@@ -103,7 +100,7 @@ if (!isset($currentPage) || !is_string($currentPage)) {
         <link rel="stylesheet" href="<?php echo customcore_e(customcore_url('assets/css/admin.css')); ?>">
     <?php endif; ?>
     <?php if ($currentPage === 'locations') : ?>
-        <!-- Leaflet map styles for the store & service map (Commit 8.4) -->
+        <!-- Leaflet map styles for the store & service map -->
         <link
             rel="stylesheet"
             href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -112,7 +109,7 @@ if (!isset($currentPage) || !is_string($currentPage)) {
         >
     <?php endif; ?>
     <?php
-    // Active theme stylesheet (Stage 10): resolved from MySQL settings with a
+    // Active theme stylesheet: resolved from MySQL settings with a
     // safe fallback chain, and linked LAST so it overrides main.css/admin.css.
     require_once __DIR__ . '/theme.php';
     $themeHref = customcore_active_theme_href();

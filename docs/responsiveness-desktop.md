@@ -1,9 +1,9 @@
-# CustomCore — Desktop Responsiveness Verification (Commit 15.4)
+# CustomCore | Desktop Responsiveness Verification
 
-**Document type:** Stage 15 verification  
-**Purpose:** Prove that every core page renders correctly on desktop-class viewports — no unintended horizontal scrolling, no clipped or overlapping content, and the shared container caps and centres as designed on wide screens.  
-**Acceptance:** Core public, customer, and administrator pages are usable at representative desktop widths; any avoidable layout defects found are corrected.  
-**Related:** Layout contract in [`wireframes.md`](wireframes.md); token/breakpoint system in [`frontend-documentation.md`](frontend-documentation.md) §3; base rules in [`assets/css/main.css`](../assets/css/main.css) + [`assets/css/admin.css`](../assets/css/admin.css); prior Stage 15 records [`html-validation.md`](html-validation.md), [`css-validation.md`](css-validation.md), and [`js-validation.md`](js-validation.md). Mobile responsiveness is verified separately in Commit 15.5.
+**Document type:** Project documentation
+**Purpose:** Prove that every core page renders correctly on desktop-class viewports — no unintended horizontal scrolling, no clipped or overlapping content, and the shared container caps and centres as designed on wide screens.
+**Acceptance:** Core public, customer, and administrator pages are usable at representative desktop widths; any avoidable layout defects found are corrected.
+**Related:** Layout contract in [`wireframes.md`](wireframes.md); token/breakpoint system in [`frontend-documentation.md`](frontend-documentation.md) §3; base rules in [`assets/css/main.css`](../assets/css/main.css) + [`assets/css/admin.css`](../assets/css/admin.css); earlier test records [`html-validation.md`](html-validation.md), [`css-validation.md`](css-validation.md), and [`js-validation.md`](js-validation.md). Mobile responsiveness is verified separately
 
 ### Status legend
 
@@ -48,9 +48,9 @@
 
 1. **Layout audit** — reviewed the container, breakpoint, and grid rules above in `main.css` / `admin.css` to establish the intended desktop behaviour and which horizontal scroll wrappers are deliberate.
 2. **Automated overflow probe** — the project PHP built-in server (`http://localhost:8000`) was driven in a real Chromium tab. Viewport size was set per width with the DevTools `Emulation.setDeviceMetricsOverride`, then for each page a script measured:
-   - `document.scrollWidth` vs `window.innerWidth` (page-level horizontal overflow), and
-   - every element whose bounding box extends past the viewport **and** whose ancestors are **not** an `overflow-x: auto/scroll/hidden` scroll container (i.e. real offenders, filtering out intended scroll wrappers).
-   - For pages with tables/charts, the wrapper's `overflow-x` and `scrollWidth > clientWidth` were also captured to confirm any wide table is contained.
+ - `document.scrollWidth` vs `window.innerWidth` (page-level horizontal overflow), and
+ - every element whose bounding box extends past the viewport **and** whose ancestors are **not** an `overflow-x: auto/scroll/hidden` scroll container (i.e. real offenders, filtering out intended scroll wrappers).
+ - For pages with tables/charts, the wrapper's `overflow-x` and `scrollWidth > clientWidth` were also captured to confirm any wide table is contained.
 3. **Wide-screen centring check** — at 1920 px, `.site-main` width and left offset were measured to confirm the 1120 px cap and symmetric gutters (no edge-to-edge stretch).
 4. **Signed-in + admin coverage** — a disposable customer was registered and used to exercise cart, checkout, a placed order (populating order history/details/confirmation), wishlist, saved builds, consultation, and edit-profile. The same account was briefly promoted to administrator via a temporary DB helper to reach every admin route, then the account, its order, and the helper files were **deleted** afterward (store returned to its pre-test state).
 
@@ -128,7 +128,7 @@
 
 ## 5. Defects found and fixed
 
-**None.** The desktop sweep found no unintended horizontal overflow, clipped content, or broken grids on any core page at any tested width. The existing responsive foundation (fluid `min()` container, `auto-fit`/`auto-fill` grids, and deliberate `overflow-x` wrappers around wide tables) already handles the desktop range correctly, so no CSS changes were required for this commit.
+**None.** The desktop sweep found no unintended horizontal overflow, clipped content, or broken grids on any core page at any tested width. The existing responsive foundation (fluid `min` container, `auto-fit`/`auto-fill` grids, and deliberate `overflow-x` wrappers around wide tables) already handles the desktop range correctly, so no CSS changes were required for this commit.
 
 ---
 
@@ -147,13 +147,13 @@
 php -S localhost:8000
 
 # 2. In a desktop browser, open each page in §4 and, for each width
-#    (1024, 1280, 1440, 1920), confirm there is NO horizontal scrollbar
-#    on the page itself and no clipped/overlapping content. Wide admin
-#    tables and the comparison table may scroll INSIDE their card — that
-#    is expected.
+# (1024, 1280, 1440, 1920), confirm there is NO horizontal scrollbar
+# on the page itself and no clipped/overlapping content. Wide admin
+# tables and the comparison table may scroll INSIDE their card — that
+# is expected.
 
 # 3. Quick overflow check in the browser console on any page:
-#    (document.documentElement.scrollWidth <= window.innerWidth)  // expect true
+# (document.documentElement.scrollWidth <= window.innerWidth) // expect true
 ```
 
 Signed-in and admin pages require a logged-in customer / administrator account; the audit used a disposable account that was deleted afterward.
@@ -170,4 +170,3 @@ Signed-in and admin pages require a logged-in customer / administrator account; 
 | Avoidable desktop layout defects corrected | **None found** |
 | Desktop responsiveness results recorded | **This document** |
 
-**Commit 15.4 complete.** Next: Commit **15.5** — mobile responsiveness testing.

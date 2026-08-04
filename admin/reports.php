@@ -1,16 +1,15 @@
 <?php
 /**
- * CustomCore — Administrator reports & charts (Commit 9.9).
- *
- * File responsibility:
- *   Protected analytics page. Charts for orders by status, products by
- *   performance tier, user accounts, and inventory health — all driven by live
- *   MySQL aggregates. Each chart has a server-rendered accessible data table
- *   that remains the source of truth if Chart.js fails to load.
- *
- * Authentication requirements:
- *   Administrator role (customcore_require_admin()).
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator reports & charts.
+// Protected analytics page. Charts for orders by status, products by performance tier, user
+// accounts, and inventory health, all driven by live MySQL aggregates. Each chart has a server-
+// rendered accessible data table that remains the source of truth if Chart.js fails to load.
+// Access: Administrator role (customcore_require_admin()).
 
 declare(strict_types=1);
 
@@ -89,7 +88,7 @@ $loadAdminCss = true;
 $loadAdminReports = true;
 $currentPage = 'admin';
 
-$pageTitle = 'Reports — CustomCore admin';
+$pageTitle = 'Reports | CustomCore Admin';
 $pageDescription = 'Live CustomCore charts for orders, catalogue, users, and inventory.';
 $pageKeywords = 'CustomCore, admin, reports, charts';
 
@@ -100,7 +99,7 @@ require_once __DIR__ . '/../includes/header.php';
     <header class="admin-page__header">
         <h1 id="admin-reports-heading">Reports</h1>
         <p class="admin-page__intro">
-            Live charts from the CustomCore database — orders, catalogue composition,
+            Live charts from the CustomCore database, orders, catalogue composition,
             accounts, and inventory health. Each graph has a matching data table that
             stays readable if charts cannot load.
         </p>
@@ -194,7 +193,7 @@ require_once __DIR__ . '/../includes/header.php';
                     </table>
                     <p class="admin-report-chart__note">
                         <?php if ($report['orders']['total'] === 0) : ?>
-                            No orders have been placed yet — the chart will fill in as customers check out.
+                            No orders have been placed yet, the chart will fill in as customers check out.
                         <?php else : ?>
                             Figures are read live from the orders table.
                         <?php endif; ?>
@@ -322,7 +321,7 @@ require_once __DIR__ . '/../includes/header.php';
                 </div>
             </div>
             <p class="admin-report-chart__note">
-                <?php echo customcore_e((string) $report['users']['total']); ?> accounts total — figures are read live from the users table.
+                <?php echo customcore_e((string) $report['users']['total']); ?> accounts total, figures are read live from the users table.
             </p>
         </section>
 

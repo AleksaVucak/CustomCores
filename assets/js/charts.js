@@ -1,23 +1,17 @@
-/**
- * CustomCore — Build performance chart (Commit 5.8)
- * ----------------------------------------------------------------------------
- * File responsibility:
- *   Renders a Chart.js grouped bar chart for gaming, productivity, and upgrade
- *   headroom. Fetches trusted scores from api/chart-data.php. Always keeps a
- *   text fallback in the DOM so the page stays usable if Chart.js fails.
- *
- * Expected markup:
- *   [data-perf-chart]
- *     [data-chart-api] URL
- *     [data-chart-ids] JSON array of component IDs (optional; form may supply)
- *     canvas[data-perf-canvas]
- *     [data-perf-fallback] text summary list
- *
- * Chart.js:
- *   Loaded from CDN when $loadCharts is set. If window.Chart is missing, only
- *   the text fallback is shown.
- * ----------------------------------------------------------------------------
+/*
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Build performance chart.
+// Renders a Chart.js grouped bar chart for gaming, productivity, and upgrade headroom. Fetches
+// trusted scores from api/chart-data.php. Always keeps a text fallback in the DOM so the page
+// stays usable if Chart.js fails.
+// Expected markup: [data-perf-chart] [data-chart-api] URL [data-chart-ids] JSON array of component
+// IDs (optional; form may supply) canvas[data-perf-canvas] [data-perf-fallback] text summary list
+// Chart.js: Loaded from CDN when $loadCharts is set. If window.Chart is missing, only the text
+// fallback is shown.
 
 (function (window, document) {
   "use strict";
@@ -249,7 +243,7 @@
 
       if (xhr.status !== 200) {
         if (statusEl) {
-          statusEl.textContent = "Chart data unavailable — see text summary.";
+          statusEl.textContent = "Chart data unavailable, see text summary.";
         }
         return;
       }
@@ -259,14 +253,14 @@
         resp = JSON.parse(xhr.responseText);
       } catch (e) {
         if (statusEl) {
-          statusEl.textContent = "Chart data unavailable — see text summary.";
+          statusEl.textContent = "Chart data unavailable, see text summary.";
         }
         return;
       }
 
       if (!resp || !resp.success) {
         if (statusEl) {
-          statusEl.textContent = "Chart data unavailable — see text summary.";
+          statusEl.textContent = "Chart data unavailable, see text summary.";
         }
         return;
       }

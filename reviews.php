@@ -1,23 +1,21 @@
 <?php
 /**
- * CustomCore — Product Reviews listing + submission (Commits 3.8 + 7.2).
- *
- * File responsibility:
- *   Public listing of approved product reviews (optional ?product_id=N filter).
- *   Logged-in customers can submit a new review (rating, title, body) which is
- *   stored with status = pending until an administrator moderates it (Stage 9).
- *   Pending and hidden reviews never appear in the public list.
- *
- * Authentication requirements:
- *   None for reading (public). Submission requires a logged-in customer.
- *
- * Security:
- *   - CSRF verification on submit.
- *   - Server-side validation of rating (1–5), title, and body.
- *   - Product must exist and be active.
- *   - One pending/approved review per user per product (no stacking).
- *   - Output escaped; PRG redirect after successful submit.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Product Reviews listing + submission+ 7.2).
+// Public listing of approved product reviews (optional ?product_id=N filter). Logged-in customers
+// can submit a new review (rating, title, body) which is stored with status = pending until an
+// administrator moderates it. Pending and hidden reviews never appear in the public list.
+// Access: None for reading (public). Submission requires a logged-in customer.
+// Security:
+//   CSRF verification on submit.
+//   Server-side validation of rating (1 to 5), title, and body.
+//   Product must exist and be active.
+//   One pending/approved review per user per product (no stacking).
+//   Output escaped; PRG redirect after successful submit.
 
 declare(strict_types=1);
 
@@ -28,15 +26,13 @@ require_once __DIR__ . '/includes/csrf.php';
 require_once __DIR__ . '/includes/flash.php';
 require_once __DIR__ . '/includes/reviews.php';
 
-$pageTitle = 'Reviews — CustomCore';
+$pageTitle = 'Reviews | CustomCore';
 $pageDescription = 'Read approved customer reviews of CustomCore gaming and creator PCs, or submit your own.';
 $pageKeywords = 'CustomCore, reviews, ratings, gaming PC';
 $currentPage = 'catalogue';
 $loadReviewForm = false;
 
-// ---------------------------------------------------------------------------
 // Optional product filter
-// ---------------------------------------------------------------------------
 
 $filterProductId = 0;
 if (isset($_GET['product_id']) && is_string($_GET['product_id']) && ctype_digit($_GET['product_id'])) {
@@ -70,9 +66,7 @@ $formBanner = null;
 $existingReview = null;
 $canSubmit = false;
 
-// ---------------------------------------------------------------------------
-// Handle POST — submit a review (Commit 7.2)
-// ---------------------------------------------------------------------------
+// Handle POST, submit a review
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = isset($_POST['action']) && is_string($_POST['action']) ? $_POST['action'] : '';
@@ -159,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 customcore_redirect($returnTo);
             }
 
-            // Validation failed — keep sticky values and re-render (no redirect).
+            // Validation failed, keep sticky values and re-render (no redirect).
             if ($productIdPost > 0) {
                 $filterProductId = $productIdPost;
             }
@@ -175,9 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// ---------------------------------------------------------------------------
 // Load approved reviews for display
-// ---------------------------------------------------------------------------
 
 try {
     $pdo = customcore_pdo();
@@ -245,7 +237,7 @@ $canSubmit = $isLoggedIn
 $loadReviewForm = $isLoggedIn && ($canSubmit || $formErrors !== []);
 
 if ($filterProduct !== null) {
-    $pageTitle = 'Reviews: ' . (string) $filterProduct['name'] . ' — CustomCore';
+    $pageTitle = 'Reviews: ' . (string) $filterProduct['name'] . ' | CustomCore';
 }
 
 require_once __DIR__ . '/includes/header.php';
@@ -315,7 +307,7 @@ require_once __DIR__ . '/includes/header.php';
     <?php if ($reviewCount === 0 && $reviewsError === null) : ?>
         <p class="empty-state">
             <?php if ($filterProduct !== null) : ?>
-                Be the first to review this system — use the form below if you are signed in.
+                Be the first to review this system, use the form below if you are signed in.
                 <a href="<?php echo customcore_e(customcore_url('product.php?id=' . $filterProductId)); ?>">Back to product</a>
             <?php else : ?>
                 No approved reviews are published yet. Signed-in customers can submit a review below;

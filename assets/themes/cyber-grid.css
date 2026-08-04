@@ -1,55 +1,60 @@
 /*
- * CustomCore — Theme: Cyber Grid (Stage 10.3)
- * ----------------------------------------------------------------------------
- * File responsibility:
- *   A technical "HUD / holo-terminal" theme layered on top of
- *   assets/css/main.css. It is the third switchable theme and is deliberately
- *   distinct from the other two:
- *     - RGB Gaming (10.1): dark, rounded, neon-cyan glow, Space Grotesk.
- *     - Minimal Professional (10.2): light, serif, hairline, flat, blue.
- *     - Cyber Grid (10.3): dark with a VISIBLE background grid, ANGULAR sci-fi
- *       + monospace type, ZERO-radius square edges, corner-cut buttons, and a
- *       mint-green primary with a mint→magenta accent rail.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
+ */
+/*
+ * Theme: Cyber Grid
+ * A technical "HUD / holo-terminal" theme layered on top of
+ * assets/css/main.css. It is the third switchable theme and is deliberately
+ * distinct from the other two:
+ * - RGB Gaming: dark, rounded, neon-cyan glow, Space Grotesk.
+ * - Minimal Professional: light, serif, hairline, flat, blue.
+ * - Cyber Grid: dark with a VISIBLE background grid, ANGULAR sci-fi
+ * + monospace type, ZERO-radius square edges, corner-cut buttons, and a
+ * mint-green primary with a mint→magenta accent rail.
  *
  * Loading model:
- *   main.css loads first, admin.css second on admin pages, and this file LAST
- *   from includes/header.php. It re-declares the shared design tokens (:root
- *   custom properties) so every token-driven public and admin component
- *   re-skins automatically, then adds targeted rules for the places main.css /
- *   admin.css hard-code decorative values.
+ * main.css loads first, admin.css second on admin pages, and this file LAST
+ * from includes/header.php. It re-declares the shared design tokens (:root
+ * custom properties) so every token-driven public and admin component
+ * re-skins automatically, then adds targeted rules for the places main.css /
+ * admin.css hard-code decorative values.
  *
  * Accessibility:
- *   Light text on near-black keeps contrast high; the mint accent uses dark ink
- *   on fills to stay legible. The grid backdrop is very low-contrast so it never
- *   competes with content, and every animated flourish is disabled under
- *   prefers-reduced-motion.
+ * Light text on near-black keeps contrast high; the mint accent uses dark ink
+ * on fills to stay legible. The grid backdrop is very low-contrast so it never
+ * competes with content, and every animated flourish is disabled under
+ * prefers-reduced-motion.
  *
  * Sections:
- *   1. Fonts
- *   2. Tokens (colour, type, radius, shadow) + grid/accent helpers
- *   3. Page shell (grid backdrop, headings, links)
- *   4. Header, navigation & footer
- *   5. Buttons (corner-cut, monospace)
- *   6. Forms & fields
- *   7. Surfaces: hero, sections, cards, tables
- *   8. Flash messages
- *   9. Admin surfaces
- *  10. Motion / reduced-motion
- * ----------------------------------------------------------------------------
+ * 1. Fonts
+ * 2. Tokens (colour, type, radius, shadow) + grid/accent helpers
+ * 3. Page shell (grid backdrop, headings, links)
+ * 4. Header, navigation & footer
+ * 5. Buttons (corner-cut, monospace)
+ * 6. Forms & fields
+ * 7. Surfaces: hero, sections, cards, tables
+ * 8. Flash messages
+ * 9. Admin surfaces
+ * 10. Motion / reduced-motion
  */
 
-/* ==========================================================================
+/*
    1. Fonts
    Angular sci-fi display + technical monospace/humanist body. Distinct from the
    base (Space Grotesk / DM Sans), RGB Gaming, and Minimal Professional.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Chakra+Petch:wght@400;500;600;700&family=Share+Tech+Mono&display=swap");
 
-/* ==========================================================================
+/*
    2. Tokens
    Near-black surfaces, mint-green primary, mint→magenta accent rail.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 :root {
   --cc-font-display: "Orbitron", "Chakra Petch", "Trebuchet MS", sans-serif;
@@ -75,12 +80,12 @@
   --cc-color-success: #24f39b;
   --cc-color-focus: #38e0ff;
 
-  /* Soft status fills tuned for dark surfaces (Commit 15.2 token completeness). */
+  /* Soft status fills tuned for dark surfacestoken completeness). */
   --cc-color-success-bg: rgba(36, 243, 155, 0.14);
   --cc-color-warning-bg: rgba(255, 207, 61, 0.14);
   --cc-color-warning-text: #ffd966;
 
-  /* Hard, square edges — the "grid" reads best with no rounding. */
+  /* Hard, square edges, the "grid" reads best with no rounding. */
   --cc-radius-sm: 0;
   --cc-radius-md: 0;
   --cc-radius-lg: 0;
@@ -98,9 +103,10 @@
   --cc-glow-focus: 0 0 0 3px rgba(56, 224, 255, 0.32);
 }
 
-/* ==========================================================================
+/*
    3. Page shell
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 body {
   color: var(--cc-color-text);
@@ -156,9 +162,10 @@ code {
   background: var(--cc-color-bg-muted);
 }
 
-/* ==========================================================================
+/*
    4. Header, navigation & footer
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .site-header {
   background: rgba(5, 8, 13, 0.9);
@@ -244,10 +251,11 @@ code {
   color: var(--cc-color-accent-hover);
 }
 
-/* ==========================================================================
+/*
    5. Buttons
    Square, monospace, uppercase, with a cut top-right corner for a HUD feel.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .button,
 button.button {
@@ -318,9 +326,10 @@ button.button {
   border-color: var(--cc-color-danger);
 }
 
-/* ==========================================================================
+/*
    6. Forms & fields
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 input[type="text"],
 input[type="email"],
@@ -372,10 +381,11 @@ label,
   color-scheme: dark;
 }
 
-/* ==========================================================================
+/*
    7. Surfaces: hero, sections, cards, tables
    Square panels marked by a mint top edge, defined against the grid backdrop.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .content-section,
 .hero {
@@ -416,9 +426,10 @@ th {
   letter-spacing: 0.05em;
 }
 
-/* ==========================================================================
+/*
    8. Flash messages
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .flash {
   background: var(--cc-color-bg-elevated);
@@ -444,11 +455,12 @@ th {
   color: #ff97a8;
 }
 
-/* ==========================================================================
+/*
    9. Admin surfaces
    Token-driven, so admin re-skins for free. Fix white-on-accent contrast and
    keep the square, mint-edged panel language.
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 .admin-nav,
 .admin-alerts__item,
@@ -469,9 +481,10 @@ th {
   color: var(--cc-ink-on-accent);
 }
 
-/* ==========================================================================
+/*
    10. Motion / reduced-motion
-   ========================================================================== */
+   * ==========================================================================
+   */
 
 @keyframes cc-grid-rail {
   from {

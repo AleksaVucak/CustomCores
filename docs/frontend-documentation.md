@@ -1,6 +1,6 @@
-# CustomCore — Front-End Architecture Documentation
+# CustomCore | Front-End Architecture Documentation
 
-**Document type:** Stage 12 documentation (Commit 12.1)
+**Document type:** Project documentation
 **Purpose:** Explain how the CustomCore front end is built — the shared HTML shell, the CSS token/theme system, the JavaScript modules, responsiveness, the navigation toggle, and how the active theme is resolved — so another developer can read, extend, or debug the interface confidently.
 **Audience:** Developers and graders. Non-programmer content edits are covered separately in [`docs/content-update-guide.md`](content-update-guide.md).
 **Scope rule:** This document describes the **actual** front end in this repository. It points at real files and does not propose a second, hypothetical architecture.
@@ -17,8 +17,8 @@ Guiding rules used throughout the front end:
 
 - **One shared layout.** Pages set a few variables, then include a shared header and footer so chrome (head, skip link, masthead, navigation, flash messages, footer, scripts) is identical everywhere.
 - **Tokens over hard-coded values.** Colour, type, spacing, radius, and shadow live in CSS custom properties (`--cc-*`). Themes re-declare those tokens, so most components re-skin automatically.
-- **Escape all output.** Dynamic text is passed through `customcore_e()` (a wrapper over `htmlspecialchars`) before it reaches HTML.
-- **Depth-safe URLs.** Links and asset paths are built with `customcore_url()` so pages in subfolders (for example `admin/`) resolve correctly with relative paths — no URL rewriting or hard-coded base path is required.
+- **Escape all output.** Dynamic text is passed through `customcore_e` (a wrapper over `htmlspecialchars`) before it reaches HTML.
+- **Depth-safe URLs.** Links and asset paths are built with `customcore_url` so pages in subfolders (for example `admin/`) resolve correctly with relative paths — no URL rewriting or hard-coded base path is required.
 - **Enhance, don't require.** The mobile menu, live pricing, charts, and the map all layer on top of working HTML; if a script fails, the underlying content still works.
 
 ---
@@ -28,12 +28,12 @@ Guiding rules used throughout the front end:
 Every layout-using page follows the same pattern:
 
 ```php
-require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__. '/includes/functions.php';
 $pageTitle = 'Catalogue — CustomCore';
-$currentPage = 'catalogue';           // optional: drives active-nav state
-require_once __DIR__ . '/includes/header.php';
-// ... page-specific HTML ...
-require_once __DIR__ . '/includes/footer.php';
+$currentPage = 'catalogue'; // optional: drives active-nav state
+require_once __DIR__. '/includes/header.php';
+//... page-specific HTML...
+require_once __DIR__. '/includes/footer.php';
 ```
 
 ### 2.1 Header — `includes/header.php`
@@ -42,12 +42,12 @@ Responsibilities (document start through the opening `<main>`):
 
 - Emits `<!DOCTYPE html>`, `<html lang="en">`, and the `<head>`: charset, responsive viewport, `description`/`keywords` meta, `<title>`, and Open Graph / Twitter card tags. Page variables `$pageTitle`, `$pageDescription`, and `$pageKeywords` override sensible defaults derived from `config/app.php` (`name`, `tagline`).
 - Links stylesheets **in a fixed, meaningful order** (see §3.4):
-  1. `assets/css/main.css` (always)
-  2. `assets/css/admin.css` (only when `$loadAdminCss` is set — admin pages)
-  3. Leaflet CSS from CDN (only when `$currentPage === 'locations'`)
-  4. the active theme stylesheet, linked **last** so it overrides the base and admin CSS
+ 1. `assets/css/main.css` (always)
+ 2. `assets/css/admin.css` (only when `$loadAdminCss` is set — admin pages)
+ 3. Leaflet CSS from CDN (only when `$currentPage === 'locations'`)
+ 4. the active theme stylesheet, linked **last** so it overrides the base and admin CSS
 - Outputs the skip link (`<a class="skip-link" href="#main-content">`), the `.site-header` masthead with the wordmark, and includes the navigation partial.
-- Renders queued flash messages via `customcore_flash_render()`.
+- Renders queued flash messages via `customcore_flash_render`.
 - Opens `<main id="main-content" class="site-main" tabindex="-1">` (the skip-link target).
 
 The `<body>` gets a `page-<currentPage>` class (for example `page-catalogue`) so a page can be targeted from CSS without extra markup.
@@ -56,10 +56,10 @@ The `<body>` gets a `page-<currentPage>` class (for example `page-catalogue`) so
 
 Included from the header. It builds:
 
-- The **primary menu** (`#primary-navigation`) from a `$navItems` array: Home, About, Catalogue, PC Builder, Learning Centre, Locations, Help, Contact. The active item gets `is-active` plus `aria-current="page"` via `customcore_nav_class()` / `customcore_is_current_page()`.
+- The **primary menu** (`#primary-navigation`) from a `$navItems` array: Home, About, Catalogue, PC Builder, Learning Centre, Locations, Help, Contact. The active item gets `is-active` plus `aria-current="page"` via `customcore_nav_class` / `customcore_is_current_page`.
 - The **account cluster**, which is auth-aware:
-  - Logged out → Log in, Register, Cart.
-  - Logged in → greeting linking to profile, Cart (with a live badge count from `customcore_cart_count_cached()`), Log out, and an **Admin** link only when the user is an administrator and `admin/index.php` exists.
+ - Logged out → Log in, Register, Cart.
+ - Logged in → greeting linking to profile, Cart (with a live badge count from `customcore_cart_count_cached`), Log out, and an **Admin** link only when the user is an administrator and `admin/index.php` exists.
 - The **mobile toggle button** (`#nav-toggle`) with `aria-controls`, `aria-expanded`, and `aria-label`, enhanced by JavaScript (see §5.2).
 
 Links are hidden defensively if their target file is missing (`profile.php`, `logout.php`, `admin/index.php`), so the menu never points at a 404 during partial deployments.
@@ -90,16 +90,15 @@ There is intentionally **no** `print.css` yet; it is reserved for a later stage 
 
 ### 3.2 Design tokens (`--cc-*` custom properties)
 
-`main.css` declares the shared design language as CSS custom properties on `:root` — colours (`--cc-color-*`), spacing scale (`--cc-space-*`), radii (`--cc-radius-*`), typography, borders, and shadows. Components consume these tokens rather than literal values. Example (from the Help note callout added in Stage 11):
+`main.css` declares the shared design language as CSS custom properties on `:root` — colours (`--cc-color-*`), spacing scale (`--cc-space-*`), radii (`--cc-radius-*`), typography, borders, and shadows. Components consume these tokens rather than literal values. Example (from the Help note callout):
 
-```css
-.help-note {
-  margin: var(--cc-space-3) 0 0;
-  padding: var(--cc-space-3) var(--cc-space-4);
-  border: 1px solid var(--cc-color-border);
-  border-left: 4px solid var(--cc-color-accent, var(--cc-color-primary));
-  border-radius: var(--cc-radius-md);
-  background: var(--cc-color-bg-elevated);
+```css.help-note {
+ margin: var(--cc-space-3) 0 0;
+ padding: var(--cc-space-3) var(--cc-space-4);
+ border: 1px solid var(--cc-color-border);
+ border-left: 4px solid var(--cc-color-accent, var(--cc-color-primary));
+ border-radius: var(--cc-radius-md);
+ background: var(--cc-color-bg-elevated);
 }
 ```
 
@@ -116,10 +115,10 @@ All animated flourishes honour `@media (prefers-reduced-motion: reduce)`.
 The header links CSS in this order on purpose:
 
 ```
-main.css  →  admin.css (admin only)  →  theme.css (always last)
+main.css → admin.css (admin only) → theme.css (always last)
 ```
 
-Loading the theme **last** lets it win the cascade over both base and admin styles. This order is asserted in the Stage 10.6 cross-theme walkthrough.
+Loading the theme **last** lets it win the cascade over both base and admin styles. This order is asserted in the cross-theme walkthrough.
 
 ### 3.5 Responsiveness
 
@@ -168,8 +167,8 @@ Chart.js (4.4.1) and Leaflet (1.9.4) load from CDN **only on the pages that need
 Rather than shipping one giant bundle, the footer includes only what a page needs. The pattern is:
 
 ```php
-<?php if (isset($currentPage) && $currentPage === 'cart') : ?>
-    <script src="<?php echo customcore_e(customcore_url('assets/js/cart.js')); ?>" defer></script>
+<?php if (isset($currentPage) && $currentPage === 'cart'): ?>
+ <script src="<?php echo customcore_e(customcore_url('assets/js/cart.js')); ?>" defer></script>
 <?php endif; ?>
 ```
 
@@ -191,7 +190,7 @@ Because enhancement only activates when the toggle exists and JS runs, the menu 
 
 ## 6. How the active theme is resolved (`includes/theme.php`)
 
-The header does not hard-code a theme. It calls `customcore_active_theme_href()`, which resolves the stylesheet through a **five-step, defence-in-depth chain** (first safe, on-disk match wins):
+The header does not hard-code a theme. It calls `customcore_active_theme_href`, which resolves the stylesheet through a **five-step, defence-in-depth chain** (first safe, on-disk match wins):
 
 1. `site_settings.active_theme_id → themes.css_file` — the administrator's choice (set on `admin/themes.php`).
 2. `themes.is_active_default = 1 → css_file` — the seeded default.
@@ -201,7 +200,7 @@ The header does not hard-code a theme. It calls `customcore_active_theme_href()`
 
 Safety guarantees:
 
-- Every candidate (from any source) passes through `customcore_theme_normalise_path()`, which accepts **only** paths matching `^assets/themes/<slug>.css`. This blocks directory traversal (`../`), absolute paths, subdirectories, query strings, and non-CSS files — even if a database row is corrupt.
+- Every candidate (from any source) passes through `customcore_theme_normalise_path`, which accepts **only** paths matching `^assets/themes/<slug>.css`. This blocks directory traversal (`../`), absolute paths, subdirectories, query strings, and non-CSS files — even if a database row is corrupt.
 - A candidate must also **exist on disk** before it is linked, so a missing or renamed file transparently falls through to the next candidate.
 - All database access is wrapped in `try/catch`; if MySQL is down, the resolver still returns a styled theme from config / canonical / scan.
 - If somehow no theme file exists, the resolver returns `null` and the header simply omits the theme `<link>` — the site is still styled by `main.css`, which is always linked first.
@@ -216,7 +215,7 @@ The administrator switching flow (validation, CSRF, Post/Redirect/Get) lives in 
 - **Semantic landmarks**: `role="banner"` header, `<nav aria-label="Primary">`, `role="contentinfo"` footer.
 - **Keyboard-friendly menu**: focus trap, Escape to close, focus restoration.
 - **`aria-current="page"`** on the active nav link; descriptive `aria-label` on the cart badge and toggle.
-- **Media fallbacks**: alt text via `customcore_image_url()`, chart data tables beside canvases, an always-visible address beside the map, and captions/transcripts for video/audio — all catalogued on the public `accessibility.php` page.
+- **Media fallbacks**: alt text via `customcore_image_url`, chart data tables beside canvases, an always-visible address beside the map, and captions/transcripts for video/audio — all catalogued on the public `accessibility.php` page.
 - **Reduced motion** respected across base CSS and all three themes.
 
 ---
@@ -240,4 +239,4 @@ The administrator switching flow (validation, CSRF, Post/Redirect/Get) lives in 
 
 ## 9. Status
 
-**Commit 12.1 complete.** The front-end architecture is documented against the real shared shell (`header.php` / `navigation.php` / `footer.php`), the token-driven CSS system (`main.css` / `admin.css` / `assets/themes/*`), the vanilla-JS module set (`main.js`, builder, cart, checkout, reviews, contact, map, charts, help-hub), the responsive 900px navigation toggle, and the hardened theme resolver (`includes/theme.php`). Supports rubric row **B5 (front-end documentation)** and contributes to **#5 / #6 (well-documented, commented code)**.
+**Summary.** The front-end architecture is documented against the real shared shell (`header.php` / `navigation.php` / `footer.php`), the token-driven CSS system (`main.css` / `admin.css` / `assets/themes/*`), the vanilla-JS module set (`main.js`, builder, cart, checkout, reviews, contact, map, charts, help-hub), the responsive 900px navigation toggle, and the hardened theme resolver (`includes/theme.php`). Supports rubric row **B5 (front-end documentation)** and contributes to **#5 / #6 (well-documented, commented code)**.

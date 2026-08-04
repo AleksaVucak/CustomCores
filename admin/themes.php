@@ -1,21 +1,20 @@
 <?php
 /**
- * CustomCore — Administrator theme switcher (Commit 10.4).
- *
- * File responsibility:
- *   Protected page that lists the three seeded site themes and lets an
- *   administrator choose which one is active sitewide. The selection is stored
- *   in site_settings.active_theme_id and applied by includes/theme.php on every
- *   public and admin page (stylesheet linked last, after main.css / admin.css).
- *
- * Authentication requirements:
- *   Administrator role (customcore_require_admin()).
- *
- * Security:
- *   - Every write requires a valid CSRF token.
- *   - Theme IDs are validated against the themes table and an on-disk CSS file.
- *   - Post/Redirect/Get prevents duplicate submissions.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator theme switcher.
+// Protected page that lists the three seeded site themes and lets an administrator choose which
+// one is active sitewide. The selection is stored in site_settings.active_theme_id and applied by
+// includes/theme.php on every public and admin page (stylesheet linked last, after main.css /
+// admin.css).
+// Access: Administrator role (customcore_require_admin()).
+// Security:
+//   Every write requires a valid CSRF token.
+//   Theme IDs are validated against the themes table and an on-disk CSS file.
+//   Post/Redirect/Get prevents duplicate submissions.
 
 declare(strict_types=1);
 
@@ -32,9 +31,7 @@ customcore_require_admin();
 
 $pdo = customcore_pdo();
 
-// ---------------------------------------------------------------------------
-// Handle theme activation — CSRF + PRG
-// ---------------------------------------------------------------------------
+// Handle theme activation, CSRF + PRG
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = isset($_POST['_csrf']) && is_string($_POST['_csrf']) ? $_POST['_csrf'] : null;
 
@@ -61,9 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     customcore_redirect('admin/themes.php');
 }
 
-// ---------------------------------------------------------------------------
 // Render
-// ---------------------------------------------------------------------------
 $themes = [];
 $activeId = null;
 $listError = null;
@@ -89,7 +84,7 @@ $adminNavCurrent = 'themes';
 $loadAdminCss = true;
 $currentPage = 'admin';
 
-$pageTitle = 'Themes — CustomCore admin';
+$pageTitle = 'Themes | CustomCore Admin';
 $pageDescription = 'Choose the active CustomCore site-wide CSS theme.';
 $pageKeywords = 'CustomCore, admin, themes, CSS templates';
 
@@ -213,7 +208,7 @@ require_once __DIR__ . '/../includes/header.php';
                         </form>
                     <?php else : ?>
                         <p class="admin-theme-card__note admin-theme-card__note--warn">
-                            Cannot activate — the CSS file is missing or its path is invalid.
+                            Cannot activate, the CSS file is missing or its path is invalid.
                         </p>
                     <?php endif; ?>
                 </article>

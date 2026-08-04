@@ -1,7 +1,7 @@
-# CustomCore — Business Case and Project Objectives
+# CustomCore | Business Case and Project Objectives
 
-**Project name:** CustomCore  
-**Document type:** Stage 0 planning (Commit 0.2)  
+**Project name:** CustomCore
+**Document type:** Project documentation
 **Purpose:** Define the business idea, audience, problem, solution, and objectives that guide the website build. A condensed version of this business case will also appear on the public About page in a later stage so the grading rubric’s business-description requirement is visible on the live site.
 
 ---
@@ -56,10 +56,10 @@ Checkout is academic and simulated only: payment-method labels may be stored; cr
 
 Primary catalogue: **at least 20 configurable prebuilt gaming/creator PCs** in four tiers:
 
-1. Five budget and starter systems  
-2. Five esports and mainstream systems  
-3. Five high-performance gaming systems  
-4. Five creator and workstation systems  
+1. Five budget and starter systems
+2. Five esports and mainstream systems
+3. Five high-performance gaming systems
+4. Five creator and workstation systems
 
 Every product will support **at least two options** (target: four or more option groups per prebuilt for rubric safety). A separate component inventory will power the custom builder. Product data, options, components, and simplified compatibility metadata will live in MySQL and be rendered dynamically in PHP.
 
@@ -93,10 +93,10 @@ Protected dashboard; product add/edit/disable, stock, price, and image managemen
 
 ## 8. Technology constraints (confirmed)
 
-- HTML5, external CSS, vanilla JavaScript, PHP, MySQL  
-- PDO prepared statements and PHP sessions  
-- Optional lightweight libraries only where helpful (for example Chart.js, Leaflet) with text fallbacks  
-- No React, Vue, Angular, Node.js, Laravel, Docker, or required Composer/build pipeline  
+- HTML5, external CSS, vanilla JavaScript, PHP, MySQL
+- PDO prepared statements and PHP sessions
+- Optional lightweight libraries only where helpful (for example Chart.js, Leaflet) with text fallbacks
+- No React, Vue, Angular, Node.js, Laravel, Docker, or required Composer/build pipeline
 
 ---
 
@@ -104,15 +104,15 @@ Protected dashboard; product add/edit/disable, stock, price, and image managemen
 
 | Later document | How this business case feeds it |
 | -------------- | ------------------------------- |
-| About page (`about.php`) | Full public business case derived from Sections 1–6 (Commit 3.2) |
-| `docs/rubric-checklist.md` | Business-case row (#1) evidence points here and to About (checklist added in Commit 0.3) |
-| `docs/sitemap.md` | Pages listed in Section 6 (sitemap added in Commit 0.4) |
-| `docs/wireframes.md` | Layout/nav contract for core screens (added in Commit 0.5) |
-| `docs/database-design.md` | Tables for catalogue, builder, accounts, and admin (ER design added in Commit 0.6) |
+| About page (`about.php`) | Full public business case derived from Sections 1–6 |
+| `docs/rubric-checklist.md` | Business-case row (#1) evidence points here and to About (checklist added during planning) |
+| `docs/sitemap.md` | Pages listed in Section 6 (sitemap added during planning) |
+| `docs/wireframes.md` | Layout/nav contract for core screens (added during planning) |
+| `docs/database-design.md` | Tables for catalogue, builder, accounts, and admin (ER design added during planning) |
 | README | High-level project summary remains consistent with this document |
 
 ---
 
 ## 10. Status
 
-**Commit 3.2 complete.** The public About page (`about.php`) publishes the full business case for visitors and graders (rubric #1). Planning source of truth remains this document.
+**Summary.** The public About page (`about.php`) publishes the full business case for visitors and graders (rubric #1). Planning source of truth remains this document.

@@ -1,14 +1,14 @@
 <?php
 /**
- * CustomCore — Shared helper functions for layout and output.
- *
- * File responsibility:
- *   Loads application config and provides escaping, URL helpers, and nav helpers
- *   used by header, footer, navigation, and public pages.
- *
- * Usage:
- *   require_once __DIR__ . '/functions.php';
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Shared helper functions for layout and output.
+// Loads application config and provides escaping, URL helpers, and nav helpers used by header,
+// footer, navigation, and public pages.
+// Usage: require_once __DIR__. '/functions.php';
 
 declare(strict_types=1);
 
@@ -61,14 +61,14 @@ function customcore_e($value): string
 /**
  * Start the PHP session once with the configured session name.
  *
- * Security notes (Commit 4.8 hardening):
- *   - Uses a custom session name to reduce collisions on shared hosts.
- *   - Cookies are HTTP-only and SameSite=Lax; Secure is enabled under HTTPS.
- *   - Strict mode rejects attacker-supplied (uninitialized) session IDs.
- *   - Cookie-only transport disables session IDs in URLs (no trans_sid).
- *   - Stronger, longer session IDs are requested where the SAPI allows it.
- *   - After the session opens, customcore_session_harden() enforces idle and
- *     absolute timeouts, user-agent binding, and periodic ID rotation.
+ * Security noteshardening):
+ * - Uses a custom session name to reduce collisions on shared hosts.
+ * - Cookies are HTTP-only and SameSite=Lax; Secure is enabled under HTTPS.
+ * - Strict mode rejects attacker-supplied (uninitialized) session IDs.
+ * - Cookie-only transport disables session IDs in URLs (no trans_sid).
+ * - Stronger, longer session IDs are requested where the SAPI allows it.
+ * - After the session opens, customcore_session_harden() enforces idle and
+ * absolute timeouts, user-agent binding, and periodic ID rotation.
  */
 function customcore_session_start(): void
 {
@@ -148,13 +148,13 @@ function customcore_request_is_https(): bool
  * that carry a logged-in user are guarded so guest browsing stays lightweight.
  *
  * Checks, in order (any failure expires the session):
- *   1. User-agent binding — a stolen cookie replayed from a different client
- *      no longer matches the fingerprint captured at login.
- *   2. Absolute lifetime — a session cannot outlive session_absolute_timeout,
- *      regardless of activity.
- *   3. Idle timeout — inactivity beyond session_idle_timeout ends the session.
- *   4. Periodic ID rotation — the session ID is regenerated every
- *      session_regenerate_interval seconds to shrink the fixation window.
+ * 1. User-agent binding, a stolen cookie replayed from a different client
+ * no longer matches the fingerprint captured at login.
+ * 2. Absolute lifetime, a session cannot outlive session_absolute_timeout
+ * regardless of activity.
+ * 3. Idle timeout, inactivity beyond session_idle_timeout ends the session.
+ * 4. Periodic ID rotation, the session ID is regenerated every
+ * session_regenerate_interval seconds to shrink the fixation window.
  */
 function customcore_session_harden(): void
 {
@@ -293,7 +293,7 @@ function customcore_is_safe_local_path(string $path): bool
  * Whether a string is a safe relative app path for customcore_redirect().
  *
  * Accepts project-root PHP scripts with an optional simple query string
- * (e.g. "product.php?id=12"). Rejects absolute URLs, protocol-relative hosts,
+ * (e.g. "product.php?id=12"). Rejects absolute URLs, protocol-relative hosts
  * directory traversal, nested paths, and control characters.
  *
  * @param string $path Candidate relative path from a form return_to field.
@@ -418,7 +418,7 @@ function customcore_app_base_path(): string
 }
 
 /**
- * Absolute canonical URL for SEO (Commit 14.1).
+ * Absolute canonical URL for SEO.
  *
  * Builds a self-referencing canonical for the current page, or a canonical for
  * an explicit project-relative target. Prefers config/app.php → base_url (which
@@ -430,10 +430,10 @@ function customcore_app_base_path(): string
  * subfolder is never duplicated.
  *
  * @param string|false|null $override false disables canonical; a non-empty
- *   string is treated as a project-relative target (its own query is kept as-is);
- *   null/'' means "use the current request URL".
+ * string is treated as a project-relative target (its own query is kept as-is);
+ * null/'' means "use the current request URL".
  * @param bool $includeQuery Append the current query string for the default
- *   (self-referencing) canonical. Ignored when $override is a string.
+ * (self-referencing) canonical. Ignored when $override is a string.
  * @return string|null Absolute URL, or null when a safe one cannot be built.
  */
 function customcore_canonical_url($override = null, bool $includeQuery = true): ?string
@@ -501,15 +501,15 @@ function customcore_canonical_url($override = null, bool $includeQuery = true): 
 /**
  * Whether the current page should be excluded from search-engine indexing.
  *
- * Centralises noindex policy so pages do not each repeat it (Commit 14.1):
- *   - any page under admin/ is always noindex;
- *   - a page may opt in explicitly with $pageNoindex = true;
- *   - per-user/private customer pages (cart, checkout, account, orders, saved
- *     builds, wishlist, histories, consultations) are noindex because they are
- *     useless or duplicative in a public index;
- *   - action-only scripts such as logout.php are noindex.
+ * Centralises noindex policy so pages do not each repeat it:
+ * - any page under admin/ is always noindex;
+ * - a page may opt in explicitly with $pageNoindex = true;
+ * - per-user/private customer pages (cart, checkout, account, orders, saved
+ * builds, wishlist, histories, consultations) are noindex because they are
+ * useless or duplicative in a public index;
+ * - action-only scripts such as logout.php are noindex.
  *
- * The public sitemap.xml / robots.txt (Commit 14.2) reinforce these exclusions.
+ * The public sitemap.xml / robots.txt reinforce these exclusions.
  */
 function customcore_is_noindex_page(): bool
 {
@@ -624,7 +624,7 @@ function customcore_upload_url(?string $path): ?string
  * Resolve a product image path (seed asset OR admin upload) to a browser URL.
  *
  * Product images may live under assets/images/ (seeded catalogue) or
- * uploads/products/ (uploaded by an administrator in Stage 9.2). This helper
+ * uploads/products/ (uploaded by an administrator in. This helper
  * tries both safe locations and returns null when neither resolves, so callers
  * fall back to a placeholder instead of rendering a broken <img>.
  *
@@ -711,9 +711,9 @@ function customcore_nav_class(string $pageKey): string
 }
 
 /**
- * Format a 1–5 rating as accessible star text (★ / ☆).
+ * Format a 1 to 5 rating as accessible star text (★ / ☆).
  *
- * @param int $rating Rating value (clamped to 1–5).
+ * @param int $rating Rating value (clamped to 1 to 5).
  */
 function customcore_format_rating(int $rating): string
 {

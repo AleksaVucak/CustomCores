@@ -1,25 +1,24 @@
 <?php
 /**
- * CustomCore — Administrator product management helpers (Commit 9.2).
- *
- * File responsibility:
- *   Shared, security-first helpers for the admin product CRUD screens:
- *   validation, slug generation/uniqueness, list/search queries, create/update,
- *   active-status toggling, and secure product-image uploads (real MIME check,
- *   size cap, generated on-disk names under uploads/products/).
- *
- * Usage:
- *   require_once __DIR__ . '/admin-products.php';
- *
- * Security notes:
- *   - All writes use PDO prepared statements.
- *   - Slugs are unique (checked with an optional self-exclusion on edit).
- *   - Image uploads never trust the browser MIME/extension: the type is
- *     detected with finfo and matched to an allowlist; the on-disk filename is
- *     randomly generated; the original name is never used on disk.
- *   - Products are disabled (is_active = 0), never hard-deleted, to preserve
- *     order/review history integrity.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator product management helpers.
+// Shared, security-first helpers for the admin product CRUD screens: validation, slug
+// generation/uniqueness, list/search queries, create/update, active-status toggling, and secure
+// product-image uploads (real MIME check, size cap, generated on-disk names under
+// uploads/products/).
+// Usage: require_once __DIR__. '/admin-products.php';
+// Security notes:
+//   All writes use PDO prepared statements.
+//   Slugs are unique (checked with an optional self-exclusion on edit).
+//   Image uploads never trust the browser MIME/extension: the type is detected with finfo and
+//     matched to an allowlist; the on-disk filename is randomly generated; the original name is
+//     never used on disk.
+//   Products are disabled (is_active = 0), never hard-deleted, to preserve order/review history
+//     integrity.
 
 declare(strict_types=1);
 
@@ -188,13 +187,13 @@ function customcore_admin_product_unique_slug(PDO $pdo, string $slugBase, ?int $
  * @param array<string, mixed> $input Raw $_POST.
  * @param int|null $excludeId Product being edited (for slug uniqueness).
  * @return array{
- *   errors: array<string, string>,
- *   values: array{
- *     category_id:int, name:string, slug:string, brand:string,
- *     short_description:string, description:string, base_price:float,
- *     stock_quantity:int, spec_cpu:string, spec_gpu:string, spec_ram:string,
- *     spec_storage:string, is_featured:int, is_active:int
- *   }
+ * errors: array<string, string>
+ * values: array{
+ * category_id:int, name:string, slug:string, brand:string
+ * short_description:string, description:string, base_price:float
+ * stock_quantity:int, spec_cpu:string, spec_gpu:string, spec_ram:string
+ * spec_storage:string, is_featured:int, is_active:int
+ * }
  * }
  */
 function customcore_admin_product_validate(PDO $pdo, array $input, ?int $excludeId = null): array
@@ -325,10 +324,10 @@ function customcore_admin_product_validate(PDO $pdo, array $input, ?int $exclude
  *
  * @param mixed $file A single $_FILES entry.
  * @return array{
- *   ok: bool,
- *   provided: bool,
- *   error: ?string,
- *   file: ?array{tmp_name:string, extension:string, mime_type:string, size:int}
+ * ok: bool
+ * provided: bool
+ * error: ?string
+ * file: ?array{tmp_name:string, extension:string, mime_type:string, size:int}
  * }
  */
 function customcore_admin_product_validate_image($file): array

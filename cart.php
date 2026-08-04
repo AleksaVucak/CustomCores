@@ -1,38 +1,29 @@
 <?php
 /**
- * CustomCore — Shopping Cart (Commits 6.1–6.2).
- *
- * File responsibility:
- *   Displays the logged-in customer's shopping cart and processes add, update,
- *   remove, and clear actions via POST. Supports two item types:
- *     - 'product'      – catalogue products (with optional configuration options).
- *     - 'saved_build'  – custom PC builds the user has saved.
- *
- * Commit 6.2 — quantity and removal controls:
- *   - Per-line quantity inputs with stock-aware max
- *   - Bulk "Update cart" for all product lines at once
- *   - Per-line Remove and Clear cart (with confirm prompts)
- *   - Server-side clamps keep line totals and subtotal accurate
- *   - Client-side live line-total preview (assets/js/cart.js)
- *
- * Supported POST actions:
- *   - add_product:    Add a catalogue product (from product.php).
- *   - add_build:      Add a saved build (from saved-build.php).
- *   - update:         Change quantity of a single cart item.
- *   - update_all:     Bulk-update quantities from the cart form.
- *   - remove:         Remove a cart item.
- *   - clear:          Remove all items from the cart.
- *
- * Authentication requirements:
- *   Logged-in customer. Cart is per-user (database table).
- *
- * Security:
- *   - CSRF verification on all POST actions.
- *   - Server-side price verification for products (re-fetches from DB).
- *   - Ownership enforced (cart belongs to the session user).
- *   - Quantity bounds: 0 (remove) or 1–99, never above stock.
- *   - Saved build ownership checked before adding.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Shopping Cart.
+// Displays the logged-in customer's shopping cart and processes add, update, remove, and clear
+// actions via POST. Supports two item types:
+//   'product', catalogue products (with optional configuration options).
+//   'saved_build', custom PC builds the user has saved.
+// POST actions:
+//   add_product: Add a catalogue product (from product.php).
+//   add_build: Add a saved build (from saved-build.php).
+//   update: Change quantity of a single cart item.
+//   update_all: Bulk-update quantities from the cart form.
+//   remove: Remove a cart item.
+//   clear: Remove all items from the cart.
+// Access: Logged-in customer. Cart is per-user (database table).
+// Security:
+//   CSRF verification on all POST actions.
+//   Server-side price verification for products (re-fetches from DB).
+//   Ownership enforced (cart belongs to the session user).
+//   Quantity bounds: 0 (remove) or 1 to 99, never above stock.
+//   Saved build ownership checked before adding.
 
 declare(strict_types=1);
 
@@ -48,9 +39,7 @@ customcore_require_login();
 $userId = customcore_current_user_id();
 $accountNavCurrent = 'cart';
 
-// ---------------------------------------------------------------------------
 // Handle POST actions
-// ---------------------------------------------------------------------------
 
 $cartError = null;
 
@@ -73,9 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $cartId = customcore_cart_id($pdo, $userId);
 
         switch ($action) {
-            // -----------------------------------------------------------------
             // Add a catalogue product
-            // -----------------------------------------------------------------
             case 'add_product':
                 $productId = isset($_POST['product_id']) && is_string($_POST['product_id']) && ctype_digit($_POST['product_id'])
                     ? (int) $_POST['product_id']
@@ -174,9 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 customcore_redirect('cart.php');
                 break;
 
-            // -----------------------------------------------------------------
             // Add a saved build
-            // -----------------------------------------------------------------
             case 'add_build':
                 $savedBuildId = isset($_POST['saved_build_id']) && is_string($_POST['saved_build_id']) && ctype_digit($_POST['saved_build_id'])
                     ? (int) $_POST['saved_build_id']
@@ -220,9 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 customcore_redirect('cart.php');
                 break;
 
-            // -----------------------------------------------------------------
-            // Update a single line quantity (Commit 6.2)
-            // -----------------------------------------------------------------
+            // Update a single line quantity
             case 'update':
                 $itemId = isset($_POST['item_id']) && is_string($_POST['item_id']) && ctype_digit($_POST['item_id'])
                     ? (int) $_POST['item_id']
@@ -252,9 +235,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 customcore_redirect('cart.php');
                 break;
 
-            // -----------------------------------------------------------------
-            // Bulk update all quantities (Commit 6.2)
-            // -----------------------------------------------------------------
+            // Bulk update all quantities
             case 'update_all':
                 $rawQuantities = isset($_POST['quantities']) && is_array($_POST['quantities'])
                     ? $_POST['quantities']
@@ -294,9 +275,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 customcore_redirect('cart.php');
                 break;
 
-            // -----------------------------------------------------------------
-            // Remove one item (Commit 6.2)
-            // -----------------------------------------------------------------
+            // Remove one item
             case 'remove':
                 $itemId = isset($_POST['item_id']) && is_string($_POST['item_id']) && ctype_digit($_POST['item_id'])
                     ? (int) $_POST['item_id']
@@ -317,9 +296,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 customcore_redirect('cart.php');
                 break;
 
-            // -----------------------------------------------------------------
-            // Clear entire cart (Commit 6.2)
-            // -----------------------------------------------------------------
+            // Clear entire cart
             case 'clear':
                 $cleared = customcore_cart_clear($pdo, $userId);
 
@@ -344,9 +321,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// ---------------------------------------------------------------------------
 // Load cart items for display
-// ---------------------------------------------------------------------------
 
 $cartItems = [];
 $subtotal = 0.00;
@@ -366,11 +341,9 @@ try {
         : 'We could not load your cart right now. Please try again later.';
 }
 
-// ---------------------------------------------------------------------------
 // Page metadata
-// ---------------------------------------------------------------------------
 
-$pageTitle = 'Shopping Cart — CustomCore';
+$pageTitle = 'Shopping Cart | CustomCore';
 $pageDescription = 'View and manage items in your CustomCore shopping cart.';
 $pageKeywords = 'CustomCore, shopping cart, checkout, gaming PC';
 $currentPage = 'cart';
@@ -391,7 +364,7 @@ require_once __DIR__ . '/includes/header.php';
         <p class="context-help">
             Help:
             <a href="<?php echo customcore_e(customcore_url('help/orders.html#cart')); ?>">Cart &amp; orders guide</a>
-            — cart quantities, remove, and clear controls keep your total accurate before checkout.
+            cart quantities, remove, and clear controls keep your total accurate before checkout.
         </p>
     </header>
 

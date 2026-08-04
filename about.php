@@ -1,22 +1,21 @@
 <?php
 /**
- * CustomCore — About page / public business case (Commit 3.2).
- *
- * File responsibility:
- *   Publishes the full CustomCore business explanation for visitors and graders.
- *   Satisfies rubric item #1 (business case: at least one clear paragraph
- *   describing the catalogue/project). Content is derived from
- *   docs/business-case.md.
- *
- * Authentication requirements:
- *   None (public).
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// About page / public business case.
+// Publishes the full CustomCore business explanation for visitors and graders. Satisfies rubric
+// item #1 (business case: at least one clear paragraph describing the catalogue/project). Content
+// is derived from docs/business-case.md.
+// Access: None (public).
 
 declare(strict_types=1);
 
 require_once __DIR__ . '/includes/functions.php';
 
-$pageTitle = 'About CustomCore — Business Case';
+$pageTitle = 'About CustomCore | Business Case';
 $pageDescription = 'Read the CustomCore business case: who we serve, the problem we solve, our catalogue strategy, and how the store and PC builder work together.';
 $pageKeywords = 'CustomCore, about, business case, gaming PC store, custom PC builder';
 $currentPage = 'about';
@@ -59,7 +58,7 @@ require_once __DIR__ . '/includes/header.php';
             a monitoring dashboard that reports whether major services are online, in a
             warning state, or offline. The application is designed for ordinary university
             PHP/MySQL hosting, using HTML5, external CSS, vanilla JavaScript, PHP sessions,
-            and MySQL with PDO prepared statements—without React, Node.js, Laravel, Docker,
+            and MySQL with PDO prepared statements, without React, Node.js, Laravel, Docker,
             Composer, or URL rewriting.
         </p>
     </section>
@@ -73,28 +72,28 @@ require_once __DIR__ . '/includes/header.php';
         </p>
         <ul class="about-audience">
             <li>
-                <strong>Casual PC users</strong>
-                — plain-language product pages and prebuilt tiers that reduce jargon
+                <strong>Casual PC users:</strong>
+                plain-language product pages and prebuilt tiers that reduce jargon
             </li>
             <li>
-                <strong>Competitive gamers</strong>
-                — esports and high-performance systems with upgrade options
+                <strong>Competitive gamers:</strong>
+                esports and high-performance systems with upgrade options
             </li>
             <li>
-                <strong>University students</strong>
-                — budget and starter builds with transparent pricing
+                <strong>University students:</strong>
+                budget and starter builds with transparent pricing
             </li>
             <li>
-                <strong>Streamers and content creators</strong>
-                — creator/workstation tier and consultation support
+                <strong>Streamers and content creators:</strong>
+                creator/workstation tier and consultation support
             </li>
             <li>
-                <strong>First-time gaming PC buyers</strong>
-                — guided builder, compatibility messages, and Help wiki
+                <strong>First-time gaming PC buyers:</strong>
+                guided builder, compatibility messages, and Help wiki
             </li>
             <li>
-                <strong>Experienced builders</strong>
-                — full component selection with server-validated compatibility
+                <strong>Experienced builders:</strong>
+                full component selection with server-validated compatibility
             </li>
         </ul>
     </section>
@@ -128,41 +127,41 @@ require_once __DIR__ . '/includes/header.php';
         </p>
         <ol class="about-solution-list">
             <li>
-                <strong>Clear product information</strong>
-                — dynamic catalogue and detail pages loaded from MySQL, not hardcoded HTML copies
+                <strong>Clear product information:</strong>
+                dynamic catalogue and detail pages loaded from MySQL, not hardcoded HTML copies
             </li>
             <li>
-                <strong>Configurable prebuilts</strong>
-                — at least twenty systems across four tiers, each with multiple options
+                <strong>Configurable prebuilts:</strong>
+                at least twenty systems across four tiers, each with multiple options
                 (RAM, storage, colour, warranty, OS, cooling, and graphics upgrades where supported)
             </li>
             <li>
-                <strong>Guided custom builder</strong>
-                — step-by-step selection with live price calculation and simplified
+                <strong>Guided custom builder:</strong>
+                step-by-step selection with live price calculation and simplified
                 compatibility checking (compatible, warning, or incompatible), validated
                 on the server as well as in the browser
             </li>
             <li>
-                <strong>Performance estimates</strong>
-                — visual summaries that help customers compare gaming and productivity expectations
+                <strong>Performance estimates:</strong>
+                visual summaries that help customers compare gaming and productivity expectations
             </li>
             <li>
-                <strong>Customer accounts</strong>
-                — registration, profiles, saved builds, wishlists, cart, simulated checkout,
+                <strong>Customer accounts:</strong>
+                registration, profiles, saved builds, wishlists, cart, simulated checkout,
                 order history, reviews, and consultation requests with safe file attachments
             </li>
             <li>
-                <strong>Human support path</strong>
-                — consultation forms and administrator responses for advice before buying
+                <strong>Human support path:</strong>
+                consultation forms and administrator responses for advice before buying
             </li>
             <li>
-                <strong>Administrator control</strong>
-                — product and option editing, user disable/re-enable, order and review
+                <strong>Administrator control:</strong>
+                product and option editing, user disable/re-enable, order and review
                 moderation, theme switching, reports, and service monitoring
             </li>
             <li>
-                <strong>Learning and help</strong>
-                — multimedia learning centre, interactive map, charts, and a multi-page
+                <strong>Learning and help:</strong>
+                multimedia learning centre, interactive map, charts, and a multi-page
                 Help wiki with context-sensitive links from feature pages
             </li>
         </ol>

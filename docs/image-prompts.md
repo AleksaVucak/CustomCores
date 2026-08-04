@@ -1,7 +1,7 @@
-# CustomCore Stage 8 Image Prompt Pack
+# CustomCore Image Prompt Pack
 
-**Document type:** Commit 8.7 retained prompt record  
-**Licence summary:** See [`docs/media-credits.md`](media-credits.md)  
+**Document type:** Project documentation
+**Licence summary:** See [`docs/media-credits.md`](media-credits.md)
 **Status:** Prompts below match the AI-generated JPEG files shipped under `assets/images/`.
 
 Export guidance (historical): save final images as JPG in sRGB. Product and category images should use quality 82–90 and the exact filenames below. Product shots should be about 1600 px on the longest side, heroes 1920×1080, and the Open Graph image exactly 1200×630. Generated images shown in ChatGPT must be exported manually and renamed to the requested filesystem paths.

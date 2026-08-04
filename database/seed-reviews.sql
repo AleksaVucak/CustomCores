@@ -1,32 +1,25 @@
--- =============================================================================
--- CustomCore — Demo Reviews Seed (Commit 3.8)
--- =============================================================================
---
--- File responsibility:
---   Seeds a few demo customer accounts and product reviews so public pages can
---   demonstrate approved-only display. Includes pending and hidden rows that
---   must NOT appear on product.php or reviews.php.
---
+-- Aleksa Vucak
+-- 110139920
+-- COMP 3340, Final Project
+-- August 5th, 2026
+-- Demo Reviews Seed
+-- Seeds a few demo customer accounts and product reviews so public pages can
+-- demonstrate approved-only display. Includes pending and hidden rows that
+-- must NOT appear on product.php or reviews.php.
 -- Prerequisites:
---   1. database/schema.sql
---   2. database/seed-products.sql (products 1–20)
---
+-- 1. database/schema.sql
+-- 2. database/seed-products.sql (products 1 to 20)
 -- Import:
---   mysql -u your_username -p your_database_name < database/seed-reviews.sql
---
--- Demo customer login (local testing only — change in production):
---   Email:    alex@example.com / jordan@example.com / sam@example.com
---   Password: DemoPass123!
---
+-- mysql -u your_username -p your_database_name < database/seed-reviews.sql
+-- Demo customer login (local testing only, change in production):
+-- Email: alex@example.com / jordan@example.com / sam@example.com
+-- Password: DemoPass123!
 -- Acceptance:
---   SELECT COUNT(*) FROM reviews WHERE status = 'approved';  -- ≥ 1
---   Public pages must never show status IN ('pending','hidden').
--- =============================================================================
+-- SELECT COUNT(*) FROM reviews WHERE status = 'approved'; -- ≥ 1
+-- Public pages must never show status IN ('pending','hidden').
 
--- ---------------------------------------------------------------------------
--- Demo customers (fixed IDs 10–12 to avoid colliding with a CLI admin at id 1)
+-- Demo customers (fixed IDs 10 to 12 to avoid colliding with a CLI admin at id 1)
 -- password_hash = bcrypt("DemoPass123!")
--- ---------------------------------------------------------------------------
 
 INSERT INTO `users` (
     `id`, `email`, `password_hash`, `first_name`, `last_name`,
@@ -64,10 +57,8 @@ ON DUPLICATE KEY UPDATE
     `last_name`  = VALUES(`last_name`),
     `is_active`  = VALUES(`is_active`);
 
--- ---------------------------------------------------------------------------
--- Reviews — mix of approved / pending / hidden
+-- Reviews, mix of approved / pending / hidden
 -- Products referenced: 1 (Budget), 6 (Esports), 11 (High-Perf), 16 (Creator)
--- ---------------------------------------------------------------------------
 
 INSERT INTO `reviews` (
     `id`, `product_id`, `user_id`, `rating`, `title`, `body`, `status`, `created_at`
@@ -128,7 +119,7 @@ INSERT INTO `reviews` (
     'approved',
     '2026-07-14 10:18:00'
 ),
--- Pending — must NOT appear on public pages
+-- Pending, must NOT appear on public pages
 (
     9, 1, 12, 2,
     'Waiting on support reply',
@@ -136,7 +127,7 @@ INSERT INTO `reviews` (
     'pending',
     '2026-07-18 08:00:00'
 ),
--- Hidden — must NOT appear on public pages
+-- Hidden, must NOT appear on public pages
 (
     10, 6, 11, 1,
     'Removed by moderation',
@@ -150,24 +141,20 @@ ON DUPLICATE KEY UPDATE
     `body`   = VALUES(`body`),
     `status` = VALUES(`status`);
 
--- ---------------------------------------------------------------------------
 -- Verification helpers (run manually after import)
--- ---------------------------------------------------------------------------
 -- Approved only (public pages use this filter):
---   SELECT r.id, r.product_id, r.rating, r.status, u.first_name
---   FROM reviews r
---   INNER JOIN users u ON u.id = r.user_id
---   WHERE r.status = 'approved'
---   ORDER BY r.created_at DESC;
---
+-- SELECT r.id, r.product_id, r.rating, r.status, u.first_name
+-- FROM reviews r
+-- INNER JOIN users u ON u.id = r.user_id
+-- WHERE r.status = 'approved'
+-- ORDER BY r.created_at DESC;
 -- Must return rows for pending/hidden (proves moderation data exists):
---   SELECT id, status FROM reviews WHERE status IN ('pending','hidden');
---
+-- SELECT id, status FROM reviews WHERE status IN ('pending','hidden');
 -- Public query must return 0 for non-approved:
---   SELECT COUNT(*) AS should_be_zero
---   FROM reviews
---   WHERE status <> 'approved'
---     AND id IN (
---       SELECT id FROM reviews WHERE status = 'approved'
---     );
---   (Sanity: public SELECT always includes WHERE status = 'approved')
+-- SELECT COUNT(*) AS should_be_zero
+-- FROM reviews
+-- WHERE status <> 'approved'
+-- AND id IN (
+-- SELECT id FROM reviews WHERE status = 'approved'
+-- );
+-- (Sanity: public SELECT always includes WHERE status = 'approved')

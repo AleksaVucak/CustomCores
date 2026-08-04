@@ -1,14 +1,14 @@
 <?php
 /**
- * CustomCore — Shared order helpers (Commits 6.7–6.8).
- *
- * File responsibility:
- *   Reusable labels, JSON decoders, and ownership-safe fetch helpers for
- *   customer order history, order details, and confirmation pages.
- *
- * Usage:
- *   require_once __DIR__ . '/orders.php';
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Shared order helpers.
+// Reusable labels, JSON decoders, and ownership-safe fetch helpers for customer order history,
+// order details, and confirmation pages.
+// Usage: require_once __DIR__. '/orders.php';
 
 declare(strict_types=1);
 
@@ -52,7 +52,7 @@ function customcore_order_status_class(string $status): string
 }
 
 /**
- * Human-readable payment method label (never card numbers — labels only).
+ * Human-readable payment method label (never card numbers, labels only).
  */
 function customcore_order_payment_label(string $method): string
 {
@@ -154,7 +154,7 @@ function customcore_order_decode_build_snapshot(?string $json): array
  * Load a single order owned by the given user.
  *
  * Ownership is enforced in SQL (id + user_id). Returns null when the order
- * does not exist or belongs to someone else — callers must treat both the same
+ * does not exist or belongs to someone else, callers must treat both the same
  * so order IDs are not enumerable across accounts.
  *
  * @return array<string, mixed>|null

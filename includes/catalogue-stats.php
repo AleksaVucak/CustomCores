@@ -1,17 +1,16 @@
 <?php
 /**
- * CustomCore — Catalogue statistics helpers (Commit 8.5).
- *
- * File responsibility:
- *   Computes public catalogue metrics from MySQL for the catalogue data
- *   visualization (active products per performance tier, with price ranges).
- *   All numbers come from the live database, never hard-coded, so the public
- *   chart always reflects real seeded/administered data.
- *
- * Usage:
- *   require_once __DIR__ . '/catalogue-stats.php';
- *   $tiers = customcore_catalogue_tier_stats($pdo);
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Catalogue statistics helpers.
+// Computes public catalogue metrics from MySQL for the catalogue data visualization (active
+// products per performance tier, with price ranges). All numbers come from the live database,
+// never hard-coded, so the public chart always reflects real seeded/administered data.
+// Usage: require_once __DIR__. '/catalogue-stats.php';
+//   $tiers = customcore_catalogue_tier_stats($pdo);
 
 declare(strict_types=1);
 
@@ -39,15 +38,15 @@ function customcore_catalogue_tier_colour(string $slug): array
  * Active product counts and price ranges per active performance tier.
  *
  * @return list<array{
- *   id:int,
- *   name:string,
- *   slug:string,
- *   active_count:int,
- *   min_price:?float,
- *   max_price:?float,
- *   avg_price:?float,
- *   fill:string,
- *   border:string
+ * id:int
+ * name:string
+ * slug:string
+ * active_count:int
+ * min_price:?float
+ * max_price:?float
+ * avg_price:?float
+ * fill:string
+ * border:string
  * }>
  */
 function customcore_catalogue_tier_stats(PDO $pdo): array

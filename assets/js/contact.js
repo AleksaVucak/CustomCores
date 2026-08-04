@@ -1,13 +1,13 @@
-/**
- * CustomCore — Contact form progressive enhancement (Commit 7.5)
- * ----------------------------------------------------------------------------
- * File responsibility:
- *   Shows the "Custom subject" field when the visitor selects "Other".
- *   Server validation remains authoritative.
- *
- * Loaded from includes/footer.php when $currentPage === 'contact'.
- * ----------------------------------------------------------------------------
+/*
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Contact form progressive enhancement.
+// Shows the "Custom subject" field when the visitor selects "Other". Server validation remains
+// authoritative.
+// Loaded from includes/footer.php when $currentPage === 'contact'.
 
 (function (document) {
   "use strict";

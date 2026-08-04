@@ -1,25 +1,22 @@
 <?php
 /**
- * CustomCore — Order Confirmation / Place Order (Commits 6.5 + 6.6).
- *
- * File responsibility:
- *   Two modes:
- *   1. Place — when $_SESSION['_cc_checkout'] exists, convert the cart into a
- *      permanent order (orders + order_items), clear the cart, then redirect
- *      to this page with ?id= so the confirmation is loaded from the database.
- *   2. View — when ?id=N is provided, load that order (owner-scoped) and show
- *      the confirmation number and summary matching the saved DB record.
- *
- * Authentication requirements:
- *   Logged-in customer (customcore_require_login).
- *
- * Security:
- *   - Prices snapshotted from cart_items (DB), never client totals.
- *   - Unique order_number generated server-side.
- *   - Transaction ensures atomicity.
- *   - View mode enforces user_id ownership on every load.
- *   - All outputs escaped via customcore_e().
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Order Confirmation / Place Order+ 6.6).
+// Two modes: 1. Place, when $_SESSION['_cc_checkout'] exists, convert the cart into a permanent
+// order (orders + order_items), clear the cart, then redirect to this page with ?id= so the
+// confirmation is loaded from the database. 2. View, when ?id=N is provided, load that order
+// (owner-scoped) and show the confirmation number and summary matching the saved DB record.
+// Access: Logged-in customer (customcore_require_login).
+// Security:
+//   Prices snapshotted from cart_items (DB), never client totals.
+//   Unique order_number generated server-side.
+//   Transaction ensures atomicity.
+//   View mode enforces user_id ownership on every load.
+//   All outputs escaped via customcore_e().
 
 declare(strict_types=1);
 
@@ -82,9 +79,7 @@ $orderError = null;
 $order = null;
 $items = [];
 
-// ---------------------------------------------------------------------------
-// MODE A — Place order from checkout session, then redirect to view mode
-// ---------------------------------------------------------------------------
+// MODE A, Place order from checkout session, then redirect to view mode
 
 if (isset($_SESSION['_cc_checkout']) && is_array($_SESSION['_cc_checkout'])) {
     $checkout = $_SESSION['_cc_checkout'];
@@ -97,7 +92,7 @@ if (isset($_SESSION['_cc_checkout']) && is_array($_SESSION['_cc_checkout'])) {
 
         if ($cartItems === []) {
             unset($_SESSION['_cc_checkout']);
-            customcore_flash_warning('Your cart is empty — no order to place.');
+            customcore_flash_warning('Your cart is empty, no order to place.');
             customcore_redirect('cart.php');
         }
 
@@ -183,9 +178,7 @@ if (isset($_SESSION['_cc_checkout']) && is_array($_SESSION['_cc_checkout'])) {
     }
 }
 
-// ---------------------------------------------------------------------------
-// MODE B — View confirmation from database (owner-scoped)
-// ---------------------------------------------------------------------------
+// MODE B, View confirmation from database (owner-scoped)
 
 $viewId = 0;
 if (isset($_GET['id']) && is_string($_GET['id']) && ctype_digit($_GET['id'])) {
@@ -213,14 +206,12 @@ if ($orderError === null && $viewId > 0) {
     customcore_redirect('checkout.php');
 }
 
-// ---------------------------------------------------------------------------
 // Page metadata
-// ---------------------------------------------------------------------------
 
 $orderNumber = $order !== null ? (string) $order['order_number'] : '';
 $pageTitle = $orderNumber !== ''
-    ? 'Order Confirmation ' . $orderNumber . ' — CustomCore'
-    : 'Order Confirmation — CustomCore';
+    ? 'Order Confirmation ' . $orderNumber . ' | CustomCore'
+    : 'Order Confirmation | CustomCore';
 $pageDescription = 'Your order has been placed successfully.';
 $pageKeywords = 'CustomCore, order confirmation, receipt';
 $currentPage = 'orders';
@@ -268,7 +259,7 @@ require_once __DIR__ . '/includes/header.php';
             <p class="context-help">
                 Help:
                 <a href="<?php echo customcore_e(customcore_url('help/orders.html#confirmation')); ?>">Orders guide</a>
-                — what your confirmation number means and how to track this order.
+                what your confirmation number means and how to track this order.
             </p>
         </header>
 
@@ -348,7 +339,7 @@ require_once __DIR__ . '/includes/header.php';
             <h2 class="order-confirm__section-title">Order status</h2>
             <p>
                 <span class="order-confirm__status"><?php echo customcore_e(customcore_order_status_label($status)); ?></span>
-                — we have received your order and will begin processing it shortly.
+                we have received your order and will begin processing it shortly.
             </p>
         </div>
 

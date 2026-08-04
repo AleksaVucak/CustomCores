@@ -1,22 +1,20 @@
 <?php
 /**
- * CustomCore — Administrator consultation management helpers (Commit 9.7).
- *
- * File responsibility:
- *   Security-first helpers for the admin consultation screens: search/list with
- *   status filtering and pagination, admin-scope fetch of any request + its
- *   attachments, status transitions, and saving the administrator's response
- *   (which timestamps and auto-advances an open request to "answered").
- *
- * Usage:
- *   require_once __DIR__ . '/admin-consultations.php';
- *
- * Security:
- *   - Every query uses PDO prepared statements.
- *   - Status writes are validated against the consultation_requests.status ENUM.
- *   - Attachment fetch returns the generated stored name; the download endpoint
- *     basename-guards and confirms the path stays inside the upload directory.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator consultation management helpers.
+// Security-first helpers for the admin consultation screens: search/list with status filtering and
+// pagination, admin-scope fetch of any request + its attachments, status transitions, and saving
+// the administrator's response (which timestamps and auto-advances an open request to "answered").
+// Usage: require_once __DIR__. '/admin-consultations.php';
+// Security:
+//   Every query uses PDO prepared statements.
+//   Status writes are validated against the consultation_requests.status ENUM.
+//   Attachment fetch returns the generated stored name; the download endpoint basename-guards and
+//     confirms the path stays inside the upload directory.
 
 declare(strict_types=1);
 
@@ -137,7 +135,7 @@ function customcore_admin_consultation_fetch(PDO $pdo, int $requestId): ?array
 }
 
 /**
- * Fetch all attachments for a request (admin scope — no user filter).
+ * Fetch all attachments for a request (admin scope, no user filter).
  *
  * @return list<array<string, mixed>>
  */
@@ -160,7 +158,7 @@ function customcore_admin_consultation_attachments(PDO $pdo, int $requestId): ar
 }
 
 /**
- * Fetch a single attachment (admin scope — any owner) for the download endpoint.
+ * Fetch a single attachment (admin scope, any owner) for the download endpoint.
  *
  * @return array<string, mixed>|null
  */

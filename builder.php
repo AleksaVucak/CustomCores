@@ -1,44 +1,34 @@
 <?php
 /**
- * CustomCore — Multi-step Custom PC Builder (Commit 5.1).
- *
- * File responsibility:
- *   Renders a step-by-step component selection interface. Each builder category
- *   (CPU, Motherboard, GPU, RAM, Storage, PSU, Case, Cooling, OS, Service) is
- *   one step. Users pick one component per required category (optional
- *   categories may be skipped). Selections are stored in the session so the
- *   build persists across steps without needing login.
- *
- * Flow:
- *   GET  — show the current step (defaults to step 1); honour ?step=N.
- *   POST — record a selection for the current step; advance to the next step or
- *          to the review page (builder-results.php) after the final step.
- *
- * Authentication requirements:
- *   None (public). Saving a build (Commit 5.6) requires login; this page is
- *   available to guests for browsing and building.
- *
- * Database queries:
- *   - component_categories (all rows, sorted by sort_order)
- *   - components (active rows for the current category)
- *
- * Session:
- *   $_SESSION['_cc_build'] — array keyed by category ID → component ID.
- *
- * Live pricing (Commit 5.2):
- *   Each radio carries data-price / data-name. assets/js/builder.js recalculates
- *   the this-step subtotal and running total immediately on selection change.
- *   Server-trusted totals arrive in Commit 5.3.
- *
- * Compatibility checking (Commit 5.4):
- *   The form includes data-compat-api pointing to api/compatibility-check.php.
- *   builder.js calls it on each change and renders a badge + per-rule results
- *   in the #builder-compat-status container.
- *
- * Context-sensitive Help (Commit 5.9):
- *   Header and step tip link to help/pc-builder.html#step-{slug} for the
- *   current category, plus pricing and compatibility anchors.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Multi-step Custom PC Builder.
+// Renders a step-by-step component selection interface. Each builder category (CPU, Motherboard,
+// GPU, RAM, Storage, PSU, Case, Cooling, OS, Service) is one step. Users pick one component per
+// required category (optional categories may be skipped). Selections are stored in the session so
+// the build persists across steps without needing login.
+// Flow:
+//   GET, show the current step (defaults to step 1); honour ?step=N. POST, record a selection for
+//     the current step; advance to the next step or to the review page (builder-results.php) after
+//     the final step.
+// Access: None (public). Saving a build requires login; this page is available to guests for
+// browsing and building.
+// Database queries:
+//   component_categories (all rows, sorted by sort_order)
+//   components (active rows for the current category)
+// Session:
+//   $_SESSION['_cc_build'], array keyed by category ID → component ID.
+// Live pricing: Each radio carries data-price / data-name. assets/js/builder.js recalculates the
+// this-step subtotal and running total immediately on selection change. Server-trusted totals
+// arrive in.
+// Compatibility checking: The form includes data-compat-api pointing to api/compatibility-
+// check.php. builder.js calls it on each change and renders a badge + per-rule results in the
+// #builder-compat-status container.
+// Context-sensitive Help: Header and step tip link to help/pc-builder.html#step-{slug} for the
+// current category, plus pricing and compatibility anchors.
 
 declare(strict_types=1);
 
@@ -48,18 +38,14 @@ require_once __DIR__ . '/includes/csrf.php';
 
 customcore_session_start();
 
-// ---------------------------------------------------------------------------
-// Handle reset — clear build and restart
-// ---------------------------------------------------------------------------
+// Handle reset, clear build and restart
 
 if (isset($_GET['reset']) && $_GET['reset'] === '1') {
     unset($_SESSION['_cc_build']);
     customcore_redirect('builder.php');
 }
 
-// ---------------------------------------------------------------------------
 // Load builder categories from database (ordered by sort_order)
-// ---------------------------------------------------------------------------
 
 try {
     $pdo = customcore_pdo();
@@ -78,7 +64,7 @@ try {
 }
 
 if (empty($categories)) {
-    $pageTitle = 'PC Builder — CustomCore';
+    $pageTitle = 'PC Builder | CustomCore';
     $pageDescription = 'Build your dream gaming PC with guided component selection.';
     $pageKeywords = 'CustomCore, PC builder, custom gaming PC, build your own';
     $currentPage = 'builder';
@@ -93,9 +79,7 @@ if (empty($categories)) {
 
 $totalSteps = count($categories);
 
-// ---------------------------------------------------------------------------
 // Determine the current step (1-indexed)
-// ---------------------------------------------------------------------------
 
 $currentStep = 1;
 if (isset($_GET['step']) && is_string($_GET['step'])) {
@@ -109,9 +93,7 @@ $categoryName = (string) $category['name'];
 $categorySlug = (string) $category['slug'];
 $isRequired = (int) $category['is_required'] === 1;
 
-// ---------------------------------------------------------------------------
 // Initialise / retrieve build session
-// ---------------------------------------------------------------------------
 
 if (!isset($_SESSION['_cc_build']) || !is_array($_SESSION['_cc_build'])) {
     $_SESSION['_cc_build'] = [];
@@ -119,9 +101,7 @@ if (!isset($_SESSION['_cc_build']) || !is_array($_SESSION['_cc_build'])) {
 
 $build = &$_SESSION['_cc_build'];
 
-// ---------------------------------------------------------------------------
-// Handle POST — store the selection and advance
-// ---------------------------------------------------------------------------
+// Handle POST, store the selection and advance
 
 $selectionError = null;
 
@@ -193,9 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// ---------------------------------------------------------------------------
 // Load components for the current category
-// ---------------------------------------------------------------------------
 
 $components = [];
 
@@ -221,9 +199,7 @@ try {
 // The currently selected component for this step (if user came back)
 $selectedId = isset($build[$categoryId]) ? (int) $build[$categoryId] : 0;
 
-// ---------------------------------------------------------------------------
 // Load selected component details once (summary + live-price baseline)
-// ---------------------------------------------------------------------------
 
 /** @var array<int, array{id:int,name:string,price:float,category_id:int}> $selectedDetails */
 $selectedDetails = [];
@@ -269,11 +245,9 @@ if (!empty($build)) {
     }
 }
 
-// ---------------------------------------------------------------------------
 // Page setup and render
-// ---------------------------------------------------------------------------
 
-$pageTitle = "Step {$currentStep}: {$categoryName} — PC Builder — CustomCore";
+$pageTitle = "Step {$currentStep}: {$categoryName} | PC Builder | CustomCore";
 $pageDescription = "Select a {$categoryName} for your custom PC build.";
 $pageKeywords = "CustomCore, PC builder, {$categoryName}, custom gaming PC";
 $currentPage = 'builder';
@@ -497,11 +471,11 @@ require_once __DIR__ . '/includes/header.php';
                                     <span class="builder-summary__part" data-live-part hidden></span>
                                     <span class="builder-summary__price" data-live-price hidden></span>
                                     <span class="builder-summary__empty" data-live-empty>
-                                        <?php echo (int) $cat['is_required'] === 0 ? 'Skipped' : '—'; ?>
+                                        <?php echo (int) $cat['is_required'] === 0 ? 'Skipped' : 'Not selected'; ?>
                                     </span>
                                 <?php else: ?>
                                     <span class="builder-summary__empty">
-                                        <?php echo (int) $cat['is_required'] === 0 ? 'Skipped' : '—'; ?>
+                                        <?php echo (int) $cat['is_required'] === 0 ? 'Skipped' : 'Not selected'; ?>
                                     </span>
                                 <?php endif; ?>
                             <?php endif; ?>
@@ -522,7 +496,7 @@ require_once __DIR__ . '/includes/header.php';
                             ? '$' . customcore_e(number_format($currentStepPrice, 2))
                             : 'Included';
                     } else {
-                        echo '—';
+                        echo 'Not selected';
                     }
                 ?></span>
             </div>

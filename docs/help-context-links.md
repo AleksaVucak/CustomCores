@@ -1,7 +1,7 @@
-# CustomCore — Context-sensitive Help links (Commit 11.7)
+# CustomCore | Context-sensitive Help links
 
-**Document type:** Stage 11 audit evidence  
-**Purpose:** Prove that feature pages link to the **matching** Help article (rubric #7), not only the Help hub.  
+**Document type:** Project documentation
+**Purpose:** Prove that feature pages link to the **matching** Help article (rubric #7), not only the Help hub.
 **Rule:** Site-wide chrome (main nav, footer) and general marketing pages may keep the hub; feature pages must open the relevant guide, preferably with a section anchor.
 
 ---
@@ -62,7 +62,7 @@
 | `includes/footer.php` | Site-wide footer Help link |
 | Homepage / About / Accessibility / Learning Centre | Entry points that should show **all** guides |
 
-Administrator pages use their own `context-help` copy (Stage 9 tooling). They are **not** required to deep-link into the public Help wiki; administrator documentation lands in Stage 12.
+Administrator pages use their own `context-help` copy (admin tooling). They are **not** required to deep-link into the public Help wiki; administrator documentation lives in `docs/administrator-guide.md`.
 
 ---
 
@@ -73,4 +73,4 @@ Administrator pages use their own `context-help` copy (Stage 9 tooling). They ar
 3. Confirm the destination is the matching article (and section when an anchor is used), not only `help/index.html`.
 4. Confirm main nav and footer still open the Help hub.
 
-Verified during Commit 11.7: every mapped customer feature page targets the correct guide; all seven Help HTML files return HTTP 200; hub deep-link anchors used by the feature pages exist on their articles.
+Verified: every mapped customer feature page targets the correct guide; all seven Help HTML files return HTTP 200; hub deep-link anchors used by the feature pages exist on their articles.

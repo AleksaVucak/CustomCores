@@ -1,15 +1,15 @@
 <?php
 /**
- * CustomCore — Administrator add product (Commit 9.2).
- *
- * File responsibility:
- *   Protected create screen for catalogue products. Validates input, stores an
- *   optional uploaded image securely, inserts the product, and redirects to the
- *   product list with a flash confirmation (Post/Redirect/Get).
- *
- * Authentication requirements:
- *   Administrator role (customcore_require_admin()).
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator add product.
+// Protected create screen for catalogue products. Validates input, stores an optional uploaded
+// image securely, inserts the product, and redirects to the product list with a flash confirmation
+// (Post/Redirect/Get).
+// Access: Administrator role (customcore_require_admin()).
 
 declare(strict_types=1);
 
@@ -103,7 +103,7 @@ $formSubmitLabel = 'Add product';
 $adminNavCurrent = 'products';
 $loadAdminCss = true;
 
-$pageTitle = 'Add product — CustomCore admin';
+$pageTitle = 'Add Product | CustomCore Admin';
 $pageDescription = 'Create a new CustomCore catalogue product.';
 $pageKeywords = 'CustomCore, admin, add product';
 $currentPage = 'admin';

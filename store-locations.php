@@ -1,19 +1,16 @@
 <?php
 /**
- * CustomCore — Store & service location (Commit 8.4).
- *
- * File responsibility:
- *   Public page showing the fictional CustomCore Campus Service Desk with an
- *   interactive Leaflet/OpenStreetMap map AND an always-visible text address,
- *   hours, and contact fallback. The address stays fully usable if JavaScript,
- *   Leaflet, or the map tiles fail to load.
- *
- * Authentication requirements:
- *   None (public).
- *
- * Data source:
- *   config/app.php -> 'store_location' (fictional academic-project data).
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Store & service location.
+// Public page showing the fictional CustomCore Campus Service Desk with an interactive
+// Leaflet/OpenStreetMap map AND an always-visible text address, hours, and contact fallback. The
+// address stays fully usable if JavaScript, Leaflet, or the map tiles fail to load.
+// Access: None (public).
+// Data source: config/app.php -> 'store_location' (fictional academic-project data).
 
 declare(strict_types=1);
 
@@ -44,7 +41,7 @@ $cityRegionPostal = trim(implode(', ', array_filter([
 
 $hasMap = $locLat !== null && $locLng !== null;
 
-$pageTitle = 'Store & Service Location — CustomCore';
+$pageTitle = 'Store & Service Location | CustomCore';
 $pageDescription = 'View the fictional CustomCore Campus Service Desk location, hours, order pickup, and consultation details.';
 $pageKeywords = 'CustomCore location, Windsor PC consultation, simulated PC pickup, academic project location';
 $currentPage = 'locations';

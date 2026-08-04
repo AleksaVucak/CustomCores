@@ -1,21 +1,20 @@
 <?php
 /**
- * CustomCore — Shared site footer (closes main through document end).
- *
- * File responsibility:
- *   Closes the main content region and outputs footer links plus shared scripts.
- *   Loads assets/js/builder.js when $currentPage is "builder" (Commit 5.2).
- *   Loads assets/js/cart.js when $currentPage is "cart" (Commit 6.2).
- *   Loads assets/js/checkout.js when $currentPage is "checkout" (Commit 6.4).
- *   Loads assets/js/reviews.js when $loadReviewForm is truthy (Commit 7.2).
- *   Loads assets/js/contact.js when $currentPage is "contact" (Commit 7.5).
- *   Loads Leaflet CDN + assets/js/store-map.js when $currentPage is "locations" (Commit 8.4).
- *   Loads Chart.js CDN + assets/js/charts.js when $loadCharts is truthy (Commit 5.8).
- *   Loads Chart.js CDN + assets/js/catalogue-chart.js when $loadCatalogueChart is truthy (Commit 8.5).
- *   Loads Chart.js CDN + assets/js/admin-reports.js when $loadAdminReports is truthy (Commit 9.9).
- *
- * Included after page body content on each layout-using page.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Shared site footer (closes main through document end).
+// Closes the main content region and outputs footer links plus shared scripts. Loads
+// assets/js/builder.js when $currentPage is "builder". Loads assets/js/cart.js when $currentPage
+// is "cart". Loads assets/js/checkout.js when $currentPage is "checkout". Loads
+// assets/js/reviews.js when $loadReviewForm is truthy. Loads assets/js/contact.js when
+// $currentPage is "contact". Loads Leaflet CDN + assets/js/store-map.js when $currentPage is
+// "locations". Loads Chart.js CDN + assets/js/charts.js when $loadCharts is truthy. Loads Chart.js
+// CDN + assets/js/catalogue-chart.js when $loadCatalogueChart is truthy. Loads Chart.js CDN +
+// assets/js/admin-reports.js when $loadAdminReports is truthy.
+// Included after page body content on each layout-using page.
 
 declare(strict_types=1);
 

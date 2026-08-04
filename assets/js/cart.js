@@ -1,14 +1,13 @@
-/**
- * CustomCore — Cart quantity and removal controls (Commit 6.2)
- * ----------------------------------------------------------------------------
- * File responsibility:
- *   Enhances cart.php with live line-total / subtotal previews when quantity
- *   changes, +/- steppers, and confirm prompts before remove / clear.
- *   Server still owns authoritative totals after POST.
- *
- * Loaded from includes/footer.php when $currentPage === 'cart'.
- * ----------------------------------------------------------------------------
+/*
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Cart quantity and removal controls.
+// Enhances cart.php with live line-total / subtotal previews when quantity changes, +/- steppers,
+// and confirm prompts before remove / clear. Server still owns authoritative totals after POST.
+// Loaded from includes/footer.php when $currentPage === 'cart'.
 
 (function (window, document) {
   "use strict";

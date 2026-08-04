@@ -1,25 +1,23 @@
 <?php
 /**
- * CustomCore — Accessibility statement & multimedia fallbacks (Commit 8.6).
- *
- * File responsibility:
- *   Publishes CustomCore's accessibility commitments and, most importantly for
- *   Stage 8, documents the text-based fallback for every piece of multimedia on
- *   the site (images, video, audio, the catalogue chart, the build performance
- *   chart, and the store map). It gives visitors — and graders — a single place
- *   that proves the site's information stays understandable without images,
- *   video, audio, or JavaScript-rendered charts. Links point to the real
- *   fallbacks on each page.
- *
- * Authentication requirements:
- *   None (public). Linked from the shared footer.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Accessibility statement & multimedia fallbacks.
+// Publishes CustomCore's accessibility commitments and, most importantly for, documents the text-
+// based fallback for every piece of multimedia on the site (images, video, audio, the catalogue
+// chart, the build performance chart, and the store map). It gives visitors, and graders, a single
+// place that proves the site's information stays understandable without images, video, audio, or
+// JavaScript-rendered charts. Links point to the real fallbacks on each page.
+// Access: None (public). Linked from the shared footer.
 
 declare(strict_types=1);
 
 require_once __DIR__ . '/includes/functions.php';
 
-$pageTitle = 'Accessibility — CustomCore';
+$pageTitle = 'Accessibility | CustomCore';
 $pageDescription = 'How CustomCore keeps its catalogue, media, charts, and store map understandable for everyone, including text alternatives for all multimedia.';
 $pageKeywords = 'CustomCore accessibility, alt text, transcripts, captions, chart data table, keyboard navigation';
 $currentPage = 'accessibility';
@@ -37,7 +35,7 @@ require_once __DIR__ . '/includes/header.php';
         </p>
         <p class="accessibility-page__lead">
             CustomCore is built so that everyone can browse the catalogue, learn from our
-            guides, and complete a build — regardless of how they access the web. Every piece
+            guides, and complete a build, regardless of how they access the web. Every piece
             of multimedia on the site has a text-based equivalent, so no information is ever
             locked inside an image, video, audio clip, chart, or map.
         </p>
@@ -140,7 +138,7 @@ require_once __DIR__ . '/includes/header.php';
         <h2 id="a11y-feedback">Tell us about a barrier</h2>
         <p>
             We treat accessibility as ongoing work. If something is hard to use with a keyboard,
-            screen reader, or magnifier — or if a fallback is unclear — please let us know so we
+            screen reader, or magnifier, or if a fallback is unclear, please let us know so we
             can fix it.
         </p>
         <p class="hero__actions">

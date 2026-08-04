@@ -1,11 +1,17 @@
+/*
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
+ */
 /**
- * CustomCore — Administrator area styles (Commit 9.1).
+ * Administrator area styles.
  *
  * Loaded only on admin pages via $loadAdminCss in includes/header.php.
  * Builds on the shared design tokens from main.css.
  */
 
-/* ---- Admin secondary nav ------------------------------------------------ */
+/* Admin secondary nav */
 
 .admin-nav {
   margin: 0 0 var(--cc-space-5);
@@ -52,7 +58,7 @@
   opacity: 0.72;
 }
 
-/* ---- Alerts ------------------------------------------------------------- */
+/* Alerts */
 
 .admin-alerts {
   margin-bottom: var(--cc-space-5);
@@ -100,7 +106,7 @@
   margin-top: 0.45rem;
 }
 
-/* ---- Stat cards --------------------------------------------------------- */
+/* Stat cards */
 
 .admin-stats {
   margin-bottom: var(--cc-space-5);
@@ -143,7 +149,7 @@
   color: var(--cc-color-text-muted);
 }
 
-/* ---- Status summary ----------------------------------------------------- */
+/* Status summary */
 
 .admin-summary {
   margin-bottom: var(--cc-space-5);
@@ -189,7 +195,7 @@
   color: var(--cc-color-text-muted);
 }
 
-/* ---- Activity panels ---------------------------------------------------- */
+/* Activity panels */
 
 .admin-activity {
   margin-bottom: var(--cc-space-5);
@@ -198,7 +204,8 @@
 .admin-activity__grid {
   display: grid;
   /* Explicit shrinkable column so the (unwrapped) activity tables can't stretch
-     the single mobile column past the viewport. */
+     * the single mobile column past the viewport.
+     */
   grid-template-columns: minmax(0, 1fr);
   gap: var(--cc-space-4);
 }
@@ -250,11 +257,12 @@
   font-weight: 400;
   /* Secondary cell text is often an email or timestamp with no break points;
      `anywhere` lets it wrap (and shrinks its min-content) so unwrapped admin
-     tables — e.g. the dashboard activity panels — don't overflow narrow screens. */
+     * tables, e.g. the dashboard activity panels, don't overflow narrow screens.
+     */
   overflow-wrap: anywhere;
 }
 
-/* ---- Tool cards --------------------------------------------------------- */
+/* Tool cards */
 
 .admin-tools__intro {
   max-width: 60ch;
@@ -310,7 +318,7 @@
   }
 }
 
-/* ---- Product management (Commit 9.2) ----------------------------------- */
+/* Product management */
 
 .admin-toolbar {
   margin: 0 0 var(--cc-space-4);
@@ -468,7 +476,7 @@
   filter: brightness(1.08);
 }
 
-/* ---- Product add/edit form (Commit 9.2) -------------------------------- */
+/* Product add/edit form */
 
 .admin-form {
   padding: var(--cc-space-5);
@@ -570,7 +578,7 @@
   }
 }
 
-/* ---- Product options (Commit 9.3) -------------------------------------- */
+/* Product options */
 
 .admin-options__product {
   margin: 0 0 var(--cc-space-4);
@@ -635,7 +643,7 @@
   margin-top: 0;
 }
 
-/* ---- Compatibility metadata (Commit 9.4) ------------------------------- */
+/* Compatibility metadata */
 
 .admin-compat__section {
   margin: 0 0 var(--cc-space-5);
@@ -695,9 +703,9 @@
   overflow-x: auto;
 }
 
-/* -------------------------------------------------------------------------
- * Orders (Commit 9.5)
- * ------------------------------------------------------------------------- */
+/*
+ * Orders
+ */
 .admin-table--orders {
   width: 100%;
   min-width: 720px;
@@ -748,7 +756,8 @@
   display: grid;
   /* minmax(0, …) on both tracks so a long value (e.g. a customer email) can't
      push the two-column detail list past a narrow screen; combined with the
-     dd wrap below, long values wrap instead of overflowing. */
+     * dd wrap below, long values wrap instead of overflowing.
+     */
   grid-template-columns: minmax(0, max-content) minmax(0, 1fr);
   gap: 0.35rem var(--cc-space-4);
   margin: 0;
@@ -812,9 +821,9 @@
   color: var(--cc-color-text-muted);
 }
 
-/* -------------------------------------------------------------------------
- * Users (Commit 9.6)
- * ------------------------------------------------------------------------- */
+/*
+ * Users
+ */
 .admin-table--users {
   width: 100%;
   min-width: 760px;
@@ -828,9 +837,9 @@
   margin-bottom: var(--cc-space-4);
 }
 
-/* -------------------------------------------------------------------------
- * Consultations (Commit 9.7)
- * ------------------------------------------------------------------------- */
+/*
+ * Consultations
+ */
 .admin-table--consultations {
   width: 100%;
   min-width: 720px;
@@ -875,9 +884,9 @@
   margin-bottom: var(--cc-space-4);
 }
 
-/* -------------------------------------------------------------------------
- * Reviews (Commit 9.8)
- * ------------------------------------------------------------------------- */
+/*
+ * Reviews
+ */
 .admin-review-list {
   display: flex;
   flex-direction: column;
@@ -927,9 +936,9 @@
   align-items: center;
 }
 
-/* -------------------------------------------------------------------------
- * Reports (Commit 9.9)
- * ------------------------------------------------------------------------- */
+/*
+ * Reports
+ */
 .admin-report-kpis-section {
   margin: 0 0 var(--cc-space-5);
 }
@@ -1011,8 +1020,9 @@
 .admin-report-users {
   display: grid;
   /* min(280px, 100%) keeps the 280px preferred track on roomy screens but lets
-     each column shrink to the container on phones narrower than 280px + padding,
-     so the report charts never overflow. */
+     each column shrink to the container on phones narrower than 280px + padding
+     * so the report charts never overflow.
+     */
   grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   gap: var(--cc-space-5);
 }
@@ -1020,12 +1030,13 @@
 @media (max-width: 800px) {
   .admin-report-chart {
     /* minmax(0, 1fr) so the stacked chart column can shrink below the Chart.js
-       canvas's intrinsic size instead of overflowing on narrow screens. */
+       * canvas's intrinsic size instead of overflowing on narrow screens.
+       */
     grid-template-columns: minmax(0, 1fr);
   }
 }
 
-/* ---- Theme switcher (Commit 10.4) ---------------------------------------- */
+/* Theme switcher */
 
 .admin-themes__status {
   margin: 0 0 var(--cc-space-5);
@@ -1126,7 +1137,7 @@
   color: var(--cc-color-danger);
 }
 
-/* ---- Service monitoring (Commit 13.2) ---------------------------------- */
+/* Service monitoring */
 
 .monitor-overall {
   margin-top: var(--cc-space-5);

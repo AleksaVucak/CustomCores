@@ -1,13 +1,13 @@
-/**
- * CustomCore — Review form client-side validation (Commit 7.2)
- * ----------------------------------------------------------------------------
- * File responsibility:
- *   Progressive enhancement for the product review form (#review-form).
- *   Server validation remains authoritative.
- *
- * Loaded from includes/footer.php when $loadReviewForm is truthy.
- * ----------------------------------------------------------------------------
+/*
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Review form client-side validation.
+// Progressive enhancement for the product review form (#review-form). Server validation remains
+// authoritative.
+// Loaded from includes/footer.php when $loadReviewForm is truthy.
 
 (function (window, document) {
   "use strict";

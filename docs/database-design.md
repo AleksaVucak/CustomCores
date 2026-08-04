@@ -1,12 +1,12 @@
-# CustomCore — Database Entity-Relationship Design
+# CustomCore | Database Entity-Relationship Design
 
-**Document type:** Stage 0 planning (Commit 0.6)  
-**Purpose:** Define normalized MySQL tables and relationships before writing `database/schema.sql` in Stage 2.  
-**Acceptance:** All major feature relationships are represented.  
-**Engine (planned):** MySQL / InnoDB, `utf8mb4`  
-**Access layer:** PHP PDO with prepared statements only (`includes/database.php` → `customcore_pdo()`, Commit 1.3)
+**Document type:** Project documentation
+**Purpose:** Define normalized MySQL tables and relationships before writing `database/schema.sql`.
+**Acceptance:** All major feature relationships are represented.
+**Engine (planned):** MySQL / InnoDB, `utf8mb4`
+**Access layer:** PHP PDO with prepared statements only (`includes/database.php` → `customcore_pdo`)
 
-This document is the design contract. Executable SQL and seeds live in `database/`. Import, verification, and backup steps are documented in [`docs/database-import.md`](database-import.md) (Commit 2.8).
+This document is the design contract. Executable SQL and seeds live in `database/`. Import, verification, and backup steps are documented in [`docs/database-import.md`](database-import.md).
 
 ---
 
@@ -29,38 +29,38 @@ This document is the design contract. Executable SQL and seeds live in `database
 
 ```mermaid
 erDiagram
-    users ||--o{ saved_builds : owns
-    users ||--o{ wishlists : owns
-    users ||--o{ carts : owns
-    users ||--o{ orders : places
-    users ||--o{ reviews : writes
-    users ||--o{ consultation_requests : submits
-    users ||--o{ contact_messages : may_send
+ users ||--o{ saved_builds: owns
+ users ||--o{ wishlists: owns
+ users ||--o{ carts: owns
+ users ||--o{ orders: places
+ users ||--o{ reviews: writes
+ users ||--o{ consultation_requests: submits
+ users ||--o{ contact_messages: may_send
 
-    categories ||--o{ products : groups
-    products ||--o{ product_options : has
-    products ||--o{ reviews : receives
-    products ||--o{ wishlist_items : referenced
-    products ||--o{ cart_items : referenced
-    products ||--o{ order_items : referenced
+ categories ||--o{ products: groups
+ products ||--o{ product_options: has
+ products ||--o{ reviews: receives
+ products ||--o{ wishlist_items: referenced
+ products ||--o{ cart_items: referenced
+ products ||--o{ order_items: referenced
 
-    component_categories ||--o{ components : contains
-    components ||--o{ saved_build_items : selected_in
-    components ||--o{ cart_items : custom_build_part
-    components ||--o{ order_items : custom_build_part
-    components ||--o{ compatibility_rules : rule_subject
+ component_categories ||--o{ components: contains
+ components ||--o{ saved_build_items: selected_in
+ components ||--o{ cart_items: custom_build_part
+ components ||--o{ order_items: custom_build_part
+ components ||--o{ compatibility_rules: rule_subject
 
-    saved_builds ||--o{ saved_build_items : includes
-    saved_builds ||--o{ cart_items : may_add
-    saved_builds ||--o{ order_items : may_order
+ saved_builds ||--o{ saved_build_items: includes
+ saved_builds ||--o{ cart_items: may_add
+ saved_builds ||--o{ order_items: may_order
 
-    wishlists ||--o{ wishlist_items : contains
-    carts ||--o{ cart_items : contains
-    orders ||--o{ order_items : contains
+ wishlists ||--o{ wishlist_items: contains
+ carts ||--o{ cart_items: contains
+ orders ||--o{ order_items: contains
 
-    consultation_requests ||--o{ consultation_attachments : has
+ consultation_requests ||--o{ consultation_attachments: has
 
-    themes ||--o{ site_settings : may_reference
+ themes ||--o{ site_settings: may_reference
 ```
 
 ### Relationship notes (cardinality)
@@ -97,7 +97,7 @@ Unless noted, every table includes `id` (PK, UNSIGNED INT AUTO_INCREMENT) and us
 | ------ | -------------- | ----- |
 | `id` | PK | |
 | `email` | VARCHAR(255) UNIQUE | Login identity |
-| `password_hash` | VARCHAR(255) | `password_hash()` / `password_verify()` only |
+| `password_hash` | VARCHAR(255) | `password_hash` / `password_verify` only |
 | `first_name`, `last_name` | VARCHAR | Profile |
 | `phone` | VARCHAR(30) NULL | |
 | `address_line1`, `address_line2`, `city`, `province`, `postal_code` | VARCHAR | Shipping/profile |
@@ -200,7 +200,7 @@ Stores **simplified** rule metadata and/or attribute expectations used by PHP/JS
 | Optional JSON/text `config` | Thresholds or allowed pairs if needed |
 | timestamps | |
 
-Actual pass/fail uses component attribute columns compared in application logic (Stage 5), guided by these rule records.
+Actual pass/fail uses component attribute columns compared in application logic, guided by these rule records.
 
 ---
 
@@ -388,7 +388,7 @@ Public pages show **approved** only.
 
 ---
 
-## 5. Planned verification queries (Stage 2+)
+## 5. Planned verification queries
 
 Confirm ≥ 20 active products:
 
@@ -404,7 +404,7 @@ Confirm every active product has at least two active options:
 SELECT p.id, p.name, COUNT(po.id) AS option_count
 FROM products p
 LEFT JOIN product_options po
-  ON po.product_id = p.id AND po.is_active = 1
+ ON po.product_id = p.id AND po.is_active = 1
 WHERE p.is_active = 1
 GROUP BY p.id, p.name
 HAVING COUNT(po.id) < 2;
@@ -416,15 +416,15 @@ HAVING COUNT(po.id) < 2;
 
 ## 6. Simplified compatibility attributes (builder)
 
-Rules implemented in application code (Stage 5), using component columns:
+Rules implemented in application code, using component columns:
 
-1. CPU socket = motherboard socket  
-2. RAM type = motherboard RAM type  
-3. Motherboard form factor fits case  
-4. PSU wattage ≥ estimated build requirement  
-5. Case supports GPU length  
-6. Case supports cooler type/height  
-7. Motherboard supports storage interface  
+1. CPU socket = motherboard socket
+2. RAM type = motherboard RAM type
+3. Motherboard form factor fits case
+4. PSU wattage ≥ estimated build requirement
+5. Case supports GPU length
+6. Case supports cooler type/height
+7. Motherboard supports storage interface
 
 Results: **compatible** / **warning** / **incompatible**, with explanations. Server validates independently of JavaScript.
 
@@ -443,7 +443,7 @@ Results: **compatible** / **warning** / **incompatible**, with explanations. Ser
 
 ---
 
-## 8. Stage 2 deliverables (implementation status)
+## 8. Deliverables (implementation status)
 
 | Commit | Deliverable | Status |
 | ------ | ----------- | ------ |
@@ -456,21 +456,21 @@ Results: **compatible** / **warning** / **incompatible**, with explanations. Ser
 
 ---
 
-## 8a. Import, backup, and ER alignment (Commit 2.8)
+## 8a. Import, backup, and ER alignment
 
 **Full step-by-step guide:** [`docs/database-import.md`](database-import.md)
 
 ### Quick import sequence
 
-1. Create a utf8mb4 database and `config/database.php` (from the example).  
-2. Import `database/schema.sql`.  
-3. Import seeds in order: products → product-options → components → compatibility → themes.  
-4. Run `php database/create-admin.php` for a bcrypt-hashed admin.  
+1. Create a utf8mb4 database and `config/database.php` (from the example).
+2. Import `database/schema.sql`.
+3. Import seeds in order: products → product-options → components → compatibility → themes.
+4. Run `php database/create-admin.php` for a bcrypt-hashed admin.
 5. Run the verification queries in the import guide (20 products; zero products with &lt; 2 options; builder categories populated; 7 rules; active theme readable).
 
 ### ER alignment note
 
-The Mermaid diagram and table plan in this document match the 21 tables created by `database/schema.sql`. Seed files populate catalogue, builder, compatibility, and theme rows required by Stage 2 acceptance. Application features that use empty transactional tables (cart, orders, reviews, etc.) arrive in later stages; the relationships are already present in the schema.
+The Mermaid diagram and table plan in this document match the 21 tables created by `database/schema.sql`. Seed files populate catalogue, builder, compatibility, and theme rows required by the acceptance criteria. Application features that use empty transactional tables (cart, orders, reviews, and so on) are populated by the application; the relationships are already present in the schema.
 
 **Source of truth for executable SQL:** `database/schema.sql` and the `database/seed-*.sql` files. Keep this design document updated when those files change.
 
@@ -502,10 +502,10 @@ The Mermaid diagram and table plan in this document match the 21 tables created 
 | 20 | `themes` | Yes | Three templates |
 | 21 | `site_settings` | Yes | Active theme + settings |
 
-**Commit 0.6 acceptance:** All major CustomCore features have tables and relationships represented above.
+**Acceptance:** All major CustomCore features have tables and relationships represented above.
 
 ---
 
 ## 10. Status
 
-**Stage 3 complete (Commit 3.8).** Schema, catalogue seeds, builder seeds, compatibility rules, themes/settings, secure admin setup, import/backup guide, and demo reviews (`database/seed-reviews.sql`) are in place. Public catalogue pages — homepage, about, catalogue with filters/sort, product detail with approved reviews, search, comparison, and `reviews.php` — are driven by MySQL.
+**Summary.** Schema, catalogue seeds, builder seeds, compatibility rules, themes/settings, secure admin setup, import/backup guide, and demo reviews (`database/seed-reviews.sql`) are in place. Public catalogue pages — homepage, about, catalogue with filters/sort, product detail with approved reviews, search, comparison, and `reviews.php` — are driven by MySQL.

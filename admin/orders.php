@@ -1,14 +1,14 @@
 <?php
 /**
- * CustomCore — Administrator order list & search (Commit 9.5).
- *
- * File responsibility:
- *   Protected order index. Searches orders by number, customer name, or email;
- *   filters by status; paginates; and links to the per-order detail screen.
- *
- * Authentication requirements:
- *   Administrator role (customcore_require_admin()).
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator order list & search.
+// Protected order index. Searches orders by number, customer name, or email; filters by status;
+// paginates; and links to the per-order detail screen.
+// Access: Administrator role (customcore_require_admin()).
 
 declare(strict_types=1);
 
@@ -65,7 +65,7 @@ $adminNavCurrent = 'orders';
 $loadAdminCss = true;
 $currentPage = 'admin';
 
-$pageTitle = 'Orders — CustomCore admin';
+$pageTitle = 'Orders | CustomCore Admin';
 $pageDescription = 'Search and manage CustomCore customer orders.';
 $pageKeywords = 'CustomCore, admin, orders';
 

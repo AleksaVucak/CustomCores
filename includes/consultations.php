@@ -1,17 +1,16 @@
 <?php
 /**
- * CustomCore — Consultation helper functions (Commit 7.3).
- *
- * File responsibility:
- *   Shared logic for PC consultation requests: allowed status values and
- *   labels/classes, budget option list, server-side validation of the request
- *   form, and insertion of a new request (status = open). Attachments arrive in
- *   Commit 7.4; customer history and admin responses in Commits 7.5–7.6.
- *
- * Authentication requirements:
- *   Creation expects a logged-in user (consultation_requests.user_id FK).
- *   Callers must enforce login before customcore_consultation_create().
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Consultation helper functions.
+// Shared logic for PC consultation requests: allowed status values and labels/classes, budget
+// option list, server-side validation of the request form, and insertion of a new request (status
+// = open). Attachments arrive in
+// Access: Creation expects a logged-in user (consultation_requests.user_id FK). Callers must
+// enforce login before customcore_consultation_create().
 
 declare(strict_types=1);
 
@@ -61,10 +60,10 @@ function customcore_consultation_budget_options(): array
 {
     return [
         'Under $1,000',
-        '$1,000 – $1,500',
-        '$1,500 – $2,000',
-        '$2,000 – $3,000',
-        '$3,000 – $4,000',
+        '$1,000, $1,500',
+        '$1,500, $2,000',
+        '$2,000, $3,000',
+        '$3,000, $4,000',
         '$4,000+',
         'Not sure yet',
     ];
@@ -78,9 +77,9 @@ function customcore_consultation_budget_options(): array
  *
  * @param array<string, mixed> $input Raw form values.
  * @return array{
- *   ok: bool,
- *   errors: array<string, string>,
- *   values: array{budget: string, games: string, software: string, performance_goals: string, notes: string}
+ * ok: bool
+ * errors: array<string, string>
+ * values: array{budget: string, games: string, software: string, performance_goals: string, notes: string}
  * }
  */
 function customcore_consultation_validate(array $input): array
@@ -159,7 +158,7 @@ const CUSTOMCORE_CONSULTATION_MAX_FILES = 5;
  * Canonical accepted attachment types.
  *
  * Maps a canonical file extension to the list of MIME types (as reported by
- * finfo) that are acceptable for it. This is the authoritative allowlist —
+ * finfo) that are acceptable for it. This is the authoritative allowlist
  * user-supplied extensions and browser-declared MIME types are never trusted.
  *
  * @return array<string, list<string>>
@@ -252,7 +251,7 @@ function customcore_consultation_normalize_files($field): array
 
 /**
  * Sanitize a user-supplied filename for safe display/storage as the original
- * name. Strips any path components and control characters, collapses spaces,
+ * name. Strips any path components and control characters, collapses spaces
  * and clamps length. The result is display-only; the on-disk name is generated.
  */
 function customcore_consultation_clean_original_name(string $name): string
@@ -300,9 +299,9 @@ function customcore_consultation_upload_error_message(int $code): string
  *
  * @param list<array{name: string, type: string, tmp_name: string, error: int, size: int}> $files
  * @return array{
- *   ok: bool,
- *   errors: list<string>,
- *   valid: list<array{original_name: string, tmp_name: string, mime_type: string, extension: string, size: int}>
+ * ok: bool
+ * errors: list<string>
+ * valid: list<array{original_name: string, tmp_name: string, mime_type: string, extension: string, size: int}>
  * }
  */
 function customcore_consultation_validate_files(array $files): array
@@ -518,7 +517,7 @@ function customcore_consultation_format_datetime(string $datetime, string $forma
 
 /**
  * List all consultation requests for a user, newest first, with an attachment
- * count. Ownership is enforced by WHERE user_id = :uid.
+ * count. Ownership is enforced by WHERE user_id =:uid.
  *
  * @return list<array<string, mixed>>
  */
@@ -547,7 +546,7 @@ function customcore_consultation_list(PDO $pdo, int $userId): array
 /**
  * Fetch a single consultation request owned by the user, or null.
  *
- * Ownership is enforced by WHERE id = :id AND user_id = :uid, so a foreign
+ * Ownership is enforced by WHERE id =:id AND user_id =:uid, so a foreign
  * request ID is indistinguishable from a non-existent one (no enumeration).
  *
  * @return array<string, mixed>|null

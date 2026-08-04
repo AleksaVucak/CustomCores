@@ -1,15 +1,15 @@
 <?php
 /**
- * CustomCore — Administrator consultation list & search (Commit 9.7).
- *
- * File responsibility:
- *   Protected consultation queue. Searches requests by customer name, email, or
- *   budget; filters by status; paginates; surfaces open/in-progress requests
- *   first; and links to the per-request detail screen.
- *
- * Authentication requirements:
- *   Administrator role (customcore_require_admin()).
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator consultation list & search.
+// Protected consultation queue. Searches requests by customer name, email, or budget; filters by
+// status; paginates; surfaces open/in-progress requests first; and links to the per-request detail
+// screen.
+// Access: Administrator role (customcore_require_admin()).
 
 declare(strict_types=1);
 
@@ -66,7 +66,7 @@ $adminNavCurrent = 'consultations';
 $loadAdminCss = true;
 $currentPage = 'admin';
 
-$pageTitle = 'Consultations — CustomCore admin';
+$pageTitle = 'Consultations | CustomCore Admin';
 $pageDescription = 'Review and respond to CustomCore PC consultation requests.';
 $pageKeywords = 'CustomCore, admin, consultations';
 
@@ -149,10 +149,10 @@ require_once __DIR__ . '/../includes/header.php';
                         <?php $name = trim((string) $row['first_name'] . ' ' . (string) $row['last_name']); ?>
                         <tr>
                             <td>
-                                <span class="admin-product-cell__name"><?php echo customcore_e($name !== '' ? $name : '—'); ?></span>
+                                <span class="admin-product-cell__name"><?php echo customcore_e($name !== '' ? $name : 'No name'); ?></span>
                                 <span class="admin-table__sub"><?php echo customcore_e((string) $row['email']); ?></span>
                             </td>
-                            <td><?php echo customcore_e((string) $row['budget'] !== '' ? (string) $row['budget'] : '—'); ?></td>
+                            <td><?php echo customcore_e((string) $row['budget'] !== '' ? (string) $row['budget'] : 'Not given'); ?></td>
                             <td><?php echo customcore_e((string) (int) $row['attachment_count']); ?></td>
                             <td><?php echo customcore_e(customcore_consultation_format_datetime((string) $row['created_at'])); ?></td>
                             <td>

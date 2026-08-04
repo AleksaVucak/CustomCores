@@ -1,31 +1,26 @@
--- =============================================================================
--- CustomCore — Product Options Seed Data (Commit 2.3)
--- =============================================================================
---
--- File responsibility:
---   Seeds configurable options for all twenty catalogue products created in
---   Commit 2.2 (`database/seed-products.sql`). Every active product receives
---   multiple option groups (RAM, Storage, Colour, Warranty, plus OS / Cooling /
---   GPU where appropriate) so the rubric “≥ 2 options per product” rule is met
---   with comfortable headroom.
---
+-- Aleksa Vucak
+-- 110139920
+-- COMP 3340, Final Project
+-- August 5th, 2026
+-- Product Options Seed Data
+-- Seeds configurable options for all twenty catalogue products created in
+-- (`database/seed-products.sql`). Every active product receives
+-- multiple option groups (RAM, Storage, Colour, Warranty, plus OS / Cooling /
+-- GPU where appropriate) so the rubric “≥ 2 options per product” rule is met
+-- with comfortable headroom.
 -- Prerequisites:
---   1. Import `database/schema.sql`
---   2. Import `database/seed-products.sql`
---   3. Import this file
---
+-- 1. Import `database/schema.sql`
+-- 2. Import `database/seed-products.sql`
+-- 3. Import this file
 -- Import:
---   mysql -u your_username -p your_database_name < database/seed-product-options.sql
---
--- Acceptance (Commit 2.3):
---   The verification query below must return ZERO rows (no product with < 2
---   active options).
---
+-- mysql -u your_username -p your_database_name < database/seed-product-options.sql
+-- Acceptance:
+-- The verification query below must return ZERO rows (no product with < 2
+-- active options).
 -- Notes:
---   - product_id values 1–20 match the fixed IDs from seed-products.sql
---   - price_delta is added to products.base_price at configure/checkout time
---   - Exactly one is_default = 1 option per option_group per product
--- =============================================================================
+-- - product_id values 1 to 20 match the fixed IDs from seed-products.sql
+-- - price_delta is added to products.base_price at configure/checkout time
+-- - Exactly one is_default = 1 option per option_group per product
 
 SET NAMES utf8mb4;
 
@@ -37,7 +32,7 @@ INSERT INTO `product_options`
     (`product_id`, `option_group`, `option_label`, `price_delta`, `is_default`, `is_active`, `sort_order`)
 VALUES
 
--- ----- Budget (products 1–5) -----
+-- ----- Budget (products 1 to 5) -----
 -- Product 1: CoreStart Entry
 (1, 'RAM', '16 GB DDR4', 0.00, 1, 1, 10),
 (1, 'RAM', '32 GB DDR4', 90.00, 0, 1, 20),
@@ -114,7 +109,7 @@ VALUES
 (5, 'OS', 'Windows 11 Home', 0.00, 1, 1, 10),
 (5, 'OS', 'Windows 11 Pro', 99.00, 0, 1, 20),
 
--- ----- Esports (products 6–10) -----
+-- ----- Esports (products 6 to 10) -----
 -- Product 6: ArenaPulse 144
 (6, 'RAM', '32 GB DDR5', 0.00, 1, 1, 10),
 (6, 'RAM', '64 GB DDR5', 180.00, 0, 1, 20),
@@ -201,7 +196,7 @@ VALUES
 (10, 'OS', 'Windows 11 Home', 0.00, 1, 1, 10),
 (10, 'OS', 'Windows 11 Pro', 99.00, 0, 1, 20),
 
--- ----- High-Performance (products 11–15) -----
+-- ----- High-Performance (products 11 to 15) -----
 -- Product 11: ApexForge RTX
 (11, 'RAM', '32 GB DDR5', 0.00, 1, 1, 10),
 (11, 'RAM', '64 GB DDR5', 200.00, 0, 1, 20),
@@ -300,7 +295,7 @@ VALUES
 (15, 'GPU', 'Included GPU', 0.00, 1, 1, 10),
 (15, 'GPU', 'One-tier GPU upgrade', 350.00, 0, 1, 20),
 
--- ----- Creator (products 16–20) -----
+-- ----- Creator (products 16 to 20) -----
 -- Product 16: StudioCore Creator
 (16, 'RAM', '32 GB DDR5', 0.00, 1, 1, 10),
 (16, 'RAM', '64 GB DDR5', 200.00, 0, 1, 20),
@@ -388,20 +383,18 @@ VALUES
 (20, 'Cooling', 'Quiet-Optimized Air', 85.00, 0, 1, 20),
 (20, 'Cooling', '360 mm AIO Liquid', 190.00, 0, 1, 30);
 
--- =============================================================================
 -- VERIFICATION QUERIES
--- =============================================================================
 
 -- Expect 0 rows (every active product has ≥ 2 active options):
 -- SELECT p.id, p.name, COUNT(po.id) AS option_count
 -- FROM products p
 -- LEFT JOIN product_options po
---   ON po.product_id = p.id AND po.is_active = 1
+-- ON po.product_id = p.id AND po.is_active = 1
 -- WHERE p.is_active = 1
 -- GROUP BY p.id, p.name
 -- HAVING COUNT(po.id) < 2;
 
--- Option counts per product (expect ≥ 2 each, typically 12–18):
+-- Option counts per product (expect ≥ 2 each, typically 12 to 18):
 -- SELECT p.id, p.name, COUNT(po.id) AS option_count
 -- FROM products p
 -- INNER JOIN product_options po ON po.product_id = p.id AND po.is_active = 1

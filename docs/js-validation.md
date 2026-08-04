@@ -1,9 +1,9 @@
-# CustomCore — JavaScript & Browser Console Verification (Commit 15.3)
+# CustomCore | JavaScript & Browser Console Verification
 
-**Document type:** Stage 15 verification  
-**Purpose:** Prove that every project JavaScript module is syntactically sound and that core feature pages load and run without uncaught application errors in a real browser.  
-**Acceptance:** Core features produce **no uncaught JavaScript errors**; any avoidable defects found are corrected.  
-**Related:** Module map in [`frontend-documentation.md`](frontend-documentation.md) §4–5; script load conditions in [`includes/footer.php`](../includes/footer.php); prior Stage 15 records [`html-validation.md`](html-validation.md) and [`css-validation.md`](css-validation.md).
+**Document type:** Project documentation
+**Purpose:** Prove that every project JavaScript module is syntactically sound and that core feature pages load and run without uncaught application errors in a real browser.
+**Acceptance:** Core features produce **no uncaught JavaScript errors**; any avoidable defects found are corrected.
+**Related:** Module map in [`frontend-documentation.md`](frontend-documentation.md) §4–5; script load conditions in [`includes/footer.php`](../includes/footer.php); earlier test records [`html-validation.md`](html-validation.md) and [`css-validation.md`](css-validation.md).
 
 ### Status legend
 
@@ -51,10 +51,10 @@ Third-party (CDN, progressive enhancement with text fallbacks): Chart.js 4.4.1, 
 1. **Static syntax** — `node --check` on every file under `assets/js/` (no build step; ES5-compatible IIFEs).
 2. **Manual code review** — defensive guards (missing DOM nodes, missing `window.Chart` / `L`, JSON parse try/catch, XHR non-200 handling) for all eleven modules.
 3. **Browser console sweep** — Chromium headless via puppeteer-core against `http://localhost:8000` (project-root PHP built-in server):
-   - Capture `pageerror`, console `error`/`warning`, and failed same-origin `assets/js` / `assets/css` requests.
-   - Install page-level `error` / `unhandledrejection` listeners before navigation.
-   - Exercise core interactions (nav toggle, builder radio, contact Other, help filter, cart steppers, checkout submit, review form submit).
-   - Admin phase used a disposable customer promoted via a temporary CLI-style helper, then **deleted** after capture.
+ - Capture `pageerror`, console `error`/`warning`, and failed same-origin `assets/js` / `assets/css` requests.
+ - Install page-level `error` / `unhandledrejection` listeners before navigation.
+ - Exercise core interactions (nav toggle, builder radio, contact Other, help filter, cart steppers, checkout submit, review form submit).
+ - Admin phase used a disposable customer promoted via a temporary CLI-style helper, then **deleted** after capture.
 4. **Authenticated focus pass** — separate session that registers → logs in → posts `add_product` so cart/checkout and reviews form scripts load as designed (register alone redirects to login without auto-session).
 
 CDN tile/resource noise (blocked OpenStreetMap tiles, optional offline CDN) is classified as **environment**, not application failure, when the progressive text fallback remains usable.
@@ -72,7 +72,7 @@ CDN tile/resource noise (blocked OpenStreetMap tiles, optional offline CDN) is c
 | Application uncaught errors | **0** after fix in §5 |
 | Avoidable defect corrected | **1** (Leaflet CSS Subresource Integrity hash) |
 
-**Acceptance for Commit 15.3 is met:** core features produce no uncaught JavaScript errors; the one avoidable console defect found was fixed and re-verified.
+**Acceptance is met:** core features produce no uncaught JavaScript errors; the one avoidable console defect found was fixed and re-verified.
 
 ---
 
@@ -157,9 +157,9 @@ for f in assets/js/*.js; do node --check "$f" || exit 1; done
 php -S localhost:8000
 
 # 3) Browser: open each page in §4 with DevTools → Console
-#    Core interactions: builder radio, contact Other, help search,
-#    signed-in cart qty, checkout blur/submit, locations map.
-#    Expect: no red uncaught errors from /assets/js/* .
+# Core interactions: builder radio, contact Other, help search,
+# signed-in cart qty, checkout blur/submit, locations map.
+# Expect: no red uncaught errors from /assets/js/*.
 ```
 
 Optional automated sweep (not shipped): headless Chromium with console + `pageerror` listeners, disposable user promote/delete for admin reports.
@@ -175,4 +175,3 @@ Optional automated sweep (not shipped): headless Chromium with console + `pageer
 | Avoidable console defect corrected | **Yes** (Leaflet CSS SRI) |
 | JS / console test results recorded | **This document** |
 
-**Commit 15.3 complete.** Next: Commit **15.4** — desktop responsiveness testing.

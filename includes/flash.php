@@ -1,26 +1,21 @@
 <?php
 /**
- * CustomCore — Flash message system (one-redirect lifetime).
- *
- * File responsibility:
- *   Stores success, warning, and error messages in the session so they survive
- *   exactly one redirect (Post/Redirect/Get), then clears them after display.
- *
- * Authentication requirements:
- *   None. Any page may set or render flashes after starting the shared session.
- *
- * Usage:
- *   require_once __DIR__ . '/flash.php';
- *   customcore_flash_set('success', 'Your profile was updated.');
- *   customcore_redirect('profile.php');
- *
- *   // On the next page, includes/header.php calls customcore_flash_render().
- *
- * Message types:
- *   - success
- *   - warning
- *   - error
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Flash message system (one-redirect lifetime).
+// Stores success, warning, and error messages in the session so they survive exactly one redirect
+// (Post/Redirect/Get), then clears them after display.
+// Access: None. Any page may set or render flashes after starting the shared session.
+// Usage: require_once __DIR__. '/flash.php'; customcore_flash_set('success', 'Your profile was
+// updated.'); customcore_redirect('profile.php');
+// // On the next page, includes/header.php calls customcore_flash_render().
+// Message types:
+//   success
+//   warning
+//   error
 
 declare(strict_types=1);
 

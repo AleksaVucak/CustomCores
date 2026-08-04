@@ -1,10 +1,10 @@
-# CustomCore — Application Sitemap
+# CustomCore | Application Sitemap
 
-**Document type:** Stage 0 planning (Commit 0.4)  
-**Purpose:** Plan every customer, administrator, API, and static Help page so the project exceeds the minimum page counts with purposeful routes only.  
-**URL style:** Ordinary `.php` / `.html` paths (no rewrite rules).  
-**Related:** SEO machine sitemap (`sitemap.xml` / live `sitemap.php`) and crawler rules (`robots.txt`) were added in Stage 14.2 and **exclude** private customer and administrator URLs.  
-**Layout:** Desktop/mobile wireframes for core screens are in `docs/wireframes.md` (Commit 0.5).
+**Document type:** Project documentation
+**Purpose:** Plan every customer, administrator, API, and static Help page so the project exceeds the minimum page counts with purposeful routes only.
+**URL style:** Ordinary `.php` / `.html` paths (no rewrite rules).
+**Related:** SEO machine sitemap (`sitemap.xml` / live `sitemap.php`) and crawler rules (`robots.txt`) **exclude** private customer and administrator URLs.
+**Layout:** Desktop/mobile wireframes for core screens are in `docs/wireframes.md`.
 
 ### Count targets
 
@@ -74,7 +74,7 @@ Empty placeholder pages are not allowed. Every route below maps to a real featur
 | 28 | `consultation.php` | PC consultation request + attachment upload | Customer | `help/support.html` |
 | 29 | `consultation-history.php` | Customer’s requests and admin responses | Customer | `help/support.html` |
 
-**Private customer subtotal: 12 dynamic pages**  
+**Private customer subtotal: 12 dynamic pages**
 **Customer-facing total (public + private): 29**
 
 ---
@@ -116,7 +116,7 @@ Lightweight endpoints used by JavaScript. They count toward the dynamic PHP file
 | 47 | `api/product-search.php` | JSON/HTML fragment search support for catalogue UI | Public GET |
 | 48 | `api/chart-data.php` | Data for public and admin charts | Public or admin as appropriate |
 
-**API subtotal: 4 dynamic pages**  
+**API subtotal: 4 dynamic pages**
 **Grand total dynamic PHP: 48**
 
 ---
@@ -157,11 +157,11 @@ These support many routes but are **not** counted as unique pages:
 
 | File | Role |
 | ---- | ---- |
-| `sitemap.xml` | Static public URL list for search engines (Commit 14.2) — **no** private/admin URLs |
+| `sitemap.xml` | Static public URL list for search engines — **no** private/admin URLs |
 | `sitemap.php` | Live XML sitemap (absolute locs from `base_url` / request; adds active products) |
-| `robots.txt` | Crawler Allow/Disallow rules + Sitemap pointers (Commit 14.2) |
+| `robots.txt` | Crawler Allow/Disallow rules + Sitemap pointers |
 | `includes/seo.php` | Shared public-URL catalogue used by the sitemap generator |
-| `favicon.svg`, `site.webmanifest` | Brand icon + web app manifest (Commit 14.1) |
+| `favicon.svg`, `site.webmanifest` | Brand icon + web app manifest |
 | `README.md`, `docs/*` | Documentation package |
 | `database/*.sql` | Schema and seeds |
 
@@ -173,8 +173,8 @@ These support many routes but are **not** counted as unique pages:
 Home
 About
 Catalogue ──► Product detail
-              Search
-              Compare
+ Search
+ Compare
 PC Builder ──► Build results ──► Save build (customer)
 Learning Centre (Media)
 Store Locations
@@ -182,16 +182,16 @@ Help ──► Accounts | Catalogue | Builder | Orders | Support | Training
 Contact
 
 Account (when logged in)
-  Profile / Edit profile
-  Saved builds
-  Wishlist
-  Cart ──► Checkout ──► Confirmation
-  Orders / Order details
-  Consultations / History
-  Log out
+ Profile / Edit profile
+ Saved builds
+ Wishlist
+ Cart ──► Checkout ──► Confirmation
+ Orders / Order details
+ Consultations / History
+ Log out
 
 Account (when logged out)
-  Register | Log in
+ Register | Log in
 ```
 
 ---
@@ -230,17 +230,17 @@ Monitoring
 
 Use this before claiming rubric #10a / B3 complete:
 
-- [ ] At least **20** distinct dynamic `.php` files exist and each serves a real purpose  
-- [ ] Prefer confirming **48** planned files (or an updated count if the list changes)  
-- [ ] At least **5** separate static Help `.html` files exist  
-- [ ] Context-sensitive Help links match Section 2–3 and Section 6  
-- [ ] `sitemap.xml` (SEO) lists only public URLs  
-- [ ] No duplicate “shell” pages created only to inflate counts  
+- [ ] At least **20** distinct dynamic `.php` files exist and each serves a real purpose
+- [ ] Prefer confirming **48** planned files (or an updated count if the list changes)
+- [ ] At least **5** separate static Help `.html` files exist
+- [ ] Context-sensitive Help links match Section 2–3 and Section 6
+- [ ] `sitemap.xml` (SEO) lists only public URLs
+- [ ] No duplicate “shell” pages created only to inflate counts
 
-**Commit 0.4 acceptance:** This document plans **48 dynamic PHP pages** and **7 static Help/training pages**, which exceeds “at least 20 dynamic and five static pages.”
+**Acceptance:** This document plans **48 dynamic PHP pages** and **7 static Help/training pages**, which exceeds “at least 20 dynamic and five static pages.”
 
 ---
 
 ## 13. Status
 
-**Commit 0.4 complete (documentation).** Implementation of these routes begins in Stage 1 (shared layout) and continues through Stages 3–13. Update this file if a route is renamed, merged, or split—and mirror the change in `docs/rubric-checklist.md`.
+**Summary.** Every route above is implemented on top of the shared layout. Update this file if a route is renamed, merged, or split, and mirror the change in `docs/rubric-checklist.md`.

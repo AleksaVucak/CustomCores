@@ -1,6 +1,6 @@
-# CustomCore — Deployment & Troubleshooting Guide
+# CustomCore | Deployment & Troubleshooting Guide
 
-**Document type:** Stage 12 documentation (Commit 12.5)
+**Document type:** Project documentation
 **Purpose:** Take a working local install to a live server (with `myweb.cs.uwindsor.ca`-style shared PHP/MySQL hosting as the primary target) and provide a practical troubleshooting reference for the most likely problems.
 **Audience:** Whoever deploys and maintains the live site.
 **Related:** first-time setup in [`docs/installation-guide.md`](installation-guide.md); database import/backup in [`docs/database-import.md`](database-import.md); admin tasks in [`docs/administrator-guide.md`](administrator-guide.md).
@@ -12,7 +12,7 @@
 CustomCore is designed to deploy cleanly on **standard shared PHP/MySQL hosting**:
 
 - **Plain `.php` URLs** — no URL rewriting, `.htaccess` routing, or front controller is required.
-- **Depth-safe relative links** via `customcore_url()` — the project works whether it lives at the domain root or in a subfolder like `~yourid/customcore/`.
+- **Depth-safe relative links** via `customcore_url` — the project works whether it lives at the domain root or in a subfolder like `~yourid/customcore/`.
 - **No build step** — no Composer, Node, or Docker. Deploying is copying files + importing the database.
 - **Secrets stay out of Git** — `config/database.php` and `uploads/*` are gitignored; you create them per environment.
 
@@ -68,7 +68,7 @@ Edit `config/database.php` with the **host's** MySQL values. Then set, in `confi
 Verify connectivity from the server shell if you have CLI access:
 
 ```bash
-php database/test-connection.php   # expect: CustomCore database connection: OK
+php database/test-connection.php # expect: CustomCore database connection: OK
 ```
 
 ---
@@ -79,8 +79,8 @@ The web server user must be able to **write** to the upload folders and **read**
 
 ```bash
 # read/execute for the app; writable uploads
-find . -type d -exec chmod 755 {} \;
-find . -type f -exec chmod 644 {} \;
+find. -type d -exec chmod 755 {} \;
+find. -type f -exec chmod 644 {} \;
 chmod -R u+rwX uploads
 ```
 
@@ -98,7 +98,7 @@ Use the host's MySQL (via SSH `mysql` client or a panel like phpMyAdmin) and run
 php database/create-admin.php
 ```
 
-If the host has no shell access, import the `.sql` files through phpMyAdmin in order, and create the admin either by running `create-admin.php` via SSH elsewhere against the same DB, or (least preferred) by inserting a row whose `password_hash` you generated with `password_hash()` — never store a plain-text password.
+If the host has no shell access, import the `.sql` files through phpMyAdmin in order, and create the admin either by running `create-admin.php` via SSH elsewhere against the same DB, or (least preferred) by inserting a row whose `password_hash` you generated with `password_hash` — never store a plain-text password.
 
 ---
 
@@ -138,7 +138,7 @@ CustomCore's session layer (`includes/functions.php`) automatically hardens cook
 | CSS looks unstyled / wrong theme | Theme CSS missing on disk, or wrong stylesheet order | Ensure `assets/themes/*.css` uploaded; the resolver falls back to RGB Gaming/`main.css`, so a plain-but-styled page means the theme file is missing. |
 | Images/uploads not saving | `uploads/` not writable by web user | `chmod -R u+rwX uploads`; confirm the web server user owns/can write the folders. |
 | Broken product images | File missing or invalid type | The site shows a placeholder by design; re-upload a valid JPG/PNG/WEBP/GIF under 2 MB via Admin → Products. |
-| Links 404 in a subfolder deploy | Absolute paths assumed | CustomCore uses `customcore_url()` relative links; ensure you didn't set `base_url` incorrectly in `config/app.php`. |
+| Links 404 in a subfolder deploy | Absolute paths assumed | CustomCore uses `customcore_url` relative links; ensure you didn't set `base_url` incorrectly in `config/app.php`. |
 | Logged out too quickly | Session idle/absolute timeouts | Expected security behaviour; adjust `session_*` values in `config/app.php` if policy requires. |
 | Admin link missing after login | Account isn't an admin | Promote via Admin → Users, or run `php database/create-admin.php`. |
 | PC Builder runs no compatibility checks | `compatibility_rules` table empty | Re-import `database/seed-compatibility.sql` (idempotent; touches only that table). |
@@ -154,7 +154,7 @@ CustomCore's session layer (`includes/functions.php`) automatically hardens cook
 
 ```bash
 mysqldump -u your_username -p --single-transaction --routines --triggers \
-  your_database_name > customcore-backup.sql
+ your_database_name > customcore-backup.sql
 ```
 
 - **Restore** into a scratch DB first to test, then the target. See [`docs/database-import.md`](database-import.md) §5.
@@ -176,4 +176,4 @@ mysqldump -u your_username -p --single-transaction --routines --triggers \
 
 ## 12. Status
 
-**Commit 12.5 complete.** Deploying CustomCore to standard shared PHP/MySQL hosting is documented end-to-end (file transfer, per-environment credentials, permissions, database import, HTTPS/session behaviour, and live verification), alongside a practical troubleshooting table and backup/rollback procedures. Supports rubric row **B14** and prepares rubric **#11** (record the live URL in the README once hosted).
+**Summary.** Deploying CustomCore to standard shared PHP/MySQL hosting is documented end-to-end (file transfer, per-environment credentials, permissions, database import, HTTPS/session behaviour, and live verification), alongside a practical troubleshooting table and backup/rollback procedures. Supports rubric row **B14** and prepares rubric **#11** (record the live URL in the README once hosted).

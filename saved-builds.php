@@ -1,20 +1,19 @@
 <?php
 /**
- * CustomCore — Saved Builds List (Commit 5.7).
- *
- * File responsibility:
- *   Lists all builds saved by the logged-in customer. Shows name, date,
- *   component count, total price, and compatibility status for each build.
- *   Links to the single-build detail page for viewing / editing / deleting.
- *
- * Authentication requirements:
- *   Logged-in customer (customcore_require_login). Only shows the current
- *   user's builds — never exposes another user's data.
- *
- * Database queries:
- *   - saved_builds (user_id scoped)
- *   - saved_build_items (COUNT per build)
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Saved Builds List.
+// Lists all builds saved by the logged-in customer. Shows name, date, component count, total
+// price, and compatibility status for each build. Links to the single-build detail page for
+// viewing / editing / deleting.
+// Access: Logged-in customer (customcore_require_login). Only shows the current user's builds,
+// never exposes another user's data.
+// Database queries:
+//   saved_builds (user_id scoped)
+//   saved_build_items (COUNT per build)
 
 declare(strict_types=1);
 
@@ -27,15 +26,13 @@ customcore_require_login();
 
 $userId = customcore_current_user_id();
 
-$pageTitle = 'Saved builds — CustomCore';
+$pageTitle = 'Saved Builds | CustomCore';
 $pageDescription = 'View and manage your saved custom PC builds.';
 $pageKeywords = 'CustomCore, saved builds, custom PC, manage builds';
 $currentPage = 'builder';
 $accountNavCurrent = 'builds';
 
-// ---------------------------------------------------------------------------
 // Load user's saved builds
-// ---------------------------------------------------------------------------
 
 $builds = [];
 $loadError = null;

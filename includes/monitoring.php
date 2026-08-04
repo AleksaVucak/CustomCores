@@ -1,40 +1,34 @@
 <?php
 /**
- * CustomCore — Application health checks (Commit 13.1).
- *
- * File responsibility:
- *   Provides the monitoring "engine": a set of independent health checks that
- *   each return a CONTROLLED result (a status plus a safe, human-readable
- *   summary) for a core part of the site — the PHP runtime, the database,
- *   sessions, critical files, upload directories, the active theme, and the
- *   Learning Centre media. The Stage 13.2 administrator dashboard renders these
- *   results; Stage 13.3 adds live statistics via customcore_monitoring_stats().
- *
- * Design rules:
- *   - Every check is wrapped so it can NEVER throw. A failing dependency must
- *     downgrade its own status, not take down the monitoring page.
- *   - Messages are safe for production: no passwords, DSNs, absolute paths, or
- *     stack traces are exposed. Database errors reuse
- *     customcore_database_error_message() (respects debug mode, scrubs
- *     credentials) and every dynamic error string is additionally passed
- *     through customcore_monitoring_safe_message() (Stage 13.4), which strips
- *     stack traces, absolute paths, and credential fragments even in debug.
- *   - Checks read real state (files on disk, PDO connection, config), never
- *     decorative hard-coded values.
- *
- * Status vocabulary:
- *   'online'  — the service is fully operational.
- *   'warning' — degraded or a non-critical dependency is missing; the core site
- *               still works (e.g. uploads not writable, a media file missing).
- *   'offline' — a critical dependency is unavailable (e.g. database down).
- *
- * Usage:
- *   require_once __DIR__ . '/monitoring.php';
- *   $report = customcore_monitoring_run();
- *   // $report['overall'], $report['generated_at'], $report['checks'][...]
- *   $stats = customcore_monitoring_stats();
- *   // $stats['available'], products/users/orders/requests/images/stock counts
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Application health checks.
+// Provides the monitoring "engine": a set of independent health checks that each return a
+// CONTROLLED result (a status plus a safe, human-readable summary) for a core part of the site,
+// the PHP runtime, the database, sessions, critical files, upload directories, the active theme,
+// and the Learning Centre media. The administrator dashboard renders these results; adds live
+// statistics via customcore_monitoring_stats().
+// Design rules:
+//   Every check is wrapped so it can NEVER throw. A failing dependency must downgrade its own
+//     status, not take down the monitoring page.
+//   Messages are safe for production: no passwords, DSNs, absolute paths, or stack traces are
+//     exposed. Database errors reuse customcore_database_error_message() (respects debug mode,
+//     scrubs credentials) and every dynamic error string is additionally passed through
+//     customcore_monitoring_safe_message(), which strips stack traces, absolute paths, and
+//     credential fragments even in debug.
+//   Checks read real state (files on disk, PDO connection, config), never decorative hard-coded
+//     values.
+// Status vocabulary: 'online', the service is fully operational. 'warning', degraded or a non-
+// critical dependency is missing; the core site still works (e.g. uploads not writable, a media
+// file missing). 'offline', a critical dependency is unavailable (e.g. database down).
+// Usage: require_once __DIR__. '/monitoring.php';
+//   $report = customcore_monitoring_run(); // $report['overall'], $report['generated_at'],
+//     $report['checks'][...]
+//   $stats = customcore_monitoring_stats(); // $stats['available'],
+//     products/users/orders/requests/images/stock counts
 
 declare(strict_types=1);
 
@@ -133,17 +127,17 @@ function customcore_monitoring_result(
 }
 
 /**
- * Reduce an arbitrary error/exception message to a production-safe one (13.4).
+ * Reduce an arbitrary error/exception message to a production-safe one.
  *
  * Defence-in-depth for anything dynamic that the monitoring page might display.
- * It removes content that could disclose sensitive internals — stack traces,
- * absolute filesystem paths, and credential fragments (password/pwd/pass=…) —
+ * It removes content that could disclose sensitive internals, stack traces
+ * absolute filesystem paths, and credential fragments (password/pwd/pass=…)
  * then collapses whitespace and truncates length. Returns $fallback when the
  * message is empty or nothing safe remains. Applied even in debug mode so a
  * status page never reveals passwords, paths, or stack traces.
  *
  * Note: this operates only on error strings. The static check summaries and
- * detail lines built elsewhere in this file already contain only safe,
+ * detail lines built elsewhere in this file already contain only safe
  * project-relative text and are not passed through here.
  */
 function customcore_monitoring_safe_message(
@@ -187,7 +181,7 @@ function customcore_monitoring_safe_message(
 }
 
 /**
- * Absolute project root (the directory that contains includes/, config/, ...).
+ * Absolute project root (the directory that contains includes/, config/...).
  */
 function customcore_monitoring_root(): string
 {
@@ -635,7 +629,7 @@ function customcore_monitoring_check_media(): array
  * Count image files under a project-relative directory (non-recursive).
  *
  * Only recognises common image extensions. Skips non-files (e.g. index.php
- * guards). Returns 0 when the directory is missing or unreadable — never throws.
+ * guards). Returns 0 when the directory is missing or unreadable, never throws.
  */
 function customcore_monitoring_count_image_files(string $relativeDir): int
 {
@@ -684,30 +678,30 @@ function customcore_monitoring_count_image_files(string $relativeDir): int
  * the page can show something useful without blanking the health-check table.
  *
  * @return array{
- *   available:bool,
- *   error:?string,
- *   generated_at:string,
- *   products_total:int,
- *   products_active:int,
- *   products_inactive:int,
- *   users_total:int,
- *   users_customers:int,
- *   users_admins:int,
- *   orders_total:int,
- *   orders_open:int,
- *   consultations_total:int,
- *   consultations_needs_attention:int,
- *   contact_unread:int,
- *   reviews_pending:int,
- *   images_product_seeded:int,
- *   images_product_uploaded:int,
- *   images_product_total:int,
- *   images_site:int,
- *   media_lessons_declared:int,
- *   media_lessons_available:int,
- *   stock_low:int,
- *   stock_out:int,
- *   low_stock_threshold:int
+ * available:bool
+ * error:?string
+ * generated_at:string
+ * products_total:int
+ * products_active:int
+ * products_inactive:int
+ * users_total:int
+ * users_customers:int
+ * users_admins:int
+ * orders_total:int
+ * orders_open:int
+ * consultations_total:int
+ * consultations_needs_attention:int
+ * contact_unread:int
+ * reviews_pending:int
+ * images_product_seeded:int
+ * images_product_uploaded:int
+ * images_product_total:int
+ * images_site:int
+ * media_lessons_declared:int
+ * media_lessons_available:int
+ * stock_low:int
+ * stock_out:int
+ * low_stock_threshold:int
  * }
  */
 function customcore_monitoring_stats(): array
@@ -815,9 +809,9 @@ function customcore_monitoring_stats(): array
  * individual failure downgrades only its own row while the rest still report.
  *
  * @return array{
- *   generated_at:string,
- *   overall:string,
- *   checks:list<array{key:string, label:string, status:string, summary:string, details:list<string>}>
+ * generated_at:string
+ * overall:string
+ * checks:list<array{key:string, label:string, status:string, summary:string, details:list<string>}>
  * }
  */
 function customcore_monitoring_run(): array

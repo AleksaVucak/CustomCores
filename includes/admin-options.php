@@ -1,29 +1,24 @@
 <?php
 /**
- * CustomCore — Administrator product options helpers (Commit 9.3).
- *
- * File responsibility:
- *   Shared, security-first helpers for managing a product's configurable
- *   options (RAM, Storage, Colour, Warranty, …): validation, list/fetch,
- *   create/update/delete, active toggling, default selection, and the invariant
- *   that keeps exactly one active default per option group so the storefront and
- *   PC Builder always price a valid default configuration.
- *
- * Usage:
- *   require_once __DIR__ . '/admin-options.php';
- *
- * Data model (see database/schema.sql):
- *   product_options(id, product_id, option_group, option_label, price_delta,
- *                   is_default, is_active, sort_order, created_at, updated_at)
- *
- * Business rules enforced here:
- *   - Among a product/group's ACTIVE options there is exactly one is_default = 1
- *     (auto-normalised after every change). Inactive options are never default.
- *   - price_delta may be positive or negative (a group choice can add to or
- *     reduce base_price) within the DECIMAL(10,2) range.
- *   - Every write uses PDO prepared statements; callers wrap multi-step actions
- *     in a transaction.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator product options helpers.
+// Shared, security-first helpers for managing a product's configurable options (RAM, Storage,
+// Colour, Warranty, …): validation, list/fetch, create/update/delete, active toggling, default
+// selection, and the invariant that keeps exactly one active default per option group so the
+// storefront and PC Builder always price a valid default configuration.
+// Usage: require_once __DIR__. '/admin-options.php';
+// Data model (see database/schema.sql): product_options(id, product_id, option_group,
+// option_label, price_delta, is_default, is_active, sort_order, created_at, updated_at)
+// Business rules enforced here:
+//   Among a product/group's ACTIVE options there is exactly one is_default = 1 (auto-normalised
+//     after every change). Inactive options are never default.
+//   price_delta may be positive or negative (a group choice can add to or reduce base_price)
+//     within the DECIMAL(10,2) range.
+//   Every write uses PDO prepared statements; callers wrap multi-step actions in a transaction.
 
 declare(strict_types=1);
 
@@ -133,11 +128,11 @@ function customcore_admin_option_next_sort(PDO $pdo, int $productId, string $gro
  *
  * @param array<string, mixed> $input Raw $_POST.
  * @return array{
- *   errors: array<string, string>,
- *   values: array{
- *     option_group:string, option_label:string, price_delta:float,
- *     is_default:int, is_active:int, sort_order:int
- *   }
+ * errors: array<string, string>
+ * values: array{
+ * option_group:string, option_label:string, price_delta:float
+ * is_default:int, is_active:int, sort_order:int
+ * }
  * }
  */
 function customcore_admin_option_validate(array $input): array
@@ -219,8 +214,8 @@ function customcore_admin_option_validate(array $input): array
 /**
  * Ensure a product/group has exactly one active default option.
  *
- * - If two or more active defaults exist, keep the first (lowest sort_order,
- *   then id) and clear the rest.
+ * - If two or more active defaults exist, keep the first (lowest sort_order
+ * then id) and clear the rest.
  * - If no active default exists but active options do, promote the first.
  * - Inactive options are always forced to is_default = 0.
  *

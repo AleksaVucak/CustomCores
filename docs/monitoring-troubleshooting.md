@@ -1,6 +1,6 @@
-# CustomCore — Monitoring & Troubleshooting Guide
+# CustomCore | Monitoring & Troubleshooting Guide
 
-**Document type:** Stage 13 documentation (Commit 13.5)
+**Document type:** Project documentation
 **Purpose:** Explain the administrator monitoring dashboard and give a practical, symptom‑driven troubleshooting reference for every health check it reports.
 **Audience:** Administrators and whoever maintains the live site.
 **Related:** admin tasks in [`docs/administrator-guide.md`](administrator-guide.md); first‑time setup in [`docs/installation-guide.md`](installation-guide.md); server deployment in [`docs/deployment-troubleshooting.md`](deployment-troubleshooting.md); database work in [`docs/database-import.md`](database-import.md).
@@ -12,7 +12,7 @@
 The monitoring dashboard is the site's **backend health page**. It answers one question at a glance: *is the site healthy right now, and if not, what exactly is wrong?*
 
 - **URL:** `admin/monitoring.php`
-- **Access:** administrators only. The page is behind `customcore_require_admin()`, which uses **session state**, so it still loads even when the database is offline.
+- **Access:** administrators only. The page is behind `customcore_require_admin`, which uses **session state**, so it still loads even when the database is offline.
 - **How to reach it:** sign in as an admin, then use the **Monitoring** link in the admin navigation or the **Monitoring** tool card on the admin dashboard. (The tool card lights up automatically because the tool registry detects the page file.)
 
 The engine that powers the page lives in [`includes/monitoring.php`](../includes/monitoring.php). Each check is completely independent and is written so it **can never throw** — a failing dependency downgrades only its own row instead of taking down the whole page.
@@ -43,7 +43,7 @@ Below the health table, the **Live statistics** panel shows current counts (prod
 
 ### 2.5 Why details look generic
 
-Messages are deliberately **production‑safe**: they never expose passwords, DSN details, absolute filesystem paths, or stack traces. Database errors reuse `customcore_database_error_message()` and every dynamic error string additionally passes through `customcore_monitoring_safe_message()` (Commit 13.4), which strips traces, absolute paths, and credential fragments even in debug mode. If you need more detail while diagnosing locally, see §5.
+Messages are deliberately **production‑safe**: they never expose passwords, DSN details, absolute filesystem paths, or stack traces. Database errors reuse `customcore_database_error_message` and every dynamic error string additionally passes through `customcore_monitoring_safe_message`, which strips traces, absolute paths, and credential fragments even in debug mode. If you need more detail while diagnosing locally, see §5.
 
 ---
 
@@ -67,7 +67,7 @@ Each subsection lists **what the check verifies**, the **statuses it can report*
 
 ### 3.2 Database (MySQL)
 
-**Verifies:** opens the shared PDO connection (`customcore_pdo()`) and runs `SELECT 1`.
+**Verifies:** opens the shared PDO connection (`customcore_pdo`) and runs `SELECT 1`.
 
 | Status | Message you may see | Likely cause | Fix |
 | --- | --- | --- | --- |
@@ -120,7 +120,7 @@ The details row reports how many theme stylesheets are available and the active 
 
 ### 3.7 Learning Centre media
 
-**Verifies:** compares the declared media catalogue (`customcore_media_catalogue()`) against files on disk — primary media file, poster image, and caption track. Missing media degrades the Learning Centre only, so it is a **warning**.
+**Verifies:** compares the declared media catalogue (`customcore_media_catalogue`) against files on disk — primary media file, poster image, and caption track. Missing media degrades the Learning Centre only, so it is a **warning**.
 
 | Status | Message you may see | Likely cause | Fix |
 | --- | --- | --- | --- |
@@ -133,7 +133,7 @@ The details row reports how many theme stylesheets are available and the active 
 
 ## 4. Live statistics panel
 
-The panel reuses `customcore_admin_dashboard_stats()` for database counts, so the numbers match the admin dashboard exactly. Image and media counts are read from disk.
+The panel reuses `customcore_admin_dashboard_stats` for database counts, so the numbers match the admin dashboard exactly. Image and media counts are read from disk.
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
@@ -145,14 +145,14 @@ The panel reuses `customcore_admin_dashboard_stats()` for database counts, so th
 
 ## 5. Getting more detail while diagnosing (developers)
 
-On a live site, `config/app.php → debug` must stay **`false`** so messages remain generic and safe. **Locally**, you can temporarily set `debug` to `true` to see a **sanitized** detail line for failing checks (still stripped of passwords, absolute paths, and stack traces by `customcore_monitoring_safe_message()`).
+On a live site, `config/app.php → debug` must stay **`false`** so messages remain generic and safe. **Locally**, you can temporarily set `debug` to `true` to see a **sanitized** detail line for failing checks (still stripped of passwords, absolute paths, and stack traces by `customcore_monitoring_safe_message`).
 
 For the raw underlying error (e.g. the exact PDO message), check the **server error log** rather than the page — the monitoring page never prints stack traces by design.
 
 You can also run the engine from the command line for a quick check:
 
 ```bash
-php -r 'require "includes/monitoring.php"; $r = customcore_monitoring_run(); echo $r["overall"], "\n"; foreach ($r["checks"] as $c) { echo str_pad($c["status"],8), $c["label"], " — ", $c["summary"], "\n"; }'
+php -r 'require "includes/monitoring.php"; $r = customcore_monitoring_run; echo $r["overall"], "\n"; foreach ($r["checks"] as $c) { echo str_pad($c["status"],8), $c["label"], " — ", $c["summary"], "\n"; }'
 ```
 
 Remember the CLI uses `php.ini` / credentials for the command‑line environment, which may differ from the web server.

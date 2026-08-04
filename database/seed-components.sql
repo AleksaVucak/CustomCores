@@ -1,32 +1,27 @@
--- =============================================================================
--- CustomCore — Custom Builder Components Seed (Commit 2.4)
--- =============================================================================
---
--- File responsibility:
---   Seeds builder step categories and the component inventory used by the
---   custom PC builder. Attribute columns are filled consistently so Commit 2.5
---   compatibility rules (and Stage 5 checkers) can evaluate:
---     1. CPU socket = motherboard socket
---     2. RAM type = motherboard RAM type
---     3. Motherboard form factor fits case
---     4. PSU wattage ≥ estimated build draw
---     5. Case GPU clearance ≥ GPU length
---     6. Case cooler clearance / liquid support
---     7. Motherboard supports storage interface
---
+-- Aleksa Vucak
+-- 110139920
+-- COMP 3340, Final Project
+-- August 5th, 2026
+-- Custom Builder Components Seed
+-- Seeds builder step categories and the component inventory used by the
+-- custom PC builder. Attribute columns are filled consistently so
+-- compatibility rules (and checkers) can evaluate:
+-- 1. CPU socket = motherboard socket
+-- 2. RAM type = motherboard RAM type
+-- 3. Motherboard form factor fits case
+-- 4. PSU wattage ≥ estimated build draw
+-- 5. Case GPU clearance ≥ GPU length
+-- 6. Case cooler clearance / liquid support
+-- 7. Motherboard supports storage interface
 -- Prerequisites:
---   1. Import `database/schema.sql`
---   (Catalogue seeds 2.2–2.3 are independent of this file.)
---
+-- 1. Import `database/schema.sql`
+-- (Catalogue seeds 2.2 to 2.3 are independent of this file.)
 -- Import:
---   mysql -u your_username -p your_database_name < database/seed-components.sql
---
--- Acceptance (Commit 2.4):
---   Every builder category has at least one active component.
---
+-- mysql -u your_username -p your_database_name < database/seed-components.sql
+-- Acceptance:
+-- Every builder category has at least one active component.
 -- Fixed IDs:
---   Categories 1–10 and components 1–N are stable for later seeds/docs.
--- =============================================================================
+-- Categories 1 to 10 and components 1,N are stable for later seeds/docs.
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
@@ -42,9 +37,7 @@ ALTER TABLE `component_categories` AUTO_INCREMENT = 1;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
--- =============================================================================
--- COMPONENT CATEGORIES — Builder steps
--- =============================================================================
+-- COMPONENT CATEGORIES, Builder steps
 
 INSERT INTO `component_categories`
     (`id`, `name`, `slug`, `sort_order`, `is_required`)
@@ -62,9 +55,7 @@ VALUES
 (10, 'Service', 'service', 100, 0);
 
 
--- =============================================================================
--- COMPONENTS — Builder inventory
--- =============================================================================
+-- COMPONENTS, Builder inventory
 -- NULL means the attribute does not apply to that part type.
 
 INSERT INTO `components` (
@@ -223,9 +214,7 @@ INSERT INTO `components` (
 (60, 10, 'No assembly service', 'CustomCore', 0.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '', 1);
 
 
--- =============================================================================
 -- VERIFICATION QUERIES
--- =============================================================================
 
 -- Expect 10 categories:
 -- SELECT COUNT(*) AS category_count FROM component_categories;

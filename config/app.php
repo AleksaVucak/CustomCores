@@ -1,14 +1,15 @@
 <?php
 /**
- * CustomCore — Application configuration (non-secret).
- *
- * File responsibility:
- *   Central place for site-wide settings that are safe to store in Git.
- *   Database credentials do NOT belong here — use config/database.php instead.
- *
- * Usage:
- *   $app = require __DIR__ . '/app.php';
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Application configuration (non-secret).
+// Central place for site-wide settings that are safe to store in Git. Database credentials do NOT
+// belong here, use config/database.php instead.
+// Usage:
+//   $app = require __DIR__. '/app.php';
 
 declare(strict_types=1);
 
@@ -52,23 +53,23 @@ return [
     'session_name' => 'CUSTOMCORESESSID',
 
     /**
-     * Session security timeouts (Commit 4.8), in seconds. Set to 0 to disable.
-     *   session_idle_timeout       — log out after this long with no activity.
-     *   session_absolute_timeout   — hard cap on a single session's total life.
-     *   session_regenerate_interval — rotate the session ID this often to shrink
-     *                                 any fixation / stolen-cookie replay window.
+     * Session security timeouts, in seconds. Set to 0 to disable.
+     * session_idle_timeout, log out after this long with no activity.
+     * session_absolute_timeout, hard cap on a single session's total life.
+     * session_regenerate_interval, rotate the session ID this often to shrink
+     * any fixation / stolen-cookie replay window.
      */
     'session_idle_timeout' => 1800,          // 30 minutes
     'session_absolute_timeout' => 43200,     // 12 hours
     'session_regenerate_interval' => 900,    // 15 minutes
 
-    // Default theme slug used if the database setting is missing (Stage 10)
+    // Default theme slug used if the database setting is missing
     'default_theme' => 'rgb-gaming',
 
-    // Upload limits referenced by validation (Stage 7+) — size in bytes
+    // Upload limits referenced by validation+), size in bytes
     'upload_max_bytes' => 2 * 1024 * 1024,
 
-    // Allowed consultation attachment extensions (Stage 7+)
+    // Allowed consultation attachment extensions+)
     'upload_allowed_extensions' => ['pdf', 'txt', 'png', 'jpg', 'jpeg', 'webp'],
 
     // Relative paths from the project root
@@ -81,7 +82,7 @@ return [
     ],
 
     /**
-     * Store / service location shown on store-locations.php (Stage 8.4).
+     * Store / service location shown on store-locations.php.
      *
      * IMPORTANT: This is a FICTIONAL location created for the academic project.
      * The address, phone, and email do not represent a real business. Update the
@@ -104,8 +105,8 @@ return [
         'image' => 'assets/images/map/storefront-exterior.jpg',
         'image_alt' => 'Modest computer service storefront with charcoal, white, and teal details.',
         'hours' => [
-            'Monday–Friday' => '10:00 a.m.–7:00 p.m.',
-            'Saturday' => '11:00 a.m.–5:00 p.m.',
+            'Monday, Friday' => '10:00 a.m., 7:00 p.m.',
+            'Saturday' => '11:00 a.m., 5:00 p.m.',
             'Sunday' => 'Closed',
         ],
     ],

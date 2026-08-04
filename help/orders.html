@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+<!-- Aleksa Vucak 110139920 COMP 3340, Final Project August 5th, 2026 -->
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Cart &amp; orders guide — CustomCore Help</title>
+    <title>Cart &amp; Orders Guide | CustomCore Help</title>
     <meta name="description" content="Step-by-step help for the CustomCore cart and orders: adding items, updating quantities, checkout, simulated payment, order confirmation numbers, order history, and order status.">
     <link rel="stylesheet" href="../assets/css/main.css">
 </head>
@@ -65,7 +66,7 @@
                     so it is still there when you log back in.
                 </p>
                 <p class="help-note">
-                    <strong>Simulated store.</strong> CustomCore is an academic demo — checkout does
+                    <strong>Simulated store.</strong> CustomCore is an academic demo, checkout does
                     <em>not</em> collect or process real payment card details.
                 </p>
             </section>
@@ -76,13 +77,13 @@
                     Add items to your <a href="../cart.php">cart</a> in two ways:
                 </p>
                 <ul>
-                    <li><strong>Catalogue products</strong> — on a product page, choose any <a href="catalogue.html#options">configuration options</a> and a quantity, then select <strong>Add to cart</strong>.</li>
-                    <li><strong>Saved builds</strong> — from a saved build, add your custom PC to the cart (custom builds are limited to a quantity of one).</li>
+                    <li><strong>Catalogue products:</strong> on a product page, choose any <a href="catalogue.html#options">configuration options</a> and a quantity, then select <strong>Add to cart</strong>.</li>
+                    <li><strong>Saved builds:</strong> from a saved build, add your custom PC to the cart (custom builds are limited to a quantity of one).</li>
                 </ul>
                 <p>The cart lists each line with its unit price, quantity, and line total, and a running <strong>subtotal</strong>. It also flags items that need attention:</p>
                 <ul>
-                    <li><strong>Unavailable</strong> — the product is no longer active or is out of stock.</li>
-                    <li><strong>Only N left</strong> — low stock (5 or fewer remaining).</li>
+                    <li><strong>Unavailable:</strong> the product is no longer active or is out of stock.</li>
+                    <li><strong>Only N left:</strong> low stock (5 or fewer remaining).</li>
                 </ul>
                 <p>
                     When you are ready, choose <strong>Proceed to checkout</strong>, or
@@ -93,11 +94,11 @@
             <section id="quantities" class="help-section">
                 <h2>Updating quantities &amp; removing items</h2>
                 <ul>
-                    <li><strong>Change a quantity</strong> — use the − / + buttons or type a number (1–99, never more than the stock on hand). The line total updates live as you type.</li>
-                    <li><strong>Update cart</strong> — saves all quantity changes at once.</li>
-                    <li><strong>Set a quantity to 0</strong> — removes that item when you update.</li>
-                    <li><strong>Remove</strong> — takes a single line out of the cart immediately.</li>
-                    <li><strong>Clear cart</strong> — empties the whole cart (with a confirmation prompt).</li>
+                    <li><strong>Change a quantity:</strong> use the − / + buttons or type a number (1 to 99, never more than the stock on hand). The line total updates live as you type.</li>
+                    <li><strong>Update cart:</strong> saves all quantity changes at once.</li>
+                    <li><strong>Set a quantity to 0:</strong> removes that item when you update.</li>
+                    <li><strong>Remove:</strong> takes a single line out of the cart immediately.</li>
+                    <li><strong>Clear cart:</strong> empties the whole cart (with a confirmation prompt).</li>
                 </ul>
                 <p>
                     Quantities are always re-checked on the server against current stock, so your
@@ -114,11 +115,11 @@
                     your <a href="../profile.php">profile</a> where possible, and collects:
                 </p>
                 <ul>
-                    <li><strong>Full name</strong> — required (up to 200 characters).</li>
-                    <li><strong>Phone number</strong> — required (up to 30 characters; digits and <code>+ ( ) - . </code> and spaces).</li>
-                    <li><strong>Address line 1</strong> — required; <strong>Address line 2</strong> — optional.</li>
-                    <li><strong>City</strong>, <strong>Province / State</strong>, and <strong>Postal / ZIP code</strong> — required.</li>
-                    <li><strong>Payment method</strong> — see <a href="#payment">Payment methods</a>.</li>
+                    <li><strong>Full name:</strong> required (up to 200 characters).</li>
+                    <li><strong>Phone number:</strong> required (up to 30 characters; digits and <code>+ ( ) - . </code> and spaces).</li>
+                    <li><strong>Address line 1:</strong> required; <strong>Address line 2:</strong> optional.</li>
+                    <li><strong>City</strong>, <strong>Province / State</strong>, and <strong>Postal / ZIP code:</strong> required.</li>
+                    <li><strong>Payment method:</strong> see <a href="#payment">Payment methods</a>.</li>
                 </ul>
                 <p>
                     The <strong>Order summary</strong> sidebar lists your items and subtotal. Choose
@@ -129,11 +130,11 @@
 
             <section id="payment" class="help-section">
                 <h2>Payment methods</h2>
-                <p>Checkout is simulated — pick one of the following. No card numbers or CVV are ever collected:</p>
+                <p>Checkout is simulated, pick one of the following. No card numbers or CVV are ever collected:</p>
                 <ul>
                     <li><strong>Pay on pickup</strong></li>
-                    <li><strong>Credit card</strong> (simulated — no real data collected)</li>
-                    <li><strong>Debit card</strong> (simulated — no real data collected)</li>
+                    <li><strong>Credit card</strong> (simulated, no real data collected)</li>
+                    <li><strong>Debit card</strong> (simulated, no real data collected)</li>
                     <li><strong>PayPal</strong> (simulated)</li>
                 </ul>
                 <p>The method you choose is stored as a label on the order so you can see how you intended to pay.</p>
@@ -146,7 +147,7 @@
                     taken to a confirmation page that shows:
                 </p>
                 <ul>
-                    <li>A unique <strong>confirmation number</strong> in the form <code>CC-YYYYMMDD-XXXXXX</code> — keep it for your records.</li>
+                    <li>A unique <strong>confirmation number</strong> in the form <code>CC-YYYYMMDD-XXXXXX</code>, keep it for your records.</li>
                     <li>Your shipping details and chosen payment method.</li>
                     <li>The items ordered, with quantities and a total.</li>
                     <li>The starting order status (<a href="#status">Pending</a>).</li>
@@ -161,7 +162,7 @@
             <section id="history" class="help-section">
                 <h2>Order history</h2>
                 <p>
-                    <a href="../order-history.php">Order history</a> lists every order you have placed —
+                    <a href="../order-history.php">Order history</a> lists every order you have placed, 
                     and only your own orders. For each order you see its number, date, status, item
                     count, payment method, and total, with a <strong>View</strong> link to the details.
                 </p>
@@ -191,23 +192,23 @@
                 <h2>Order statuses</h2>
                 <p>Every order moves through these statuses (an administrator updates them):</p>
                 <ul>
-                    <li><strong>Pending</strong> — received; awaiting processing (the status of a new order).</li>
-                    <li><strong>Processing</strong> — being prepared or assembled.</li>
-                    <li><strong>Ready for pickup</strong> — ready to collect.</li>
-                    <li><strong>Completed</strong> — fulfilled.</li>
-                    <li><strong>Cancelled</strong> — the order was cancelled.</li>
+                    <li><strong>Pending:</strong> received; awaiting processing (the status of a new order).</li>
+                    <li><strong>Processing:</strong> being prepared or assembled.</li>
+                    <li><strong>Ready for pickup:</strong> ready to collect.</li>
+                    <li><strong>Completed:</strong> fulfilled.</li>
+                    <li><strong>Cancelled:</strong> the order was cancelled.</li>
                 </ul>
             </section>
 
             <section id="tips" class="help-section">
                 <h2>Tips &amp; troubleshooting</h2>
                 <ul>
-                    <li><strong>“Your cart is empty” at checkout.</strong> — Add at least one item before checking out.</li>
-                    <li><strong>Quantity was reduced.</strong> — You asked for more than the stock available; the cart clamps to what is in stock.</li>
-                    <li><strong>Session expired message.</strong> — Reload the page and try again; this protects your cart and checkout against cross-site request forgery.</li>
-                    <li><strong>Can’t reach the cart or checkout.</strong> — These pages require you to <a href="../login.php">log in</a>.</li>
-                    <li><strong>Lost your confirmation number?</strong> — Open <a href="#history">order history</a> and select the order to see it again.</li>
-                    <li><strong>Item shows “Unavailable”.</strong> — It went out of stock or was withdrawn; remove it to continue to checkout.</li>
+                    <li><strong>“Your cart is empty” at checkout.:</strong> Add at least one item before checking out.</li>
+                    <li><strong>Quantity was reduced.:</strong> You asked for more than the stock available; the cart clamps to what is in stock.</li>
+                    <li><strong>Session expired message.:</strong> Reload the page and try again; this protects your cart and checkout against cross-site request forgery.</li>
+                    <li><strong>Can’t reach the cart or checkout.:</strong> These pages require you to <a href="../login.php">log in</a>.</li>
+                    <li><strong>Lost your confirmation number?:</strong> Open <a href="#history">order history</a> and select the order to see it again.</li>
+                    <li><strong>Item shows “Unavailable”.:</strong> It went out of stock or was withdrawn; remove it to continue to checkout.</li>
                 </ul>
             </section>
         </article>

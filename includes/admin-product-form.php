@@ -1,23 +1,23 @@
 <?php
 /**
- * CustomCore — Shared admin product form fields (Commit 9.2).
- *
- * File responsibility:
- *   Renders the product create/edit form body. Included by admin/product-add.php
- *   and admin/product-edit.php so both screens stay perfectly in sync.
- *
- * Expects (set by the including page before require):
- *   $formValues      array<string,mixed>  Field values (validated or existing row).
- *   $formErrors      array<string,string> Field-keyed error messages ([] if none).
- *   $formCategories  list<array{id:int,name:string,slug:string}>
- *   $formBrands      list<string>         Brand suggestions for the datalist.
- *   $formIsEdit      bool                 True on the edit screen.
- *   $formImageUrl    ?string              Resolvable URL of the current image (edit).
- *   $formImagePath   string               Stored image_path (edit, for display).
- *   $formSubmitLabel string               Submit button text.
- *
- * Access control is enforced by the including page (customcore_require_admin()).
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Shared admin product form fields.
+// Renders the product create/edit form body. Included by admin/product-add.php and admin/product-
+// edit.php so both screens stay perfectly in sync.
+// Expects (set by the including page before require):
+//   $formValues array<string,mixed> Field values (validated or existing row).
+//   $formErrors array<string,string> Field-keyed error messages ([] if none).
+//   $formCategories list<array{id:int,name:string,slug:string}>
+//   $formBrands list<string> Brand suggestions for the datalist.
+//   $formIsEdit bool True on the edit screen.
+//   $formImageUrl ?string Resolvable URL of the current image (edit).
+//   $formImagePath string Stored image_path (edit, for display).
+//   $formSubmitLabel string Submit button text.
+// Access control is enforced by the including page (customcore_require_admin()).
 
 declare(strict_types=1);
 

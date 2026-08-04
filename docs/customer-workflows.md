@@ -1,9 +1,9 @@
-# CustomCore — Customer Workflow Verification (Commit 15.6)
+# CustomCore | Customer Workflow Verification
 
-**Document type:** Stage 15 verification  
-**Purpose:** Prove that every core customer action succeeds end-to-end — from account registration all the way through placing an order — exercising the real PHP handlers, session/auth, CSRF, and database writes.  
-**Acceptance:** Every core customer action succeeds; any avoidable defect found in a customer workflow is corrected.  
-**Related:** Prior Stage 15 records [`html-validation.md`](html-validation.md), [`css-validation.md`](css-validation.md), [`js-validation.md`](js-validation.md), [`responsiveness-desktop.md`](responsiveness-desktop.md), [`responsiveness-mobile.md`](responsiveness-mobile.md). Administrator workflows are verified separately in Commit 15.7.
+**Document type:** Project documentation
+**Purpose:** Prove that every core customer action succeeds end-to-end — from account registration all the way through placing an order — exercising the real PHP handlers, session/auth, CSRF, and database writes.
+**Acceptance:** Every core customer action succeeds; any avoidable defect found in a customer workflow is corrected.
+**Related:** earlier test records [`html-validation.md`](html-validation.md), [`css-validation.md`](css-validation.md), [`js-validation.md`](js-validation.md), [`responsiveness-desktop.md`](responsiveness-desktop.md), [`responsiveness-mobile.md`](responsiveness-mobile.md). Administrator workflows are verified separately in.
 
 ### Status legend
 
@@ -36,10 +36,10 @@
 
 1. **Workflow map.** Every customer action was mapped to its page, handler file, form fields, preconditions (login/ownership/stock), CSRF requirement, and success/redirect behaviour (see §1 of the request; handlers in `includes/*.php` and the page controllers).
 2. **Automated end-to-end harness.** A disposable throwaway script drove the running site over the project PHP server (`php -S localhost:8000`) using a real cookie jar (session `CUSTOMCORESESSID`) and correct **CSRF** handling (`_csrf` re-read from each form page before every POST). It performed the full **registration → order** journey plus every action in §1, asserting on each step:
-   - HTTP status / `Location` redirect (PRG expected on state changes),
-   - presence of expected content (product links, order number `CC-YYYYMMDD-XXXXXX`, cart line items), and
-   - correct **rejection** of invalid input (wrong password, duplicate email, foreign order id).
-3. **Compatible build selection.** Because the builder legitimately refuses to save an **incompatible** build, a known-compatible complete component set was computed with the application's own `customcore_compatibility_check()` rules and fed through the builder steps, so the save path was exercised on a valid build.
+ - HTTP status / `Location` redirect (PRG expected on state changes),
+ - presence of expected content (product links, order number `CC-YYYYMMDD-XXXXXX`, cart line items), and
+ - correct **rejection** of invalid input (wrong password, duplicate email, foreign order id).
+3. **Compatible build selection.** Because the builder legitimately refuses to save an **incompatible** build, a known-compatible complete component set was computed with the application's own `customcore_compatibility_check` rules and fed through the builder steps, so the save path was exercised on a valid build.
 4. **Disposable data + cleanup.** Each run registered a fresh `wf15_6_*@example.test` customer. After verification, **all** test users and their orders, order items, saved builds, carts, wishlists, consultations, and reviews were deleted. Post-cleanup the store was confirmed back to its pre-test state: the three seed customers only, **0 orders, 0 saved builds, 0 carts**.
 
 ---
@@ -68,17 +68,17 @@
 **Ordering a saved PC build failed (order could not be placed).**
 
 - **Symptom:** With a **saved build** in the cart, submitting checkout and loading `order-confirmation.php` returned the page with *"We could not place your order."* instead of creating the order. A cart containing only catalogue products ordered fine, which masked the bug.
-- **Root cause:** `customcore_snapshot_build()` in [`order-confirmation.php`](../order-confirmation.php) joined the component category with the wrong column:
+- **Root cause:** `customcore_snapshot_build` in [`order-confirmation.php`](../order-confirmation.php) joined the component category with the wrong column:
 
 ```sql
-JOIN component_categories cc ON cc.id = c.category_id   -- ❌ components has no category_id
+JOIN component_categories cc ON cc.id = c.category_id -- ❌ components has no category_id
 ```
 
-  The `components` table's foreign key is **`component_category_id`** (the `category_id` column belongs to the `products` table). The bad identifier threw `SQLSTATE[42S22] Unknown column 'c.category_id'`, which was caught by the order-creation `try/catch`, rolling back the whole transaction so no order was ever created for any cart containing a saved build.
+ The `components` table's foreign key is **`component_category_id`** (the `category_id` column belongs to the `products` table). The bad identifier threw `SQLSTATE[42S22] Unknown column 'c.category_id'`, which was caught by the order-creation `try/catch`, rolling back the whole transaction so no order was ever created for any cart containing a saved build.
 - **Fix:** use the correct column (matching every other components join in the codebase — `builder-results.php`, `saved-build.php`, `includes/compatibility.php`, `includes/performance.php`, `includes/admin-compatibility.php`):
 
 ```sql
-JOIN component_categories cc ON cc.id = c.component_category_id   -- ✅
+JOIN component_categories cc ON cc.id = c.component_category_id -- ✅
 ```
 
 - **Verification:** re-running the harness, a checkout containing a saved build now creates the order (PRG → `order-confirmation.php?id=N`), and the stored `order_items.build_snapshot_json` is populated with a valid category/component/price snapshot (~692 B). `php -l order-confirmation.php` is clean.
@@ -103,14 +103,14 @@ No other occurrence of the wrong join exists in the codebase (grep-verified).
 php -S localhost:8000
 
 # 2. Walk the journey in a browser (or re-create the harness):
-#    register → login → catalogue/search/compare → product → add to cart
-#    → builder (complete, compatible) → save build → add build to cart
-#    → checkout → order confirmation → order history/details
-#    → submit review → consultation → edit profile + change password → logout
+# register → login → catalogue/search/compare → product → add to cart
+# → builder (complete, compatible) → save build → add build to cart
+# → checkout → order confirmation → order history/details
+# → submit review → consultation → edit profile + change password → logout
 #
-#    Expect: each state change redirects (PRG) with a success flash; the order
-#    receives a CC-YYYYMMDD-XXXXXX number; a saved build can be ordered and its
-#    snapshot appears on the order.
+# Expect: each state change redirects (PRG) with a success flash; the order
+# receives a CC-YYYYMMDD-XXXXXX number; a saved build can be ordered and its
+# snapshot appears on the order.
 ```
 
 Testing uses a disposable `@example.test` account that is deleted afterward, returning the store to its seed state.
@@ -127,4 +127,3 @@ Testing uses a disposable `@example.test` account that is deleted afterward, ret
 | Test data cleaned up; store returned to pre-test state | **Yes** |
 | Customer-workflow results recorded | **This document** |
 
-**Commit 15.6 complete.** Next: Commit **15.7** — verify complete administrator workflows.

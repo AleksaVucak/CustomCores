@@ -1,18 +1,16 @@
 <?php
 /**
- * CustomCore — CLI database connection test.
- *
- * File responsibility:
- *   Verifies that config/database.php works with includes/database.php.
- *   Intended for local/server command-line use only — not a public web page.
- *
- * Usage:
- *   php database/test-connection.php
- *
- * Security:
- *   Refuses to run through a normal web SAPI so credentials are not tested
- *   from a publicly reachable URL.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// CLI database connection test.
+// Verifies that config/database.php works with includes/database.php. Intended for local/server
+// command-line use only, not a public web page.
+// Usage: php database/test-connection.php
+// Security: Refuses to run through a normal web SAPI so credentials are not tested from a publicly
+// reachable URL.
 
 declare(strict_types=1);
 

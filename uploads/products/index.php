@@ -1,7 +1,11 @@
 <?php
 /**
- * CustomCore — Block direct browsing of product upload storage.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Block direct browsing of product upload storage.
 declare(strict_types=1);
 
 http_response_code(403);

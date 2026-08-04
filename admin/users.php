@@ -1,20 +1,18 @@
 <?php
 /**
- * CustomCore — Administrator user list & search (Commit 9.6).
- *
- * File responsibility:
- *   Protected account index. Searches users by name or email; filters by role
- *   and status; paginates; and handles the POST enable/disable toggle via
- *   Post/Redirect/Get. Deeper edits (role changes, full profile) live on
- *   admin/user-edit.php.
- *
- * Authentication requirements:
- *   Administrator role (customcore_require_admin()).
- *
- * Security:
- *   - The enable/disable toggle requires a valid CSRF token.
- *   - Self-lockout and last-admin invariants are enforced before any write.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator user list & search.
+// Protected account index. Searches users by name or email; filters by role and status; paginates;
+// and handles the POST enable/disable toggle via Post/Redirect/Get. Deeper edits (role changes,
+// full profile) live on admin/user-edit.php.
+// Access: Administrator role (customcore_require_admin()).
+// Security:
+//   The enable/disable toggle requires a valid CSRF token.
+//   Self-lockout and last-admin invariants are enforced before any write.
 
 declare(strict_types=1);
 
@@ -52,9 +50,7 @@ function customcore_admin_users_query(array $filters, ?int $page = null): string
     return $params === [] ? '' : '?' . http_build_query($params);
 }
 
-// ---------------------------------------------------------------------------
-// Handle enable/disable toggle — CSRF + guards + PRG
-// ---------------------------------------------------------------------------
+// Handle enable/disable toggle, CSRF + guards + PRG
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = isset($_POST['_csrf']) && is_string($_POST['_csrf']) ? $_POST['_csrf'] : null;
 
@@ -96,9 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     customcore_redirect($returnUrl);
 }
 
-// ---------------------------------------------------------------------------
 // Read filters + load list
-// ---------------------------------------------------------------------------
 $filters = [
     'search' => isset($_GET['q']) && is_string($_GET['q']) ? trim($_GET['q']) : '',
     'role' => isset($_GET['role']) && in_array($_GET['role'] ?? '', customcore_admin_user_roles(), true)
@@ -127,7 +121,7 @@ $adminNavCurrent = 'users';
 $loadAdminCss = true;
 $currentPage = 'admin';
 
-$pageTitle = 'Users — CustomCore admin';
+$pageTitle = 'Users | CustomCore Admin';
 $pageDescription = 'Search customer and administrator accounts, and disable or re-enable logins.';
 $pageKeywords = 'CustomCore, admin, users, accounts';
 
@@ -227,7 +221,7 @@ require_once __DIR__ . '/../includes/header.php';
                         ?>
                         <tr class="<?php echo $isActive ? '' : 'is-disabled-row'; ?>">
                             <td>
-                                <span class="admin-product-cell__name"><?php echo customcore_e($fullName !== '' ? $fullName : '—'); ?></span>
+                                <span class="admin-product-cell__name"><?php echo customcore_e($fullName !== '' ? $fullName : 'No name'); ?></span>
                                 <?php if ($isSelf) : ?><span class="admin-badge admin-badge--featured">You</span><?php endif; ?>
                             </td>
                             <td><?php echo customcore_e((string) $user['email']); ?></td>

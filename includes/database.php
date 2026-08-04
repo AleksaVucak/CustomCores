@@ -1,27 +1,21 @@
 <?php
 /**
- * CustomCore — Reusable PDO database connection helper.
- *
- * File responsibility:
- *   Loads config/database.php, opens a single shared PDO connection, and
- *   reports failures without exposing credentials, DSN passwords, or stack
- *   traces to end users when debug mode is off.
- *
- * Authentication requirements:
- *   None. This file only creates a database handle. Page-level auth is separate.
- *
- * Usage:
- *   require_once __DIR__ . '/database.php';
- *   $pdo = customcore_pdo();
- *
- * Returns:
- *   customcore_pdo() returns a configured PDO instance.
- *
- * Security:
- *   - Requires config/database.php (gitignored); never reads secrets from Git.
- *   - Uses PDO exceptions internally; public messages stay generic in production.
- *   - Disables emulated prepares so statements are prepared on the server.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Reusable PDO database connection helper.
+// Loads config/database.php, opens a single shared PDO connection, and reports failures without
+// exposing credentials, DSN passwords, or stack traces to end users when debug mode is off.
+// Access: None. This file only creates a database handle. Page-level auth is separate.
+// Usage: require_once __DIR__. '/database.php';
+//   $pdo = customcore_pdo();
+// Returns: customcore_pdo() returns a configured PDO instance.
+// Security:
+//   Requires config/database.php (gitignored); never reads secrets from Git.
+//   Uses PDO exceptions internally; public messages stay generic in production.
+//   Disables emulated prepares so statements are prepared on the server.
 
 declare(strict_types=1);
 

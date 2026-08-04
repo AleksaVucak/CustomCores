@@ -1,17 +1,16 @@
 <?php
 /**
- * CustomCore — Administrator helpers (Commit 9.1).
- *
- * File responsibility:
- *   Shared dashboard statistics, attention alerts, recent activity lists, and
- *   the Stage 9 tool registry used by the administrator shell. Every count is
- *   computed from MySQL with prepared/parameterless PDO queries — never
- *   hard-coded decorative numbers.
- *
- * Usage:
- *   require_once __DIR__ . '/admin.php';
- *   $stats = customcore_admin_dashboard_stats($pdo);
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Administrator helpers.
+// Shared dashboard statistics, attention alerts, recent activity lists, and the tool registry used
+// by the administrator shell. Every count is computed from MySQL with prepared/parameterless PDO
+// queries, never hard-coded decorative numbers.
+// Usage: require_once __DIR__. '/admin.php';
+//   $stats = customcore_admin_dashboard_stats($pdo);
 
 declare(strict_types=1);
 
@@ -44,18 +43,18 @@ function customcore_admin_tool_available(string $relativeHref): bool
 }
 
 /**
- * Stage 9+ administrator tools shown on the dashboard and in the admin nav.
+ * + administrator tools shown on the dashboard and in the admin nav.
  *
  * `available` is resolved at call time from the filesystem so later commits
  * automatically light up their nav links when the page file is added.
  *
  * @return list<array{
- *   key:string,
- *   label:string,
- *   href:string,
- *   description:string,
- *   commit:string,
- *   available:bool
+ * key:string
+ * label:string
+ * href:string
+ * description:string
+ * commit:string
+ * available:bool
  * }>
  */
 function customcore_admin_tools(): array
@@ -145,36 +144,36 @@ function customcore_admin_tools(): array
  * Aggregate catalogue, order, user, review, consultation, and contact counts.
  *
  * @return array{
- *   products_total:int,
- *   products_active:int,
- *   products_inactive:int,
- *   products_low_stock:int,
- *   products_out_of_stock:int,
- *   low_stock_threshold:int,
- *   orders_total:int,
- *   orders_pending:int,
- *   orders_processing:int,
- *   orders_ready:int,
- *   orders_completed:int,
- *   orders_cancelled:int,
- *   orders_open:int,
- *   users_total:int,
- *   users_customers:int,
- *   users_admins:int,
- *   users_active:int,
- *   users_inactive:int,
- *   reviews_total:int,
- *   reviews_pending:int,
- *   reviews_approved:int,
- *   reviews_hidden:int,
- *   consultations_total:int,
- *   consultations_open:int,
- *   consultations_in_progress:int,
- *   consultations_answered:int,
- *   consultations_closed:int,
- *   consultations_needs_attention:int,
- *   contact_total:int,
- *   contact_unread:int
+ * products_total:int
+ * products_active:int
+ * products_inactive:int
+ * products_low_stock:int
+ * products_out_of_stock:int
+ * low_stock_threshold:int
+ * orders_total:int
+ * orders_pending:int
+ * orders_processing:int
+ * orders_ready:int
+ * orders_completed:int
+ * orders_cancelled:int
+ * orders_open:int
+ * users_total:int
+ * users_customers:int
+ * users_admins:int
+ * users_active:int
+ * users_inactive:int
+ * reviews_total:int
+ * reviews_pending:int
+ * reviews_approved:int
+ * reviews_hidden:int
+ * consultations_total:int
+ * consultations_open:int
+ * consultations_in_progress:int
+ * consultations_answered:int
+ * consultations_closed:int
+ * consultations_needs_attention:int
+ * contact_total:int
+ * contact_unread:int
  * }
  */
 function customcore_admin_dashboard_stats(PDO $pdo): array
@@ -341,7 +340,7 @@ function customcore_admin_dashboard_alerts(array $stats): array
         $alerts[] = [
             'level' => 'info',
             'title' => $n === 1 ? '1 active product is low on stock' : $n . ' active products are low on stock',
-            'detail' => 'Active systems with 1–' . $threshold . ' units remaining.',
+            'detail' => 'Active systems with 1, ' . $threshold . ' units remaining.',
             'tool' => 'products',
         ];
     }

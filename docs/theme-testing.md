@@ -1,7 +1,7 @@
-# CustomCore — Theme testing record (Commit 10.6)
+# CustomCore | Theme testing record
 
-**Document type:** Stage 10 verification  
-**Purpose:** Record that every key page renders correctly under all three site-wide CSS templates, and that the themes remain visibly distinct.  
+**Document type:** Project documentation
+**Purpose:** Record that every key page renders correctly under all three site-wide CSS templates, and that the themes remain visibly distinct.
 **Related:** Theme files in `assets/themes/`; resolver in `includes/theme.php`; switcher in `admin/themes.php`.
 
 ### Status legend
@@ -30,12 +30,12 @@
 1. Seeded themes already present (`database/seed-themes.sql`).
 2. For each theme id `1` / `2` / `3`, set `site_settings.active_theme_id` and request every page below over HTTP as a signed-in administrator.
 3. Assert for each response:
-   - HTTP status is 200
-   - `assets/css/main.css` is linked
-   - The expected `assets/themes/<slug>.css` is linked **after** `main.css`
-   - On admin pages, `assets/css/admin.css` is linked and the theme CSS follows it
-   - Structural markers present (`site-header`, `site-footer`, `admin-nav` / forms / cards as applicable)
-   - No PHP fatal / warning / stack-trace leak in the body
+ - HTTP status is 200
+ - `assets/css/main.css` is linked
+ - The expected `assets/themes/<slug>.css` is linked **after** `main.css`
+ - On admin pages, `assets/css/admin.css` is linked and the theme CSS follows it
+ - Structural markers present (`site-header`, `site-footer`, `admin-nav` / forms / cards as applicable)
+ - No PHP fatal / warning / stack-trace leak in the body
 4. Spot-check the catalogue visually under Cyber Grid (grid backdrop, mint wordmark, uppercase headings, corner-cut buttons).
 5. Restore `active_theme_id = 1` (RGB Gaming) after the walk.
 
@@ -99,7 +99,7 @@ Mobile layout rules live in `assets/css/main.css` (nav toggle ≤ ~900px) and re
 
 **Theme bugs found:** none. No CSS or markup fixes were required in this commit.
 
-**Switcher / fallback cross-check:** after the walk, `active_theme_id` was restored to `1` and the homepage again linked `assets/themes/rgb-gaming.css`. Fallback behaviour itself was proven in Commit 10.5.
+**Switcher / fallback cross-check:** after the walk, `active_theme_id` was restored to `1` and the homepage again linked `assets/themes/rgb-gaming.css`. Fallback behaviour itself was proven during theme testing
 
 ---
 
@@ -111,4 +111,4 @@ Mobile layout rules live in `assets/css/main.css` (nav toggle ≤ ~900px) and re
 - [x] No theme-only layout regressions found
 - [x] Active theme restored to RGB Gaming after testing
 
-**Commit 10.6 acceptance:** layouts work across themes; Stage 10 complete.
+**Acceptance:** layouts work across themes; complete.

@@ -1,25 +1,20 @@
 <?php
 /**
- * CustomCore — Authentication state helpers (read side).
- *
- * File responsibility:
- *   Read helpers for the current authenticated user, plus customcore_logout()
- *   to fully end a session (Commit 4.3). Login (4.2), route protection (4.4),
- *   roles (4.7), and session hardening (4.8) share the same session keys.
- *
- * Session key convention (set by login.php in Commit 4.2):
- *   $_SESSION['user_id']    int    — users.id
- *   $_SESSION['user_role']  string — 'customer' | 'admin'
- *   $_SESSION['user_name']  string — display first name
- *   $_SESSION['user_email'] string — account email
- *
- * Authentication requirements:
- *   None to include. Read helpers only inspect session state; logout clears it.
- *
- * Usage:
- *   require_once __DIR__ . '/auth.php';
- *   if (customcore_is_logged_in()) { ... }
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Authentication state helpers (read side).
+// Read helpers for the current authenticated user, plus customcore_logout() to fully end a
+// session. Login, route protection, roles, and session hardening share the same session keys.
+// Session key convention (set by login.php in:
+//   $_SESSION['user_id'] int, users.id
+//   $_SESSION['user_role'] string, 'customer' | 'admin'
+//   $_SESSION['user_name'] string, display first name
+//   $_SESSION['user_email'] string, account email
+// Access: None to include. Read helpers only inspect session state; logout clears it.
+// Usage: require_once __DIR__. '/auth.php'; if (customcore_is_logged_in()) {... }
 
 declare(strict_types=1);
 
@@ -89,14 +84,14 @@ function customcore_is_admin(): bool
  * Guard: require an authenticated user, or redirect guests to login.
  *
  * Private customer pages call this at the very top, before any output:
- *   require_once __DIR__ . '/includes/auth.php';
- *   customcore_require_login();
+ * require_once __DIR__. '/includes/auth.php';
+ * customcore_require_login();
  *
  * Behaviour:
- *   - Logged-in users continue normally.
- *   - Guests get a warning flash and are redirected to login.php. The page they
- *     tried to reach (GET only) is stored so login can send them back (4.8
- *     hardens this further; the stored path is already validated as local).
+ * - Logged-in users continue normally.
+ * - Guests get a warning flash and are redirected to login.php. The page they
+ * tried to reach (GET only) is stored so login can send them back (4.8
+ * hardens this further; the stored path is already validated as local).
  */
 function customcore_require_login(): void
 {
@@ -162,7 +157,7 @@ function customcore_take_return_to(): ?string
  * the visitor is a guest. A fresh session may be started afterward (e.g. for a
  * flash message on the logout redirect).
  *
- * Used by: logout.php (Commit 4.3).
+ * Used by: logout.php.
  */
 function customcore_logout(): void
 {

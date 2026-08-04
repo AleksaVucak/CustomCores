@@ -1,25 +1,21 @@
 <?php
 /**
- * CustomCore — Product Detail Page (Commit 3.4).
- *
- * File responsibility:
- *   Displays a single product loaded from MySQL with specifications, configurable
- *   option groups (RAM, Storage, Colour, etc.), price with default-option total,
- *   stock status, approved reviews (Commit 3.8), review submission as pending
- *   (Commit 7.2), a compare entry point (Commit 3.7), wishlist save (Commit 7.1),
- *   and a context-sensitive Help link. One reusable page serves every product ID.
- *
- * URL format:
- *   product.php?id=1
- *
- * Authentication requirements:
- *   None (public).
- *
- * Data sources:
- *   - products + categories (joined)
- *   - product_options (grouped by option_group, sorted)
- *   - reviews (status = approved only) + users (first name)
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Product Detail Page.
+// Displays a single product loaded from MySQL with specifications, configurable option groups
+// (RAM, Storage, Colour, etc.), price with default-option total, stock status, approved reviews,
+// review submission as pending, a compare entry point, wishlist save, and a context-sensitive Help
+// link. One reusable page serves every product ID.
+// URL: product.php?id=1
+// Access: None (public).
+// Data:
+//   products + categories (joined)
+//   product_options (grouped by option_group, sorted)
+//   reviews (status = approved only) + users (first name)
 
 declare(strict_types=1);
 
@@ -30,9 +26,7 @@ require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/wishlist.php';
 require_once __DIR__ . '/includes/reviews.php';
 
-// ---------------------------------------------------------------------------
 // Validate and fetch the product
-// ---------------------------------------------------------------------------
 
 $productId = 0;
 if (isset($_GET['id']) && is_string($_GET['id']) && ctype_digit($_GET['id'])) {
@@ -88,7 +82,7 @@ if ($productId < 1) {
                 $optionGroups[$group][] = $opt;
             }
 
-            // Approved reviews only (Commit 3.8) — pending/hidden never appear.
+            // Approved reviews only, pending/hidden never appear.
             $revStmt = $pdo->prepare(
                 'SELECT r.id, r.rating, r.title, r.body, r.created_at,
                         u.first_name
@@ -124,14 +118,12 @@ if ($productId < 1) {
 // A genuinely invalid or missing product is a real "Not Found", so send a 404
 // status (not a 200 "soft 404") to give browsers and search engines the correct
 // signal while still rendering the friendly styled shell below. A transient DB
-// error keeps the default 200 — the resource may exist, it is not "not found".
+// error keeps the default 200, the resource may exist, it is not "not found".
 if ($notFound && !headers_sent()) {
     http_response_code(404);
 }
 
-// ---------------------------------------------------------------------------
 // Wishlist + review-submission state (logged-in customers only)
-// ---------------------------------------------------------------------------
 
 $isLoggedIn = customcore_is_logged_in();
 $onWishlist = false;
@@ -154,9 +146,7 @@ if ($isLoggedIn && $product !== null) {
     }
 }
 
-// ---------------------------------------------------------------------------
 // Calculate configured price (defaults selected)
-// ---------------------------------------------------------------------------
 
 $basePrice = $product !== null ? (float) $product['base_price'] : 0.00;
 $defaultDelta = 0.00;
@@ -172,9 +162,7 @@ foreach ($optionGroups as $groupOptions) {
 
 $configuredPrice = $basePrice + $defaultDelta;
 
-// ---------------------------------------------------------------------------
 // Page metadata
-// ---------------------------------------------------------------------------
 
 $productName = $product !== null ? (string) $product['name'] : 'Product';
 $categoryName = $product !== null ? (string) ($product['category_name'] ?? '') : '';
@@ -182,10 +170,10 @@ $productImageUrl = $product !== null
     ? customcore_product_image_url($product['image_path'] ?? null)
     : null;
 
-$pageTitle = $productName . ' — CustomCore';
+$pageTitle = $productName . ' | CustomCore';
 $pageDescription = $product !== null
     ? (string) $product['short_description']
-    : 'Product detail page — CustomCore.';
+    : 'Product detail page, CustomCore.';
 $pageKeywords = 'CustomCore, ' . $productName . ', gaming PC, ' . $categoryName;
 $currentPage = 'catalogue';
 
@@ -244,7 +232,7 @@ require_once __DIR__ . '/includes/header.php';
                 <h1 id="product-heading"><?php echo customcore_e($productName); ?></h1>
                 <p class="product-detail__brand">
                     <?php echo customcore_e((string) $product['brand']); ?>
-                    — <?php echo customcore_e($categoryName); ?> tier
+                    <?php echo customcore_e($categoryName); ?> tier
                     <?php if (!empty($product['is_featured'])) : ?>
                         <span class="product-card__badge">Featured</span>
                     <?php endif; ?>
@@ -405,7 +393,7 @@ require_once __DIR__ . '/includes/header.php';
                     <?php endif; ?>
                 </form>
             <?php else : ?>
-                <!-- No options — simple add to cart form -->
+                <!-- No options, simple add to cart form -->
                 <?php if ($inStock) : ?>
                     <form class="product-detail__cart-form product-detail__cart-form--simple" method="post" action="<?php echo customcore_e(customcore_url('cart.php')); ?>">
                         <?php echo customcore_csrf_field(); ?>

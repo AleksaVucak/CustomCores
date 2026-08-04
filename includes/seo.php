@@ -1,22 +1,23 @@
 <?php
 /**
- * CustomCore — SEO public-URL catalogue and sitemap builder (Commit 14.2).
- *
- * File responsibility:
- *   Single source of truth for which project paths belong in the public
- *   sitemap and which paths crawlers should avoid. Used by:
- *     - sitemap.php          (live XML with absolute URLs)
- *     - sitemap.xml          (static snapshot regenerated via --write)
- *     - robots.txt           (hand-maintained to match disallow list below)
- *     - customcore_is_noindex_page() policy in functions.php (14.1)
- *
- * Design rules:
- *   - Private customer pages, the entire admin area, APIs, uploads, and
- *     action-only scripts (logout, attachment download) are NEVER listed.
- *   - Only real, public content routes and Help HTML pages are included.
- *   - Absolute <loc> URLs prefer config/app.php → base_url; otherwise they
- *     are derived from the current request (same rules as canonical URLs).
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// SEO public-URL catalogue and sitemap builder.
+// Single source of truth for which project paths belong in the public sitemap and which paths
+// crawlers should avoid. Used by:
+//   sitemap.php (live XML with absolute URLs)
+//   sitemap.xml (static snapshot regenerated via --write)
+//   robots.txt (hand-maintained to match disallow list below)
+//   customcore_is_noindex_page() policy in functions.php
+// Design rules:
+//   Private customer pages, the entire admin area, APIs, uploads, and action-only scripts (logout,
+//     attachment download) are NEVER listed.
+//   Only real, public content routes and Help HTML pages are included.
+//   Absolute <loc> URLs prefer config/app.php → base_url; otherwise they are derived from the
+//     current request (same rules as canonical URLs).
 
 declare(strict_types=1);
 
@@ -115,16 +116,16 @@ function customcore_seo_excluded_scripts(): array
 }
 
 /**
- * Build an absolute public URL for a project-relative path (Commit 14.2).
+ * Build an absolute public URL for a project-relative path.
  *
  * Prefers config/app.php → base_url. When that is empty, derives scheme + host
- * (+ optional app base path) from the current request — the same model used by
+ * (+ optional app base path) from the current request, the same model used by
  * customcore_canonical_url(). Falls back to $fallbackBase when running CLI
  * with no host (e.g. regenerating sitemap.xml).
  *
  * @param string $path Project-relative path, optionally with query (e.g. "product.php?id=3").
  * @param string|null $fallbackBase Absolute origin used only when neither base_url
- *   nor a request host is available (e.g. "https://example.com/customcore").
+ * nor a request host is available (e.g. "https://example.com/customcore").
  */
 function customcore_seo_absolute_url(string $path, ?string $fallbackBase = null): ?string
 {
@@ -162,7 +163,7 @@ function customcore_seo_absolute_url(string $path, ?string $fallbackBase = null)
 /**
  * Fetch active catalogue product detail URLs for the sitemap.
  *
- * Returns an empty list when the database is unavailable — the rest of the
+ * Returns an empty list when the database is unavailable, the rest of the
  * sitemap still builds so crawlers get the public surface either way.
  *
  * @return list<array{path:string, changefreq:string, priority:string, lastmod:?string}>
@@ -241,7 +242,7 @@ function customcore_seo_path_is_public(string $path): bool
  * Build a complete urlset XML document for the public sitemap.
  *
  * @param string|null $fallbackBase Absolute origin for CLI regeneration when
- *   base_url and HTTP_HOST are both unavailable.
+ * base_url and HTTP_HOST are both unavailable.
  * @param bool $includeProducts When true, append active product detail URLs.
  */
 function customcore_seo_build_sitemap_xml(
@@ -274,7 +275,7 @@ function customcore_seo_build_sitemap_xml(
     $lines = [];
     $lines[] = '<?xml version="1.0" encoding="UTF-8"?>';
     $lines[] = '<!--';
-    $lines[] = '  CustomCore public sitemap (Commit 14.2).';
+    $lines[] = '  CustomCore public sitemap.';
     $lines[] = '  Private customer pages, the admin area, APIs, uploads, and';
     $lines[] = '  action-only scripts are intentionally excluded. Prefer the live';
     $lines[] = '  sitemap.php endpoint in production (builds absolute URLs from';

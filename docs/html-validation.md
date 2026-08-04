@@ -1,9 +1,9 @@
-# CustomCore — HTML Validation Record (Commit 15.1)
+# CustomCore | HTML Validation Record
 
-**Document type:** Stage 15 verification  
-**Purpose:** Prove that important **rendered** HTML pages have no major markup errors, with a page-by-page evidence trail.  
-**Acceptance:** Important rendered pages have no major markup errors.  
-**Related:** Shared layout in [`includes/header.php`](../includes/header.php) / [`footer.php`](../includes/footer.php); semantic hierarchy work in Commit 14.3; accessibility pass in Commit 14.4; theme walk in [`theme-testing.md`](theme-testing.md).
+**Document type:** Project documentation
+**Purpose:** Prove that important **rendered** HTML pages have no major markup errors, with a page-by-page evidence trail.
+**Acceptance:** Important rendered pages have no major markup errors.
+**Related:** Shared layout in [`includes/header.php`](../includes/header.php) / [`footer.php`](../includes/footer.php); semantic hierarchy work; the accessibility pass; theme walk in [`theme-testing.md`](theme-testing.md).
 
 ### Status legend
 
@@ -80,7 +80,7 @@ Tidy is **not** treated as a strict blocker when it misreads valid HTML5 constru
 | HTML Tidy Errors | **None** on any important page |
 | PHP error leakage | **None** |
 
-**Acceptance for Commit 15.1 is met:** important rendered pages have **no major markup errors**.
+**Acceptance is met:** important rendered pages have **no major markup errors**.
 
 ---
 
@@ -158,10 +158,10 @@ Tidy reported **zero Errors**. It emitted warnings on four pages about “missin
 
 ```html
 <dl>
-  <div>
-    <dt>…</dt>
-    <dd>…</dd>
-  </div>
+ <div>
+ <dt>…</dt>
+ <dd>…</dd>
+ </div>
 </dl>
 ```
 
@@ -178,7 +178,7 @@ That construct is allowed by the living HTML standard (a `div` may wrap `dt`/`dd
 
 ## 6. Code changes from this commit
 
-**None.** No major markup defects required fixes. Upstream Stages 1–14 already establish shared layout, single `h1` hierarchy, landmarks, alt text discipline, and CSRF fields on POST forms.
+**None.** No major markup defects required fixes. The shared layout already establishes a single `h1` hierarchy, landmarks, alt text discipline, and CSRF fields on POST forms.
 
 ---
 
@@ -208,4 +208,3 @@ Authenticated pages require an existing customer (or admin) session cookie. Pref
 | Major markup errors | **None** |
 | HTML validation record | **This document** |
 
-**Commit 15.1 complete.** Next: Commit **15.2** — validate CSS files.

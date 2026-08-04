@@ -1,34 +1,28 @@
 <?php
 /**
- * CustomCore — Secure Administrator Account Setup (Commit 2.7).
- *
- * File responsibility:
- *   Creates an admin user in the `users` table with a bcrypt-hashed password.
- *   Credentials are collected interactively on the command line — no plain-text
- *   passwords appear in this file, in seed files, or in Git history.
- *
- * Usage:
- *   php database/create-admin.php
- *
- * Prerequisites:
- *   1. Import database/schema.sql (users table must exist).
- *   2. Copy config/database.example.php → config/database.php and fill in
- *      your MySQL credentials (see config/README.md).
- *
- * Security:
- *   - CLI-only: refuses to run under a web server.
- *   - Uses password_hash() with PASSWORD_DEFAULT (bcrypt).
- *   - Password input is hidden on systems that support stty.
- *   - Never echoes or logs the entered password.
- *   - If the email already exists, offers to update the role instead of
- *     duplicating the account.
+ * Aleksa Vucak
+ * 110139920
+ * COMP 3340, Final Project
+ * August 5th, 2026
  */
+// Secure Administrator Account Setup.
+// Creates an admin user in the `users` table with a bcrypt-hashed password. Credentials are
+// collected interactively on the command line, no plain-text passwords appear in this file, in
+// seed files, or in Git history.
+// Usage: php database/create-admin.php
+// Prerequisites: 1. Import database/schema.sql (users table must exist). 2. Copy
+// config/database.example.php → config/database.php and fill in your MySQL credentials (see
+// config/README.md).
+// Security:
+//   CLI-only: refuses to run under a web server.
+//   Uses password_hash() with PASSWORD_DEFAULT (bcrypt).
+//   Password input is hidden on systems that support stty.
+//   Never echoes or logs the entered password.
+//   If the email already exists, offers to update the role instead of duplicating the account.
 
 declare(strict_types=1);
 
-// ---------------------------------------------------------------------------
 // Block web access
-// ---------------------------------------------------------------------------
 
 if (PHP_SAPI !== 'cli') {
     http_response_code(403);
@@ -37,9 +31,7 @@ if (PHP_SAPI !== 'cli') {
     exit(1);
 }
 
-// ---------------------------------------------------------------------------
 // Bootstrap
-// ---------------------------------------------------------------------------
 
 require_once dirname(__DIR__) . '/includes/database.php';
 
@@ -86,12 +78,10 @@ function admin_prompt_password(string $label): string
     return $password;
 }
 
-// ---------------------------------------------------------------------------
 // Collect credentials
-// ---------------------------------------------------------------------------
 
 echo "==========================================================\n";
-echo "  CustomCore — Administrator Account Setup\n";
+echo "  CustomCore, Administrator Account Setup\n";
 echo "==========================================================\n\n";
 
 $email = admin_prompt('Admin email: ');
@@ -118,9 +108,7 @@ if ($password !== $confirm) {
     exit(1);
 }
 
-// ---------------------------------------------------------------------------
 // Hash and insert
-// ---------------------------------------------------------------------------
 
 $hash = password_hash($password, PASSWORD_DEFAULT);
 
