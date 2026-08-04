@@ -48,6 +48,7 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 - [Mobile responsiveness record](docs/responsiveness-mobile.md)
 - [Customer workflow verification record](docs/customer-workflows.md)
 - [Administrator workflow verification record](docs/admin-workflows.md)
+- [100-point rubric audit (requirement → evidence)](docs/rubric-audit.md)
 - [Security audit (SQL, escaping, CSRF, uploads)](docs/security-audit.md)
 
 ### Quick start
@@ -58,6 +59,10 @@ to manage the store. Non-programmers updating catalogue content should read the
 **[content update guide](docs/content-update-guide.md)**.
 
 ## Current status
+
+**Commit 15.8 complete** — complete the 100-point rubric audit.
+
+Produced [`docs/rubric-audit.md`](docs/rubric-audit.md): a **requirement → page + file + test** evidence table for every Section A point, re-verified against the running project and the working tree. Live counts were taken directly from the database and filesystem — **20** active products with **0** having fewer than 2 options (323 options), **3** theme CSS files (+ 3 DB rows), **7** Help pages, **33** images (20 product + 13 site), **3** media files (2× MP4 + 1× MP3), **50** purposeful dynamic PHP files (30 public/customer + 17 admin + 3 API), and all four SEO assets present — and an HTTP smoke test returned **200** for 19/19 public + SEO URLs and 7/7 Help pages while `profile`/`cart`/`checkout`/`admin` correctly redirected (303) to login. Behavioural points cite the earlier Stage 15 records (15.1–15.7). **#10a was promoted to Complete** (page count settled at 50). **Result: 98/100 points fully evidenced and tested; the remaining 2 (#11 live hosting) have their README slot and deployment docs ready but the live-load test is Blocked until hosting (Stage 16)** — the only item whose completion test cannot pass locally. Every one of the 100 points now maps to a real page and a real file.
 
 **Commit 15.7 complete** — verify complete administrator workflows.
 

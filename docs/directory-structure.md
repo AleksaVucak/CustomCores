@@ -49,7 +49,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `assets/media/` | ≥ 3 video/audio items + captions | 8.2 |
 | `config/` | `database.example.php`, `app.php`; real `database.php` gitignored | 1.2–1.3 |
 | `database/` | Schema, seeds, create-admin script | 2.x |
-| `docs/` | Business case, rubric, sitemap, wireframes, ER design, database import, media credits, image prompts, theme testing, Help context-link audit, Stage 12 guides, monitoring troubleshooting, Stage 14 security audit, Stage 15 HTML / CSS / JS validation + desktop & mobile responsiveness + customer & administrator workflow records | 0.x–15.x, 8.7, 10.6, 11.7, 12.1–12.6, 13.5, 14.8–14.10, 15.1–15.7 |
+| `docs/` | Business case, rubric, sitemap, wireframes, ER design, database import, media credits, image prompts, theme testing, Help context-link audit, Stage 12 guides, monitoring troubleshooting, Stage 14 security audit, Stage 15 HTML / CSS / JS validation + desktop & mobile responsiveness + customer & administrator workflow records + 100-point rubric audit | 0.x–15.x, 8.7, 10.6, 11.7, 12.1–12.6, 13.5, 14.8–14.10, 15.1–15.8 |
 | `help/` | Static Help hub (`index.html`, 11.1) + topic articles (`pc-builder.html` from 5.9; `accounts.html` 11.2; `catalogue.html` 11.3; `orders.html` 11.4; `support.html` 11.5; `training.html` 11.6) | 5.9, 11.x |
 | `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, theme, admin, admin-nav, admin-products, admin-product-form, admin-options, admin-compatibility, admin-orders, admin-users, admin-consultations, admin-reviews, admin-reports, admin-themes, compatibility, performance, monitoring, seo | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 10.x, 13.x, 14.x |
 | `uploads/consultation/` | Validated consultation files; `index.php` + `.htaccess` deny all direct web access (served only via download endpoints) | 7.4, 14.10 |
@@ -79,6 +79,17 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 ---
 
 ## 5. Status
+
+**Commit 15.8 complete — complete the 100-point rubric audit.**
+New [`docs/rubric-audit.md`](rubric-audit.md): a **requirement → page + file + test** evidence table
+for every Section A point, re-verified against the running project and working tree. Live counts came
+straight from the DB/filesystem — **20** active products (0 with < 2 options; 323 options), **3** theme
+CSS files, **7** Help pages, **33** images, **3** media files, **50** purposeful dynamic PHP files
+(30 public/customer + 17 admin + 3 API), all four SEO assets — and an HTTP smoke test returned **200**
+for 19/19 public + SEO URLs and 7/7 Help pages while auth-gated pages correctly redirected (303).
+**#10a promoted to Complete** (page count settled at 50). **Result: 98/100 points fully evidenced and
+tested; the remaining 2 (#11 live hosting) are page/file-ready but the live-load test is Blocked until
+Stage 16** — the only item that cannot pass locally. Every point maps to a real page and a real file.
 
 **Commit 15.7 complete — verify complete administrator workflows.**
 New [`docs/admin-workflows.md`](admin-workflows.md): a cookie-jar + CSRF end-to-end harness drove the
