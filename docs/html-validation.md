@@ -8,7 +8,7 @@
 ### Status legend
 
 | Status | Meaning |
-| ------ | ------- |
+| --- | --- |
 | **Pass** | HTTP 200 (or an intentional 303 for empty state), core structural rules satisfied, no HTML Tidy **Error** lines, no PHP error leak in the body |
 | **Skip** | Page intentionally redirects without full HTML (empty cart checkout, unfinished build results) |
 | **Fail** | Any major markup defect or PHP error leakage |
@@ -20,7 +20,7 @@
 Validated **real server-rendered output** (not source templates only) over the local built-in PHP server (`http://localhost:8000`).
 
 | Audience | Pages validated |
-| -------- | --------------- |
+| --- | --- |
 | Public storefront | `index.php`, `about.php`, `catalogue.php`, `product.php?id=2`, `search.php` (+ `?q=gaming`), `compare.php`, `builder.php`, `reviews.php`, `contact.php`, `media.php`, `store-locations.php`, `accessibility.php`, `login.php`, `register.php` |
 | Help centre (static) | `help/index.html`, `help/pc-builder.html`, `help/accounts.html`, `help/catalogue.html`, `help/orders.html`, `help/support.html`, `help/training.html` |
 | Signed-in customer | `profile.php`, `edit-profile.php`, `cart.php`, `wishlist.php`, `saved-builds.php`, `order-history.php`, `consultation.php`, `consultation-history.php` |
@@ -50,7 +50,7 @@ Admin pages were rendered after temporarily promoting a disposable account for t
 ### 2.1 Core structural rules (application-level)
 
 | Check | Rule |
-| ----- | ---- |
+| --- | --- |
 | Document type | `<!DOCTYPE html>` present |
 | Language | `<html lang="…">` present |
 | Metadata | Non-empty `<title>`, `charset`, and `viewport` meta |
@@ -75,7 +75,7 @@ Tidy is **not** treated as a strict blocker when it misreads valid HTML5 constru
 ## 3. Results summary
 
 | Suite | Result |
-| ----- | ------ |
+| --- | --- |
 | Core structural rules | **48 Pass · 0 Fail** (7 intentional Skip/intermediate captures) |
 | HTML Tidy Errors | **None** on any important page |
 | PHP error leakage | **None** |
@@ -89,7 +89,7 @@ Tidy is **not** treated as a strict blocker when it misreads valid HTML5 constru
 ### 4.1 Public storefront
 
 | Page | HTTP | Core | Notes |
-| ---- | ---- | ---- | ----- |
+| --- | --- | --- | --- |
 | `index.php` | 200 | Pass | Hero + featured systems; single `h1` |
 | `about.php` | 200 | Pass | Business narrative sections |
 | `catalogue.php` | 200 | Pass | Filter sidebar + product grid |
@@ -109,7 +109,7 @@ Tidy is **not** treated as a strict blocker when it misreads valid HTML5 constru
 ### 4.2 Help centre
 
 | Page | HTTP | Core | Notes |
-| ---- | ---- | ---- | ----- |
+| --- | --- | --- | --- |
 | `help/index.html` | 200 | Pass | Hub |
 | `help/pc-builder.html` | 200 | Pass | Builder guide |
 | `help/accounts.html` | 200 | Pass | Accounts guide |
@@ -121,7 +121,7 @@ Tidy is **not** treated as a strict blocker when it misreads valid HTML5 constru
 ### 4.3 Customer (authenticated)
 
 | Page | HTTP | Core | Notes |
-| ---- | ---- | ---- | ----- |
+| --- | --- | --- | --- |
 | `profile.php` | 200 | Pass | Account dashboard |
 | `edit-profile.php` | 200 | Pass | Details + password forms |
 | `cart.php` | 200 | Pass | Empty authenticated cart chrome |
@@ -134,7 +134,7 @@ Tidy is **not** treated as a strict blocker when it misreads valid HTML5 constru
 ### 4.4 Administrator
 
 | Page | HTTP | Core | Notes |
-| ---- | ---- | ---- | ----- |
+| --- | --- | --- | --- |
 | `admin/index.php` | 200 | Pass | Dashboard KPIs + tools |
 | `admin/products.php` | 200 | Pass | Searchable product table |
 | `admin/product-add.php` | 200 | Pass | Create form |
@@ -203,7 +203,7 @@ Authenticated pages require an existing customer (or admin) session cookie. Pref
 ## 8. Sign-off
 
 | Criterion | Result |
-| --------- | ------ |
+| --- | --- |
 | Important rendered pages validated | **Yes** (public + help + customer + admin) |
 | Major markup errors | **None** |
 | HTML validation record | **This document** |

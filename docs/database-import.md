@@ -9,7 +9,7 @@
 ## 1. Prerequisites
 
 | Requirement | Notes |
-| ----------- | ----- |
+| --- | --- |
 | MySQL or MariaDB | InnoDB, `utf8mb4` support |
 | PHP CLI | For connection test and admin setup (`php` on PATH) |
 | Empty (or dedicated) database | Create one before importing |
@@ -73,14 +73,14 @@ php database/create-admin.php
 ### File inventory
 
 | Order | File | What it loads |
-| ----: | ---- | ------------- |
+| --- | --- | --- |
 | 1 | `database/schema.sql` | 21 empty InnoDB tables |
 | 2 | `database/seed-products.sql` | 4 categories + 20 products |
 | 3 | `database/seed-product-options.sql` | 323 product options |
 | 4 | `database/seed-components.sql` | 10 builder categories + 60 components |
 | 5 | `database/seed-compatibility.sql` | 7 compatibility rules |
 | 6 | `database/seed-themes.sql` | 3 themes + site settings |
-| 7 | `database/seed-reviews.sql` | Demo customers + approved/pending/hidden reviews (3.8) |
+| 7 | `database/seed-reviews.sql` | Demo customers + approved/pending/hidden reviews |
 | 8 | `database/create-admin.php` | One admin user (CLI prompts) |
 
 Seed files that clear and re-insert data (products, options, components, themes) are safe to re-run during development. Always run `schema.sql` first on a new database.
@@ -179,12 +179,12 @@ WHERE role = 'admin';
 The live schema in `database/schema.sql` implements the plan in [`docs/database-design.md`](database-design.md):
 
 | Design artefact | Implemented as |
-| --------------- | -------------- |
+| --- | --- |
 | 21-table inventory | `CREATE TABLE` for each named entity |
 | ER relationships | Foreign keys with documented `ON DELETE` / `ON UPDATE` behaviour |
-| Catalogue ≥ 20 × ≥ 2 options | Seeds 2.2–2.3 + verification queries above |
-| Builder + 7 compatibility rules | Seeds 2.4–2.5 |
-| Themes + active setting | Seed 2.6 |
+| Catalogue ≥ 20 × ≥ 2 options | Product + option seed files + verification queries above |
+| Builder + 7 compatibility rules | Component + compatibility seed files |
+| Themes + active setting | Theme seed file |
 | Password hashing only | `users.password_hash`; admin created via `create-admin.php` |
 | No payment secrets | `orders.payment_method` is a label column only |
 
@@ -233,7 +233,7 @@ To wipe catalogue/builder/theme seed data and reload from the repo seeds, re-run
 ## 7. Troubleshooting
 
 | Symptom | Likely cause | Fix |
-| ------- | ------------ | --- |
+| --- | --- | --- |
 | `Access denied` on mysql | Wrong user/password or missing grants | Check credentials; grant privileges on the database |
 | Foreign key errors on seed | Schema not imported first, or wrong order | Re-run `schema.sql`, then seeds in order |
 | `create-admin.php` fails on config | Missing `config/database.php` | Copy from `database.example.php` |

@@ -1,8 +1,8 @@
 # =============================================================================
-# CustomCore — robots.txt (Commit 14.2)
+# CustomCore — robots.txt
 #
 # Tells crawlers which public pages may be indexed and which must be avoided.
-# Reinforces the HTML <meta name="robots"> noindex policy from Commit 14.1 and
+# Reinforces the HTML <meta name="robots"> noindex policy in page headers and
 # the public-only sitemap built by includes/seo.php / sitemap.php.
 #
 # IMPORTANT (subfolder deploys such as /~yourid/customcore/):

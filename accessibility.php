@@ -61,8 +61,8 @@ require_once __DIR__ . '/includes/header.php';
     <section class="accessibility-block" aria-labelledby="a11y-multimedia">
         <h2 id="a11y-multimedia">Text alternatives for every multimedia feature</h2>
         <p>
-            Stage&nbsp;8 added images, video, audio, a data chart, and an interactive map. Each one
-            ships with a fallback so the same information is available as text:
+            Images, video, audio, a data chart, and an interactive map each ship with a fallback
+            so the same information is available as text:
         </p>
 
         <!-- Per-medium fallback list with links to the real pages -->

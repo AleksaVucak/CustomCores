@@ -1,15 +1,14 @@
-# CustomCore | Production Customer Workflow Verification (16.6)
-
-**Document type:** Stage 16 production test record  
-**Host:** [https://vucaka.myweb.cs.uwindsor.ca/customcore/](https://vucaka.myweb.cs.uwindsor.ca/customcore/)  
-**Date:** 4 August 2026  
-**Purpose:** Prove core customer journeys work on the live myweb deploy (not only local PHP).  
+# CustomCore | Production Customer Workflow Verification
+**Document type:** production test record 
+**Host:** [https://vucaka.myweb.cs.uwindsor.ca/customcore/](https://vucaka.myweb.cs.uwindsor.ca/customcore/) 
+**Date:** 4 August 2026 
+**Purpose:** Prove core customer journeys work on the live myweb deploy (not only local PHP). 
 **Related:** local record [`customer-workflows.md`](customer-workflows.md); production URL in project README.
 
 ### Status legend
 
 | Status | Meaning |
-| ------ | ------- |
+| --- | --- |
 | **Pass** | Action completed on the public host with the expected result |
 | **Partial** | Page loaded / partial flow proved; full multi-step path not re-run live |
 | **Fail** | Unexpected error or broken path |
@@ -19,7 +18,7 @@
 ## 1. Environment
 
 | Item | Value |
-| ---- | ----- |
+| --- | --- |
 | Public base | `https://vucaka.myweb.cs.uwindsor.ca/customcore/` |
 | PHP (from monitoring) | 8.3.30 |
 | MySQL | Host database `vucaka_customcore` (via live `config/database.php`) |
@@ -29,7 +28,7 @@
 ### Test customer (created on host)
 
 | Field | Value |
-| ----- | ----- |
+| --- | --- |
 | Email | `live166.aug4@example.test` |
 | Name | Live Tester |
 | Role | customer |
@@ -40,10 +39,10 @@ Passwords are not recorded in documentation.
 
 ## 2. Results summary
 
-**Core live customer path: Pass.** Registration through simulated checkout produced order `CC-20260804-0974C1`. Wishlist, consultation, profile, media, locations, and builder first step also passed. Full multi-category builder save and cart-of-saved-build were not re-executed on production during this run (covered thoroughlly on local 15.6).
+**Core live customer path: Pass.** Registration through simulated checkout produced order `CC-20260804-0974C1`. Wishlist, consultation, profile, media, locations, and builder first step also passed. Full multi-category builder save and cart-of-saved-build were not re-executed on production during this run (covered thoroughly in local customer workflow tests).
 
 | Group | Result |
-| ----- | ------ |
+| --- | --- |
 | Homepage + catalogue + product | Pass |
 | Register → login → session | Pass |
 | Cart (add product ×2, update qty) | Pass |
@@ -62,7 +61,7 @@ Passwords are not recorded in documentation.
 ## 3. Step evidence
 
 | ID | Action | Expect | Result |
-| -- | ------ | ------ | ------ |
+| --- | --- | --- | --- |
 | C1 | Open homepage | Styled, featured products, 4 tiers | **Pass** — 8 featured systems + tiers |
 | C2 | Catalogue | 20 systems, filters | **Pass** |
 | C3 | Product `product.php?id=2` (CoreStart Plus) | Options, stock | **Pass** |
@@ -83,15 +82,15 @@ Passwords are not recorded in documentation.
 
 ---
 
-## 4. Data left on host after 16.6
+## 4. Data left on host after
 
 For grader transparency (ignore as demo traffic):
 
 - Customer `live166.aug4@example.test`
-- Order `CC-20260804-0974C1` (later set to **processing** under 16.7)
+- Order `CC-20260804-0974C1` (later set to **processing** under)
 - Consultation #1
 - Wishlist entry for CoreStart Plus
-- One pending/approved review (moderation completed in 16.7)
+- One pending/approved review (moderation completed in)
 
 No production defects were found that blocked the customer order path.
 
@@ -100,10 +99,10 @@ No production defects were found that blocked the customer order path.
 ## 5. Sign-off
 
 | Criterion | Result |
-| --------- | ------ |
+| --- | --- |
 | Public homepage + catalogue work live | **Yes** |
 | Register / login / cart / checkout / history | **Yes** |
 | Order number issued live | **Yes — CC-20260804-0974C1** |
 | Consultation + wishlist + profile | **Yes** |
 | Avoidable live defects found | **None** |
-| Recorded | **This document (16.6)** |
+| Recorded | **This document** |

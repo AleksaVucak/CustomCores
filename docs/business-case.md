@@ -2,7 +2,7 @@
 
 **Project name:** CustomCore
 **Document type:** Project documentation
-**Purpose:** Define the business idea, audience, problem, solution, and objectives that guide the website build. A condensed version of this business case will also appear on the public About page in a later stage so the grading rubric’s business-description requirement is visible on the live site.
+**Purpose:** Define the business idea, audience, problem, solution, and objectives that guide the website build. A condensed version also appears on the public About page so the grading rubric’s business-description requirement is visible on the live site.
 
 ---
 
@@ -17,7 +17,7 @@ CustomCore is an online gaming PC store and custom computer-building platform fo
 CustomCore serves people who are buying or configuring a gaming or creator PC and need clearer guidance than a raw parts list:
 
 | Audience | Why CustomCore helps |
-| -------- | -------------------- |
+| --- | --- |
 | Casual PC users | Plain-language product pages and prebuilt tiers reduce jargon |
 | Competitive gamers | Esports and high-performance systems with upgrade options |
 | University students | Budget and starter builds with transparent pricing |
@@ -81,13 +81,13 @@ Protected dashboard; product add/edit/disable, stock, price, and image managemen
 ## 7. Project objectives
 
 | Objective | Success measure |
-| --------- | --------------- |
+| --- | --- |
 | Satisfy the course rubric | Every graded requirement has planned evidence (About page, 20+ products with options, 3 themes + switching, dynamic forms, documented PHP/MySQL, comments, Help wiki, responsive menu, dynamic pages, CSS/JS/images/media, update instructions, live URL, advanced CSS, SEO) |
 | Remain hosting-compatible | Deployable on shared PHP/MySQL hosting with normal `.php` URLs and no heavy framework dependency |
 | Feel like one application | Shared layout, navigation, themes, and account flow across public, private, and admin areas |
 | Prefer clarity over complexity | Simplified compatibility rules that are reliable and explainable, not a full commercial parts engine |
 | Keep the repository safe | No real credentials, plain-text passwords, or private customer data in Git |
-| Deliver incrementally | One logical Git commit per roadmap step, with `main` as the working branch |
+| Deliver incrementally | Ship one logical Git change at a time, with `main` as the working branch |
 
 ---
 
@@ -103,7 +103,7 @@ Protected dashboard; product add/edit/disable, stock, price, and image managemen
 ## 9. Relationship to later documentation
 
 | Later document | How this business case feeds it |
-| -------------- | ------------------------------- |
+| --- | --- |
 | About page (`about.php`) | Full public business case derived from Sections 1–6 |
 | `docs/rubric-checklist.md` | Business-case row (#1) evidence points here and to About (checklist added during planning) |
 | `docs/sitemap.md` | Pages listed in Section 6 (sitemap added during planning) |

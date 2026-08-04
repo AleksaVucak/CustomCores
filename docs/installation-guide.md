@@ -12,7 +12,7 @@
 ## 1. Requirements
 
 | Component | Minimum | Notes |
-| --------- | ------- | ----- |
+| --- | --- | --- |
 | PHP | 8.0+ | Uses typed code, `str_contains`, `match`-era syntax; PDO + `finfo` extensions required. `declare(strict_types=1)` throughout. |
 | MySQL / MariaDB | InnoDB, `utf8mb4` | Foreign keys and `utf8mb4_unicode_ci` are used. |
 | Web server | Apache, Nginx, or PHP's built-in server | Plain `.php` URLs — **no URL rewriting required**. |

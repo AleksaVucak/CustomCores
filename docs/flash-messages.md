@@ -28,11 +28,11 @@ customcore_redirect('login.php');
 ## Files
 
 | File | Role |
-| ---- | ---- |
+| --- | --- |
 | `includes/flash.php` | Queue, peek, and render helpers |
 | `includes/functions.php` | `customcore_session_start`, `customcore_redirect` |
 | `includes/header.php` | Calls `customcore_flash_render` on every layout page |
-| `assets/css/main.css` | `.flash`, `.flash--success|warning|error`, `.flash-stack` |
+| `assets/css/main.css` | `.flash`, `.flash--success |
 
 ## Manual test
 

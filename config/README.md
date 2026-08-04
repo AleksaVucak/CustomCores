@@ -11,7 +11,7 @@ host capability list in
 ## Files
 
 | File | Tracked in Git? | Purpose |
-| ---- | --------------- | ------- |
+| --- | --- | --- |
 | `app.php` | Yes | Non-secret site settings (flags, paths, store details) |
 | `app.production.example.php` | Yes | Production-safe non-secret template to copy on the live host |
 | `database.example.php` | Yes | Template for database credentials (placeholders only) |
@@ -66,17 +66,17 @@ Confirm ignore rules:
 
 ```bash
 git check-ignore -v config/database.php
-git status   # database.php must not be listed
+git status # database.php must not be listed
 ```
 
 ## Verify configuration (prints no secrets)
 
 ```bash
-php database/verify-config.php              # local / general
+php database/verify-config.php # local / general
 php database/verify-config.php --production # live host readiness
 ```
 
-Expected ending line: `RESULT: PASS ...`
+Expected ending line: `RESULT: PASS...`
 
 ## Test the database connection
 
@@ -90,7 +90,7 @@ Expected success output includes `CustomCore database connection: OK` and does
 **not** print the password.
 
 The reusable helper used by the website is `includes/database.php`
-(`customcore_pdo()`).
+(`customcore_pdo`).
 
 ## Full database import
 
@@ -112,5 +112,5 @@ php database/create-admin.php
 ```
 
 The script prompts interactively for email, name, and password. The password is
-hashed with `password_hash()` (bcrypt) and stored securely. No plain-text
+hashed with `password_hash` (bcrypt) and stored securely. No plain-text
 password appears in Git or in seed files. Run this once per environment.

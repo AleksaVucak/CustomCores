@@ -7,7 +7,7 @@
  */
 // Administrator secondary navigation.
 // Renders the tool nav inside the admin area. Only tools whose PHP files already exist are linked;
-// later commits light up automatically when their pages are added.
+// missing tool pages are shown as unavailable until their files are present on disk.
 // Expects:
 //   $adminNavCurrent (string), key matching customcore_admin_tools() entries, or "dashboard" for
 //     admin/index.php.
@@ -45,7 +45,7 @@ $adminTools = customcore_admin_tools();
                 <?php else : ?>
                     <span
                         class="admin-nav__link admin-nav__link--soon"
-                        title="<?php echo customcore_e('Arrives in commit ' . $tool['commit']); ?>"
+                        title="Not available on this deployment"
                     ><?php echo customcore_e($tool['label']); ?></span>
                 <?php endif; ?>
             </li>

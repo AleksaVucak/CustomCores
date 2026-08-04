@@ -11,7 +11,7 @@
 ## 1. Before you start
 
 | You need | How to get it |
-| -------- | ------------- |
+| --- | --- |
 | An admin login | Ask an existing administrator to create one, or run `php database/create-admin.php` (one-time). |
 | A web browser | Any modern browser. |
 | (Media only) File access | The ability to copy a file into the `assets/media/` folder on the server (via your host's file manager, SFTP, or Git). |
@@ -145,7 +145,7 @@ The Learning Centre (`media.php`) plays short video/audio lessons. This is the *
 Put your files in these folders (create matching names):
 
 | File | Folder | Allowed types |
-| ---- | ------ | ------------- |
+| --- | --- | --- |
 | The video or audio | `assets/media/` | `.mp4`, `.webm`, `.ogg` (video); `.mp3`, `.wav`, `.m4a` (audio) |
 | A poster/thumbnail image | `assets/images/media/` | `.jpg`, `.png`, `.webp` |
 | A captions file (required for video, recommended for audio) | `assets/media/captions/` | `.vtt` |
@@ -205,7 +205,7 @@ If in doubt, make the change through the **admin website** first; it validates y
 ## 9. Quick reference
 
 | I want to… | Where | Code needed? |
-| ---------- | ----- | ------------ |
+| --- | --- | --- |
 | Add / edit a product | Admin → Products | No |
 | Change price or stock | Admin → Products → Edit | No |
 | Hide a product | Admin → Products (disable toggle) | No |

@@ -5,7 +5,7 @@
  * COMP 3340, Final Project
  * August 5th, 2026
  */
-// Active theme resolver, hardened in 10.5).
+// Active theme resolver with a defense-in-depth fallback chain.
 // Decides which theme stylesheet the shared header links. The active theme is stored in MySQL
 // (site_settings.active_theme_id → themes.css_file), with a defence-in-depth fallback chain so a
 // page is NEVER left unstyled and a bad value can never smuggle in a foreign file path.

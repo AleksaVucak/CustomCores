@@ -1,8 +1,8 @@
 # CustomCore | Application Directory Structure
 
 **Document type:** Project documentation
-**Purpose:** Record the repository folder layout so later commits place files in the correct locations.
-**Rule:** Do not add empty feature pages only to inflate page counts. Routes from `docs/sitemap.md` are implemented when their stage arrives.
+**Purpose:** Record the repository folder layout so new files land in the correct locations.
+**Rule:** Do not add empty feature pages only to inflate page counts. Routes from `docs/sitemap.md` map to real features, not empty stubs.
 
 ---
 
@@ -14,14 +14,14 @@ customcore/
 ├── api/ # Lightweight JSON/data endpoints
 ├── assets/
 │ ├── css/ # Base, admin, and print stylesheets
-│ ├── themes/ # Switchable site themes: rgb-gaming.css (10.1), minimal-pro.css (10.2), cyber-grid.css (10.3)
+│ ├── themes/ # Switchable site themes: rgb-gaming.css, minimal-pro.css, cyber-grid.css
 │ ├── js/ # External JavaScript
 │ ├── images/ # Copyright-safe images: products/, hero/, categories/, ui/, media/, og/, map/
 │ └── media/ # Video/audio learning items + captions/
 ├── config/ # App and database configuration
 ├── database/ # schema.sql, seeds, admin setup
 ├── docs/ # Planning and project documentation
-├── help/ # Static Help wiki (complete): hub + 6 guides; context links audited in 11.7
+├── help/ # Static Help wiki (complete): hub + 6 guides; context links in docs/help-context-links.md
 ├── includes/ # Shared PHP layout and helpers
 ├── uploads/
 │ ├── consultation/ # Safe consultation attachments
@@ -32,14 +32,14 @@ customcore/
 └──.gitignore
 ```
 
-Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added in their feature stages, not as empty stubs in.
+Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are real implementations, not empty stubs.
 
 ---
 
 ## 2. Directory responsibilities
 
 | Path | Responsibility |
-| ---- | -------------- |
+| --- | --- |
 | `admin/` | Protected admin UI (products, options, compatibility, orders, users, consultations, reviews, reports, themes, monitoring) |
 | `api/` | Builder price, compatibility check, and chart data JSON endpoints |
 | `assets/css/` | External CSS (`main.css` for the storefront, `admin.css` for the back office) |
@@ -49,7 +49,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `assets/media/` | ≥ 3 video/audio items + captions |
 | `config/` | `app.php` (non-secret settings), `app.production.example.php` (production flags template), `database.example.php` (credential template), gitignored `database.php` (real secrets) |
 | `database/` | Schema, seeds, create-admin script, connection test, `verify-config.php` hygiene checker |
-| `docs/` | Business case, rubric checklist, sitemap, wireframes, ER design, database import, media credits, image prompts, theme testing, Help context-link audit, production server requirements, production configuration (secrets and paths), installation / administrator / content / deployment guides, monitoring troubleshooting, security audit, repository cleanup (17.3), documentation finalization (17.4), and the QA records (HTML, CSS, JavaScript, desktop and mobile responsiveness, customer and administrator workflows, production customer/admin workflow records, rubric audit, final defect resolution) |
+| `docs/` | Business case, rubric checklist, sitemap, wireframes, ER design, database import, media credits, image prompts, theme testing, Help context-link audit, production server requirements, production configuration (secrets and paths), installation / administrator / content / deployment guides, monitoring troubleshooting, security audit, repository cleanup, documentation finalization, and the QA records (HTML, CSS, JavaScript, desktop and mobile responsiveness, customer and administrator workflows, production customer/admin workflow records, rubric audit, final defect resolution) |
 | `help/` | Static Help hub (`index.html`) plus topic articles (`pc-builder.html`, `accounts.html`, `catalogue.html`, `orders.html`, `support.html`, `training.html`) |
 | `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, theme, admin, admin-nav, admin-products, admin-product-form, admin-options, admin-compatibility, admin-orders, admin-users, admin-consultations, admin-reviews, admin-reports, admin-themes, compatibility, performance, monitoring, seo |
 | `uploads/consultation/` | Validated consultation files; `index.php` + `.htaccess` deny all direct web access (served only via download endpoints) |
@@ -62,7 +62,7 @@ Root feature pages include the public storefront, accounts, PC builder, privacy 
 ## 3. Git tracking notes
 
 | Path | Tracking rule |
-| ---- | ------------- |
+| --- | --- |
 | `uploads/consultation/*` | Ignored except `.gitkeep`, `index.php`, `.htaccess` |
 | `uploads/products/*` | Ignored except `.gitkeep`, `index.php`, `.htaccess` |
 | `config/database.php` | Ignored (secrets) |
@@ -73,7 +73,7 @@ Root feature pages include the public storefront, accounts, PC builder, privacy 
 
 ## 4. Alignment checks
 
-- [x] Folders match the architecture described in the project roadmap and `docs/sitemap.md`
+- [x] Folders match the architecture described in the project architecture and `docs/sitemap.md`
 - [x] Upload directories exist and are ready for ignored user content
 - [x] Asset, config, database, includes, admin, api, and help locations exist
 - [x] No fake catalogue/admin feature pages were added solely for page count

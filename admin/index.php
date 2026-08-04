@@ -359,7 +359,7 @@ require_once __DIR__ . '/../includes/header.php';
                             </a>
                         </p>
                     <?php else : ?>
-                        <p class="admin-tool__meta">Coming in commit <?php echo customcore_e($tool['commit']); ?></p>
+                        <p class="admin-tool__meta">Not available on this deployment</p>
                     <?php endif; ?>
                 </article>
             <?php endforeach; ?>

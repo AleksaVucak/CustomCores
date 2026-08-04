@@ -8,7 +8,7 @@
 ### Status legend
 
 | Status | Meaning |
-| ------ | ------- |
+| --- | --- |
 | **Pass** | Page loaded (HTTP &lt; 400 after redirects), no `pageerror` / uncaught exception, no application console **error**, required local scripts present when the page state loads them |
 | **Cond** | Feature script correctly **not** loaded for this page state (progressive enhancement / auth gates) — documented, not a defect |
 | **Fail** | Uncaught error, broken local asset, or avoidable app console error on a core feature |
@@ -17,10 +17,10 @@
 
 ## 1. Scope
 
-### 1.1 Project JavaScript modules (11)
+### 1.1 Project JavaScript modules
 
 | File | Role | Load condition |
-| ---- | ---- | -------------- |
+| --- | --- | --- |
 | `assets/js/main.js` | Shared utilities, nav toggle, post-fail focus | Every layout page (`includes/footer.php`) |
 | `assets/js/builder.js` | Live builder price + compatibility XHR | `$currentPage === 'builder'` |
 | `assets/js/charts.js` | Builder/results performance Chart.js | `$loadCharts` |
@@ -38,7 +38,7 @@ Third-party (CDN, progressive enhancement with text fallbacks): Chart.js 4.4.1, 
 ### 1.2 Browser surfaces exercised
 
 | Audience | Pages / interactions |
-| -------- | -------------------- |
+| --- | --- |
 | Public | Home, about, catalogue (chart), product (guest), search, compare, builder (radio select + live price/compat + chart), reviews list, contact (subject=Other + submit event), media, store locations (map), accessibility, login, register |
 | Help | `help/index.html` (filter “builder”), `help/pc-builder.html` |
 | Customer (signed-in) | Profile, edit-profile, **cart** (qty step), **checkout** (empty submit validation), wishlist, saved-builds, order-history, consultation, **reviews** form (submit validation), product |
@@ -64,11 +64,11 @@ CDN tile/resource noise (blocked OpenStreetMap tiles, optional offline CDN) is c
 ## 3. Results summary
 
 | Suite | Result |
-| ----- | ------ |
+| --- | --- |
 | `node --check` (11 modules) | **11 Pass · 0 Fail** |
 | Public console sweep (16 pages) | **16 Pass · 0 app uncaught · 0 page errors** |
 | Customer pages (auth) | **Pass** (profile suite + dedicated cart/checkout/reviews with feature scripts) |
-| Admin pages (6) | **6 Pass · 0 app uncaught** (`admin-reports.js` + Chart.js present on reports) |
+| Admin pages | **6 Pass · 0 app uncaught** (`admin-reports.js` + Chart.js present on reports) |
 | Application uncaught errors | **0** after fix in §5 |
 | Avoidable defect corrected | **1** (Leaflet CSS Subresource Integrity hash) |
 
@@ -81,7 +81,7 @@ CDN tile/resource noise (blocked OpenStreetMap tiles, optional offline CDN) is c
 ### 4.1 Public and Help
 
 | Page | Scripts observed | Interactions | Result |
-| ---- | ---------------- | ------------ | ------ |
+| --- | --- | --- | --- |
 | `index.php` | `main.js` | Nav toggle | Pass |
 | `about.php` | `main.js` | Load | Pass |
 | `catalogue.php` | `main.js`, Chart.js, `catalogue-chart.js` | Load | Pass |
@@ -101,7 +101,7 @@ CDN tile/resource noise (blocked OpenStreetMap tiles, optional offline CDN) is c
 ### 4.2 Signed-in customer (feature modules)
 
 | Page | Scripts observed | Interactions | Result |
-| ---- | ---------------- | ------------ | ------ |
+| --- | --- | --- | --- |
 | `profile.php`, `edit-profile.php` | `main.js` | Load | Pass |
 | `cart.php` (with line items) | `main.js`, `cart.js` | Qty +/− | Pass |
 | `checkout.php` (non-empty cart) | `main.js`, `checkout.js` | Empty-field submit | Pass — prevents submit, focuses first invalid |
@@ -112,7 +112,7 @@ CDN tile/resource noise (blocked OpenStreetMap tiles, optional offline CDN) is c
 ### 4.3 Administrator
 
 | Page | Scripts observed | Result |
-| ---- | ---------------- | ------ |
+| --- | --- | --- |
 | `admin/index.php`, `products.php`, `monitoring.php`, `compatibility.php`, `reviews.php` | `main.js` | Pass |
 | `admin/reports.php` | `main.js`, Chart.js, `admin-reports.js` | Pass |
 
@@ -122,8 +122,8 @@ CDN tile/resource noise (blocked OpenStreetMap tiles, optional offline CDN) is c
 
 ### 5.1 Leaflet CSS Subresource Integrity mismatch
 
-| | |
-| - | - |
+| --- | --- |
+| --- | --- |
 | **Symptom** | Console error on `store-locations.php`: *Failed to find a valid digest in the 'integrity' attribute for resource `leaflet.css`… The resource has been blocked.* |
 | **Cause** | `includes/header.php` shipped an incorrect `integrity` value for Leaflet 1.9.4 CSS (`sha256-p4NxAoJBhIINfQ3ynhTUQFgfPUV3ppxA4IuaMPnLDjM=`). The browser-computed digest for the CDN file is `sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=`. JS integrity already matched. |
 | **Impact** | Stylesheet blocked (map still initialised via JS; text address fallback usable). Avoidable application console error on a core locations feature. |
@@ -138,7 +138,7 @@ No other application JS bugs were found. Modules already handle missing CDN libr
 ## 6. Design notes (not defects)
 
 | Observation | Rationale |
-| ----------- | --------- |
+| --- | --- |
 | Feature scripts are conditional | Rubric progressive enhancement — do not ship cart/checkout/chart code on every page. |
 | `reviews.js` only with form | `$loadReviewForm` — login + eligibility; avoids console work on read-only review listing. |
 | Help articles omit hub filter JS | Filter DOM exists only on `help/index.html`. |
@@ -169,8 +169,8 @@ Optional automated sweep (not shipped): headless Chromium with console + `pageer
 ## 8. Sign-off
 
 | Criterion | Result |
-| --------- | ------ |
-| All project JS files syntax-valid | **Yes** (11/11) |
+| --- | --- |
+| All project JS files syntax-valid | **Yes** |
 | Core pages free of uncaught app JS errors | **Yes** |
 | Avoidable console defect corrected | **Yes** (Leaflet CSS SRI) |
 | JS / console test results recorded | **This document** |

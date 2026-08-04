@@ -8,7 +8,7 @@
 // Consultation helper functions.
 // Shared logic for PC consultation requests: allowed status values and labels/classes, budget
 // option list, server-side validation of the request form, and insertion of a new request (status
-// = open). Attachments arrive in
+// = open). Attachments are validated and stored under uploads/consultation/ when provided.
 // Access: Creation expects a logged-in user (consultation_requests.user_id FK). Callers must
 // enforce login before customcore_consultation_create().
 

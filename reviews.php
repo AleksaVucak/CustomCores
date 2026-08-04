@@ -5,7 +5,7 @@
  * COMP 3340, Final Project
  * August 5th, 2026
  */
-// Product Reviews listing + submission+ 7.2).
+// Product Reviews listing + submission.
 // Public listing of approved product reviews (optional ?product_id=N filter). Logged-in customers
 // can submit a new review (rating, title, body) which is stored with status = pending until an
 // administrator moderates it. Pending and hidden reviews never appear in the public list.

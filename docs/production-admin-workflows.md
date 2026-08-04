@@ -1,15 +1,14 @@
-# CustomCore | Production Administrator Workflow Verification (16.7)
-
-**Document type:** Stage 16 production test record  
-**Host:** [https://vucaka.myweb.cs.uwindsor.ca/customcore/](https://vucaka.myweb.cs.uwindsor.ca/customcore/)  
-**Date:** 4 August 2026  
-**Purpose:** Prove administrator tools work on the live myweb deploy against real host data created in 16.6.  
+# CustomCore | Production Administrator Workflow Verification
+**Document type:** production test record 
+**Host:** [https://vucaka.myweb.cs.uwindsor.ca/customcore/](https://vucaka.myweb.cs.uwindsor.ca/customcore/) 
+**Date:** 4 August 2026 
+**Purpose:** Prove administrator tools work on the live myweb deploy against real host data from the production customer workflow run. 
 **Related:** local record [`admin-workflows.md`](admin-workflows.md); production customer record [`production-customer-workflows.md`](production-customer-workflows.md).
 
 ### Status legend
 
 | Status | Meaning |
-| ------ | ------- |
+| --- | --- |
 | **Pass** | Live admin action completed correctly |
 | **Fail** | Unexpected error or broken path |
 
@@ -18,7 +17,7 @@
 ## 1. Environment
 
 | Item | Value |
-| ---- | ----- |
+| --- | --- |
 | Public base | `https://vucaka.myweb.cs.uwindsor.ca/customcore/` |
 | Admin account | `admin@customcore.local` (role **admin**, password not stored in docs) |
 | Host PHP | 8.3.30 (Service Monitoring) |
@@ -31,7 +30,7 @@
 **Core live administrator path: Pass.** Dashboard reflected new host activity; order status and notes, consultation response, review moderation, and all major admin pages loaded. Monitoring reported **7 online / 0 warning / 0 offline**, MySQL connected, uploads writable.
 
 | Group | Result |
-| ----- | ------ |
+| --- | --- |
 | Admin login + Admin nav | Pass |
 | Dashboard KPIs against live DB | Pass |
 | Order status + notes | Pass |
@@ -47,7 +46,7 @@
 ## 3. Step evidence
 
 | ID | Action | Expect | Result |
-| -- | ------ | ------ | ------ |
+| --- | --- | --- | --- |
 | A1 | Log in as admin | Welcome, role admin | **Pass** — “Welcome back, Aleksa”, Role: admin |
 | A2 | Open `/admin/` | Counts from MySQL | **Pass** — 20 products, 1 order in progress, 5 users (4 customers + 1 admin), 1 pending review, 1 open consultation |
 | A3 | Order `CC-20260804-0974C1` detail | Customer + line options | **Pass** |
@@ -68,7 +67,7 @@
 ## 4. Monitoring snapshot (live)
 
 | Check area | Observation |
-| ---------- | ----------- |
+| --- | --- |
 | Overall | All monitored services are online |
 | PHP | 8.3.30; PDO MySQL, fileinfo, session loaded |
 | Database | Connected and responding |
@@ -79,11 +78,11 @@
 
 ---
 
-## 5. Host data after 16.6 + 16.7 (ignore as demo)
+## 5. Host data after (ignore as demo)
 
 | Artefact | Notes |
-| -------- | ----- |
-| Customer `live166.aug4@example.test` | Created during 16.6 |
+| --- | --- |
+| Customer `live166.aug4@example.test` | Created during |
 | Order `CC-20260804-0974C1` | Status **processing**; admin notes set |
 | Consultation #1 | **Answered** with admin response |
 | Review queue | Live pending review moderated (approved) |
@@ -96,10 +95,10 @@ Optional cleanup: disable the test customer or leave as demo — not required fo
 ## 6. Sign-off
 
 | Criterion | Result |
-| --------- | ------ |
+| --- | --- |
 | Admin can log in and open dashboard on host | **Yes** |
 | Order management works live | **Yes** |
 | Consultation + review tools work live | **Yes** |
 | Reports + monitoring work live | **Yes** (monitoring fully online) |
 | Avoidable live admin defects found | **None** |
-| Recorded | **This document (16.7)** |
+| Recorded | **This document** |

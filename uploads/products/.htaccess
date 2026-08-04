@@ -1,4 +1,4 @@
-# CustomCore — product image storage hardening (Commit 14.10).
+# CustomCore — product image storage hardening.
 #
 # Product images in this directory are served directly (e.g. <img src>), but
 # the directory must NEVER execute code. Uploads are already restricted to

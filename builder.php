@@ -23,7 +23,7 @@
 //   $_SESSION['_cc_build'], array keyed by category ID → component ID.
 // Live pricing: Each radio carries data-price / data-name. assets/js/builder.js recalculates the
 // this-step subtotal and running total immediately on selection change. Server-trusted totals
-// arrive in.
+// come from api/builder-price.php.
 // Compatibility checking: The form includes data-compat-api pointing to api/compatibility-
 // check.php. builder.js calls it on each change and renders a badge + per-rule results in the
 // #builder-compat-status container.

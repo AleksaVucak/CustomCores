@@ -9,14 +9,14 @@
 
 ## 1. Scope & result
 
-This audit covers four acceptance criteria across three commits:
+This audit covers four acceptance criteria:
 
-1. **Prepared statements** (14.8) — no raw user input is concatenated into SQL.
-2. **Output escaping** (14.8) — every dynamic value written to the page is escaped.
-3. **CSRF protection** (14.9) — every state-changing request requires a valid token; missing/invalid tokens are rejected.
-4. **File upload security** (14.10) — uploads validate type/MIME/size/name/storage; invalid and dangerous files are rejected.
+1. **Prepared statements** — no raw user input is concatenated into SQL.
+2. **Output escaping** — every dynamic value written to the page is escaped.
+3. **CSRF protection** — every state-changing request requires a valid token; missing/invalid tokens are rejected.
+4. **File upload security** — uploads validate type/MIME/size/name/storage; invalid and dangerous files are rejected.
 
-**Result: PASS.** Across the whole application (282 PHP functions, 41 view templates, 11 JavaScript modules) the audit found **zero SQL-injection and zero XSS vulnerabilities**, one CSRF gap (logout via GET) **fixed** in 14.9 (see §5.3), and robust upload validation to which one storage-execution hardening was **added** in 14.10 (see §6.4). Defense-in-depth patterns (integer clamping, identifier whitelists, open-redirect guards, client-side escaping, content-based upload detection) are in place.
+**Result: PASS.** Across the whole application (282 PHP functions, 41 view templates, 11 JavaScript modules) the audit found **zero SQL-injection and zero XSS vulnerabilities**, one CSRF gap (logout via GET) **fixed** (see §5.3), and robust upload validation to which one storage-execution hardening was **added** (see §6.4). Defense-in-depth patterns (integer clamping, identifier whitelists, open-redirect guards, client-side escaping, content-based upload detection) are in place.
 
 ---
 
@@ -61,7 +61,7 @@ All value-carrying queries bind parameters. Examples: authentication (`login.php
 ### 3.4 Dynamic SQL — why each pattern is safe
 
 | Pattern | Where | Why it is safe |
-|--------|-------|----------------|
+| --- | --- | --- |
 | Dynamic `WHERE` building | `includes/admin-products.php`, `includes/admin-users.php`, `includes/admin-orders.php`, `includes/admin-reviews.php`, `includes/admin-compatibility.php`, `order-history.php`, `reviews.php` | Only **fixed clause literals** are appended (e.g. `' AND o.status =:status'`); user values are always **bound** (`LIKE:s_name` with `$like = '%'.$search.'%'`). |
 | `IN (...)` lists | `compare.php`, `builder-results.php`, `includes/performance.php`, `includes/compatibility.php`, `api/builder-price.php` | Placeholders are generated (`implode(',', array_fill(0, count($ids), '?'))` or `:id0..:idN`) and the **IDs are bound**, never inlined. |
 | `LIMIT` / `OFFSET` | `includes/admin-users.php`, `includes/admin-orders.php`, `includes/admin-reviews.php`, `includes/admin-consultations.php` | `$perPage` is `int`-typed and clamped `max(5, min(100, …))`; `$offset = ($page-1)*$perPage` with `$page` clamped to `[1, $pages]`. Both are guaranteed integers (PDO cannot bind `LIMIT` under emulated prepares, so integer casting is the correct approach). |
@@ -129,7 +129,7 @@ All dynamic output is escaped on the server and on the client. **Acceptance met:
 
 `includes/csrf.php` provides three helpers:
 
-- `customcore_csrf_token` — 32 random bytes (`random_bytes(32)`, hex) stored in the session.
+- `customcore_csrf_token` — 32 random bytes (`random_bytes`, hex) stored in the session.
 - `customcore_csrf_field` — renders `<input type="hidden" name="_csrf" value="…">` (escaped).
 - `customcore_csrf_verify(?string $token)` — compares with `hash_equals` (timing-safe); returns `false` for a missing, empty, or non-matching token.
 
@@ -150,7 +150,7 @@ All dynamic output is escaped on the server and on the client. **Acceptance met:
 Verified truth table (exact conditions used by `logout.php`):
 
 | Request | Result |
-|--------|--------|
+| --- | --- |
 | GET + valid token | redirect, **no logout** |
 | POST + no token | redirect, **no logout** |
 | POST + wrong token | redirect, **no logout** |
@@ -167,15 +167,15 @@ Also confirmed over HTTP: `GET /logout.php` and a token-less `POST /logout.php` 
 ### 6.1 Surfaces
 
 | Surface | Who | Handler | Storage |
-|---------|-----|---------|---------|
+| --- | --- | --- | --- |
 | Product images | Admin | `includes/admin-products.php` (`…_validate_image`, `…_store_image`) | `uploads/products/` |
 | Consultation attachments | Customer | `includes/consultations.php` (`…_validate_files`, `…_store_files`) | `uploads/consultation/` |
 
 ### 6.2 Checks confirmed
 
 - **Type / MIME (content-based, never trusted from the client)** — the real MIME is detected with `finfo` (`FILEINFO_MIME_TYPE`) and matched against an allowlist; the stored **extension is derived from the detected MIME**, not from the uploaded filename. Product images allow `jpg/png/webp/gif`; consultation allows `pdf/txt/png/jpg/webp`. **SVG is deliberately excluded** (it can carry script). If `finfo` is unavailable the upload **fails closed**.
-- **Size** — empty files rejected; each file capped at `upload_max_bytes` (2 MB, `config/app.php`); PHP `UPLOAD_ERR_INI_SIZE`/`FORM_SIZE` handled. Consultation additionally caps the count at `CUSTOMCORE_CONSULTATION_MAX_FILES` (5).
-- **Name** — the on-disk name is always `bin2hex(random_bytes(16))` + the trusted extension, so no user input reaches the filesystem path (no traversal, no double extension, no collisions). The original name is sanitized (`basename`, control chars stripped, length-clamped) and kept **for display only**.
+- **Size** — empty files rejected; each file capped at `upload_max_bytes` (2 MB, `config/app.php`); PHP `UPLOAD_ERR_INI_SIZE`/`FORM_SIZE` handled. Consultation additionally caps the count at `CUSTOMCORE_CONSULTATION_MAX_FILES`.
+- **Name** — the on-disk name is always `bin2hex(random_bytes)` + the trusted extension, so no user input reaches the filesystem path (no traversal, no double extension, no collisions). The original name is sanitized (`basename`, control chars stripped, length-clamped) and kept **for display only**.
 - **Storage** — `is_uploaded_file` + `move_uploaded_file`, `chmod 0644`, dir created `0755`; consultation storage runs inside the request transaction and cleans up moved files on rollback. Deletion is whitelisted by regex to `uploads/products/…` and refuses `..`.
 - **Serving** — attachments are streamed only through `consultation-attachment.php` / `admin/consultation-attachment.php`: login/ownership (or admin) enforced, generic 404 (no enumeration), `id` validated with `ctype_digit`, the on-disk path is `basename`-guarded **and** confirmed inside the upload dir via `realpath`, and the response uses `Content-Disposition: attachment`, `X-Content-Type-Options: nosniff`, an RFC 5987 filename, and `Cache-Control: private, no-store` with the output buffer flushed before `readfile`.
 
@@ -184,7 +184,7 @@ Also confirmed over HTTP: `GET /logout.php` and a token-less `POST /logout.php` 
 Running the app's exact `finfo` + allowlist logic against sample files:
 
 | File | Detected MIME | Product | Consultation |
-|------|---------------|---------|--------------|
+| --- | --- | --- | --- |
 | `shell.php` (webshell) | `text/x-php` | reject | reject |
 | `evil.jpg` (PHP renamed `.jpg`) | `text/x-php` | reject | reject |
 | `evil.svg` (`<script>`) | `image/svg+xml` | reject | reject |
@@ -254,11 +254,11 @@ ls -la uploads/products/.htaccess uploads/consultation/.htaccess # storage harde
 ## 9. Sign-off
 
 | Criterion | Result |
-|-----------|--------|
-| No user input concatenated into SQL (14.8) | **PASS** |
-| All output escaped, server + client (14.8) | **PASS** |
-| CSRF token on every state-changing request; invalid rejected (14.9) | **PASS** |
-| Uploads validate type/MIME/size/name/storage; dangerous files rejected (14.10) | **PASS** |
-| Source changes required | 14.8: none · 14.9: logout hardened to token-verified POST · 14.10: added upload-dir `.htaccess` execution guards |
+| --- | --- |
+| No user input concatenated into SQL | **PASS** |
+| All output escaped, server + client | **PASS** |
+| CSRF token on every state-changing request; invalid rejected | **PASS** |
+| Uploads validate type/MIME/size/name/storage; dangerous files rejected | **PASS** |
+| Source changes required | SQL/escape: none · CSRF: logout hardened to token-verified POST · uploads: added upload-dir `.htaccess` execution guards |
 
-Audited across the security pass.8, 14.9 & 14.10. Findings are current as of the security pass; re-run Sections 8 after adding new queries, output sites, POST endpoints, or upload handlers.
+Findings are current as of the security pass; re-run Sections 3–8 after adding new queries, output sites, POST endpoints, or upload handlers.

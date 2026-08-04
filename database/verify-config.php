@@ -298,7 +298,7 @@ if (!is_readable($dbPath)) {
 }
 
 // ---------------------------------------------------------------------------
-// 5. Working-tree hygiene (Stage 17.3) — no temp junk or credentials tracked
+// 5. Working-tree hygiene — no temp junk or credentials tracked
 // ---------------------------------------------------------------------------
 
 /**

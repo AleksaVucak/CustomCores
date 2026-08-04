@@ -3,7 +3,7 @@
 **Document type:** Project documentation
 **Purpose:** Define normalized MySQL tables and relationships before writing `database/schema.sql`.
 **Acceptance:** All major feature relationships are represented.
-**Engine (planned):** MySQL / InnoDB, `utf8mb4`
+**Engine:** MySQL / InnoDB, `utf8mb4`
 **Access layer:** PHP PDO with prepared statements only (`includes/database.php` → `customcore_pdo`)
 
 This document is the design contract. Executable SQL and seeds live in `database/`. Import, verification, and backup steps are documented in [`docs/database-import.md`](database-import.md).
@@ -13,7 +13,7 @@ This document is the design contract. Executable SQL and seeds live in `database
 ## 1. Design goals
 
 | Goal | Approach |
-| ---- | -------- |
+| --- | --- |
 | ≥ 20 catalogue products with ≥ 2 options each | `products` + `product_options` |
 | Custom PC builder | `component_categories` + `components` + `compatibility_rules` |
 | Accounts and roles | `users` (`customer` / `admin`, `is_active`) |
@@ -66,7 +66,7 @@ erDiagram
 ### Relationship notes (cardinality)
 
 | Parent | Child | Rule |
-| ------ | ----- | ---- |
+| --- | --- | --- |
 | `categories` | `products` | One category has many products; each product belongs to one category |
 | `products` | `product_options` | One product has many options; each option belongs to one product (**≥ 2 options per product**) |
 | `users` | `saved_builds` | One user has many builds; build ownership enforced in queries |
@@ -93,16 +93,16 @@ Unless noted, every table includes `id` (PK, UNSIGNED INT AUTO_INCREMENT) and us
 ### 3.1 Identity and access
 
 #### `users`
-| Column | Type (planned) | Notes |
-| ------ | -------------- | ----- |
+| Column | Type | Notes |
+| --- | --- | --- |
 | `id` | PK | |
-| `email` | VARCHAR(255) UNIQUE | Login identity |
-| `password_hash` | VARCHAR(255) | `password_hash` / `password_verify` only |
+| `email` | VARCHAR UNIQUE | Login identity |
+| `password_hash` | VARCHAR | `password_hash` / `password_verify` only |
 | `first_name`, `last_name` | VARCHAR | Profile |
-| `phone` | VARCHAR(30) NULL | |
+| `phone` | VARCHAR NULL | |
 | `address_line1`, `address_line2`, `city`, `province`, `postal_code` | VARCHAR | Shipping/profile |
 | `role` | ENUM(`customer`,`admin`) | Authorization |
-| `is_active` | TINYINT(1) | Admin can disable; disabled users cannot log in |
+| `is_active` | TINYINT | Admin can disable; disabled users cannot log in |
 | `created_at`, `updated_at` | DATETIME | |
 
 **Indexes:** unique `email`; index on `role`, `is_active`.
@@ -113,7 +113,7 @@ Unless noted, every table includes `id` (PK, UNSIGNED INT AUTO_INCREMENT) and us
 
 #### `categories`
 | Column | Notes |
-| ------ | ----- |
+| --- | --- |
 | `id` PK | |
 | `name` | e.g. Budget, Esports, High-Performance, Creator |
 | `slug` UNIQUE | URL/filter key |
@@ -123,13 +123,13 @@ Unless noted, every table includes `id` (PK, UNSIGNED INT AUTO_INCREMENT) and us
 
 #### `products`
 | Column | Notes |
-| ------ | ----- |
+| --- | --- |
 | `id` PK | |
 | `category_id` FK → `categories.id` | Tier |
 | `name`, `slug` UNIQUE | |
 | `brand` | Filter/search |
 | `short_description`, `description` | |
-| `base_price` DECIMAL(10,2) | Before options |
+| `base_price` DECIMAL | Before options |
 | `stock_quantity` INT | |
 | `image_path` | Under `assets/images/` or `uploads/products/` |
 | `is_featured` | Homepage |
@@ -141,12 +141,12 @@ Unless noted, every table includes `id` (PK, UNSIGNED INT AUTO_INCREMENT) and us
 
 #### `product_options`
 | Column | Notes |
-| ------ | ----- |
+| --- | --- |
 | `id` PK | |
 | `product_id` FK → `products.id` | ON DELETE CASCADE |
 | `option_group` | e.g. RAM, Storage, Colour, Warranty, OS, Cooling, GPU |
 | `option_label` | e.g. `32 GB` |
-| `price_delta` DECIMAL(10,2) | Added to base price |
+| `price_delta` DECIMAL | Added to base price |
 | `is_default` | Default selection |
 | `is_active` | |
 | `sort_order` | |
@@ -160,7 +160,7 @@ Unless noted, every table includes `id` (PK, UNSIGNED INT AUTO_INCREMENT) and us
 
 #### `component_categories`
 | Column | Notes |
-| ------ | ----- |
+| --- | --- |
 | `id` PK | |
 | `name`, `slug` UNIQUE | CPU, Motherboard, GPU, RAM, Storage, PSU, Case, Cooling, OS, Service |
 | `sort_order` | Builder step order |
@@ -168,11 +168,11 @@ Unless noted, every table includes `id` (PK, UNSIGNED INT AUTO_INCREMENT) and us
 
 #### `components`
 | Column | Notes |
-| ------ | ----- |
+| --- | --- |
 | `id` PK | |
 | `component_category_id` FK | |
 | `name`, `brand` | |
-| `price` DECIMAL(10,2) | |
+| `price` DECIMAL | |
 | `wattage_estimate` INT NULL | For PSU checks |
 | `socket` VARCHAR NULL | CPU / motherboard |
 | `ram_type` VARCHAR NULL | e.g. DDR4/DDR5 |
@@ -191,7 +191,7 @@ Unless noted, every table includes `id` (PK, UNSIGNED INT AUTO_INCREMENT) and us
 Stores **simplified** rule metadata and/or attribute expectations used by PHP/JS checkers (not a full commercial parts graph).
 
 | Column | Notes |
-| ------ | ----- |
+| --- | --- |
 | `id` PK | |
 | `rule_code` UNIQUE | e.g. `socket_match`, `ram_type_match`, `case_motherboard`, `psu_wattage`, `gpu_clearance`, `cooler_fit`, `storage_interface` |
 | `name`, `description` | Human-readable explanation templates |
@@ -208,22 +208,22 @@ Actual pass/fail uses component attribute columns compared in application logic,
 
 #### `saved_builds`
 | Column | Notes |
-| ------ | ----- |
+| --- | --- |
 | `id` PK | |
 | `user_id` FK → `users.id` | Owner-only access |
 | `name` | |
-| `total_price` DECIMAL(10,2) | Server-calculated |
+| `total_price` DECIMAL | Server-calculated |
 | `compatibility_status` | `compatible` / `warning` / `incompatible` |
 | `notes` TEXT NULL | |
 | timestamps | |
 
 #### `saved_build_items`
 | Column | Notes |
-| ------ | ----- |
+| --- | --- |
 | `id` PK | |
 | `saved_build_id` FK | CASCADE |
 | `component_id` FK | |
-| `unit_price` DECIMAL(10,2) | Snapshot |
+| `unit_price` DECIMAL | Snapshot |
 | Unique (`saved_build_id`, `component_category` or `component_id`) as appropriate | One part per category preferred |
 
 ---
@@ -232,13 +232,13 @@ Actual pass/fail uses component attribute columns compared in application logic,
 
 #### `wishlists`
 | Column | Notes |
-| ------ | ----- |
+| --- | --- |
 | `id` PK | |
 | `user_id` FK UNIQUE | One wishlist per user |
 
 #### `wishlist_items`
 | Column | Notes |
-| ------ | ----- |
+| --- | --- |
 | `id` PK | |
 | `wishlist_id` FK | |
 | `product_id` FK | |
@@ -251,21 +251,21 @@ Actual pass/fail uses component attribute columns compared in application logic,
 
 #### `carts`
 | Column | Notes |
-| ------ | ----- |
+| --- | --- |
 | `id` PK | |
 | `user_id` FK UNIQUE | Persisted cart for account |
 | timestamps | |
 
 #### `cart_items`
 | Column | Notes |
-| ------ | ----- |
+| --- | --- |
 | `id` PK | |
 | `cart_id` FK | |
 | `item_type` | `product` or `saved_build` (extendable) |
 | `product_id` FK NULL | When prebuilt |
 | `saved_build_id` FK NULL | When custom build |
 | `quantity` INT | ≥ 1 |
-| `unit_price` DECIMAL(10,2) | Server-trusted |
+| `unit_price` DECIMAL | Server-trusted |
 | `options_json` TEXT NULL | Selected product option IDs/labels snapshot |
 | timestamps | |
 
@@ -275,12 +275,12 @@ Actual pass/fail uses component attribute columns compared in application logic,
 
 #### `orders`
 | Column | Notes |
-| ------ | ----- |
+| --- | --- |
 | `id` PK | |
 | `user_id` FK | |
 | `order_number` UNIQUE | Public confirmation code |
 | `status` | e.g. `pending`, `processing`, `ready`, `completed`, `cancelled` |
-| `subtotal`, `total` DECIMAL(10,2) | |
+| `subtotal`, `total` DECIMAL | |
 | Shipping/contact snapshot columns | Name, phone, address fields |
 | `payment_method` | **Label only** (e.g. `pay_on_pickup`) — never card numbers |
 | `admin_notes` TEXT NULL | |
@@ -288,7 +288,7 @@ Actual pass/fail uses component attribute columns compared in application logic,
 
 #### `order_items`
 | Column | Notes |
-| ------ | ----- |
+| --- | --- |
 | `id` PK | |
 | `order_id` FK | CASCADE |
 | `item_type` | `product` or `saved_build` |
@@ -304,7 +304,7 @@ Actual pass/fail uses component attribute columns compared in application logic,
 
 #### `reviews`
 | Column | Notes |
-| ------ | ----- |
+| --- | --- |
 | `id` PK | |
 | `product_id` FK | |
 | `user_id` FK | |
@@ -317,7 +317,7 @@ Public pages show **approved** only.
 
 #### `consultation_requests`
 | Column | Notes |
-| ------ | ----- |
+| --- | --- |
 | `id` PK | |
 | `user_id` FK | |
 | `budget`, `games`, `software`, `performance_goals` | Form fields |
@@ -329,7 +329,7 @@ Public pages show **approved** only.
 
 #### `consultation_attachments`
 | Column | Notes |
-| ------ | ----- |
+| --- | --- |
 | `id` PK | |
 | `consultation_request_id` FK | CASCADE |
 | `original_filename` | Display only |
@@ -339,7 +339,7 @@ Public pages show **approved** only.
 
 #### `contact_messages`
 | Column | Notes |
-| ------ | ----- |
+| --- | --- |
 | `id` PK | |
 | `user_id` FK NULL | Optional if logged in |
 | `name`, `email`, `subject`, `message` | |
@@ -352,7 +352,7 @@ Public pages show **approved** only.
 
 #### `themes`
 | Column | Notes |
-| ------ | ----- |
+| --- | --- |
 | `id` PK | |
 | `name` | RGB Gaming, Minimal Professional, Cyber Grid |
 | `slug` UNIQUE | |
@@ -362,7 +362,7 @@ Public pages show **approved** only.
 
 #### `site_settings`
 | Column | Notes |
-| ------ | ----- |
+| --- | --- |
 | `id` PK | |
 | `setting_key` UNIQUE | e.g. `active_theme_id` |
 | `setting_value` | String / id reference |
@@ -373,7 +373,7 @@ Public pages show **approved** only.
 ## 4. Feature → table mapping
 
 | Feature area | Tables |
-| ------------ | ------ |
+| --- | --- |
 | Catalogue / search / filters | `categories`, `products`, `product_options` |
 | Product reviews | `reviews`, `users`, `products` |
 | PC Builder + compatibility | `component_categories`, `components`, `compatibility_rules` |
@@ -433,7 +433,7 @@ Results: **compatible** / **warning** / **incompatible**, with explanations. Ser
 ## 7. Security and data rules
 
 | Rule | Design impact |
-| ---- | ------------- |
+| --- | --- |
 | Prepared statements only | No string-concatenated SQL in PHP |
 | Password hashing | Store only `password_hash` |
 | Owner checks | `user_id` on private rows; admins exempt where appropriate |
@@ -445,14 +445,14 @@ Results: **compatible** / **warning** / **incompatible**, with explanations. Ser
 
 ## 8. Deliverables (implementation status)
 
-| Commit | Deliverable | Status |
-| ------ | ----------- | ------ |
-| 2.1 | `database/schema.sql` implementing this plan | Done |
-| 2.2–2.3 | Product + option seeds (≥ 20 × ≥ 2 options) | Done |
-| 2.4–2.5 | Component + compatibility seeds | Done |
-| 2.6 | Theme + settings seeds | Done |
-| 2.7 | Secure admin creation script (hashed password, not plain text in Git) | Done |
-| 2.8 | Import guide (`docs/database-import.md`) + this doc aligned to live schema | Done |
+| Deliverable | Status |
+| --- | --- |
+| `database/schema.sql` implementing this plan | Done |
+| Product + option seeds (≥ 20 × ≥ 2 options) | Done |
+| Component + compatibility seeds | Done |
+| Theme + settings seeds | Done |
+| Secure admin creation script (hashed password, not plain text in Git) | Done |
+| Import guide (`docs/database-import.md`) + this doc aligned to live schema | Done |
 
 ---
 
@@ -479,7 +479,7 @@ The Mermaid diagram and table plan in this document match the 21 tables created 
 ## 9. Table inventory checklist
 
 | # | Table | In ER diagram | Feature covered |
-| - | ----- | ------------- | --------------- |
+| --- | --- | --- | --- |
 | 1 | `users` | Yes | Auth, profile, admin disable |
 | 2 | `categories` | Yes | Catalogue tiers |
 | 3 | `products` | Yes | 20+ prebuilts |

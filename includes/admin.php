@@ -43,17 +43,16 @@ function customcore_admin_tool_available(string $relativeHref): bool
 }
 
 /**
- * + administrator tools shown on the dashboard and in the admin nav.
+ * Administrator tools shown on the dashboard and in the admin nav.
  *
- * `available` is resolved at call time from the filesystem so later commits
- * automatically light up their nav links when the page file is added.
+ * `available` is resolved at call time from the filesystem so nav links
+ * only appear when the corresponding page file exists on disk.
  *
  * @return list<array{
  * key:string
  * label:string
  * href:string
  * description:string
- * commit:string
  * available:bool
  * }>
  */
@@ -65,70 +64,60 @@ function customcore_admin_tools(): array
             'label' => 'Products',
             'href' => 'admin/products.php',
             'description' => 'Add, edit, stock, price, images, and disable catalogue systems.',
-            'commit' => '9.2',
         ],
         [
             'key' => 'options',
             'label' => 'Product options',
             'href' => 'admin/product-options.php',
             'description' => 'Manage configurable options and price adjustments per product.',
-            'commit' => '9.3',
         ],
         [
             'key' => 'compatibility',
             'label' => 'Compatibility',
             'href' => 'admin/compatibility.php',
             'description' => 'Edit simplified compatibility metadata used by the PC Builder.',
-            'commit' => '9.4',
         ],
         [
             'key' => 'orders',
             'label' => 'Orders',
             'href' => 'admin/orders.php',
             'description' => 'Search orders, update status, and add administrator notes.',
-            'commit' => '9.5',
         ],
         [
             'key' => 'users',
             'label' => 'Users',
             'href' => 'admin/users.php',
             'description' => 'Search accounts and disable or re-enable customer logins.',
-            'commit' => '9.6',
         ],
         [
             'key' => 'consultations',
             'label' => 'Consultations',
             'href' => 'admin/consultations.php',
             'description' => 'Review PC advice requests, respond, and manage status.',
-            'commit' => '9.7',
         ],
         [
             'key' => 'reviews',
             'label' => 'Reviews',
             'href' => 'admin/reviews.php',
             'description' => 'Approve, hide, or delete product reviews awaiting moderation.',
-            'commit' => '9.8',
         ],
         [
             'key' => 'reports',
             'label' => 'Reports',
             'href' => 'admin/reports.php',
             'description' => 'Charts for orders, catalogue inventory, and user activity.',
-            'commit' => '9.9',
         ],
         [
             'key' => 'themes',
             'label' => 'Themes',
             'href' => 'admin/themes.php',
             'description' => 'Choose the active site-wide CSS theme.',
-            'commit' => '10.4',
         ],
         [
             'key' => 'monitoring',
             'label' => 'Monitoring',
             'href' => 'admin/monitoring.php',
             'description' => 'Service health checks: online, warning, or offline.',
-            'commit' => '13.x',
         ],
     ];
 

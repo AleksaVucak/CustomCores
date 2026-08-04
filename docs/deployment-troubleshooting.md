@@ -138,7 +138,7 @@ CustomCore's session layer (`includes/functions.php`) automatically hardens cook
 ## 9. Troubleshooting reference
 
 | Symptom | Likely cause | Fix |
-| ------- | ------------ | --- |
+| --- | --- | --- |
 | Blank white page / HTTP 500 | PHP fatal with display off | Check the host's PHP error log; temporarily set `config/app.php → debug` to `true` **locally** to reproduce, never leave it on live. |
 | "Database configuration file is missing" | `config/database.php` not created on the server | `cp config/database.example.php config/database.php` and fill in host credentials. |
 | "The database is temporarily unavailable" | Wrong credentials/host, or MySQL down | Verify values in `config/database.php`; run `php database/test-connection.php`; confirm the DB exists and the user has grants. |

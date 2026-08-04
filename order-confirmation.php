@@ -5,7 +5,7 @@
  * COMP 3340, Final Project
  * August 5th, 2026
  */
-// Order Confirmation / Place Order+ 6.6).
+// Order Confirmation / Place Order.
 // Two modes: 1. Place, when $_SESSION['_cc_checkout'] exists, convert the cart into a permanent
 // order (orders + order_items), clear the cart, then redirect to this page with ?id= so the
 // confirmation is loaded from the database. 2. View, when ?id=N is provided, load that order

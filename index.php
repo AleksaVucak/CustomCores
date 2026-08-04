@@ -95,7 +95,7 @@ require_once __DIR__ . '/includes/header.php';
     <div class="flash flash--warning" role="status">
         <?php echo customcore_e($homeDataError); ?>
         <?php if (!customcore_is_debug()) : ?>
-            Check back soon, or browse the planned catalogue once the database is connected.
+            Check back soon, or browse the catalogue once the database is connected.
         <?php endif; ?>
     </div>
 <?php endif; ?>

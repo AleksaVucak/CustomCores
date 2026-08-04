@@ -1,16 +1,15 @@
-# CustomCore | Documentation Finalization (17.4)
-
-**Document type:** Stage 17.4 documentation finalize record  
-**Date:** 4 August 2026  
-**Purpose:** Ship a coherent final README and guide set where documentation links resolve, stale “planned” claims match the live product, and graders can find every major guide from the repository landing page.  
+# CustomCore | Documentation Finalization
+**Document type:** documentation finalize record 
+**Date:** 4 August 2026 
+**Purpose:** Ship a coherent final README and guide set where documentation links resolve, stale “planned” claims match the live product, and graders can find every major guide from the repository landing page. 
 **Related:** project [README](../README.md), [sitemap](sitemap.md), [directory structure](directory-structure.md), [administrator guide](administrator-guide.md).
 
 ---
 
-## 1. Goal (roadmap 17.4)
+## 1. Goal 
 
 | Deliverable | Meaning |
-| ----------- | ------- |
+| --- | --- |
 | Final README | Live URL, install path, demo walkthrough, accurate feature counts, complete Key Documentation index |
 | Guides finalized | Admin, install, production, monitoring, Help, and QA docs match what shipped |
 | All documentation links work | Relative markdown/Help targets exist on disk |
@@ -20,13 +19,13 @@
 ## 2. Actions completed
 
 | Action | Result |
-| ------ | ------ |
+| --- | --- |
 | Link audit of `README.md` + all `docs/*.md` + `config/README.md` | **0** broken relative markdown links |
 | Help wiki `href` audit | Repaired missing target by shipping public **`privacy.php`** (footer + Help already linked it) |
 | Admin guide | Removed “monitoring planned / tools coming” language; §13 documents live monitoring |
 | Rubric checklist Section B | Marked B1, B2, B3, B12, B13 complete (and B9/B10 aligned with monitoring docs) |
 | Page-count truthfulness | **51** purposeful dynamic PHP files (31 root + 17 admin + 3 API); sitemap / README / directory / rubric counts aligned; removed obsolete `api/product-search.php` claim |
-| SEO docs/inventory | `privacy.php` added to `customcore_seo_public_pages()` and static `sitemap.xml` snapshot regenerated |
+| SEO docs/inventory | `privacy.php` added to `customcore_seo_public_pages` and static `sitemap.xml` snapshot regenerated |
 | README Key Documentation | Expanded so install, architecture, media, Help map, production, cleanup, and this finalize record are one hop from the root |
 
 ---
@@ -57,7 +56,7 @@ php sitemap.php --write --base=https://vucaka.myweb.cs.uwindsor.ca/customcore
 ```
 
 | Check | Status |
-| ----- | ------ |
+| --- | --- |
 | Markdown relative links resolve | Pass |
 | Help → `../privacy.php` exists | Pass |
 | Admin guide documents monitoring | Pass |
@@ -66,12 +65,12 @@ php sitemap.php --write --base=https://vucaka.myweb.cs.uwindsor.ca/customcore
 
 ---
 
-## 5. Stage 17.4 acceptance
+## 5. Acceptance
 
 | Criterion | Status |
-| --------- | ------ |
+| --- | --- |
 | Final README and guides | Pass |
 | All documentation links work | Pass |
 | Docs match the shipped application | Pass |
 
-Phase **17.4** is complete. Next optional polish: Stage **17.5** submission audit checklist.
+Documentation finalization is complete.

@@ -9,7 +9,7 @@
 ## Help wiki inventory (7 static pages)
 
 | File | Topic |
-| ---- | ----- |
+| --- | --- |
 | `help/index.html` | Help centre hub (searchable cards) |
 | `help/accounts.html` | Registration, login, profile, password, sessions, disabled accounts |
 | `help/catalogue.html` | Browse, search, filters, product options, compare, wishlist, reviews |
@@ -23,7 +23,7 @@
 ## Context-link map (customer feature pages)
 
 | Feature page | Help target | Notes |
-| ------------ | ----------- | ----- |
+| --- | --- | --- |
 | `register.php` | `help/accounts.html#register` | |
 | `login.php` | `help/accounts.html#login` | |
 | `profile.php` | `help/accounts.html#profile` | |
@@ -57,7 +57,7 @@
 ## Intentionally left on the Help hub
 
 | Location | Why |
-| -------- | --- |
+| --- | --- |
 | `includes/navigation.php` | Site-wide “Help” menu item |
 | `includes/footer.php` | Site-wide footer Help link |
 | Homepage / About / Accessibility / Learning Centre | Entry points that should show **all** guides |
@@ -66,8 +66,7 @@ Administrator pages use their own `context-help` copy (admin tooling). They are 
 
 ---
 
-## Completion test (11.7)
-
+## Completion test
 1. Open each feature page in the map above.
 2. Follow its “Help:” / context-help link.
 3. Confirm the destination is the matching article (and section when an anchor is used), not only `help/index.html`.

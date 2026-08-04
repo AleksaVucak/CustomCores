@@ -8,7 +8,7 @@
 ### Status legend
 
 | Status | Meaning |
-| ------ | ------- |
+| --- | --- |
 | **Pass** | No horizontal document overflow (`documentElement.scrollWidth ≤ innerWidth`), no element spilling past the viewport outside an intended scroll wrapper, layout intact |
 | **Cond** | Content wider than the shell is contained in an **intended** horizontal scroll wrapper (e.g. wide admin data tables, comparison table, catalogue stats table) — documented, not a defect |
 | **Fail** | Unintended horizontal scrollbar, clipped/overlapping content, or broken grid on a core page |
@@ -30,7 +30,7 @@
 ### 1.2 Mobile widths exercised
 
 | Width | Role |
-| ----- | ---- |
+| --- | --- |
 | **320 × …** | Smallest supported phone (iPhone SE 1st-gen / small Android) — every page checked here (most stringent; activates all `max-width` mobile rules) |
 | **360 × …** | Very common Android width (Galaxy A/S class) |
 | **390 × …** | iPhone 12/13/14/15 class |
@@ -41,7 +41,7 @@
 ### 1.3 Surfaces exercised
 
 | Audience | Pages |
-| -------- | ----- |
+| --- | --- |
 | Public | Home, catalogue, product (guest + signed-in), builder, compare (4-way), about, store locations (Leaflet map), reviews, contact, search, login, register, media/learning centre, accessibility, `help/index.html` |
 | Customer | Profile, edit-profile, saved builds, saved build detail, wishlist, order history, order details, order confirmation, cart, checkout, consultation, consultation history |
 | Administrator | Dashboard, products, orders, order details, users, user edit, reviews, reports (Chart.js), monitoring, themes, compatibility, product add, product edit |
@@ -65,7 +65,7 @@
 **All core pages: Pass** at 320 / 360 / 390 / 414 / 700 / 768 px after the fixes in §5. No unintended horizontal scrollbars, clipped content, or broken grids remain. The only elements wider than the shell are the comparison table, the catalogue stats table, and the admin data tables, which scroll **inside their own cards** by design (`Cond`), never stretching the page.
 
 | Group | Pages checked | Pass | Cond (intended inner scroll) | Fail |
-| ----- | ------------- | ---- | ---------------------------- | ---- |
+| --- | --- | --- | --- | --- |
 | Public | 15 | 15 | comparison table, catalogue stats table (contained) | 0 |
 | Customer | 11 | 11 | — | 0 |
 | Administrator | 14 | 14 | wide admin tables (contained) | 0 |
@@ -79,7 +79,7 @@ Two apparent `documentElement.scrollWidth` excesses (profile and admin order-det
 ### 4.1 Public
 
 | Page | Result | Notes |
-| ---- | ------ | ----- |
+| --- | --- | --- |
 | `index.php` | Pass | hero + featured/tier grids collapse to one column |
 | `catalogue.php` | Pass / **Cond** | product grid → one card per row; stats **table** contained in new `.catalogue-chart__table-wrap` (`overflow-x:auto`); chart canvas fluid |
 | `product.php` (guest & signed-in) | Pass | header split stacks; options/review form fit |
@@ -98,7 +98,7 @@ Two apparent `documentElement.scrollWidth` excesses (profile and admin order-det
 ### 4.2 Customer (signed-in)
 
 | Page | Result | Notes |
-| ---- | ------ | ----- |
+| --- | --- | --- |
 | `profile.php` | Pass | account nav + dashboard cards stack; long **email** in details list now wraps (`overflow-wrap: anywhere`) |
 | `edit-profile.php` | Pass | details + change-password sections stack |
 | `saved-builds.php` / `saved-build.php` | Pass | list + build detail contained |
@@ -114,7 +114,7 @@ Two apparent `documentElement.scrollWidth` excesses (profile and admin order-det
 ### 4.3 Administrator
 
 | Page | Result | Notes |
-| ---- | ------ | ----- |
+| --- | --- | --- |
 | `admin/index.php` | Pass / **Cond** | sidebar collapses; activity grid single-column; four dashboard tables wrapped in `.admin-table-wrap`; long sub-text (emails) wraps |
 | `admin/products.php` | Pass / **Cond** | product table scrolls in-card |
 | `admin/orders.php` | Pass / **Cond** | filter row stacks; results table scrolls in-card |
@@ -136,7 +136,7 @@ Two apparent `documentElement.scrollWidth` excesses (profile and admin order-det
 Each defect below caused **unintended horizontal overflow at a mobile width** and was fixed at the CSS/markup level (no change to page logic). Root cause in every case was an element whose **intrinsic `min-content` width** (a chart canvas, a data table, or an unbreakable email string) exceeded the phone viewport, so the single-column grid stretched instead of shrinking.
 
 | # | Page(s) / width | Symptom | Fix |
-| - | --------------- | ------- | --- |
+| --- | --- | --- | --- |
 | 1 | `builder.php` @320 | Performance-chart `<canvas>` kept its 300 px intrinsic width and widened the layout | `assets/css/main.css`: `.perf-chart__canvas-wrap > canvas { width:100% !important; height:100% !important }` so the canvas is truly fluid |
 | 2 | `catalogue.php` @320 | Stats table (271 px `min-content`) overflowed | `catalogue.php`: wrapped the table in `.catalogue-chart__table-wrap`; `main.css`: `.catalogue-chart__table-wrap { overflow-x:auto }` and `.catalogue-chart { grid-template-columns: minmax(0,1fr) }` |
 | 3 | `cart.php` (account split) @390 | `.data-table` `min-width:36rem` stayed set in card-view, and the split grid’s bare `1fr` let it stretch | `main.css`: `.layout-split { grid-template-columns: minmax(0,1fr) }`; `.cart-table { min-width:0 }` inside `@media (max-width:640px)` |
@@ -184,11 +184,11 @@ Signed-in and admin pages require a logged-in customer / administrator account; 
 ## 8. Sign-off
 
 | Criterion | Result |
-| --------- | ------ |
+| --- | --- |
 | Core pages free of unintended horizontal overflow (320–768 px) | **Yes** |
 | Single-column collapse + fluid grids verified on phones | **Yes** |
 | Wide tables/charts contained in intended scroll wrappers or shrunk to fit | **Yes** |
 | Avoidable mobile layout defects corrected | **9 found, 9 fixed** |
 | Mobile responsiveness results recorded | **This document** |
 
-**Summary.** Desktop (15.4) and mobile (15.5) responsiveness are now both verified, satisfying rubric criterion **B15**.
+**Summary.** Desktop and mobile responsiveness are now both verified, satisfying rubric criterion **B15**.

@@ -268,8 +268,8 @@ function customcore_monitoring_check_database(): array
         );
     } catch (Throwable $exception) {
         // customcore_database_error_message() is already production-safe (generic
-        // when debug is off); wrap it in the 13.4 sanitizer so even the debug
-        // detail can never leak paths, credentials, or a stack trace.
+        // when debug is off); wrap it in the safe-message helper so even the
+        // debug detail can never leak paths, credentials, or a stack trace.
         $raw = function_exists('customcore_database_error_message')
             ? customcore_database_error_message($exception)
             : 'The database is temporarily unavailable.';

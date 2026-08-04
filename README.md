@@ -1,10 +1,6 @@
 # CustomCore
 
-**Aleksa Vucak | 110139920**
-**COMP 3340, Final Project**
-**August 5th, 2026**
-
-**Live URL:** [https://vucaka.myweb.cs.uwindsor.ca/customcore/](https://vucaka.myweb.cs.uwindsor.ca/customcore/)
+**Aleksa Vucak | 110139920COMP 3340, Final ProjectAugust 5th, 2026Live URL:** [https://vucaka.myweb.cs.uwindsor.ca/customcore/](https://vucaka.myweb.cs.uwindsor.ca/customcore/)
 
 Deployed under the university myweb host as a project subfolder (`public_html/customcore/`). Open the link above in a modern desktop or mobile browser. No VPN or special software is required.
 
@@ -26,7 +22,7 @@ Use this short path when presenting or grading the hosted instance.
 Demo customers from the review seed (password for all three is `DemoPass123!`):
 
 | Email | Name |
-| ----- | ---- |
+| --- | --- |
 | `alex@example.com` | Alex Nguyen |
 | `jordan@example.com` | Jordan Patel |
 | `sam@example.com` | Sam Okafor |
@@ -71,7 +67,7 @@ touches real card data.
 ## Requirements
 
 | Component | Minimum | Notes |
-| --------- | ------- | ----- |
+| --- | --- | --- |
 | PHP | 8.0 or newer | Uses `declare(strict_types=1)` throughout. The PDO and `finfo` extensions are required. |
 | MySQL or MariaDB | InnoDB with `utf8mb4` | Foreign keys and `utf8mb4_unicode_ci` are used. |
 | Web server | Apache, Nginx, or the PHP built in server | Plain `.php` URLs, so no rewrite rules are needed. |
@@ -164,20 +160,20 @@ promote others from `admin/users.php`.
 **Storefront**
 
 - Catalogue of 20 configurable prebuilt systems across four tiers, with filters, sorting, search, and
-  a side by side comparison view.
+ a side by side comparison view.
 - Product pages with option groups, price adjustments, stock awareness, and approved customer
-  reviews.
+ reviews.
 - A Learning Centre with playable video and audio lessons plus captions, and an interactive store and
-  service map.
+ service map.
 - A catalogue data visualisation and a builder performance chart, each with an accessible text or
-  table fallback.
+ table fallback.
 
 **PC Builder**
 
 - Step by step selection across component categories, one step per category, with optional steps that
-  can be skipped.
+ can be skipped.
 - Live subtotal and running total, plus server checked compatibility covering socket, memory type,
-  form factor, power supply headroom, cooler and card clearance, and storage.
+ form factor, power supply headroom, cooler and card clearance, and storage.
 - A build summary page that can be saved to an account and later added to the cart.
 
 **Accounts And Orders**
@@ -185,26 +181,26 @@ promote others from `admin/users.php`.
 - Registration, login, profile editing, and a private account area.
 - Cart supporting both catalogue products and saved custom builds, with stock aware quantities.
 - Simulated checkout, an order confirmation with a full build snapshot, order history, and order
-  detail pages.
+ detail pages.
 - Wishlist, review submission, consultation requests with file attachments, and consultation history.
 
 **Administration**
 
 - Dashboard with live counts, attention alerts, and recent activity.
 - Product create and edit with image upload, plus option group management and compatibility rule
-  management.
+ management.
 - Order status and note management, user administration with self lockout and last administrator
-  protection, consultation replies, and review moderation.
+ protection, consultation replies, and review moderation.
 - Reports with charts backed by MySQL, a sitewide theme switcher offering three complete themes, and a
-  service monitoring page reporting online, warning, or offline per check.
+ service monitoring page reporting online, warning, or offline per check.
 
 **Across The Site**
 
 - Session hardening, CSRF protection on every state changing form, prepared statements everywhere,
-  and content checked file uploads served through guarded endpoints.
+ and content checked file uploads served through guarded endpoints.
 - A seven page Help wiki with context sensitive links from the matching feature pages.
 - Responsive layouts verified on desktop and mobile widths, an accessibility statement, and reduced
-  motion and increased contrast support.
+ motion and increased contrast support.
 
 ---
 
@@ -212,21 +208,21 @@ promote others from `admin/users.php`.
 
 ```
 customcore/
-├── admin/          Protected administrator pages
-├── api/            Small JSON endpoints for builder price, compatibility, and chart data
+├── admin/ Protected administrator pages
+├── api/ Small JSON endpoints for builder price, compatibility, and chart data
 ├── assets/
-│   ├── css/        main.css for the storefront, admin.css for the back office
-│   ├── themes/     The three switchable site themes
-│   ├── js/         Vanilla JavaScript modules, one per feature
-│   ├── images/     Catalogue, component, and page imagery
-│   └── media/      Learning Centre video and audio plus captions
-├── config/         app.php settings and the gitignored database.php credentials
-├── database/       schema.sql, seed files, and the create-admin script
-├── docs/           Project documentation and QA records
-├── help/           Static Help wiki, one HTML page per topic
-├── includes/       Shared layout, helpers, auth, and per feature logic
-├── uploads/        User supplied files, blocked from direct web access
-└── *.php           Public and customer facing pages
+│ ├── css/ main.css for the storefront, admin.css for the back office
+│ ├── themes/ The three switchable site themes
+│ ├── js/ Vanilla JavaScript modules, one per feature
+│ ├── images/ Catalogue, component, and page imagery
+│ └── media/ Learning Centre video and audio plus captions
+├── config/ app.php settings and the gitignored database.php credentials
+├── database/ schema.sql, seed files, and the create-admin script
+├── docs/ Project documentation and QA records
+├── help/ Static Help wiki, one HTML page per topic
+├── includes/ Shared layout, helpers, auth, and per feature logic
+├── uploads/ User supplied files, blocked from direct web access
+└── *.php Public and customer facing pages
 ```
 
 The site is 51 purposeful dynamic PHP pages: 31 public and customer pages (including privacy and the live SEO sitemap endpoint), 17 administrator pages, and
@@ -268,18 +264,18 @@ The site is 51 purposeful dynamic PHP pages: 31 public and customer pages (inclu
 
 - [Rubric checklist](docs/rubric-checklist.md) and [rubric audit](docs/rubric-audit.md)
 - [HTML validation](docs/html-validation.md), [CSS validation](docs/css-validation.md),
-  [JavaScript validation](docs/js-validation.md)
+ [JavaScript validation](docs/js-validation.md)
 - [Desktop responsiveness](docs/responsiveness-desktop.md) and
-  [mobile responsiveness](docs/responsiveness-mobile.md)
+ [mobile responsiveness](docs/responsiveness-mobile.md)
 - [Customer workflows](docs/customer-workflows.md) and
-  [administrator workflows](docs/admin-workflows.md)
-- Live host runs: [production customer workflows (16.6)](docs/production-customer-workflows.md) and
-  [production administrator workflows (16.7)](docs/production-admin-workflows.md)
-- [Repository cleanup (17.3)](docs/repository-cleanup.md) — temp/junk removal, secret hygiene, and
-  `php database/verify-config.php` checks
-- [Documentation finalization (17.4)](docs/documentation-finalization.md) — README index and link audit
+ [administrator workflows](docs/admin-workflows.md)
+- Live host runs: [production customer workflows](docs/production-customer-workflows.md) and
+ [production administrator workflows](docs/production-admin-workflows.md)
+- [Repository cleanup](docs/repository-cleanup.md) — temp/junk removal, secret hygiene, and
+ `php database/verify-config.php` checks
+- [Documentation finalization](docs/documentation-finalization.md) — README index and link audit
 - [Theme testing](docs/theme-testing.md), [final defect fixes](docs/final-defect-fixes.md), and
-  [flash message system notes](docs/flash-messages.md)
+ [flash message system notes](docs/flash-messages.md)
 
 ---
 
@@ -287,10 +283,10 @@ The site is 51 purposeful dynamic PHP pages: 31 public and customer pages (inclu
 
 - Checkout is simulated. No payment gateway is contacted and no card data is stored.
 - `config/database.php` is intentionally absent from version control. Copy
-  `config/database.example.php` and add local credentials before running.
+ `config/database.example.php` and add local credentials before running.
 - Sample media and imagery are credited in [media-credits.md](docs/media-credits.md).
 - The shared site footer includes Privacy and Accessibility pages (`privacy.php`, `accessibility.php`).
 - The administrator area cannot be reached without an administrator account, so create one with
-  `php database/create-admin.php` before reviewing those pages (or use the host's existing admin).
+ `php database/create-admin.php` before reviewing those pages (or use the host's existing admin).
 - For a time-boxed walkthrough of the public host, start at the [live URL](https://vucaka.myweb.cs.uwindsor.ca/customcore/)
-  and follow [How to Demonstrate the Live Site](#how-to-demonstrate-the-live-site).
+ and follow [How to Demonstrate the Live Site](#how-to-demonstrate-the-live-site).

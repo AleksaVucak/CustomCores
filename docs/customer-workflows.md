@@ -3,12 +3,12 @@
 **Document type:** Project documentation
 **Purpose:** Prove that every core customer action succeeds end-to-end — from account registration all the way through placing an order — exercising the real PHP handlers, session/auth, CSRF, and database writes.
 **Acceptance:** Every core customer action succeeds; any avoidable defect found in a customer workflow is corrected.
-**Related:** earlier test records [`html-validation.md`](html-validation.md), [`css-validation.md`](css-validation.md), [`js-validation.md`](js-validation.md), [`responsiveness-desktop.md`](responsiveness-desktop.md), [`responsiveness-mobile.md`](responsiveness-mobile.md). Administrator workflows are verified separately in.
+**Related:** earlier test records [`html-validation.md`](html-validation.md), [`css-validation.md`](css-validation.md), [`js-validation.md`](js-validation.md), [`responsiveness-desktop.md`](responsiveness-desktop.md), [`responsiveness-mobile.md`](responsiveness-mobile.md). Administrator workflows are verified separately in [`admin-workflows.md`](admin-workflows.md).
 
 ### Status legend
 
 | Status | Meaning |
-| ------ | ------- |
+| --- | --- |
 | **Pass** | The action completed with the expected result (correct HTTP status/redirect, DB row created/updated, or correct rejection of invalid input) |
 | **Fail** | The action did not complete or produced a wrong result on a core customer path |
 
@@ -17,7 +17,7 @@
 ## 1. Scope — every core customer action
 
 | Area | Actions verified |
-| ---- | ---------------- |
+| --- | --- |
 | Account | Register (new + duplicate-email rejection), log in (correct + wrong-password rejection), authenticated session, log out, re-login |
 | Catalogue | Browse catalogue, sort + filter (`price_asc`, `in_stock`), search, product detail, compare (multi-product) |
 | Wishlist | Add from product page, view list, remove |
@@ -49,7 +49,7 @@
 **All core customer actions: Pass — 41/41 assertions.** After the fix in §4, a full registration-to-order journey (including ordering a saved custom build) completes without error, and every invalid-input path is correctly rejected.
 
 | Group | Assertions | Pass | Fail |
-| ----- | ---------: | ---: | ---: |
+| --- | --- | --- | --- |
 | Account (register / login / session / logout / re-login) | 9 | 9 | 0 |
 | Catalogue / search / compare / product | 6 | 6 | 0 |
 | Wishlist | 3 | 3 | 0 |
@@ -92,7 +92,7 @@ No other occurrence of the wrong join exists in the codebase (grep-verified).
 - **Server-authoritative pricing & stock.** Cart add/update recompute prices and clamp quantities server-side; the harness confirmed adds, quantity updates, and option selections all succeed with server-side values.
 - **PRG everywhere.** Every state change (register, login, cart, wishlist, save build, checkout, order creation, review, consultation, profile) responds with a redirect, so a refresh never re-submits.
 - **Legitimate refusals are not defects.** The builder correctly refuses to save incomplete/incompatible builds; checkout refuses an empty cart; order/consultation views are owner-scoped. These were exercised and behave as intended.
-- **Reviews enter moderation.** A submitted review is stored as `pending` and only appears publicly after admin approval (verified via the submit redirect; moderation is an admin action covered in 15.7).
+- **Reviews enter moderation.** A submitted review is stored as `pending` and only appears publicly after admin approval (verified via the submit redirect; moderation is an admin action covered in).
 
 ---
 
@@ -120,7 +120,7 @@ Testing uses a disposable `@example.test` account that is deleted afterward, ret
 ## 7. Sign-off
 
 | Criterion | Result |
-| --------- | ------ |
+| --- | --- |
 | Every core customer action succeeds (registration → order) | **Yes — 41/41** |
 | Invalid input correctly rejected (wrong password, duplicate email, foreign order) | **Yes** |
 | Avoidable customer-workflow defects corrected | **1 found, 1 fixed** (order-confirmation saved-build snapshot join) |

@@ -9,7 +9,6 @@
 // Lets a logged-in customer request a personalised PC consultation. Captures budget, games,
 // software, performance goals, optional notes, and optional secure file attachments, then stores
 // the request in consultation_requests (status = open) with any files in consultation_attachments.
-// Customer history arrives in.
 // Flow:
 //   GET, show the form (pre-filled on validation errors). POST, validate CSRF + fields + files,
 //     insert request + attachments in a single transaction, flash success, redirect (PRG).

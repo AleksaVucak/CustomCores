@@ -9,19 +9,19 @@
 ### Count targets
 
 | Category | Assignment minimum | CustomCore plan |
-| -------- | -----------------: | --------------: |
+| --- | --- | --- |
 | Dynamic PHP pages | ~20 | **51** (31 public/customer + 17 admin + 3 API) |
 | Static pages | 5 Help pages | **7** static Help/training HTML pages |
-| Total planned user-facing documents | >25 | **58** (51 dynamic + 7 Help) |
+| Total user-facing documents | >25 | **58** (51 dynamic + 7 Help) |
 
-Empty placeholder pages are not allowed. Every route below maps to a real feature in the roadmap.
+Empty placeholder pages are not allowed. Every route below maps to a real feature.
 
 ---
 
 ## 1. Access legend
 
 | Access | Meaning |
-| ------ | ------- |
+| --- | --- |
 | Public | Anyone may open the page |
 | Guest form | Public, but submits create an account or message |
 | Customer | Requires logged-in customer role |
@@ -34,7 +34,7 @@ Empty placeholder pages are not allowed. Every route below maps to a real featur
 ## 2. Public customer pages (dynamic PHP)
 
 | # | File | Purpose | Access | Context-sensitive Help |
-| - | ---- | ------- | ------ | ---------------------- |
+| --- | --- | --- | --- | --- |
 | 1 | `index.php` | Homepage: hero, featured products, categories, media teaser, CTAs | Public | Help hub |
 | 2 | `about.php` | Business case and company story (rubric business paragraph) | Public | Help hub |
 | 3 | `catalogue.php` | Product grid with filters/sort entry points | Public | `help/catalogue.html` |
@@ -60,7 +60,7 @@ Empty placeholder pages are not allowed. Every route below maps to a real featur
 ## 3. Private customer pages (dynamic PHP)
 
 | # | File | Purpose | Access | Context-sensitive Help |
-| - | ---- | ------- | ------ | ---------------------- |
+| --- | --- | --- | --- | --- |
 | 18 | `profile.php` | Account dashboard and activity summary | Customer | `help/accounts.html` |
 | 19 | `edit-profile.php` | Edit name, email, phone, address, password | Customer | `help/accounts.html` |
 | 20 | `saved-builds.php` | List saved custom builds | Customer | `help/pc-builder.html` |
@@ -74,11 +74,10 @@ Empty placeholder pages are not allowed. Every route below maps to a real featur
 | 28 | `consultation.php` | PC consultation request + attachment upload | Customer | `help/support.html` |
 | 29 | `consultation-history.php` | Customer’s requests and admin responses | Customer | `help/support.html` |
 
-**Private customer subtotal: 12 dynamic pages**
-**Customer-facing total (public + private): 29** (see also protected download and SEO endpoints below)
+**Private customer subtotal: 12 dynamic pagesCustomer-facing total (public + private): 29** (see also protected download and SEO endpoints below)
 
 | # | File | Purpose | Access | Context-sensitive Help |
-| - | ---- | ------- | ------ | ---------------------- |
+| --- | --- | --- | --- | --- |
 | 29a | `consultation-attachment.php` | Authenticated download of a customer’s own consultation file | Customer | `help/support.html` |
 | 29b | `sitemap.php` | Live public SEO XML sitemap (no private URLs) | Public | — |
 
@@ -89,7 +88,7 @@ Empty placeholder pages are not allowed. Every route below maps to a real featur
 All routes live under `admin/` and require administrator authorization.
 
 | # | File | Purpose | Access |
-| - | ---- | ------- | ------ |
+| --- | --- | --- | --- |
 | 30 | `admin/index.php` | Admin dashboard: counts, alerts, summaries | Admin |
 | 31 | `admin/products.php` | List / search products; disable controls | Admin |
 | 32 | `admin/product-add.php` | Create product record | Admin |
@@ -117,20 +116,19 @@ All routes live under `admin/` and require administrator authorization.
 Lightweight endpoints used by JavaScript. They count toward the dynamic PHP file total and must use the same security rules (sessions/CSRF where state-changing, prepared statements, escaped output as applicable).
 
 | # | File | Purpose | Access |
-| - | ---- | ------- | ------ |
+| --- | --- | --- | --- |
 | 47 | `api/builder-price.php` | Trusted server-side price recalculation | Public POST with validation |
 | 48 | `api/compatibility-check.php` | Server-side compatibility result (compatible / warning / incompatible) | Public POST with validation |
 | 49 | `api/chart-data.php` | Data for public and admin charts | Public or admin as appropriate |
 
-**API subtotal: 3 dynamic pages**
-**Grand total dynamic PHP: 51** (31 project-root + 17 admin + 3 API)
+**API subtotal: 3 dynamic pagesGrand total dynamic PHP: 51** (31 project-root + 17 admin + 3 API)
 
 ---
 
 ## 6. Static Help wiki and training (HTML)
 
 | # | File | Purpose | Linked from |
-| - | ---- | ------- | ----------- |
+| --- | --- | --- | --- |
 | S1 | `help/index.html` | Help centre hub / navigation | Main nav, footer |
 | S2 | `help/accounts.html` | Registration, login, profile, disabled accounts | `register.php`, `login.php`, `profile.php`, `edit-profile.php` |
 | S3 | `help/catalogue.html` | Catalogue, search, filter, compare, options | `catalogue.php`, `product.php`, `search.php`, `compare.php`, `wishlist.php` |
@@ -148,7 +146,7 @@ Lightweight endpoints used by JavaScript. They count toward the dynamic PHP file
 These support many routes but are **not** counted as unique pages:
 
 | Path | Role |
-| ---- | ---- |
+| --- | --- |
 | `includes/header.php`, `footer.php`, `navigation.php` | Shared layout and responsive menu |
 | `includes/auth.php`, `admin-auth.php`, `csrf.php`, `validation.php`, `flash.php`, `functions.php` | Security and helpers |
 | `assets/css/main.css`, `admin.css`, `print.css` | Base styles |
@@ -162,7 +160,7 @@ These support many routes but are **not** counted as unique pages:
 ## 8. SEO and package files (not counted as content pages)
 
 | File | Role |
-| ---- | ---- |
+| --- | --- |
 | `sitemap.xml` | Static public URL list for search engines — **no** private/admin URLs |
 | `sitemap.php` | Live XML sitemap (absolute locs from `base_url` / request; adds active products) |
 | `robots.txt` | Crawler Allow/Disallow rules + Sitemap pointers |
@@ -223,7 +221,7 @@ Monitoring
 ## 11. Core user flows (page sequences)
 
 | Flow | Sequence |
-| ---- | -------- |
+| --- | --- |
 | Browse to purchase | `catalogue.php` → `product.php` → `cart.php` → `checkout.php` → `order-confirmation.php` → `order-history.php` → `order-details.php` |
 | Custom build | `builder.php` → `builder-results.php` → `saved-builds.php` / `cart.php` |
 | Account setup | `register.php` → `login.php` → `profile.php` → `edit-profile.php` |

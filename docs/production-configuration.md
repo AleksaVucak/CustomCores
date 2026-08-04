@@ -10,7 +10,7 @@
 ## 1. What lives in Git vs what stays private
 
 | File | Tracked in Git? | Holds secrets? | Role |
-| ---- | --------------- | -------------- | ---- |
+| --- | --- | --- | --- |
 | `config/database.example.php` | Yes | No (placeholders only) | Template for copying |
 | `config/database.php` | **No** (gitignored) | Yes | Real MySQL host, database name, user, password |
 | `config/app.php` | Yes | No | Site name, flags, paths, store details, session limits |
@@ -34,7 +34,7 @@ cp config/database.example.php config/database.php
 Edit **only** `config/database.php`. Set:
 
 | Key | Typical myweb value | Notes |
-| --- | ------------------- | ----- |
+| --- | --- | --- |
 | `host` | `localhost` | Use the hostname your host panel shows if not local |
 | `port` | `3306` | Rarely different |
 | `dbname` | (from panel) | Empty database created before seed import |
@@ -46,7 +46,7 @@ Edit **only** `config/database.php`. Set:
 
 ```bash
 git check-ignore -v config/database.php
-# Expected: a line pointing at .gitignore
+# Expected: a line pointing at.gitignore
 
 git status
 # config/database.php must NOT appear as an untracked or staged file
@@ -64,12 +64,12 @@ php database/test-connection.php
 
 ## 3. Non-secret application settings
 
-`config/app.php` is loaded by every request through `customcore_app_config()`. It is safe to commit.
+`config/app.php` is loaded by every request through `customcore_app_config`. It is safe to commit.
 
 ### Production flags (required on the live host)
 
 | Key | Production value | Why |
-| --- | ---------------- | --- |
+| --- | --- | --- |
 | `environment` | `'production'` | Marks the live host; local copies may use `'local'` |
 | `debug` | `false` | Hides stack traces and detailed database errors from visitors |
 | `base_url` | `''` (recommended) | Relative links work under `~user/customcore/`; set only when absolute SEO URLs are required |
@@ -94,7 +94,7 @@ php sitemap.php --write
 
 `config/app.production.example.php` is a complete, credentials-free example with `environment = production` and `debug = false`. On the host you may either:
 
-1. Edit the existing `config/app.php` values, or  
+1. Edit the existing `config/app.php` values, or 
 2. Replace it: `cp config/app.production.example.php config/app.php`
 
 Do not put database passwords into either app file.
@@ -106,7 +106,7 @@ Do not put database passwords into either app file.
 All filesystem locations used by the app are project-relative strings under `app.php → paths`:
 
 | Key | Default | Used for |
-| --- | ------- | -------- |
+| --- | --- | --- |
 | `uploads_consultation` | `uploads/consultation` | Consultation attachments |
 | `uploads_products` | `uploads/products` | Admin product images |
 | `themes` | `assets/themes` | Switchable theme CSS |
@@ -140,11 +140,11 @@ php database/verify-config.php --production
 
 The verifier checks:
 
-1. `.gitignore` covers `config/database.php` and Git is not tracking it  
-2. `database.example.php` still uses only `your_*` placeholders  
-3. `app.production.example.php` uses production-safe flags and no credential keys  
-4. `app.php` has safe `debug` / `environment` / relative `paths`  
-5. `database.php` exists (on production), is complete, and is not still filled with example placeholders  
+1. `.gitignore` covers `config/database.php` and Git is not tracking it 
+2. `database.example.php` still uses only `your_*` placeholders 
+3. `app.production.example.php` uses production-safe flags and no credential keys 
+4. `app.php` has safe `debug` / `environment` / relative `paths` 
+5. `database.php` exists (on production), is complete, and is not still filled with example placeholders 
 
 Exit code `0` means pass. Exit code `1` means fix the listed FAILs before going live. Passwords are never echoed.
 
@@ -152,13 +152,13 @@ Exit code `0` means pass. Exit code `1` means fix the listed FAILs before going 
 
 ## 6. Second-server checklist
 
-- [ ] `config/database.example.php` committed with placeholders only  
-- [ ] `config/database.php` created on the host and gitignored  
-- [ ] `config/app.php` has `debug => false` and `environment => production` on the host  
-- [ ] Paths still point inside the project tree  
-- [ ] `php database/verify-config.php --production` reports `RESULT: PASS`  
-- [ ] `php database/test-connection.php` reports `OK` without showing a password  
-- [ ] `git status` shows no credential files staged  
+- [ ] `config/database.example.php` committed with placeholders only 
+- [ ] `config/database.php` created on the host and gitignored 
+- [ ] `config/app.php` has `debug => false` and `environment => production` on the host 
+- [ ] Paths still point inside the project tree 
+- [ ] `php database/verify-config.php --production` reports `RESULT: PASS` 
+- [ ] `php database/test-connection.php` reports `OK` without showing a password 
+- [ ] `git status` shows no credential files staged 
 
 When those boxes are checked, continue with the file upload and SQL import steps in [`deployment-troubleshooting.md`](deployment-troubleshooting.md).
 

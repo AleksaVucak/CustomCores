@@ -19,7 +19,7 @@
 //   Uses customcore_logout() to wipe $_SESSION and expire the cookie with the same path / Secure /
 //     HttpOnly / SameSite flags used at start.
 //   Starts a fresh empty session only to carry a one-time flash message.
-//   Does not accept a return URL (open-redirect hardening lands in 4.8).
+//   Does not accept a return URL (open-redirect hardening).
 
 declare(strict_types=1);
 

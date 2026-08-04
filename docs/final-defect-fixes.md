@@ -2,16 +2,16 @@
 
 **Document type:** Project documentation
 **Completion test:** *No known critical or rubric-blocking issue remains.*
-**Method:** A four-part final sweep of the whole project — (1) static discovery, (2) an `E_ALL` runtime crawl of **every** page (public + authenticated customer + admin), (3) a usability / status-code / edge-case pass, and (4) targeted fixes with re-verification. This builds on the earlier QA records for HTML, CSS, JavaScript and the console, desktop and mobile responsiveness, customer and administrator workflows, and the rubric audit.
+**Method:** A four-part final sweep of the whole project — static discovery, an `E_ALL` runtime crawl of **every** page (public + authenticated customer + admin), a usability / status-code / edge-case pass, and targeted fixes with re-verification. This builds on the earlier QA records for HTML, CSS, JavaScript and the console, desktop and mobile responsiveness, customer and administrator workflows, and the rubric audit.
 
-**Outcome:** **1 real usability/SEO defect found and fixed** (soft-404 on nonexistent products). Everything else came back clean. No critical or rubric-blocking issue remains.
+**Outcome:1 real usability/SEO defect found and fixed** (soft-404 on nonexistent products). Everything else came back clean. No critical or rubric-blocking issue remains.
 
 ---
 
 ## 1. Static discovery — clean
 
 | Check | Command | Result |
-| ----- | ------- | ------ |
+| --- | --- | --- |
 | Real defect markers | grep `TODO`/`FIXME`/`XXX`/`HACK`/`BUG`/"not implemented"/"coming soon" across all `*.php` | **0** genuine markers — every hit is a legitimate `placeholder="…"` input attribute, a `customcore_is_debug` guard, or an SQL `$placeholders` variable |
 | PHP syntax | `php -l` on **all 94** PHP files | **0** syntax errors |
 
@@ -34,13 +34,13 @@ Then every page was crawled:
 ## 3. Usability / status-code pass
 
 | Observation | Verdict |
-| ----------- | ------- |
+| --- | --- |
 | **Nonexistent / invalid product returned HTTP 200** with a friendly "Product not found" message (`product.php?id=999999`, `?id=abc`, `?id=0`, no id) | **Defect — fixed** (see below): a missing resource must return **404**, not a 200 "soft 404" |
 | `api/builder-price.php`, `api/compatibility-check.php`, `api/chart-data.php` return **405** for a bare `GET` | **Correct** — these are POST-only endpoints; the app calls them with the right method |
 | `order-details.php` / `saved-build.php` / `admin/order-details.php` / `admin/consultation-details.php` return **303** for a foreign or nonexistent record id | **Correct** — ownership/existence guards redirect instead of exposing data or erroring |
 | `builder-results.php` returns **303** on a bare GET (no build payload) | **Correct** — redirects back to the builder |
 | A request for a nonexistent `*.php` file served the homepage with 200 under `php -S` | **Not an app defect** — this is the PHP built-in dev-server fallback; on real hosting (Apache/Nginx, e.g. `myweb.cs.uwindsor.ca`) a missing file returns the server's 404. No code change needed |
-| Search with no results / injection-probe query | **Correct** — 200, escaped output, no error (prepared statements confirmed in 14.8) |
+| Search with no results / injection-probe query | **Correct** — 200, escaped output, no error (prepared statements confirmed in) |
 
 ## 4. The fix — real 404 for missing products
 
@@ -69,7 +69,7 @@ if ($productId < 1) {
 // signal while still rendering the friendly styled shell below. A transient DB
 // error keeps the default 200 — the resource may exist, it is not "not found".
 if ($notFound && !headers_sent) {
- http_response_code(404);
+ http_response_code;
 }
 ```
 
@@ -80,7 +80,7 @@ if ($notFound && !headers_sent) {
 ### Verification after the fix
 
 | Request | Before | After |
-| ------- | -----: | ----: |
+| --- | --- | --- |
 | `product.php?id=1` (valid) | 200 | **200** |
 | `product.php?id=999999` (nonexistent) | 200 | **404** |
 | `product.php?id=abc` (non-numeric) | 200 | **404** |

@@ -8,7 +8,7 @@
 ### Status legend
 
 | Status | Meaning |
-| ------ | ------- |
+| --- | --- |
 | **Pass** | No horizontal document overflow (`documentElement.scrollWidth ≤ innerWidth`), no element spilling past the viewport outside an intended scroll wrapper, layout intact |
 | **Cond** | Content wider than the shell is contained in an **intended** horizontal scroll wrapper (e.g. wide admin data tables, comparison table) — documented, not a defect |
 | **Fail** | Unintended horizontal scrollbar, clipped/overlapping content, or broken grid on a core page |
@@ -28,7 +28,7 @@
 ### 1.2 Desktop widths exercised
 
 | Width | Role |
-| ----- | ---- |
+| --- | --- |
 | **1024 × 768** | Small desktop / tablet-landscape; still in the fluid range (below the 1120 px cap) |
 | **1280 × 800** | Primary desktop sweep width (common laptop) — every page checked here |
 | **1440 × 900** | Standard desktop; just above the cap (content centres) |
@@ -37,7 +37,7 @@
 ### 1.3 Surfaces exercised
 
 | Audience | Pages |
-| -------- | ----- |
+| --- | --- |
 | Public | Home, catalogue, product (guest + signed-in), builder, compare (4-way), about, store locations (map), reviews, contact, search, login, register, media/learning centre, accessibility, `help/index.html` |
 | Customer | Profile, edit-profile, saved builds, wishlist, order history (empty + populated), order details, order confirmation, cart, checkout, consultation, consultation history |
 | Administrator | Dashboard, products, orders, users, reviews, reports (Chart.js), monitoring, themes, compatibility, product add, product edit, product options, order details, user edit |
@@ -61,7 +61,7 @@
 **All core pages: Pass.** No unintended horizontal scrollbars, clipped content, or broken grids were found at 1024, 1280, 1440, or 1920 px. At 1920 px the shell caps at exactly **1120 px** and centres (≈400 px gutter each side); at 1440 px it caps and centres (≈160 px gutter); at 1024/1280 px the fluid shell fills the width with its 1 rem gutter. The only elements wider than the shell are the admin data tables and the public comparison table, which scroll **inside their own cards** by design (`Cond`), never stretching the page.
 
 | Group | Pages checked | Pass | Cond (intended inner scroll) | Fail |
-| ----- | ------------- | ---- | ---------------------------- | ---- |
+| --- | --- | --- | --- | --- |
 | Public | 15 | 15 | comparison table wrapper (contained) | 0 |
 | Customer | 11 | 11 | — | 0 |
 | Administrator | 14 | 14 | wide admin tables (contained) | 0 |
@@ -73,7 +73,7 @@
 ### 4.1 Public (primary width 1280 px, spot-checked 1024 / 1440 / 1920)
 
 | Page | Result | Notes |
-| ---- | ------ | ----- |
+| --- | --- | --- |
 | `index.php` | Pass | `layout-split--home`, featured + tier grids reflow cleanly; 1120 px centred at 1920 |
 | `catalogue.php` | Pass | auto-fill product grid; filters row wraps; clean at 1024 and 1920 |
 | `product.php` (guest & signed-in) | Pass | `product-detail__header` split (1fr/1.4fr) at ≥900; options/review form fit; 1440 centred |
@@ -92,7 +92,7 @@
 ### 4.2 Customer (signed-in, 1280 px)
 
 | Page | Result | Notes |
-| ---- | ------ | ----- |
+| --- | --- | --- |
 | `profile.php` | Pass | account nav + dashboard cards (`layout-split--account`) |
 | `edit-profile.php` | Pass | account details + change-password sections |
 | `saved-builds.php` | Pass | empty-state contained |
@@ -108,7 +108,7 @@
 ### 4.3 Administrator (1280 px; dashboard also at 1920 px)
 
 | Page | Result | Notes |
-| ---- | ------ | ----- |
+| --- | --- | --- |
 | `admin/index.php` | Pass | sidebar + dashboard cards/tables; caps at 1120 px, centred at 1920 |
 | `admin/products.php` | Pass / **Cond** | `.admin-table--products` in `.admin-table-wrap`; fits at 1280, scrolls in-card only if narrower |
 | `admin/orders.php` | Pass | filter row + results table fit |
@@ -147,7 +147,7 @@
 php -S localhost:8000
 
 # 2. In a desktop browser, open each page in §4 and, for each width
-# (1024, 1280, 1440, 1920), confirm there is NO horizontal scrollbar
+#, confirm there is NO horizontal scrollbar
 # on the page itself and no clipped/overlapping content. Wide admin
 # tables and the comparison table may scroll INSIDE their card — that
 # is expected.
@@ -163,7 +163,7 @@ Signed-in and admin pages require a logged-in customer / administrator account; 
 ## 8. Sign-off
 
 | Criterion | Result |
-| --------- | ------ |
+| --- | --- |
 | Core pages free of unintended horizontal overflow (1024–1920 px) | **Yes** |
 | Content caps at 1120 px and centres on wide screens | **Yes** |
 | Wide tables contained in intended scroll wrappers | **Yes** |

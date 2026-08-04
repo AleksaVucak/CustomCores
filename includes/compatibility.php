@@ -5,7 +5,7 @@
  * COMP 3340, Final Project
  * August 5th, 2026
  */
-// Shared compatibility evaluation/ 5.5).
+// Shared compatibility evaluation.
 // Loads active rules and selected component attributes, evaluates the seven seeded compatibility
 // checks, and returns an overall status plus per-rule results. Used by api/compatibility-check.php
 // (live JS) and builder-results.php (server-rendered summary) so both surfaces stay in sync.

@@ -7,17 +7,17 @@
 
 These are structural wireframes (not final visual design). Theme colours, fonts, and decorative effects are handled by `assets/css/main.css` and the theme files in `assets/themes/`.
 
-### Breakpoints (planned)
+### Breakpoints
 
 | Name | Width guide | Navigation pattern |
-| ---- | ----------- | ------------------ |
+| --- | --- | --- |
 | Desktop | ≥ 900px | Horizontal main nav in header |
 | Mobile | < 900px | Header brand + menu toggle; nav links in expandable panel |
 
 ### Shared chrome (every customer screen)
 
 | Region | Desktop | Mobile |
-| ------ | ------- | ------ |
+| --- | --- | --- |
 | Skip link | “Skip to content” (first focusable) | Same |
 | Header | Logo **CustomCore** + horizontal nav + account/cart | Logo + ☰ menu + cart icon |
 | Main nav links | Home, About, Catalogue, PC Builder, Media, Locations, Help, Contact | Same links inside open menu panel |
@@ -362,7 +362,7 @@ These are structural wireframes (not final visual design). Theme colours, fonts,
 ## 7. Navigation coverage matrix
 
 | Screen | Desktop main nav | Mobile main nav | Extra local nav |
-| ------ | ---------------- | --------------- | --------------- |
+| --- | --- | --- | --- |
 | Homepage | Header links | ☰ panel | — |
 | Catalogue | Header links | ☰ panel | Filter panel |
 | PC Builder | Header links | ☰ panel | Step indicator |
@@ -374,9 +374,7 @@ These are structural wireframes (not final visual design). Theme colours, fonts,
 
 ---
 
-## 8. Implementation notes for later stages
-
-1. Build one shared `includes/navigation.php` for customer pages and a separate admin nav include.
+## 8. Implementation notes for later. Build one shared `includes/navigation.php` for customer pages and a separate admin nav include.
 2. Mobile toggle must be keyboard operable (Escape closes; focus returns to button).
 3. Homepage hero stays one composition (brand, one headline, one sentence, CTA group, dominant visual) — avoid packing stats/schedules into the first viewport.
 4. Cart and builder summaries must remain readable without horizontal scrolling on small screens.

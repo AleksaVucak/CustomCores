@@ -7,7 +7,7 @@
 ### Status legend
 
 | Status | Meaning |
-| ------ | ------- |
+| --- | --- |
 | Pass | HTTP 200, correct theme CSS linked after `main.css` (and after `admin.css` on admin pages), structural chrome present, no PHP error leak |
 | Fail | Any of the above checks failed |
 
@@ -16,7 +16,7 @@
 ## 1. Themes under test
 
 | Theme | Slug | Stylesheet | Accent | Display font | Radius feel |
-| ----- | ---- | ---------- | ------ | ------------ | ----------- |
+| --- | --- | --- | --- | --- | --- |
 | RGB Gaming | `rgb-gaming` | `assets/themes/rgb-gaming.css` | Cyan `#00e5c0` | Space Grotesk | Soft (`0.35rem`) |
 | Minimal Professional | `minimal-pro` | `assets/themes/minimal-pro.css` | Blue `#2b57d6` | Fraunces (serif) | Crisp (`0.25rem`) |
 | Cyber Grid | `cyber-grid` | `assets/themes/cyber-grid.css` | Mint `#24f39b` | Orbitron | Square (`0`) |
@@ -48,7 +48,7 @@ Mobile layout rules live in `assets/css/main.css` (nav toggle ≤ ~900px) and re
 ### Public
 
 | Page | Nav | Cards | Forms | Tables | Notes |
-| ---- | --- | ----- | ----- | ------ | ----- |
+| --- | --- | --- | --- | --- | --- |
 | `index.php` | Pass | Pass | — | — | Hero + featured systems |
 | `catalogue.php` | Pass | Pass | Pass | — | Filters + product grid |
 | `product.php?id=1` | Pass | — | Pass | — | Options / add actions |
@@ -65,7 +65,7 @@ Mobile layout rules live in `assets/css/main.css` (nav toggle ≤ ~900px) and re
 ### Account (authenticated)
 
 | Page | Nav | Forms | Tables | Notes |
-| ---- | --- | ----- | ------ | ----- |
+| --- | --- | --- | --- | --- |
 | `profile.php` | Pass | — | — | Account dashboard |
 | `cart.php` | Pass | — | Pass | Cart lines / empty state |
 | `checkout.php` | Pass | Pass | — | Checkout form / empty-cart path |
@@ -74,7 +74,7 @@ Mobile layout rules live in `assets/css/main.css` (nav toggle ≤ ~900px) and re
 ### Admin
 
 | Page | Nav | Forms | Tables | Notes |
-| ---- | --- | ----- | ------ | ----- |
+| --- | --- | --- | --- | --- |
 | `admin/index.php` | Pass | — | Pass | Dashboard |
 | `admin/products.php` | Pass | Pass | Pass | Product list |
 | `admin/product-add.php` | Pass | Pass | — | Product form |
@@ -91,7 +91,7 @@ Mobile layout rules live in `assets/css/main.css` (nav toggle ≤ ~900px) and re
 ## 4. Results matrix
 
 | Theme | Pages checked | Pass | Fail |
-| ----- | ------------: | ---: | ---: |
+| --- | --- | --- | --- |
 | RGB Gaming | 26 | 26 | 0 |
 | Minimal Professional | 26 | 26 | 0 |
 | Cyber Grid | 26 | 26 | 0 |

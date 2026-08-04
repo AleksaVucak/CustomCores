@@ -5,7 +5,7 @@
  * COMP 3340, Final Project
  * August 5th, 2026
  */
-// PC Build Summary + Save/ 5.6).
+// PC Build Summary + Save.
 //   GET, Renders the completed (or in-progress) build from the session: every selected component
 //     with trusted database prices, a server-side compatibility report, and power / performance
 //     estimates. POST, Saves the build to the database (saved_builds + saved_build_items). Requires

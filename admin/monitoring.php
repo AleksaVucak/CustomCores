@@ -280,7 +280,7 @@ require_once __DIR__ . '/../includes/header.php';
             </ul>
             <p class="monitor-legend__note">
                 Reload this page to run the checks and recount statistics.
-                A troubleshooting guide for each warning arrives in commit 13.5.
+                See <code>docs/monitoring-troubleshooting.md</code> for symptom-driven fixes.
             </p>
         </section>
 

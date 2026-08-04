@@ -18,20 +18,20 @@ This page is the single requirements checklist for production. Use it before you
 ## 2. Target host
 
 | Item | Expectation |
-| ---- | ----------- |
+| --- | --- |
 | Primary target | `myweb.cs.uwindsor.ca` (or equivalent University of Windsor CS student web host) |
 | Public URL shape | Typically `https://myweb.cs.uwindsor.ca/~yourUWinID/customcore/` for a subfolder deploy |
 | Document root | The host web root (for example `public_html/`) or a folder under it |
 | Alternative hosts | Any shared host that meets sections 3 through 6 also works: Apache or Nginx + PHP 8 + MySQL/MariaDB |
 
-CustomCore uses depth-safe relative URLs via `customcore_url()`, so the project works at the domain root **or** in a `~user/customcore/` subfolder. Leave `config/app.php → base_url` empty unless you specifically need absolute SEO links.
+CustomCore uses depth-safe relative URLs via `customcore_url`, so the project works at the domain root **or** in a `~user/customcore/` subfolder. Leave `config/app.php → base_url` empty unless you specifically need absolute SEO links.
 
 ---
 
 ## 3. PHP runtime
 
 | Requirement | Minimum | Why it matters on this project |
-| ----------- | ------- | ------------------------------ |
+| --- | --- | --- |
 | PHP version | **8.0 or newer** | The codebase uses `declare(strict_types=1)`, typed parameters and returns, `str_contains`, `match`-era language features, and modern exception handling. |
 | SAPI | Apache module, PHP-FPM, or CGI that runs `.php` files | Plain `.php` URLs only; no front controller rewrite rules. |
 | `pdo` + `pdo_mysql` | Required | Every database query goes through PDO prepared statements (`includes/database.php`). |
@@ -40,7 +40,7 @@ CustomCore uses depth-safe relative URLs via `customcore_url()`, so the project 
 | `json` | Required | Builder price, compatibility, and chart API endpoints return JSON. |
 | `session` | Required | Login sessions, cart badges, builder step state, CSRF tokens, and flash messages. |
 | `filter` | Required | Input sanitization helpers (for example email validation). |
-| `hash` / password hashing | Required | Bcrypt password hashes via `password_hash()` / `password_verify()`. |
+| `hash` / password hashing | Required | Bcrypt password hashes via `password_hash` / `password_verify`. |
 | `iconv` | Recommended | Used when normalising a few string paths; hosts almost always ship it with `mbstring`. |
 | `openssl` | Recommended | Preferred when the host terminates HTTPS so secure cookies can be set correctly. |
 | `curl` | Not required by the app | No server-side outbound HTTP is required for core flows. Charts and the map load from a CDN in the browser only. |
@@ -65,7 +65,7 @@ If a required module is missing, enable it in the host panel (often labelled “
 ## 4. MySQL / MariaDB
 
 | Requirement | Minimum | Why it matters on this project |
-| ----------- | ------- | ------------------------------ |
+| --- | --- | --- |
 | Engine | **InnoDB** | Schema uses transactions and foreign keys (`database/schema.sql`). |
 | Character set | **`utf8mb4`** | Full Unicode, including emoji-safe storage. |
 | Collation | **`utf8mb4_unicode_ci`** (or host default compatible with `utf8mb4`) | Matches the schema and seed files. |
@@ -88,7 +88,7 @@ php database/test-connection.php
 ## 5. Web server and filesystem permissions
 
 | Requirement | Expectation |
-| ----------- | ----------- |
+| --- | --- |
 | Web server | Apache is the most common match for `myweb.cs.uwindsor.ca`; Nginx is also fine. |
 | Document handling | Serve `.php` through the PHP engine; serve static files from `assets/`, `help/`, and public roots directly. |
 | URL rewriting | **Not required.** Do not depend on a project-wide `.htaccess` router. |
@@ -101,8 +101,8 @@ php database/test-connection.php
 Suggested permission commands after upload (adjust if your host uses a different ownership model):
 
 ```bash
-find . -type d -exec chmod 755 {} \;
-find . -type f -exec chmod 644 {} \;
+find. -type d -exec chmod 755 {} \;
+find. -type f -exec chmod 644 {} \;
 chmod -R u+rwX uploads
 ```
 
@@ -117,7 +117,7 @@ Disk space is modest: source, documentation, seed images under `assets/images/`,
 CustomCore is a progressive enhancement site: pages remain usable with JavaScript unavailable for reading content, but interactive features (builder live price, menu toggle, charts, map) need a modern browser.
 
 | Audience | Supported baseline |
-| -------- | ------------------ |
+| --- | --- |
 | Desktop | Current or recent **Chrome**, **Edge**, **Firefox**, or **Safari** |
 | Mobile | Current iOS Safari and current Android Chrome (or the host browser equivalents) |
 | Viewport | Phones from **320 px** wide through desktop **1920 px** (verified in responsiveness records) |
@@ -133,7 +133,7 @@ No plugin (Flash, Java applets, ActiveX) is required. Screen readers and keyboar
 ## 7. Network and HTTPS
 
 | Item | Production expectation |
-| ---- | ---------------------- |
+| --- | --- |
 | Public HTTP(S) access | Visitors must reach the project folder without authenticating to the host shell |
 | HTTPS | **Strongly recommended.** Session cookies receive the `Secure` flag automatically when the request is HTTPS (including when TLS is terminated upstream and `X-Forwarded-Proto: https` is set). |
 | Outbound server HTTP | Not required for core application logic |
@@ -177,9 +177,9 @@ When every box is checked, continue with [deployment-troubleshooting.md](deploym
 ## 10. Match to university myweb-style hosting
 
 | Host trait (typical for CS student web) | CustomCore behaviour |
-| --------------------------------------- | -------------------- |
+| --- | --- |
 | Shared Apache + PHP account | Plain `*.php` entry points; no rewrite rules required |
-| Subfolder under `~userid/` | Relative `customcore_url()` links keep CSS, JS, images, and forms working |
+| Subfolder under `~userid/` | Relative `customcore_url` links keep CSS, JS, images, and forms working |
 | Separate MySQL credentials | Isolated in gitignored `config/database.php` |
 | Limited shell or panel-only SQL | Seed files are plain `.sql` and import cleanly through phpMyAdmin in order |
 | No root privileges | Application stays inside the project tree; no system packages needed |
@@ -192,7 +192,7 @@ If the host offers a **PHP version selector**, always pick 8.x. If MySQL is expo
 ## 11. Related documents
 
 | Document | Use it for |
-| -------- | ---------- |
+| --- | --- |
 | [`production-configuration.md`](production-configuration.md) | Secret-free templates, paths, and verify-config |
 | [`installation-guide.md`](installation-guide.md) | Clean checkout → working local or server install |
 | [`deployment-troubleshooting.md`](deployment-troubleshooting.md) | Upload, production `app.php` flags, permissions, live smoke list, symptom table |

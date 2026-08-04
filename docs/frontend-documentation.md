@@ -79,14 +79,14 @@ Responsibilities (closing `<main>` through document end):
 ### 3.1 Files
 
 | File | Role |
-| ---- | ---- |
+| --- | --- |
 | `assets/css/main.css` | The base stylesheet: design tokens, reset, layout primitives, header/nav/footer, forms, buttons, cards, tables, flash banners, the Help hub UI, and responsive breakpoints. Linked on **every** page. |
 | `assets/css/admin.css` | Admin-only additions layered on top of `main.css` (dashboard, data tables, admin toolbars). Linked only when `$loadAdminCss` is set. |
 | `assets/themes/rgb-gaming.css` | **RGB Gaming** theme — dark, high-contrast, neon accent (default). |
 | `assets/themes/minimal-pro.css` | **Minimal Professional** theme — light, editorial, single blue accent. |
 | `assets/themes/cyber-grid.css` | **Cyber Grid** theme — technical HUD look, blueprint grid, zero-radius. |
 
-There is intentionally **no** `print.css` yet; it is reserved for a later stage and is not linked by the header.
+There is intentionally **no** `print.css`; a dedicated print stylesheet is optional and is not linked by the header.
 
 ### 3.2 Design tokens (`--cc-*` custom properties)
 
@@ -133,7 +133,7 @@ All scripts are plain (vanilla) ES5-compatible JavaScript wrapped in IIFEs — n
 ### 4.1 Module map
 
 | File | Loaded when | Responsibility |
-| ---- | ----------- | -------------- |
+| --- | --- | --- |
 | `assets/js/main.js` | every page | Shared `window.CustomCore` utilities (`onReady`, `qs`, `qsa`, `debounce`, `toggleClass`, `setAria`, `createFocusTrap`) and the responsive navigation toggle. Adds `.js` to `<html>` and `data-cc-js="ready"` to `<body>`. |
 | `assets/js/builder.js` | `$currentPage === 'builder'` | Live PC-builder pricing and compatibility feedback; posts selections to `api/builder-price.php` and `api/compatibility-check.php` and overwrites the client estimate with the trusted server total. |
 | `assets/js/cart.js` | `$currentPage === 'cart'` | Live line-item and subtotal preview for quantity steppers before the server "Update cart" round-trip. |
@@ -223,7 +223,7 @@ The administrator switching flow (validation, CSRF, Post/Redirect/Get) lives in 
 ## 8. Where to change what (quick reference)
 
 | I want to change… | Edit… |
-| ----------------- | ----- |
+| --- | --- |
 | Site name / tagline / default theme | `config/app.php` |
 | The head, meta, or stylesheet order | `includes/header.php` |
 | Menu items or account links | `includes/navigation.php` |

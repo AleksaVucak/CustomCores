@@ -9,7 +9,7 @@
 // Shared review operations for customer submission: validate rating/title/body, insert new reviews
 // with status = pending (moderation queue), and inspect a user's existing review for a product so
 // the form can avoid duplicates. Public display of approved reviews remains in reviews.php /
-// product.php. Administrator approve/hide UI arrives in.
+// product.php. Administrator approve/hide UI lives under admin/reviews.php.
 // Access: Submission helpers expect a logged-in user. Callers must enforce login before invoking
 // customcore_review_submit().
 

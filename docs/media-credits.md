@@ -20,7 +20,7 @@ is a simulated academic store and does not represent a real retailer.
 ## Summary inventory
 
 | Category | Count | Location |
-| -------- | ----: | -------- |
+| --- | --- | --- |
 | Product catalogue images | 20 | `assets/images/products/` |
 | Extra site images (hero, UI, categories, OG, map, posters) | 13 | `assets/images/{hero,ui,categories,og,map,media}/` |
 | Educational videos (MP4) | 2 | `assets/media/*.mp4` |
@@ -43,7 +43,7 @@ not contain readable third-party logos, trademarks, watermarks, or advertising
 copy.
 
 | File | Purpose | Tool | Licence / usage note | Date created |
-| ---- | ------- | ---- | -------------------- | ------------ |
+| --- | --- | --- | --- | --- |
 | `assets/images/products/corestart-entry.jpg` | CoreStart Entry product | OpenAI image generation | Generated for academic use; not third-party stock | 2026-08-01 |
 | `assets/images/products/corestart-plus.jpg` | CoreStart Plus product | OpenAI image generation | Generated for academic use; not third-party stock | 2026-08-01 |
 | `assets/images/products/budgetforge-1080.jpg` | BudgetForge 1080 product | OpenAI image generation | Generated for academic use; not third-party stock | 2026-08-01 |
@@ -91,14 +91,14 @@ package). They are not third-party commercial advertisements. No separate stock
 B-roll was retained as a final source dependency.
 
 | Final file | Duration | Source type | Source URL | Author / creator | Licence | Date created | Notes |
-| ---------- | -------- | ----------- | ---------- | ---------------- | ------- | ------------ | ----- |
+| --- | --- | --- | --- | --- | --- | --- | --- |
 | `assets/media/how-to-use-pc-builder.mp4` | ~67 s | Original CustomCore educational production | Original recording (project package) | CustomCore project team | Original academic production | 2026-08-01 | English WebVTT captions; transcript on `media.php` |
 | `assets/media/compatibility-basics.mp4` | ~74 s | Original CustomCore educational production | Original recording (project package) | CustomCore project team | Original academic production | 2026-08-01 | English WebVTT captions; transcript on `media.php` |
 
 ### Matching caption tracks
 
 | Caption file | Attached to | Language | Licence |
-| ------------ | ----------- | -------- | ------- |
+| --- | --- | --- | --- |
 | `assets/media/captions/how-to-use-pc-builder.vtt` | `how-to-use-pc-builder.mp4` | English (`en`) | Original academic production |
 | `assets/media/captions/compatibility-basics.vtt` | `compatibility-basics.mp4` | English (`en`) | Original academic production |
 
@@ -107,13 +107,13 @@ B-roll was retained as a final source dependency.
 ## Audio
 
 | Final file | Duration | Source type | Source URL | Author / speaker | Licence | Date created | Notes |
-| ---------- | -------- | ----------- | ---------- | ---------------- | ------- | ------------ | ----- |
+| --- | --- | --- | --- | --- | --- | --- | --- |
 | `assets/media/choosing-your-first-gaming-pc.mp3` | ~88 s | Original narration | Original CustomCore recording (project package) | CustomCore project team | Original academic production | 2026-08-01 | No background music; transcript on `media.php` |
 
 ### Matching caption track
 
 | Caption file | Attached to | Language | Licence |
-| ------------ | ----------- | -------- | ------- |
+| --- | --- | --- | --- |
 | `assets/media/captions/choosing-your-first-gaming-pc.vtt` | `choosing-your-first-gaming-pc.mp3` | English (`en`) | Original academic production |
 
 ---
@@ -124,7 +124,7 @@ Used for the public catalogue visualization (`catalogue.php`) and the
 PC Builder performance chart (`api/chart-data.php` + `assets/js/charts.js`).
 
 | Library | Version in project | CDN | Licence | Project use |
-| ------- | ------------------ | --- | ------- | ----------- |
+| --- | --- | --- | --- | --- |
 | [Chart.js](https://www.chartjs.org/) | 4.4.1 | `cdn.jsdelivr.net/npm/chart.js@4.4.1` | MIT License | Bar charts with server-side HTML/table text fallbacks |
 
 Chart **data** (active product counts, performance scores) is computed from the
@@ -137,7 +137,7 @@ CustomCore MySQL database — not hard-coded decorative numbers.
 Used on `store-locations.php`.
 
 | Resource | Version / source | Licence | Attribution in the UI |
-| -------- | ---------------- | ------- | --------------------- |
+| --- | --- | --- | --- |
 | [Leaflet](https://leafletjs.com/) | 1.9.4 (CSS + JS from unpkg) | [BSD-2-Clause](https://github.com/Leaflet/Leaflet/blob/main/LICENSE) | Interactive map powered by Leaflet |
 | [OpenStreetMap](https://www.openstreetmap.org/copyright) tiles and data | Standard OSM tile layer | ODbL / community copyright | Visible text: “Map data © OpenStreetMap contributors” on `store-locations.php`; Leaflet’s default attribution control also remains active when tiles load |
 

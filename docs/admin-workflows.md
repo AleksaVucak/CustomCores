@@ -8,7 +8,7 @@
 ### Status legend
 
 | Status | Meaning |
-| ------ | ------- |
+| --- | --- |
 | **Pass** | The action completed with the expected result (correct HTTP status/redirect **and** the expected database change), or an unsafe action was correctly rejected |
 | **Fail** | The action did not complete or produced a wrong result on a core administrator path |
 
@@ -17,7 +17,7 @@
 ## 1. Scope — every core administrator action
 
 | Area | Actions verified |
-| ---- | ---------------- |
+| --- | --- |
 | Access guard | Guest → login redirect; logged-in customer → profile redirect; admin → allowed |
 | Dashboard | Load `admin/index.php` (KPIs, alerts, activity panels) |
 | Products | List, search + filter, **add** (with image upload), **edit** (update), **disable**, **enable** |
@@ -52,7 +52,7 @@
 **All core administrator actions: Pass — 51/51 assertions.** Every product-to-monitoring action completed with the correct database effect, the admin guard correctly blocks guests and non-admin customers, and the self-lockout protection correctly refuses an admin's own role change.
 
 | Group | Assertions | Pass | Fail |
-| ----- | ---------: | ---: | ---: |
+| --- | --- | --- | --- |
 | Setup (register/promote/seed data) | 7 | 7 | 0 |
 | Access guard + admin login | 3 | 3 | 0 |
 | Dashboard | 1 | 1 | 0 |
@@ -109,7 +109,7 @@ Testing uses disposable `@example.test` accounts and a disposable product that a
 ## 6. Sign-off
 
 | Criterion | Result |
-| --------- | ------ |
+| --- | --- |
 | Every core administrator action succeeds (product → monitoring) | **Yes — 51/51** |
 | Admin access guard blocks guests and non-admin customers | **Yes** |
 | Account-safety protections enforced (self-lockout / last admin) | **Yes** |

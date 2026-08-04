@@ -8,7 +8,7 @@
 ### Status legend
 
 | Status | Meaning |
-| ------ | ------- |
+| --- | --- |
 | **Pass** | File is parseable, braces/comments balanced, no empty rulesets or dangerous legacy constructs, all `var(--…)` references resolve to a declaration somewhere in the style system |
 | **Fixed** | An avoidable defect was found and corrected in this commit |
 | **N/A** | Check does not apply |
@@ -20,7 +20,7 @@
 All CustomCore-authored stylesheets linked by the application:
 
 | File | Role | Approx. size |
-| ---- | ---- | ------------ |
+| --- | --- | --- |
 | `assets/css/main.css` | Shared foundation (variables, layout, components, responsive) | ~5.7k lines |
 | `assets/css/admin.css` | Administrator overlays | ~1.2k lines |
 | `assets/themes/rgb-gaming.css` | Theme: RGB Gaming | ~450 lines |
@@ -47,7 +47,7 @@ Offline validation (external W3C CSS Validator was unreachable from this environ
 ## 3. Results summary
 
 | Suite | Result |
-| ----- | ------ |
+| --- | --- |
 | Structural balance (5/5 files) | **Pass** |
 | css-tree parse (5/5 files) | **Pass — 0 parse errors, 0 empty-ruleset warnings** |
 | Dangerous legacy patterns | **Pass** (the only `behavior` hits are modern `scroll-behavior`) |
@@ -60,7 +60,7 @@ Offline validation (external W3C CSS Validator was unreachable from this environ
 ### Parse / volume metrics (after fix)
 
 | File | Rules | Declarations | `@media` | `@keyframes` |
-| ---- | ----- | ------------ | -------- | ------------ |
+| --- | --- | --- | --- | --- |
 | `main.css` | 844 | 2660+ | 21 | 2 |
 | `admin.css` | 206 | 545 | 3 | 0 |
 | `rgb-gaming.css` | 50 | 150+ | 1 | 1 |
@@ -72,7 +72,7 @@ Offline validation (external W3C CSS Validator was unreachable from this environ
 ## 4. File-by-file status
 
 | File | Structural | Parse | Tokens | Status |
-| ---- | ---------- | ----- | ------ | ------ |
+| --- | --- | --- | --- | --- |
 | `assets/css/main.css` | Pass | Pass | Pass (after fix) | **Pass** |
 | `assets/css/admin.css` | Pass | Pass | Pass (uses base link token) | **Pass** |
 | `assets/themes/rgb-gaming.css` | Pass | Pass | Pass (after soft-token overrides) | **Pass** |
@@ -88,7 +88,7 @@ Offline validation (external W3C CSS Validator was unreachable from this environ
 Several rulesets referenced long-hand token names that were **never declared** on `:root` (or only had ad-hoc fallbacks). Examples before the fix:
 
 | Token used | Severity | Notes |
-| ---------- | -------- | ----- |
+| --- | --- | --- |
 | `--cc-color-primary` | Avoidable | Builder steps, ratings, active filters — no `:root` value |
 | `--cc-color-muted` | Avoidable | Help centre copy styles — no `:root` value (many calls without fallback) |
 | `--cc-color-surface` | Avoidable | Help cards — only a local fallback |
@@ -116,7 +116,7 @@ Several rulesets referenced long-hand token names that were **never declared** o
 ### 5.2 Non-issues (recorded so Tidy/W3C-style runners don’t surprise reviewers)
 
 | Observation | Why not a code change |
-| ----------- | --------------------- |
+| --- | --- |
 | Heavy use of `var(--cc-*)` | Design system by design; css-tree’s value matcher cannot type-check `var` trees — **parse** is the correctness gate |
 | `!important` (9 in `main.css`, 2 in `admin.css`) | Confined to `prefers-reduced-motion` / forced overrides — intentional |
 | `@import` Google Fonts | Documented offline fallbacks on font stacks |
@@ -155,8 +155,8 @@ for (const f of [
 ## 7. Sign-off
 
 | Criterion | Result |
-| --------- | ------ |
-| All project CSS files validated | **Yes** (5/5) |
+| --- | --- |
+| All project CSS files validated | **Yes** |
 | Avoidable errors corrected | **Yes** (token completeness + score default) |
 | CSS validation record | **This document** |
 
