@@ -1,6 +1,6 @@
 # CustomCore
 
-**Aleksa Vucak | 110139920 | COMP 3340, Final Project| August 5th, 2026**
+**Aleksa Vucak | 110139920 | COMP 3340, Final Project | August 5th, 2026**
 
 Live URL: [https://vucaka.myweb.cs.uwindsor.ca/customcore/](https://vucaka.myweb.cs.uwindsor.ca/customcore/)
 
