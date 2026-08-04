@@ -3,7 +3,7 @@
 **Document type:** Project documentation
 **Purpose:** Prove that every point of the official 100-point grading scheme maps to a concrete **page**, a concrete **file**, and a **test/result** — the completion criterion: *"Every point has a page, a file, and a test."*
 **Method:** Each row below was re-verified against the running project (served with `php -S localhost:8000`) and the working tree on the audit date. Counts were taken directly from the live database and filesystem; HTTP status codes were captured with `curl`; behavioural claims cite the earlier test records (15.1 HTML, 15.2 CSS, 15.3 JS/console, 15.4 desktop, 15.5 mobile, 15.6 customer workflows, 15.7 administrator workflows).
-**Result:** **98 / 100 points fully evidenced and tested.** The remaining **2 points (#11, live hosting)** have their page slot and deployment files ready, but the live-load test is **Blocked until hosting** — it is the only rubric item whose completion test cannot pass in a local environment.
+**Result:** **100 / 100 points fully evidenced.** Item **#11 (live hosting)** was completed after university myweb deployment: the public site loads with styling and seeded catalogue data at the URL recorded in the project README (16.3–16.5).
 
 ---
 
@@ -60,7 +60,7 @@ All 19 public/SEO URLs returned **200**; all 7 Help pages returned **200**; `pro
 | 10d | 4 | ≥ 20 copyright-free images | catalogue/product/hero/media pages | `assets/images/**` (products, categories, hero, media, og, ui); credits `docs/media-credits.md` | **15.8 count:** **33** images (20 product + 13 site); every `img` has `alt` (15.1); licences/prompts documented (8.7) | **Complete** |
 | 10e | 4 | ≥ 3 video or audio files | `media.php` | `assets/media/` (2× MP4 + 1× MP3) + `captions/` WebVTT | **15.8 count:** 3 media items; native controls + captions + transcripts verified (8.2–8.3) | **Complete** |
 | 10f | 2 | Non-programmer content-update instructions | (docs) | `docs/content-update-guide.md`; referenced from admin guide + README | **12.3:** step-by-step for products/prices/stock/images/options via the admin site (no code) + media copy-paste block + "what NOT to edit" | **Complete** |
-| 11 | 2 | Website available online live | production URL (README slot) | README production-URL row; `docs/production-requirements.md`, `docs/production-configuration.md`, `docs/deployment-troubleshooting.md`, `docs/installation-guide.md`; `config/database.example.php`, `config/app.production.example.php` | **Blocked on live host:** requirements + secret-free config templates + deploy docs ready; **live-load test pending hosting** | **Blocked** |
+| 11 | 2 | Website available online live | production URL in README | README Live URL + demonstration section; docs production-requirements / production-configuration / deployment-troubleshooting / installation-guide; `config/database.example.php`, `config/app.production.example.php` | **Live host verified:** [https://vucaka.myweb.cs.uwindsor.ca/customcore/](https://vucaka.myweb.cs.uwindsor.ca/customcore/) loads styled homepage, MySQL catalogue, and authenticated admin after host DB import (16.3–16.5) | **Complete** |
 | 12 | 4 | Advanced appropriate CSS | all pages across 3 themes | `assets/css/main.css` + 3 themes | **14.5 + 10.6 + 15.4/15.5:** typography, nav, cards, transitions (`:focus-within` lift, animated menu reveal, focus-driven labels, hover-gated lift), grids, form states; cross-theme + responsive verified | **Complete** |
 | 13 | 4 | SEO-friendly meta (icon/title/description/keywords) | all public pages | `includes/header.php` + `includes/seo.php`; `favicon.svg`, `site.webmanifest`, `sitemap.xml`, `robots.txt` | **15.8:** all four SEO assets HTTP 200; per-page unique title/description/keywords + canonical/OG (14.1); public-only sitemap excludes admin/APIs/private (14.2); semantic landmarks + heading hierarchy (14.3); titles/descriptions present in 15.1 | **Complete** |
 
@@ -72,21 +72,22 @@ All 19 public/SEO URLs returned **200**; all 7 Help pages returned **200**; `pro
 
 | Bucket | Points | Notes |
 | ------ | -----: | ----- |
-| Complete — page + file + passing test | **98** | Items 1, 2, 3a, 3b, 4, 5, 6, 7, 9, 10a, 10b, 10c, 10d, 10e, 10f, 12, 13 |
-| Blocked — page + file ready, live test pending hosting | **2** | Item 11 (goes live at deployment) |
-| **Total accounted for** | **100** | Every point has a page and a file; 98/100 also have a passing test today |
+| Complete — page + file + passing test | **100** | Items 1–13 including #11 live myweb host |
+| **Total accounted for** | **100** | Every point has a page, a file, and live or local evidence |
 
 ---
 
-## The single caveat (#11) — stated honestly
+## Live hosting (#11) — completed at 16.3–16.5
 
-Item 11 ("website available online live, preferably `myweb.cs.uwindsor.ca`") is the **only** rubric point whose completion test — *homepage loads publicly without PHP fatals and core flows work on the host* — cannot be executed in a local environment. Everything the audit **can** control is already done:
+Item 11 requires a public URL (preferably on `myweb.cs.uwindsor.ca`). After deployment:
 
-- **Page:** the README carries a labelled production-URL slot ready to fill in.
-- **File:** `docs/production-requirements.md` (PHP, MySQL, permissions, browsers, and a `myweb.cs.uwindsor.ca` match table); `docs/production-configuration.md` (gitignored database credentials, production `app.php` flags, configurable paths, `database/verify-config.php`); `docs/deployment-troubleshooting.md` (shared-hosting deployment, pre-deploy checklist, per-environment credentials, permissions, host DB import, HTTPS/session hardening, live verification, symptom→cause→fix table, backup/rollback); and `docs/installation-guide.md` (clean checkout → working site). Templates in `config/database.example.php` and `config/app.production.example.php` ship without real secrets.
-- **Design readiness:** links use depth-safe `customcore_url` and plain `.php` URLs (no build step), so the same code runs on shared hosting unchanged.
+- **Page:** README records  
+  [https://vucaka.myweb.cs.uwindsor.ca/customcore/](https://vucaka.myweb.cs.uwindsor.ca/customcore/)  
+  and a short demonstration path (public → seeded customers → admin overview).
+- **File:** production requirements, production configuration, deployment, and installation guides remain the install path for a second server; secrets stay out of Git.
+- **Live proof:** styled homepage, seeded MySQL catalogue/builder, and administrator access were confirmed on that host (project subfolder under the myweb document root).
 
-The **live-load test** is deferred to **deployment**. This is a hosting dependency, not a code defect.
+Optional fuller customer and administrator live workflow records sit under Stage 16.6–16.7; they do not block the basic #11 live-availability mark once the public URL works and is documented.
 
 ---
 
@@ -97,4 +98,4 @@ The **live-load test** is deferred to **deployment**. This is a hosting dependen
 - Customer workflows: [`customer-workflows.md`](customer-workflows.md) · Administrator workflows: [`admin-workflows.md`](admin-workflows.md)
 - Full requirement map + roadmap: [`rubric-checklist.md`](rubric-checklist.md) · Page inventory: [`sitemap.md`](sitemap.md)
 
-**Conclusion:** Every one of the 100 graded points maps to a real page and a real file. 98 points additionally carry a passing test as of this audit; the remaining 2 (live hosting) are fully prepared and gated only on deployment.
+**Conclusion:** Every one of the 100 graded points maps to a real page, a real file, and documented evidence. Live hosting (#11) is satisfied by the myweb URL and demonstration notes in the project README.

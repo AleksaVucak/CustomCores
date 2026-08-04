@@ -129,7 +129,7 @@ CustomCore's session layer (`includes/functions.php`) automatically hardens cook
 - [ ] Admin login works and the dashboard shows live counts.
 - [ ] Admin → Themes switch restyles the public site.
 - [ ] Consultation attachment and product image uploads succeed and cannot be directory-browsed.
-- [ ] Record the live URL in the project `README.md` (rubric #11).
+- [x] Record the live URL in the project `README.md` (rubric #11).
 - [ ] `robots.txt` Disallows `/admin/` and private customer pages; `sitemap.php` (or `sitemap.xml`) lists only public URLs.
 
 ---

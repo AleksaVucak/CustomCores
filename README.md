@@ -4,7 +4,49 @@
 **COMP 3340, Final Project**
 **August 5th, 2026**
 
-**Live URL:** TBD
+**Live URL:** [https://vucaka.myweb.cs.uwindsor.ca/customcore/](https://vucaka.myweb.cs.uwindsor.ca/customcore/)
+
+Deployed under the university myweb host as a project subfolder (`public_html/customcore/`). Open the link above in a modern desktop or mobile browser. No VPN or special software is required.
+
+---
+
+## How to Demonstrate the Live Site
+
+Use this short path when presenting or grading the hosted instance.
+
+**Public store (no account)**
+
+1. Open the [live homepage](https://vucaka.myweb.cs.uwindsor.ca/customcore/). Confirm styling loads and featured systems appear.
+2. Open **Catalogue** and click any product. Confirm options and images.
+3. Open **PC Builder**, choose parts across a few steps, and confirm the running total and compatibility messages update.
+4. Optional: **Learning Centre** (video/audio), **Locations** (map), **Help** (static guides).
+
+**Customer account (seeded demo users)**
+
+Demo customers from the review seed (password for all three is `DemoPass123!`):
+
+| Email | Name |
+| ----- | ---- |
+| `alex@example.com` | Alex Nguyen |
+| `jordan@example.com` | Jordan Patel |
+| `sam@example.com` | Sam Okafor |
+
+1. **Log in** with one of the emails above.
+2. Save a builder configuration (if signed in), add a catalogue product or build to the **Cart**, and complete **Checkout** (simulated payment labels only; no real card data).
+3. Open **Order history** / order detail to confirm the order number and line items.
+
+**Administrator area**
+
+1. Sign in with an administrator account created for this host (see [Create An Administrator](#create-an-administrator); credentials are not stored in this repository).
+2. Open [admin/](https://vucaka.myweb.cs.uwindsor.ca/customcore/admin/). Check the dashboard counts, **Products**, **Orders**, **Reports**, **Themes**, and **Monitoring**.
+3. On **Themes**, switch theme and reload the public homepage to confirm the chosen CSS applies.
+
+**Notes for live demos**
+
+- Prefer a private or student window if the machine is shared.
+- Production should keep `config/app.php` with `environment` = `production` and `debug` = `false`.
+- Real secrets live only in the host's gitignored `config/database.php`, never in Git.
+- Local setup remains the Install section below if you are not using the public URL.
 
 ---
 
@@ -238,4 +280,6 @@ The site is 50 purposeful dynamic PHP pages: 30 public and customer pages, 17 ad
   `config/database.example.php` and add local credentials before running.
 - Sample media and imagery are credited in [media-credits.md](docs/media-credits.md).
 - The administrator area cannot be reached without an administrator account, so create one with
-  `php database/create-admin.php` before reviewing those pages.
+  `php database/create-admin.php` before reviewing those pages (or use the host's existing admin).
+- For a time-boxed walkthrough of the public host, start at the [live URL](https://vucaka.myweb.cs.uwindsor.ca/customcore/)
+  and follow [How to Demonstrate the Live Site](#how-to-demonstrate-the-live-site).
