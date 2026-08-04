@@ -41,6 +41,8 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 - [Multimedia credits and licences](docs/media-credits.md)
 - [Stage 8 image prompt record](docs/image-prompts.md)
 - [Theme testing record](docs/theme-testing.md)
+- [HTML validation record](docs/html-validation.md)
+- [Security audit (SQL, escaping, CSRF, uploads)](docs/security-audit.md)
 
 ### Quick start
 
@@ -50,6 +52,18 @@ to manage the store. Non-programmers updating catalogue content should read the
 **[content update guide](docs/content-update-guide.md)**.
 
 ## Current status
+
+**Commit 15.1 complete** — validate rendered HTML output.
+
+Captured real server-rendered HTML for the important public, Help centre, signed-in
+customer, and administrator pages and ran two automated suites: (1) core structural
+rules (DOCTYPE, `lang`, title/charset/viewport, header/main/footer, single `h1`, unique
+ids, `img[alt]`, `label[for]` targets, POST + CSRF fields, no PHP error leakage) and
+(2) HTML Tidy Errors under HTML5. **Result: 48 Pass · 0 Fail; zero Tidy Errors.**
+Tidy “missing dd/dl” warnings on four pages are false positives — those use the valid
+HTML5 `<dl><div><dt>/<dd></div></dl>` grouping pattern. No markup fixes were required.
+Full page-by-page evidence: [`docs/html-validation.md`](docs/html-validation.md). Next:
+Commit **15.2** — validate CSS files.
 
 **Commit 14.10 complete** — file upload security audit. **Stage 14 complete.**
 
