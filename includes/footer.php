@@ -66,7 +66,7 @@ $year = date('Y');
         <script
             src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin=""
+            crossorigin="anonymous"
             defer
         ></script>
         <script src="<?php echo customcore_e(customcore_url('assets/js/store-map.js')); ?>" defer></script>

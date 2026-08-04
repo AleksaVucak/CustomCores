@@ -107,8 +107,8 @@ if (!isset($currentPage) || !is_string($currentPage)) {
         <link
             rel="stylesheet"
             href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-            integrity="sha256-p4NxAoJBhIINfQ3ynhTUQFgfPUV3ppxA4IuaMPnLDjM="
-            crossorigin=""
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+            crossorigin="anonymous"
         >
     <?php endif; ?>
     <?php

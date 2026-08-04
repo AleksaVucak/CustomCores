@@ -43,6 +43,7 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 - [Theme testing record](docs/theme-testing.md)
 - [HTML validation record](docs/html-validation.md)
 - [CSS validation record](docs/css-validation.md)
+- [JavaScript / console verification record](docs/js-validation.md)
 - [Security audit (SQL, escaping, CSRF, uploads)](docs/security-audit.md)
 
 ### Quick start
@@ -54,6 +55,10 @@ to manage the store. Non-programmers updating catalogue content should read the
 
 ## Current status
 
+**Commit 15.3 complete** — verify JavaScript and browser console.
+
+Static-checked all **11** project modules under `assets/js/` (`node --check`, 0 failures). Exercised public, Help, signed-in customer (cart/checkout/reviews forms), and admin (including reports charts) pages in Chromium with console + uncaught-error capture: **0 application uncaught errors**. Core interactions verified (builder live price/compat/chart, contact “Other” subject, help hub filter, cart qty steppers, checkout validation, review form validation, Leaflet map). **One avoidable defect fixed:** Leaflet 1.9.4 CSS Subresource Integrity hash in `includes/header.php` was wrong and blocked the stylesheet (console integrity error); updated to the real CDN digest and set `crossorigin="anonymous"` on Leaflet CSS/JS. Evidence: [`docs/js-validation.md`](docs/js-validation.md). Next: Commit **15.4** — desktop responsiveness testing.
+
 **Commit 15.2 complete** — validate CSS files.
 
 Validated all five project stylesheets (`main.css`, `admin.css`, three themes) offline:
@@ -63,8 +68,7 @@ seven undeclared design tokens (`--cc-color-primary`, `--cc-color-muted`, `--cc-
 `--cc-color-success-bg`, `--cc-color-warning-bg`/`-text`, `--cc-color-link`) now live on
 `:root` as semantic aliases/soft fills; dark themes override the soft status fills; score bars
 default `--score: 0`. Re-run shows **zero undefined custom properties**. Evidence:
-[`docs/css-validation.md`](docs/css-validation.md). Next: Commit **15.3** — verify JavaScript and
-browser console.
+[`docs/css-validation.md`](docs/css-validation.md).
 
 **Commit 15.1 complete** — validate rendered HTML output.
 

@@ -160,4 +160,4 @@ for (const f of [
 | Avoidable errors corrected | **Yes** (token completeness + score default) |
 | CSS validation record | **This document** |
 
-**Commit 15.2 complete.** Next: Commit **15.3** — verify JavaScript and browser console.
+**Commit 15.2 complete.** Next was Commit **15.3** — verify JavaScript and browser console (see [`js-validation.md`](js-validation.md)).

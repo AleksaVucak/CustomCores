@@ -49,7 +49,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `assets/media/` | ≥ 3 video/audio items + captions | 8.2 |
 | `config/` | `database.example.php`, `app.php`; real `database.php` gitignored | 1.2–1.3 |
 | `database/` | Schema, seeds, create-admin script | 2.x |
-| `docs/` | Business case, rubric, sitemap, wireframes, ER design, database import, media credits, image prompts, theme testing, Help context-link audit, Stage 12 guides, monitoring troubleshooting, Stage 14 security audit, Stage 15 HTML and CSS validation records | 0.x–15.x, 8.7, 10.6, 11.7, 12.1–12.6, 13.5, 14.8–14.10, 15.1–15.2 |
+| `docs/` | Business case, rubric, sitemap, wireframes, ER design, database import, media credits, image prompts, theme testing, Help context-link audit, Stage 12 guides, monitoring troubleshooting, Stage 14 security audit, Stage 15 HTML / CSS / JS validation records | 0.x–15.x, 8.7, 10.6, 11.7, 12.1–12.6, 13.5, 14.8–14.10, 15.1–15.3 |
 | `help/` | Static Help hub (`index.html`, 11.1) + topic articles (`pc-builder.html` from 5.9; `accounts.html` 11.2; `catalogue.html` 11.3; `orders.html` 11.4; `support.html` 11.5; `training.html` 11.6) | 5.9, 11.x |
 | `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, theme, admin, admin-nav, admin-products, admin-product-form, admin-options, admin-compatibility, admin-orders, admin-users, admin-consultations, admin-reviews, admin-reports, admin-themes, compatibility, performance, monitoring, seo | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 10.x, 13.x, 14.x |
 | `uploads/consultation/` | Validated consultation files; `index.php` + `.htaccess` deny all direct web access (served only via download endpoints) | 7.4, 14.10 |
@@ -79,6 +79,15 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 ---
 
 ## 5. Status
+
+**Commit 15.3 complete — verify JavaScript and browser console.**
+New [`docs/js-validation.md`](js-validation.md): `node --check` on all 11 `assets/js/*`
+modules (**0 failures**); Chromium console + uncaught-error sweep of public, Help,
+customer, and admin core pages (**0 application uncaught errors**). **Fixed** incorrect
+Leaflet CSS Subresource Integrity in `includes/header.php` (blocked `leaflet.css` and
+logged a console error); JS integrity was already correct; both Leaflet tags use
+`crossorigin="anonymous"`. Feature scripts verified under their intended load conditions
+(builder / cart / checkout / reviews / contact / map / charts / admin-reports / help-hub).
 
 **Commit 15.2 complete — validate CSS files.**
 New [`docs/css-validation.md`](css-validation.md): structural + css-tree parse of all five
