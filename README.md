@@ -47,6 +47,7 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 - [Desktop responsiveness record](docs/responsiveness-desktop.md)
 - [Mobile responsiveness record](docs/responsiveness-mobile.md)
 - [Customer workflow verification record](docs/customer-workflows.md)
+- [Administrator workflow verification record](docs/admin-workflows.md)
 - [Security audit (SQL, escaping, CSRF, uploads)](docs/security-audit.md)
 
 ### Quick start
@@ -57,6 +58,10 @@ to manage the store. Non-programmers updating catalogue content should read the
 **[content update guide](docs/content-update-guide.md)**.
 
 ## Current status
+
+**Commit 15.7 complete** — verify complete administrator workflows.
+
+Drove the running site over `php -S` with a cookie-jar + CSRF harness through the entire **product → monitoring** admin journey and **every core administrator action**, verifying each not just by its PRG redirect but by re-reading the affected database row: access guard (guest → login, customer → profile, admin → allowed), dashboard, products (list/search/filter, add **with image upload**, edit, disable/enable), product options (create/set-default/toggle/delete), compatibility rules (toggle + restore, update), orders (status change + admin notes), users (disable/enable, promote → admin, demote → customer), consultations (respond → auto-*answered*, status change), reviews (approve/hide), reports, monitoring, and themes (switch + restore) — plus the **self-lockout** safety guard (an admin cannot change their own role). Because there is no seeded admin (by design), the harness registered a disposable customer + admin (promoted in DB) and had the customer create an order, a pending review, and a consultation for the admin to manage. **Result: 51/51 assertions Pass, 0 defects.** All test data (product + image, both users, order/review/consultation) was deleted and global settings (theme, toggled rule) restored — store verified back to baseline (20 products, 0 orders, seed review mix, `active_theme_id=1`). Evidence: [`docs/admin-workflows.md`](docs/admin-workflows.md).
 
 **Commit 15.6 complete** — verify complete customer workflows.
 

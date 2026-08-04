@@ -49,7 +49,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `assets/media/` | ≥ 3 video/audio items + captions | 8.2 |
 | `config/` | `database.example.php`, `app.php`; real `database.php` gitignored | 1.2–1.3 |
 | `database/` | Schema, seeds, create-admin script | 2.x |
-| `docs/` | Business case, rubric, sitemap, wireframes, ER design, database import, media credits, image prompts, theme testing, Help context-link audit, Stage 12 guides, monitoring troubleshooting, Stage 14 security audit, Stage 15 HTML / CSS / JS validation + desktop & mobile responsiveness + customer-workflow records | 0.x–15.x, 8.7, 10.6, 11.7, 12.1–12.6, 13.5, 14.8–14.10, 15.1–15.6 |
+| `docs/` | Business case, rubric, sitemap, wireframes, ER design, database import, media credits, image prompts, theme testing, Help context-link audit, Stage 12 guides, monitoring troubleshooting, Stage 14 security audit, Stage 15 HTML / CSS / JS validation + desktop & mobile responsiveness + customer & administrator workflow records | 0.x–15.x, 8.7, 10.6, 11.7, 12.1–12.6, 13.5, 14.8–14.10, 15.1–15.7 |
 | `help/` | Static Help hub (`index.html`, 11.1) + topic articles (`pc-builder.html` from 5.9; `accounts.html` 11.2; `catalogue.html` 11.3; `orders.html` 11.4; `support.html` 11.5; `training.html` 11.6) | 5.9, 11.x |
 | `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, theme, admin, admin-nav, admin-products, admin-product-form, admin-options, admin-compatibility, admin-orders, admin-users, admin-consultations, admin-reviews, admin-reports, admin-themes, compatibility, performance, monitoring, seo | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 10.x, 13.x, 14.x |
 | `uploads/consultation/` | Validated consultation files; `index.php` + `.htaccess` deny all direct web access (served only via download endpoints) | 7.4, 14.10 |
@@ -79,6 +79,18 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 ---
 
 ## 5. Status
+
+**Commit 15.7 complete — verify complete administrator workflows.**
+New [`docs/admin-workflows.md`](admin-workflows.md): a cookie-jar + CSRF end-to-end harness drove the
+full **product → monitoring** journey and **every core admin action**, verifying each by both its PRG
+redirect and the resulting DB row change — access guard (guest/customer blocked, admin allowed),
+dashboard, products (add w/ image, edit, disable/enable), product options, compatibility (toggle +
+restore), orders (status + notes), users (disable/enable, promote/demote), consultations (respond +
+status), reviews (approve/hide), reports, monitoring, and themes (switch + restore) — plus the
+**self-lockout** safety guard. Because no admin is seeded, the harness registered a disposable
+customer + admin (promoted in DB) and had the customer create an order/review/consultation to manage.
+**Result: 51/51 assertions Pass, 0 defects.** All test data deleted and global settings restored;
+store verified back to baseline (20 active products, 0 orders, seed review mix, `active_theme_id=1`).
 
 **Commit 15.6 complete — verify complete customer workflows.**
 New [`docs/customer-workflows.md`](customer-workflows.md): a cookie-jar + CSRF end-to-end harness
