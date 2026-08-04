@@ -398,6 +398,7 @@ require_once __DIR__ . '/includes/header.php';
                             width="320"
                             height="240"
                         >
+                        <?php echo customcore_media_credit(); ?>
                     <?php endif; ?>
                     <p class="cart-empty__message">Your cart is empty.</p>
                     <div class="cart-empty__actions">

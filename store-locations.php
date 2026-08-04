@@ -128,6 +128,7 @@ require_once __DIR__ . '/includes/header.php';
                     width="960"
                     height="720"
                 >
+                <?php echo customcore_media_credit(); ?>
             <?php endif; ?>
 
             <!-- Store map: Leaflet/OpenStreetMap with noscript fallback -->

@@ -78,6 +78,7 @@ require_once __DIR__ . '/includes/header.php';
         <a class="button" href="<?php echo customcore_e(customcore_url('catalogue.php')); ?>">Shop prebuilts</a>
         <a class="button button--secondary" href="<?php echo customcore_e(customcore_url('builder.php')); ?>">Start PC Builder</a>
     </p>
+    <?php echo customcore_media_credit(); ?>
 </section>
 
 <!-- Context help: quick links into the Help centre and About page -->
@@ -148,6 +149,7 @@ require_once __DIR__ . '/includes/header.php';
                                     height="480"
                                 >
                             </a>
+                            <?php echo customcore_media_credit(); ?>
                         <?php else : ?>
                             <div class="product-card__media product-card__media--placeholder" aria-hidden="true">
                                 <span class="product-card__media-label">PC</span>
@@ -223,6 +225,7 @@ require_once __DIR__ . '/includes/header.php';
                                         height="300"
                                     >
                                 </span>
+                                <?php echo customcore_media_credit('span'); ?>
                             <?php endif; ?>
                             <h3 class="tier-card__title"><?php echo customcore_e($catName); ?></h3>
                             <?php if ($catDesc !== '') : ?>
@@ -270,6 +273,7 @@ require_once __DIR__ . '/includes/header.php';
                     <?php endif; ?>
                     Your browser does not support HTML5 video.
                 </video>
+                <?php echo customcore_media_credit(); ?>
             </div>
         <?php else : ?>
             <div class="media-teaser__placeholder" role="img" aria-label="Learning centre media preview">

@@ -120,6 +120,7 @@ require_once __DIR__ . '/includes/header.php';
                                 <span class="media-directory__step">Lesson <?php echo customcore_e((string) ($index + 1)); ?></span>
                                 <span class="media-directory__name"><?php echo customcore_e($item['title']); ?></span>
                                 <span class="media-directory__duration"><?php echo customcore_e($item['duration_label']); ?></span>
+                                <?php echo customcore_media_credit('span'); ?>
                             </span>
                         </a>
                     </li>
@@ -198,6 +199,7 @@ require_once __DIR__ . '/includes/header.php';
                             </audio>
                         <?php endif; ?>
                     </div>
+                    <?php echo customcore_media_credit(); ?>
 
                     <div class="media-card__content">
                         <p class="media-card__meta">

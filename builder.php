@@ -268,6 +268,7 @@ require_once __DIR__ . '/includes/header.php';
             ·
             <a href="<?php echo customcore_e(customcore_url('help/pc-builder.html')); ?>">Full PC Builder guide</a>
         </p>
+        <?php echo customcore_media_credit(); ?>
     </header>
 
     <!-- Step indicators -->

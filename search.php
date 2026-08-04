@@ -188,6 +188,7 @@ require_once __DIR__ . '/includes/header.php';
                                     height="480"
                                 >
                             </a>
+                            <?php echo customcore_media_credit(); ?>
                         <?php else : ?>
                             <div class="product-card__media product-card__media--placeholder" aria-hidden="true">
                                 <span class="product-card__media-label">PC</span>

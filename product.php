@@ -212,16 +212,19 @@ require_once __DIR__ . '/includes/header.php';
         <!-- Product hero: image, name, brand, price, and stock status -->
         <header class="product-detail__header">
             <?php if ($productImageUrl !== null) : ?>
-                <div class="product-detail__media">
-                    <img
-                        class="product-detail__image"
-                        src="<?php echo customcore_e($productImageUrl); ?>"
-                        alt="<?php echo customcore_e($productName); ?>"
-                        loading="eager"
-                        decoding="async"
-                        width="960"
-                        height="720"
-                    >
+                <div class="product-detail__media-wrap">
+                    <div class="product-detail__media">
+                        <img
+                            class="product-detail__image"
+                            src="<?php echo customcore_e($productImageUrl); ?>"
+                            alt="<?php echo customcore_e($productName); ?>"
+                            loading="eager"
+                            decoding="async"
+                            width="960"
+                            height="720"
+                        >
+                    </div>
+                    <?php echo customcore_media_credit(); ?>
                 </div>
             <?php else : ?>
                 <div class="product-detail__media product-detail__media--placeholder" aria-hidden="true">

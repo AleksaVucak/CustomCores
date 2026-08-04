@@ -308,6 +308,7 @@ require_once __DIR__ . '/includes/header.php';
                             width="320"
                             height="240"
                         >
+                        <?php echo customcore_media_credit(); ?>
                     <?php endif; ?>
                     <p>Your wishlist is empty.</p>
                     <div class="wishlist-empty__actions">
@@ -360,6 +361,7 @@ require_once __DIR__ . '/includes/header.php';
                                         height="360"
                                     >
                                 </a>
+                                <?php echo customcore_media_credit(); ?>
                             <?php endif; ?>
                             <div class="wishlist-card__body">
                                 <h2 class="wishlist-card__name">

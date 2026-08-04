@@ -784,6 +784,24 @@ function customcore_media_url(?string $path): ?string
 }
 
 /**
+ * Credit line displayed beneath every image, video, and audio item.
+ *
+ * Every asset shipped with the project was generated for this coursework, so
+ * one shared wording is reused instead of per-file attributions. Full source
+ * and prompt records live in docs/media-credits.md and docs/image-prompts.md.
+ *
+ * @param string $tag Wrapper element; pass "span" inside a parent that only
+ *                    accepts phrasing content.
+ */
+function customcore_media_credit(string $tag = 'p'): string
+{
+    $tag = $tag === 'span' ? 'span' : 'p';
+    $credit = 'AI generated for CustomCore (Academic use). Not third party stock.';
+
+    return '<' . $tag . ' class="media-credit">' . customcore_e($credit) . '</' . $tag . '>';
+}
+
+/**
  * Whether the current page matches a navigation key.
  *
  * Pages set $currentPage before including the header (e.g. "home", "about").

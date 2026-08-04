@@ -5742,6 +5742,69 @@ a.cart-item__name:hover {
 }
 
 /*
+   Media credit line
+   Attribution printed under every image, video, and audio item.
+   * ==========================================================================
+   */
+
+.media-credit {
+  margin: var(--cc-space-2) 0 0;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--cc-color-text-muted);
+}
+
+/* Phrasing-only parents (anchors built from spans) need an explicit block. */
+span.media-credit {
+  display: block;
+}
+
+/* Gap-driven layouts already space their children. */
+.card > .media-credit,
+.wishlist-card > .media-credit,
+.media-card > .media-credit {
+  margin-top: 0;
+}
+
+/* Images that carry their own bottom margin keep the credit tucked under. */
+.tier-card__media + .media-credit,
+.location-photo + .media-credit,
+.cart-empty__image + .media-credit,
+.wishlist-empty__image + .media-credit {
+  margin-top: calc(-1 * var(--cc-space-3));
+  margin-bottom: var(--cc-space-4);
+}
+
+/* Product detail wraps image + credit so the two-column header keeps one cell. */
+.product-detail__media-wrap {
+  display: block;
+}
+
+/* Homepage teaser prints the credit inside the dark player frame. */
+.media-teaser__player > .media-credit {
+  margin: 0;
+  padding: var(--cc-space-2) var(--cc-space-3);
+  color: rgba(232, 247, 244, 0.85);
+}
+
+/* Learning Centre directory rows are compact, so the credit stays small. */
+.media-directory__text > .media-credit {
+  margin-top: 0.15rem;
+  font-size: 0.65rem;
+}
+
+/* Heroes paint their image as a CSS background behind page text. */
+.hero--home > .media-credit,
+.builder-page__header > .media-credit {
+  margin-top: var(--cc-space-4);
+  color: inherit;
+  opacity: 0.75;
+}
+
+/*
    Reduced-motion preference
    Honour users who ask their OS to minimise animation. Kept last so it wins.
    * ==========================================================================
