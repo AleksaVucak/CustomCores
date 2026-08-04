@@ -48,6 +48,12 @@ The reusable helper used by the website is `includes/database.php` (`customcore_
 
 See [`docs/database-import.md`](../docs/database-import.md) for the complete schema → seeds → admin → verification → backup sequence.
 
+## Production host requirements
+
+Before uploading to university shared hosting, confirm the server matches
+[`docs/production-requirements.md`](../docs/production-requirements.md) (PHP version and modules,
+MySQL engine, upload permissions, and browser baselines).
+
 ## Create an admin account (Commit 2.7)
 
 After the database schema and config are in place:

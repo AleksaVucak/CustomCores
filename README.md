@@ -35,6 +35,10 @@ touches real card data.
 | Web server | Apache, Nginx, or the PHP built in server | Plain `.php` URLs, so no rewrite rules are needed. |
 | Command line | `php` and `mysql` on the PATH | Needed for the database import and admin creation. |
 
+For production hosting (including `myweb.cs.uwindsor.ca`), permissions, enabled PHP modules,
+browser support, and a pre-upload host checklist, use the full
+[production server requirements](docs/production-requirements.md) document.
+
 ---
 
 ## Install
@@ -190,6 +194,7 @@ The site is 50 purposeful dynamic PHP pages: 30 public and customer pages, 17 ad
 
 **Setting Up And Running**
 
+- [Production server requirements](docs/production-requirements.md)
 - [Installation guide](docs/installation-guide.md)
 - [Database import guide](docs/database-import.md)
 - [Deployment and troubleshooting](docs/deployment-troubleshooting.md)

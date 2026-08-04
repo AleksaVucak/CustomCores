@@ -3,9 +3,9 @@
 **Document type:** Project documentation
 **Purpose:** Let a new developer or grader install CustomCore from a clean checkout to a fully working site — locally or on a fresh server — without relying on undocumented steps.
 **Audience:** Developers and graders with basic command-line and MySQL familiarity.
-**Related:** database detail in [`docs/database-import.md`](database-import.md); config in [`config/README.md`](../config/README.md); production/hosting specifics and problem-solving in [`docs/deployment-troubleshooting.md`](deployment-troubleshooting.md).
+**Related:** host capability checklist in [`docs/production-requirements.md`](production-requirements.md); database detail in [`docs/database-import.md`](database-import.md); config in [`config/README.md`](../config/README.md); production upload steps and problem-solving in [`docs/deployment-troubleshooting.md`](deployment-troubleshooting.md).
 
-> Live-hosting specifics (for example `myweb.cs.uwindsor.ca`) and a troubleshooting table live in the companion **[deployment & troubleshooting guide](deployment-troubleshooting.md)**. This document gets you running from scratch; that one gets you online and unstuck.
+> Before hosting publicly, confirm the server matches the **[production server requirements](production-requirements.md)** checklist (PHP modules, MySQL engine, permissions, browsers). Live upload steps and troubleshooting live in the companion **[deployment & troubleshooting guide](deployment-troubleshooting.md)**. This document gets you running from scratch; that pair gets you online.
 
 ---
 
@@ -20,6 +20,8 @@
 | Command line | `php` and `mysql` on PATH | For the connection test, DB import, and admin creation. |
 
 CustomCore intentionally uses **no** Composer, Node, Docker, or build step. There are no dependencies to install beyond PHP + MySQL. Chart.js and Leaflet load from a CDN only on the pages that need them.
+
+The short table above is enough for a local install. The production-oriented detail — required PHP extensions, filesystem modes, HTTPS, browser baselines, and a University of Windsor `myweb.cs.uwindsor.ca` match table — is in [`production-requirements.md`](production-requirements.md).
 
 ---
 

@@ -3,7 +3,7 @@
 **Document type:** Project documentation
 **Purpose:** Take a working local install to a live server (with `myweb.cs.uwindsor.ca`-style shared PHP/MySQL hosting as the primary target) and provide a practical troubleshooting reference for the most likely problems.
 **Audience:** Whoever deploys and maintains the live site.
-**Related:** first-time setup in [`docs/installation-guide.md`](installation-guide.md); database import/backup in [`docs/database-import.md`](database-import.md); admin tasks in [`docs/administrator-guide.md`](administrator-guide.md).
+**Related:** host capability checklist in [`docs/production-requirements.md`](production-requirements.md); first-time setup in [`docs/installation-guide.md`](installation-guide.md); database import/backup in [`docs/database-import.md`](database-import.md); admin tasks in [`docs/administrator-guide.md`](administrator-guide.md).
 
 ---
 
@@ -16,13 +16,18 @@ CustomCore is designed to deploy cleanly on **standard shared PHP/MySQL hosting*
 - **No build step** — no Composer, Node, or Docker. Deploying is copying files + importing the database.
 - **Secrets stay out of Git** — `config/database.php` and `uploads/*` are gitignored; you create them per environment.
 
+Confirm the host itself is capable before you spend time uploading: see the
+[production server requirements](production-requirements.md) page (PHP 8+, PDO MySQL, `fileinfo`,
+writable uploads, browser baselines, and a `myweb.cs.uwindsor.ca` match table).
+
 ---
 
 ## 2. Pre-deployment checklist
 
-Before uploading, confirm on your local copy:
+Before uploading, confirm on your local copy **and** on the host:
 
-- [ ] The site passes the §9 smoke test in [`docs/installation-guide.md`](installation-guide.md).
+- [ ] The host passes the pre-upload checklist in [`production-requirements.md`](production-requirements.md) section 9.
+- [ ] The site passes the section 9 smoke test in [`docs/installation-guide.md`](installation-guide.md).
 - [ ] `config/app.php → debug` is **`false`**.
 - [ ] `config/app.php → environment` is set to `production` for the live copy.
 - [ ] No real credentials or customer data are staged for commit.
@@ -48,8 +53,8 @@ Upload the entire project folder into your web space (for example `public_html/c
 
 Either way, ensure these gitignored items exist on the server afterwards:
 
-- `config/database.php` (created in §4)
-- `uploads/products/` and `uploads/consultation/` (writable — see §5)
+- `config/database.php` (created in section 4)
+- `uploads/products/` and `uploads/consultation/` (writable, see section 5)
 
 ---
 
@@ -92,7 +97,7 @@ Adjust to your host's user model (some shared hosts prefer `775`/`664` with a sh
 
 ## 6. Import the database on the host
 
-Use the host's MySQL (via SSH `mysql` client or a panel like phpMyAdmin) and run the same ordered import as local — schema first, then seeds — from [`docs/installation-guide.md`](installation-guide.md) §5 and [`docs/database-import.md`](database-import.md) §2. Then create the admin account:
+Use the host's MySQL (via SSH `mysql` client or a panel like phpMyAdmin) and run the same ordered import as local (schema first, then seeds) from [`docs/installation-guide.md`](installation-guide.md) section 5 and [`docs/database-import.md`](database-import.md) section 2. Then create the admin account:
 
 ```bash
 php database/create-admin.php
@@ -157,7 +162,7 @@ mysqldump -u your_username -p --single-transaction --routines --triggers \
  your_database_name > customcore-backup.sql
 ```
 
-- **Restore** into a scratch DB first to test, then the target. See [`docs/database-import.md`](database-import.md) §5.
+- **Restore** into a scratch DB first to test, then the target. See [`docs/database-import.md`](database-import.md) section 5.
 - **Uploaded files:** back up `uploads/products/` and `uploads/consultation/` separately (they are not in Git).
 - **Code rollback:** `git checkout <previous-tag-or-commit>` (or re-upload the previous files). Because config and uploads are outside Git, a code rollback does not touch credentials or user files.
 - **Never commit** dumps containing real customer data or production credentials.
@@ -170,10 +175,10 @@ mysqldump -u your_username -p --single-transaction --routines --triggers \
 - Watch the admin dashboard attention alerts (pending reviews, open consultations, low/out-of-stock).
 - Back up the database and uploads on a regular schedule.
 - Rotate admin credentials if staff change; disable rather than delete departing accounts.
-- After pulling new code, re-check the §8 verification list.
+- After pulling new code, re-check the section 8 verification list.
 
 ---
 
 ## 12. Status
 
-**Summary.** Deploying CustomCore to standard shared PHP/MySQL hosting is documented end-to-end (file transfer, per-environment credentials, permissions, database import, HTTPS/session behaviour, and live verification), alongside a practical troubleshooting table and backup/rollback procedures. Supports rubric row **B14** and prepares rubric **#11** (record the live URL in the README once hosted).
+**Summary.** Deploying CustomCore to standard shared PHP/MySQL hosting is documented end-to-end (file transfer, per-environment credentials, permissions, database import, HTTPS/session behaviour, and live verification), alongside a practical troubleshooting table and backup/rollback procedures. Host capability is specified separately in [`production-requirements.md`](production-requirements.md). Supports rubric row **B14** and prepares rubric **#11** (record the live URL in the README once hosted).
