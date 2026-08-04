@@ -197,6 +197,9 @@
 
 .admin-activity__grid {
   display: grid;
+  /* Explicit shrinkable column so the (unwrapped) activity tables can't stretch
+     the single mobile column past the viewport. */
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--cc-space-4);
 }
 
@@ -245,6 +248,10 @@
   font-size: 0.8rem;
   color: var(--cc-color-text-muted);
   font-weight: 400;
+  /* Secondary cell text is often an email or timestamp with no break points;
+     `anywhere` lets it wrap (and shrinks its min-content) so unwrapped admin
+     tables — e.g. the dashboard activity panels — don't overflow narrow screens. */
+  overflow-wrap: anywhere;
 }
 
 /* ---- Tool cards --------------------------------------------------------- */
@@ -739,7 +746,10 @@
 
 .admin-dl {
   display: grid;
-  grid-template-columns: max-content 1fr;
+  /* minmax(0, …) on both tracks so a long value (e.g. a customer email) can't
+     push the two-column detail list past a narrow screen; combined with the
+     dd wrap below, long values wrap instead of overflowing. */
+  grid-template-columns: minmax(0, max-content) minmax(0, 1fr);
   gap: 0.35rem var(--cc-space-4);
   margin: 0;
 }
@@ -751,6 +761,7 @@
 
 .admin-dl dd {
   margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .admin-order-detail__total {
@@ -999,13 +1010,18 @@
 
 .admin-report-users {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  /* min(280px, 100%) keeps the 280px preferred track on roomy screens but lets
+     each column shrink to the container on phones narrower than 280px + padding,
+     so the report charts never overflow. */
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   gap: var(--cc-space-5);
 }
 
 @media (max-width: 800px) {
   .admin-report-chart {
-    grid-template-columns: 1fr;
+    /* minmax(0, 1fr) so the stacked chart column can shrink below the Chart.js
+       canvas's intrinsic size instead of overflowing on narrow screens. */
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

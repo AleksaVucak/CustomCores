@@ -327,8 +327,16 @@ require_once __DIR__ . '/includes/header.php';
                     <?php endforeach; ?>
                 </tbody>
                 <tfoot>
-                    <tr>
+                    <!-- Wide total row: spans the 4-column table on tablet/desktop. -->
+                    <tr class="order-confirm__total-row order-confirm__total-row--wide">
                         <td colspan="3" class="order-confirm__total-label">Total</td>
+                        <td class="order-confirm__total-value">$<?php echo customcore_e(number_format($total, 2)); ?></td>
+                    </tr>
+                    <!-- Narrow total row: the unit-price column is hidden on phones, so this
+                         row uses colspan="2" to stay aligned with the 3 visible columns and
+                         avoid a phantom 4th column (which would force horizontal overflow). -->
+                    <tr class="order-confirm__total-row order-confirm__total-row--narrow">
+                        <td colspan="2" class="order-confirm__total-label">Total</td>
                         <td class="order-confirm__total-value">$<?php echo customcore_e(number_format($total, 2)); ?></td>
                     </tr>
                 </tfoot>

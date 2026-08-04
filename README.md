@@ -45,6 +45,7 @@ required. The application uses ordinary `.php` URLs for hosting compatibility.
 - [CSS validation record](docs/css-validation.md)
 - [JavaScript / console verification record](docs/js-validation.md)
 - [Desktop responsiveness record](docs/responsiveness-desktop.md)
+- [Mobile responsiveness record](docs/responsiveness-mobile.md)
 - [Security audit (SQL, escaping, CSRF, uploads)](docs/security-audit.md)
 
 ### Quick start
@@ -56,9 +57,13 @@ to manage the store. Non-programmers updating catalogue content should read the
 
 ## Current status
 
+**Commit 15.5 complete** — mobile responsiveness testing.
+
+Drove the running site in a real Chromium tab and, using a cache-busted fixed-width iframe harness at **320 / 360 / 390 / 414 / 700 / 768 px**, ran an ancestor-aware horizontal-overflow probe (page `scrollWidth` vs `innerWidth`, plus a per-leaf check that ignores intended `overflow-x` scroll wrappers and `overflow:hidden` clips such as the Leaflet map) across **40 page states** — **15 public**, **11 customer**, and **14 admin**. Signed-in and admin coverage used a disposable customer briefly promoted to admin via a temporary DB helper; the account, its order, its cart, and the helper file were then **deleted**, returning the store to its pre-test state (three seed customers, 0 orders, 0 carts). **Result after fixes: 40/40 Pass at every width; 9 avoidable overflow defects found and fixed** — a fluid builder chart canvas, a scroll-wrapped catalogue stats table, `minmax(0,1fr)` single columns for the cart/account splits and admin grids, `overflow-wrap:anywhere` for long emails (profile + admin detail lists), a responsive order-confirmation totals footer, scroll-wrapped admin dashboard/monitoring tables, and shrinkable reports charts. Two ~13 px `scrollWidth` readings (profile, admin order-details at 320 px) were confirmed to be the **iframe vertical-scrollbar artifact** (0 real offenders), not overflow. Evidence: [`docs/responsiveness-mobile.md`](docs/responsiveness-mobile.md).
+
 **Commit 15.4 complete** — desktop responsiveness testing.
 
-Drove the running site in a real Chromium tab and, at **1024 / 1280 / 1440 / 1920 px**, ran an automated horizontal-overflow probe (page `scrollWidth` vs `innerWidth`, plus a per-element check that ignores intended `overflow-x` scroll wrappers) across **40 page states** — **15 public**, **11 customer**, and **14 admin**. Signed-in and admin coverage used a disposable customer (registered, added to cart, placed an order to populate order views) briefly promoted to admin via a temporary DB helper; the account, its order, and the helper files were then **deleted**, returning the store to its pre-test state. **Result: 40/40 Pass, 0 unintended horizontal overflow, 0 clipped or broken layouts, 0 defects — no CSS changes needed.** Confirmed the shell caps at **1120 px** (`--cc-width-max`) and centres on wide screens, and that wide admin tables + the four-way comparison table scroll **inside their cards** (`overflow-x:auto`), never the page. Evidence: [`docs/responsiveness-desktop.md`](docs/responsiveness-desktop.md). Next: Commit **15.5** — mobile responsiveness testing.
+Drove the running site in a real Chromium tab and, at **1024 / 1280 / 1440 / 1920 px**, ran an automated horizontal-overflow probe (page `scrollWidth` vs `innerWidth`, plus a per-element check that ignores intended `overflow-x` scroll wrappers) across **40 page states** — **15 public**, **11 customer**, and **14 admin**. Signed-in and admin coverage used a disposable customer (registered, added to cart, placed an order to populate order views) briefly promoted to admin via a temporary DB helper; the account, its order, and the helper files were then **deleted**, returning the store to its pre-test state. **Result: 40/40 Pass, 0 unintended horizontal overflow, 0 clipped or broken layouts, 0 defects — no CSS changes needed.** Confirmed the shell caps at **1120 px** (`--cc-width-max`) and centres on wide screens, and that wide admin tables + the four-way comparison table scroll **inside their cards** (`overflow-x:auto`), never the page. Evidence: [`docs/responsiveness-desktop.md`](docs/responsiveness-desktop.md).
 
 **Commit 15.3 complete** — verify JavaScript and browser console.
 

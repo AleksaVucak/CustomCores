@@ -49,7 +49,7 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 | `assets/media/` | ≥ 3 video/audio items + captions | 8.2 |
 | `config/` | `database.example.php`, `app.php`; real `database.php` gitignored | 1.2–1.3 |
 | `database/` | Schema, seeds, create-admin script | 2.x |
-| `docs/` | Business case, rubric, sitemap, wireframes, ER design, database import, media credits, image prompts, theme testing, Help context-link audit, Stage 12 guides, monitoring troubleshooting, Stage 14 security audit, Stage 15 HTML / CSS / JS validation + desktop responsiveness records | 0.x–15.x, 8.7, 10.6, 11.7, 12.1–12.6, 13.5, 14.8–14.10, 15.1–15.4 |
+| `docs/` | Business case, rubric, sitemap, wireframes, ER design, database import, media credits, image prompts, theme testing, Help context-link audit, Stage 12 guides, monitoring troubleshooting, Stage 14 security audit, Stage 15 HTML / CSS / JS validation + desktop & mobile responsiveness records | 0.x–15.x, 8.7, 10.6, 11.7, 12.1–12.6, 13.5, 14.8–14.10, 15.1–15.5 |
 | `help/` | Static Help hub (`index.html`, 11.1) + topic articles (`pc-builder.html` from 5.9; `accounts.html` 11.2; `catalogue.html` 11.3; `orders.html` 11.4; `support.html` 11.5; `training.html` 11.6) | 5.9, 11.x |
 | `includes/` | Header, footer, nav, helpers, auth, CSRF, flash, cart, orders, wishlist, reviews, consultations, contact, media, catalogue-stats, theme, admin, admin-nav, admin-products, admin-product-form, admin-options, admin-compatibility, admin-orders, admin-users, admin-consultations, admin-reviews, admin-reports, admin-themes, compatibility, performance, monitoring, seo | 1.3–1.8, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 10.x, 13.x, 14.x |
 | `uploads/consultation/` | Validated consultation files; `index.php` + `.htaccess` deny all direct web access (served only via download endpoints) | 7.4, 14.10 |
@@ -79,6 +79,20 @@ Root feature pages (`about.php`, `catalogue.php`, `builder.php`, …) are added 
 ---
 
 ## 5. Status
+
+**Commit 15.5 complete — mobile responsiveness testing.**
+New [`docs/responsiveness-mobile.md`](responsiveness-mobile.md): drove the site in a real
+Chromium tab via a cache-busted fixed-width **iframe harness** at
+**320 / 360 / 390 / 414 / 700 / 768 px** with an **ancestor-aware** overflow probe across the
+same **40 page states** (15 public, 11 customer, 14 admin), using a disposable customer briefly
+promoted to admin for signed-in coverage (account, order, cart, and helper file deleted after —
+store back to 3 seed customers, 0 orders, 0 carts). Result after fixes: **40/40 Pass at every
+width; 9 avoidable overflow defects found and fixed** (fluid builder chart canvas; scroll-wrapped
+catalogue stats table; `minmax(0,1fr)` cart/account/admin single columns; `overflow-wrap:anywhere`
+for long emails; responsive order-confirmation totals footer; scroll-wrapped admin
+dashboard/monitoring tables; shrinkable reports charts). Two ~13 px `scrollWidth` readings were
+confirmed as the iframe vertical-scrollbar artifact (0 real offenders), not overflow. With 15.4,
+**rubric B15 (desktop + mobile responsiveness) is complete.**
 
 **Commit 15.4 complete — desktop responsiveness testing.**
 New [`docs/responsiveness-desktop.md`](responsiveness-desktop.md): drove the site in a real

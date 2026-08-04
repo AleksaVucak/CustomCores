@@ -994,6 +994,11 @@ textarea[aria-invalid="true"]:focus-visible {
 
 .profile-details__list dd {
   margin: 0;
+  /* Break long unbreakable values (e.g. an email address with no spaces) so they
+     wrap instead of widening the details card. `anywhere` (not `break-word`) is
+     required here because it also shrinks the value's intrinsic min-content, so
+     the grid column can narrow below the email's length on small phones. */
+  overflow-wrap: anywhere;
 }
 
 .profile-activity__list {
@@ -1984,6 +1989,17 @@ textarea[aria-invalid="true"]:focus-visible {
   padding: var(--cc-space-2);
 }
 
+/* Keep the Chart.js canvas fully fluid: without an explicit size the canvas
+   falls back to its 300px intrinsic width, which leaks into the layout's
+   min-content and forces horizontal overflow on narrow phones. Forcing the
+   display size to the (relatively positioned, fixed-height) wrapper lets it
+   shrink freely — mirrors the catalogue chart canvas rule. */
+.perf-chart__canvas-wrap > canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
 .perf-chart__fallback {
   font-size: 0.85rem;
 }
@@ -2656,6 +2672,10 @@ textarea[aria-invalid="true"]:focus-visible {
 .catalogue-chart {
   display: grid;
   gap: var(--cc-space-5);
+  /* Single column by default. minmax(0, 1fr) (not the implicit `auto`) lets the
+     track shrink below the Chart.js canvas's content size, so the chart never
+     balloons the grid wider than its container on narrow phones. */
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .catalogue-chart__canvas-wrap {
@@ -2674,6 +2694,13 @@ textarea[aria-invalid="true"]:focus-visible {
 .catalogue-chart__summary-title {
   margin: 0 0 var(--cc-space-3);
   font-size: 1.05rem;
+}
+
+/* Contains the stats table so its intrinsic min-content cannot widen the page
+   on very narrow phones; the table scrolls locally instead (matches the wide
+   admin/compare table pattern). No effect once the column is wide enough. */
+.catalogue-chart__table-wrap {
+  overflow-x: auto;
 }
 
 .catalogue-chart__table {
@@ -3693,7 +3720,11 @@ textarea[aria-invalid="true"]:focus-visible {
 
 .layout-split {
   display: grid;
-  grid-template-columns: 1fr;
+  /* minmax(0, 1fr) rather than a bare 1fr: a plain 1fr track keeps an implicit
+     `auto` (min-content) minimum, so a wide child (e.g. a min-width data table)
+     can stretch the single mobile column past the viewport. The 0 minimum lets
+     the column shrink and the child scroll/wrap within it instead. */
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--cc-space-5);
 }
 
@@ -4257,6 +4288,13 @@ a.cart-item__name:hover {
     width: 100%;
   }
 
+  /* Drop the .data-table 36rem min-width in the stacked card view so each row is
+     a genuinely fluid card — otherwise the table stays 576px wide and forces a
+     horizontal scroll (or widens its column) on phones. */
+  .cart-table {
+    min-width: 0;
+  }
+
   .cart-table tbody tr.cart-item {
     margin-bottom: var(--cc-space-3);
     padding: var(--cc-space-3);
@@ -4635,6 +4673,13 @@ a.cart-item__name:hover {
   font-weight: 700;
 }
 
+/* Show the 4-column total row by default; the 3-column (narrow) variant only
+   appears once the unit-price column is hidden on phones (see the max-width
+   media query below). */
+.order-confirm__total-row--narrow {
+  display: none;
+}
+
 .order-confirm__total-label {
   text-align: right;
 }
@@ -4686,8 +4731,17 @@ a.cart-item__name:hover {
   }
 
   .order-confirm__table th:nth-child(3),
-  .order-confirm__table td:nth-child(3) {
+  .order-confirm__table tbody td:nth-child(3) {
     display: none;
+  }
+
+  /* Swap the total rows so the footer's colspan matches the now-3-column table. */
+  .order-confirm__total-row--wide {
+    display: none;
+  }
+
+  .order-confirm__total-row--narrow {
+    display: table-row;
   }
 
   .order-confirm__actions {

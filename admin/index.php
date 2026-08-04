@@ -203,7 +203,7 @@ require_once __DIR__ . '/../includes/header.php';
                     <?php if ($recentOrders === []) : ?>
                         <p class="admin-activity__empty">No orders have been placed yet.</p>
                     <?php else : ?>
-                        <table class="admin-table">
+                        <div class="admin-table-wrap"><table class="admin-table">
                             <thead>
                                 <tr>
                                     <th scope="col">Order</th>
@@ -234,7 +234,7 @@ require_once __DIR__ . '/../includes/header.php';
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
-                        </table>
+                        </table></div>
                     <?php endif; ?>
                 </div>
 
@@ -243,7 +243,7 @@ require_once __DIR__ . '/../includes/header.php';
                     <?php if ($pendingReviews === []) : ?>
                         <p class="admin-activity__empty">No reviews are waiting for moderation.</p>
                     <?php else : ?>
-                        <table class="admin-table">
+                        <div class="admin-table-wrap"><table class="admin-table">
                             <thead>
                                 <tr>
                                     <th scope="col">Product</th>
@@ -268,7 +268,7 @@ require_once __DIR__ . '/../includes/header.php';
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
-                        </table>
+                        </table></div>
                     <?php endif; ?>
                 </div>
 
@@ -277,7 +277,7 @@ require_once __DIR__ . '/../includes/header.php';
                     <?php if ($openConsultations === []) : ?>
                         <p class="admin-activity__empty">No open or in-progress consultation requests.</p>
                     <?php else : ?>
-                        <table class="admin-table">
+                        <div class="admin-table-wrap"><table class="admin-table">
                             <thead>
                                 <tr>
                                     <th scope="col">Customer</th>
@@ -303,7 +303,7 @@ require_once __DIR__ . '/../includes/header.php';
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
-                        </table>
+                        </table></div>
                     <?php endif; ?>
                 </div>
 
@@ -312,7 +312,7 @@ require_once __DIR__ . '/../includes/header.php';
                     <?php if ($lowStockProducts === []) : ?>
                         <p class="admin-activity__empty">No active products are in the low-stock range.</p>
                     <?php else : ?>
-                        <table class="admin-table">
+                        <div class="admin-table-wrap"><table class="admin-table">
                             <thead>
                                 <tr>
                                     <th scope="col">Product</th>
@@ -333,7 +333,7 @@ require_once __DIR__ . '/../includes/header.php';
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
-                        </table>
+                        </table></div>
                     <?php endif; ?>
                 </div>
             </div>

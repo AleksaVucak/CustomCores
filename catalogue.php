@@ -305,6 +305,9 @@ require_once __DIR__ . '/includes/header.php';
 
                 <div class="catalogue-chart__summary">
                     <h3 class="catalogue-chart__summary-title">Active products by performance tier</h3>
+                    <!-- Scroll wrapper: lets the stats table scroll within its card on very
+                         narrow phones instead of forcing the whole page to scroll sideways. -->
+                    <div class="catalogue-chart__table-wrap">
                     <table class="catalogue-chart__table">
                         <caption class="visually-hidden">
                             Number of active products and price range in each performance tier.
@@ -342,6 +345,7 @@ require_once __DIR__ . '/includes/header.php';
                             <?php endforeach; ?>
                         </tbody>
                     </table>
+                    </div>
                     <p class="catalogue-chart__note">
                         Figures are read live from the CustomCore catalogue database.
                     </p>

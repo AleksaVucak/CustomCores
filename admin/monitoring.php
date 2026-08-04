@@ -130,6 +130,7 @@ require_once __DIR__ . '/../includes/header.php';
         <!-- Service checks table: online, warning, offline -->
         <section class="monitor-checks" aria-labelledby="monitor-checks-heading">
             <h2 id="monitor-checks-heading">Service checks</h2>
+            <div class="admin-table-wrap">
             <table class="admin-table admin-table--monitor">
                 <thead>
                     <tr>
@@ -167,6 +168,7 @@ require_once __DIR__ . '/../includes/header.php';
                     <?php endforeach; ?>
                 </tbody>
             </table>
+            </div>
         </section>
 
         <!-- Live statistics: catalogue, accounts, orders, stock -->
