@@ -89,7 +89,7 @@ How to keep secrets out of Git, set production flags, and configure storage path
 **1. Get the code and enter the folder.**
 
 ```bash
-git clone <your-repository-url> customcore
+git clone https://github.com/AleksaVucak/CustomCores.git customcore
 cd customcore
 ```
 

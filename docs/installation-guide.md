@@ -28,7 +28,7 @@ The short table above is enough for a local install. The production-oriented det
 ## 2. Get the code
 
 ```bash
-git clone <your-repository-url> customcore
+git clone https://github.com/AleksaVucak/CustomCores.git customcore
 cd customcore
 ```
 

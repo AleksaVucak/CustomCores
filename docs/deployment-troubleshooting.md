@@ -46,7 +46,7 @@ Choose whichever transfer method your host supports.
 
 ```bash
 cd ~/public_html
-git clone <your-repository-url> customcore
+git clone https://github.com/AleksaVucak/CustomCores.git customcore
 ```
 
 ### Option B — SFTP / host file manager
